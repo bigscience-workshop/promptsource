@@ -1,13 +1,20 @@
 ag_news:
   basic: !Template
-    input_fn: return example["text"]
+    input_fn: ''
+    jinja: "{{text}} |||\nIs this text an example of news about world politics, sports,\
+      \ business, or technology? ||| \n{{[\"World politics\", \"Sport\", \"Business\"\
+      , \"Technology\"][label] }}"
     name: basic
-    output_fn: "label_map = {\n    0: \"World politics\",\n    1: \"Sports\",\n  \
-      \  2: \"Business\",\n    3: \"Technology\"}\nreturn label_map[example[\"label\"\
-      ]]"
-    prompt_fn: return "Is this an example of news about world politics, sports, business,
-      or technology?"
+    output_fn: ''
+    prompt_fn: ''
     reference: Example template.
+  jinja_example: !Template
+    input_fn: return ""
+    jinja: ''
+    name: jinja_example
+    output_fn: return ""
+    prompt_fn: return ""
+    reference: ''
 trec:
   basic: !Template
     input_fn: return example["text"]
@@ -18,3 +25,14 @@ trec:
     prompt_fn: return "Is this asking about a description, an entity, an abbreviation,
       a person, or a quantity?"
     reference: Example template.
+? !!python/tuple
+- glue
+- cola
+: jinja_example: !Template
+    input_fn: ''
+    jinja: '{{sentence}} ||| Is this example grammatically correct? ||| {{ ["No",
+      "Yes"][label] }}'
+    name: jinja_example
+    output_fn: ''
+    prompt_fn: ''
+    reference: A sample glue template

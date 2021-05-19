@@ -5,8 +5,66 @@ import streamlit as st
 from session_state import get as get_session_state
 from templates import Template, TemplateCollection
 
+
+MAX_SIZE = 100000000
+
+#
+# Helper functions for datasets library 
+#
+
+@st.cache(allow_output_mutation=True)
+def get_dataset(path, conf=None):
+    "Get a dataset from name and conf."
+    module_path = datasets.load.prepare_module(path, dataset=True)
+    builder_cls = datasets.load.import_main_class(module_path[0], dataset=True)
+    if conf:
+        builder_instance = builder_cls(name=conf, cache_dir=None)
+    else:
+        builder_instance = builder_cls(cache_dir=None)
+    fail = False
+    if (
+        builder_instance.manual_download_instructions is None
+        and builder_instance.info.size_in_bytes is not None
+        and builder_instance.info.size_in_bytes < MAX_SIZE):
+        builder_instance.download_and_prepare()
+        dts = builder_instance.as_dataset()
+        dataset = dts
+    else:
+        dataset = builder_instance
+        fail = True
+    return dataset, fail
+
+
+@st.cache
+def get_dataset_confs(path):
+    "Get the list of confs for a dataset."
+    module_path = datasets.load.prepare_module(path, dataset=True)
+    # Get dataset builder class from the processing script
+    builder_cls = datasets.load.import_main_class(module_path[0], dataset=True)
+    # Instantiate the dataset builder
+    confs = builder_cls.BUILDER_CONFIGS
+    if confs and len(confs) > 1:
+        return confs
+    return []
+
+
+def render_features(features):
+    if isinstance(features, dict):
+        return {k: render_features(v) for k, v in features.items()}
+    if isinstance(features, datasets.features.ClassLabel):
+        return features.names
+
+    if isinstance(features, datasets.features.Value):
+        return features.dtype
+
+    if isinstance(features, datasets.features.Sequence):
+        return {"[]": render_features(features.feature)}
+    return features
+
+
 st.set_page_config(layout="wide")
-st.title('PromptSource: Create Prompt Templates')
+
+st.sidebar.title("PromptSource 🌸")
 
 #
 # Loads template data
@@ -51,23 +109,73 @@ st.sidebar.write("HINT: Try ag_news or trec for examples.")
 # If a particular dataset is selected, loads dataset and template information
 #
 if dataset_key is not None:
-    dataset = datasets.load_dataset(dataset_key)
 
-    st.sidebar.subheader("Dataset Info")
-    st.sidebar.markdown(f"[Hugging Face Page](https://huggingface.co/datasets/{dataset_key})")
+    #
+    # Check for subconfigurations
+    #
+    configs = get_dataset_confs(dataset_key)
+    conf_avail = len(configs) > 0
+    conf_option = None
+    if conf_avail:
+        start = 0
+        conf_option = st.sidebar.selectbox(
+            "Subset", configs, index=start, format_func=lambda a: a.name
+        )
 
+    dataset, _ = get_dataset(dataset_key, str(conf_option.name) if conf_option else None)
+
+    
+    
+    k = list(dataset.keys())
+    index = 0
+    if "train" in dataset.keys():
+        index = k.index("train")
+    split = st.sidebar.selectbox("Split", k, index=index)
+    dataset = dataset[split]
+
+    #
+    # Display dataset information
+    #
+    st.header(
+        "Dataset: "
+        + dataset_key
+        + " "
+        + (("/ " + conf_option.name) if conf_option else "")
+    )
+    
+    st.markdown(
+        "*Homepage*: "
+        + dataset.info.homepage
+        + "\n\n*Dataset*: https://github.com/huggingface/datasets/blob/master/datasets/%s/%s.py"
+        % (dataset_key, dataset_key)
+    )
+    
+    md = """
+    %s
+    """ % (
+        dataset.info.description.replace("\\", "") if dataset_key else ""
+    )
+    st.markdown(md)
+    
+    st.sidebar.subheader("Dataset Schema")
+    st.sidebar.write(render_features(dataset.features))
+
+    
     with st.form("example_form"):
         st.sidebar.subheader("Random Training Example")
         new_example_button = st.sidebar.button("New Example", key="new_example")
-        split = st.sidebar.selectbox("Split", list(dataset.keys()))
-        if split or new_example_button or dataset_key != session_state.dataset:
-            session_state.example_index = random.randint(0, len(dataset[split]))
+        if new_example_button or dataset_key != session_state.dataset:
+            session_state.example_index = random.randint(0, len(dataset))
             session_state.dataset = dataset_key
-        example = dataset[split][session_state.example_index]
+        example = dataset[session_state.example_index]
         st.sidebar.write(example)
 
     col1, _, col2 = st.beta_columns([18, 1, 6])
 
+    template_key = dataset_key
+    if conf_option:
+        template_key = (dataset_key, conf_option.name)
+    
     with col1:
         with st.beta_expander("Select Template", expanded=True):
             with st.form("new_template_form"):
@@ -76,17 +184,17 @@ if dataset_key is not None:
                 new_template_submitted = st.form_submit_button("Create")
                 if new_template_submitted:
                     new_template_name = new_template_input
-                    if new_template_name in templates.get_templates(dataset_key):
+                    if new_template_name in templates.get_templates(template_key):
                         st.error(f"A template with the name {new_template_name} already exists "
-                                 f"for dataset {dataset_key}.")
+                                 f"for dataset {template_key}.")
                     else:
-                        template = Template(new_template_name, 'return ""', 'return ""', 'return ""', "")
-                        templates.add_template(dataset_key, template)
+                        template = Template(new_template_name, '', 'return ""', 'return ""', 'return ""', '')
+                        templates.add_template(template_key, template)
                         save_data()
                 else:
                     new_template_name = None
 
-            dataset_templates = templates.get_templates(dataset_key)
+            dataset_templates = templates.get_templates(template_key)
             template_list = list(dataset_templates.keys())
             if new_template_name:
                 index = template_list.index(new_template_name)
@@ -96,32 +204,56 @@ if dataset_key is not None:
                                           index=index, help='Select the template to work on.')
 
             if st.button("Delete Template", key="delete_template"):
-                templates.remove_template(dataset_key, template.get_name())
+                templates.remove_template(template_key, template.get_name())
                 save_data("Template deleted!")
 
-        #
-        # If template is selected, displays template editor
-        #
+
+
         if template_name is not None:
-            with st.form("edit_template_form"):
-                template = dataset_templates[template_name]
+            template = dataset_templates[template_name]
+            #
+            # If template is selected, displays template editor
+            #
+            editor = st.radio("Editor Type", ["Code", "Jinja"], 1 if template.jinja_tpl else 0)
 
-                code_height = 40
-                input_fn_code = st.text_area('Input Function', height=code_height, value=template.input_fn)
-                prompt_fn_code = st.text_area('Prompt Function', height=code_height, value=template.prompt_fn)
-                output_fn_code = st.text_area('Output Function', height=code_height, value=template.output_fn)
+            if editor == "Code":
+                with st.form("edit_template_form"):
+                 
+                    code_height = 40
+                    input_fn_code = st.text_area('Input Function', height=code_height, value=template.input_fn)
+                    prompt_fn_code = st.text_area('Prompt Function', height=code_height, value=template.prompt_fn)
+                    output_fn_code = st.text_area('Output Function', height=code_height, value=template.output_fn)
 
-                reference = st.text_area("Template Reference",
-                                         help="Your name and/or paper reference.",
-                                         value=template.reference)
+                    reference = st.text_area("Template Reference",
+                                             help="Your name and/or paper reference.",
+                                             value=template.reference)
 
-                if st.form_submit_button("Save"):
-                    template.input_fn = input_fn_code
-                    template.prompt_fn = prompt_fn_code
-                    template.output_fn = output_fn_code
-                    template.reference = reference
-                    save_data()
+                    if st.form_submit_button("Save"):
+                        template.jinja = ''
+                        template.input_fn = input_fn_code
+                        template.prompt_fn = prompt_fn_code
+                        template.output_fn = output_fn_code
+                        template.reference = reference
+                        save_data()
+            if editor == "Jinja":
+                with st.form("edit_template_form"):
+                    st.write("Jinja2 Templates.")
+                   
+                    code_height = 40
+                    input_template = st.text_area('Template', height=code_height,
+                                                  value=template.jinja_tpl)
+                    
+                    reference = st.text_area("Template Reference",
+                                             help="Your name and/or paper reference.",
+                                             value=template.reference)
 
+                    if st.form_submit_button("Save"):
+                        template.jinja = input_template
+                        template.input_fn = ''
+                        template.prompt_fn = ''
+                        template.output_fn = ''
+                        template.reference = reference
+                        save_data()
     #
     # Displays template output on current example if a template is selected
     # (in second column)
