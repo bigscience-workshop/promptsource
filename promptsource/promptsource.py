@@ -187,6 +187,8 @@ if dataset_key is not None:
                     if new_template_name in templates.get_templates(template_key):
                         st.error(f"A template with the name {new_template_name} already exists "
                                  f"for dataset {template_key}.")
+                    elif new_template_name == "":
+                        st.error(f"Need to provide a template name.")
                     else:
                         template = Template(new_template_name, '', 'return ""', 'return ""', 'return ""', '')
                         templates.add_template(template_key, template)
