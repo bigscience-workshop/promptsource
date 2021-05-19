@@ -1,4 +1,6 @@
 import yaml
+from jinja2 import Environment, BaseLoader, PackageLoader, select_autoescape
+env = Environment(loader=BaseLoader)
 
 
 def get_sample_template_data():
@@ -6,6 +8,7 @@ def get_sample_template_data():
 
     ag_news_template = Template(
         'basic',
+        'Example template.',
         'return example["text"]',
         'return "Is this an example of news about world politics, sports, business, or technology?"',
         'label_map = {\n'
@@ -14,12 +17,13 @@ def get_sample_template_data():
         '    2: "Business",\n'
         '    3: "Technology"}\n'
         'return label_map[example["label"]]',
-        'Example template.')
+        )
 
     data.add_template("ag_news", ag_news_template)
 
     trec_template = Template(
         'basic',
+        'Example template.',
         'return example["text"]',
         'return "Is this asking about a description, an entity, '
         'an abbreviation, a person, or a quantity?"',
@@ -30,7 +34,7 @@ def get_sample_template_data():
         '    3: "A person",\n'
         '    4: "A quantity"}\n'
         'return label_map[example["label-coarse"]]',
-        'Example template.')
+        )
 
     data.add_template("trec", trec_template)
 
@@ -130,7 +134,7 @@ class Template(yaml.YAMLObject):
     """
     yaml_tag = u'!Template'
 
-    def __init__(self, name, input_fn, prompt_fn, output_fn, reference):
+    def __init__(self, name, reference, input_fn=None, prompt_fn=None, output_fn=None, jinja_tpl=None):
         """
         Creates a prompt template.
 
@@ -141,18 +145,26 @@ class Template(yaml.YAMLObject):
         Each function should return a string.
 
         :param name: unique name (per dataset) for template
+        :param reference: string metadata describing author or paper reference
+                          for template
         :param input_fn: string defining function that creates input from example
         :param prompt_fn: string defining function that creates prompt from example
         :param output_fn: string defining function that creates output from example
-        :param reference: string metadata describing author or paper reference
-                          for template
         """
         self.name = name
         self.input_fn = input_fn
         self.prompt_fn = prompt_fn
         self.output_fn = output_fn
         self.reference = reference
+        self.jinja = jinja_tpl
 
+    @property
+    def jinja_tpl(self):
+        if hasattr(self, "jinja"):
+            return self.jinja
+        else:
+            return ""
+        
     def get_name(self):
         """
         Returns the name of the template
@@ -176,13 +188,18 @@ class Template(yaml.YAMLObject):
         :param example: the dataset example to create a prompt for
         :return: tuple of 3 strings, for input, prompt, and output
         """
-        fns = {}
-        exec(self._make_fun_str("input_fn", ["example"], self.input_fn), fns)
-        exec(self._make_fun_str("prompt_fn", ["example"], self.prompt_fn), fns)
-        exec(self._make_fun_str("output_fn", ["example"], self.output_fn), fns)
-        return (fns['input_fn'](example),
-                fns['prompt_fn'](example),
-                fns['output_fn'](example))
+        if self.jinja_tpl:
+            rtemplate = env.from_string(self.jinja_tpl)
+            return rtemplate.render(**example).split("|||")
+
+        else:         
+            fns = {}
+            exec(self._make_fun_str("input_fn", ["example"], self.input_fn), fns)
+            exec(self._make_fun_str("prompt_fn", ["example"], self.prompt_fn), fns)
+            exec(self._make_fun_str("output_fn", ["example"], self.output_fn), fns)
+            return (fns['input_fn'](example),
+                    fns['prompt_fn'](example),
+                    fns['output_fn'](example))
 
     @classmethod
     def _make_fun_str(cls, name, args, body):
