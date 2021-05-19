@@ -59,10 +59,11 @@ if dataset_key is not None:
     with st.form("example_form"):
         st.sidebar.subheader("Random Training Example")
         new_example_button = st.sidebar.button("New Example", key="new_example")
-        if new_example_button or dataset_key != session_state.dataset:
-            session_state.example_index = random.randint(0, len(dataset['train']))
+        split = st.sidebar.selectbox("Split", list(dataset.keys()))
+        if split or new_example_button or dataset_key != session_state.dataset:
+            session_state.example_index = random.randint(0, len(dataset[split]))
             session_state.dataset = dataset_key
-        example = dataset['train'][session_state.example_index]
+        example = dataset[split][session_state.example_index]
         st.sidebar.write(example)
 
     col1, _, col2 = st.beta_columns([18, 1, 6])
