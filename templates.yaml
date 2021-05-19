@@ -1,0 +1,20 @@
+ag_news:
+  basic: !Template
+    input_fn: return example["text"]
+    name: basic
+    output_fn: "label_map = {\n    0: \"World politics\",\n    1: \"Sports\",\n  \
+      \  2: \"Business\",\n    3: \"Technology\"}\nreturn label_map[example[\"label\"\
+      ]]"
+    prompt_fn: return "Is this an example of news about world politics, sports, business,
+      or technology?"
+    reference: Example template.
+trec:
+  basic: !Template
+    input_fn: return example["text"]
+    name: basic
+    output_fn: "label_map = {\n    0: \"A description\",\n    1: \"An entity\",\n\
+      \    2: \"An abbreviation\",\n    3: \"A person\",\n    4: \"A quantity\"}\n\
+      return label_map[example[\"label-coarse\"]]"
+    prompt_fn: return "Is this asking about a description, an entity, an abbreviation,
+      a person, or a quantity?"
+    reference: Example template.
