@@ -62,7 +62,7 @@ class TemplateCollection:
 
         :param file: file-like object producing strings
         """
-        template_dict = yaml.load(file)
+        template_dict = yaml.load(file, Loader=yaml.FullLoader)
         templates = TemplateCollection()
         templates.templates = template_dict
         return templates

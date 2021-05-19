@@ -2,7 +2,7 @@ import datasets
 import random
 import streamlit as st
 
-import session_state as SessionState
+from session_state import get as get_session_state
 from templates import Template, TemplateCollection
 
 st.set_page_config(layout="wide")
@@ -35,7 +35,7 @@ dataset_list = datasets.list_datasets()
 #
 # Initializes state
 #
-session_state = SessionState.get(example_index=0, dataset=dataset_list[0])
+session_state = get_session_state(example_index=0, dataset=dataset_list[0])
 
 #
 # Select a dataset
