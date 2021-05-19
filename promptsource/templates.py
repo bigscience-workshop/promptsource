@@ -9,8 +9,7 @@ def get_sample_template_data():
     ag_news_template = Template(
         'basic',
         'Example template.',
-        'return example["text"]',
-        'return "Is this an example of news about world politics, sports, business, or technology?"',
+        'return example["text"] + "\n\nIs this an example of news about world politics, sports, business, or technology?"',
         'label_map = {\n'
         '    0: "World politics",\n'
         '    1: "Sports",\n'
@@ -24,8 +23,7 @@ def get_sample_template_data():
     trec_template = Template(
         'basic',
         'Example template.',
-        'return example["text"]',
-        'return "Is this asking about a description, an entity, '
+        'return example["text"] + "\n\nIs this asking about a description, an entity, '
         'an abbreviation, a person, or a quantity?"',
         'label_map = {\n'
         '    0: "A description",\n'
@@ -134,7 +132,7 @@ class Template(yaml.YAMLObject):
     """
     yaml_tag = u'!Template'
 
-    def __init__(self, name, reference, input_fn=None, prompt_fn=None, output_fn=None, jinja_tpl=None):
+    def __init__(self, name, reference, prompt_fn=None, output_fn=None, jinja_tpl=None):
         """
         Creates a prompt template.
 
@@ -147,12 +145,10 @@ class Template(yaml.YAMLObject):
         :param name: unique name (per dataset) for template
         :param reference: string metadata describing author or paper reference
                           for template
-        :param input_fn: string defining function that creates input from example
         :param prompt_fn: string defining function that creates prompt from example
         :param output_fn: string defining function that creates output from example
         """
         self.name = name
-        self.input_fn = input_fn
         self.prompt_fn = prompt_fn
         self.output_fn = output_fn
         self.reference = reference
@@ -194,12 +190,9 @@ class Template(yaml.YAMLObject):
 
         else:         
             fns = {}
-            exec(self._make_fun_str("input_fn", ["example"], self.input_fn), fns)
             exec(self._make_fun_str("prompt_fn", ["example"], self.prompt_fn), fns)
             exec(self._make_fun_str("output_fn", ["example"], self.output_fn), fns)
-            return (fns['input_fn'](example),
-                    fns['prompt_fn'](example),
-                    fns['output_fn'](example))
+            return (fns['prompt_fn'](example), fns['output_fn'](example))
 
     @classmethod
     def _make_fun_str(cls, name, args, body):

@@ -190,7 +190,7 @@ if dataset_key is not None:
                     elif new_template_name == "":
                         st.error(f"Need to provide a template name.")
                     else:
-                        template = Template(new_template_name, '', 'return ""', 'return ""', 'return ""', '')
+                        template = Template(new_template_name, '', 'return ""', 'return ""', '')
                         templates.add_template(template_key, template)
                         save_data()
                 else:
@@ -222,7 +222,6 @@ if dataset_key is not None:
                 with st.form("edit_template_form"):
                  
                     code_height = 40
-                    input_fn_code = st.text_area('Input Function', height=code_height, value=template.input_fn)
                     prompt_fn_code = st.text_area('Prompt Function', height=code_height, value=template.prompt_fn)
                     output_fn_code = st.text_area('Output Function', height=code_height, value=template.output_fn)
 
@@ -232,7 +231,6 @@ if dataset_key is not None:
 
                     if st.form_submit_button("Save"):
                         template.jinja = ''
-                        template.input_fn = input_fn_code
                         template.prompt_fn = prompt_fn_code
                         template.output_fn = output_fn_code
                         template.reference = reference
@@ -251,7 +249,6 @@ if dataset_key is not None:
 
                     if st.form_submit_button("Save"):
                         template.jinja = input_template
-                        template.input_fn = ''
                         template.prompt_fn = ''
                         template.output_fn = ''
                         template.reference = reference
@@ -268,4 +265,3 @@ if dataset_key is not None:
             prompt = template.apply(example)
             st.write(prompt[0])
             st.write(prompt[1])
-            st.write(prompt[2])
