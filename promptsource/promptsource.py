@@ -9,7 +9,7 @@ from templates import Template, TemplateCollection
 MAX_SIZE = 100000000
 
 #
-# Helper functions for datasets library 
+# Helper functions for datasets library
 #
 
 @st.cache(allow_output_mutation=True)
@@ -122,6 +122,9 @@ if dataset_key is not None:
         )
 
     dataset, _ = get_dataset(dataset_key, str(conf_option.name) if conf_option else None)
+
+
+
     k = list(dataset.keys())
     index = 0
     if "train" in dataset.keys():
@@ -139,21 +142,21 @@ if dataset_key is not None:
         + " "
         + (("/ " + conf_option.name) if conf_option else "")
     )
-    
+
     st.markdown(
         "*Homepage*: "
         + dataset.info.homepage
         + "\n\n*Dataset*: https://github.com/huggingface/datasets/blob/master/datasets/%s/%s.py"
         % (dataset_key, dataset_key)
     )
-    
+
     md = """
     %s
     """ % (
         dataset.info.description.replace("\\", "") if dataset_key else ""
     )
     st.markdown(md)
-    
+
     st.sidebar.subheader("Dataset Schema")
     st.sidebar.write(render_features(dataset.features))
 
@@ -171,7 +174,7 @@ if dataset_key is not None:
     template_key = dataset_key
     if conf_option:
         template_key = (dataset_key, conf_option.name)
-    
+
     with col1:
         with st.beta_expander("Select Template", expanded=True):
             with st.form("new_template_form"):
@@ -202,7 +205,7 @@ if dataset_key is not None:
                                           index=index, help='Select the template to work on.')
 
             if st.button("Delete Template", key="delete_template"):
-                templates.remove_template(template_key, template.get_name())
+                templates.remove_template(template_key, template_name)
                 save_data("Template deleted!")
 
 
@@ -216,7 +219,7 @@ if dataset_key is not None:
 
             if editor == "Code":
                 with st.form("edit_template_form"):
-                 
+
                     code_height = 40
                     prompt_fn_code = st.text_area('Prompt Function', height=code_height, value=template.prompt_fn)
                     output_fn_code = st.text_area('Output Function', height=code_height, value=template.output_fn)
@@ -234,11 +237,11 @@ if dataset_key is not None:
             if editor == "Jinja":
                 with st.form("edit_template_form"):
                     st.write("Jinja2 Templates.")
-                   
+
                     code_height = 40
                     input_template = st.text_area('Template', height=code_height,
                                                   value=template.jinja_tpl)
-                    
+
                     reference = st.text_area("Template Reference",
                                              help="Your name and/or paper reference.",
                                              value=template.reference)

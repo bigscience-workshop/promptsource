@@ -1,4 +1,12 @@
 ag_news:
+  Test1: !Template
+    jinja: "{{text}} \nIs this a piece of news regarding world politics, sports, business,\
+      \ or technology? ||| \n{{[\"World politics\", \"Sport\", \"Business\", \"Technology\"\
+      ][label] }}"
+    name: test1
+    output_fn: ''
+    prompt_fn: ''
+    reference: example template_1
   basic: !Template
     jinja: "{{text}} \nIs this text an example of news about world politics, sports,\
       \ business, or technology? ||| \n{{[\"World politics\", \"Sport\", \"Business\"\
@@ -36,3 +44,35 @@ trec:
     output_fn: ''
     prompt_fn: ''
     reference: A sample glue template
+? !!python/tuple
+- adversarial_qa
+- adversarialQA
+: test1: !Template
+    jinja: "{{context}} \n{{question}}||| \n{{answers.text}}"
+    name: test1
+    output_fn: ''
+    prompt_fn: ''
+    reference: test template
+? !!python/tuple
+- scitail
+- snli_format
+: Test1: !Template
+    jinja: "{{sentence1}} \n{{sentence2}}\nAre these sentences neutral or entailment\
+      \ to one another?|||\n{{gold_label}}"
+    name: Test1
+    output_fn: ''
+    prompt_fn: ''
+    reference: ''
+? !!python/tuple
+- ade_corpus_v2
+- Ade_corpus_v2_classification
+: Test1: !Template
+    jinja: '{{text}}
+
+      Is this sentence ADE-related or not?|||
+
+      {{["Not-Related", "Related"][label]}}'
+    name: Test1
+    output_fn: ''
+    prompt_fn: ''
+    reference: ''
