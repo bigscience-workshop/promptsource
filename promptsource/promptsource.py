@@ -122,7 +122,6 @@ if dataset_key is not None:
         )
 
     dataset, _ = get_dataset(dataset_key, str(conf_option.name) if conf_option else None)
-    
     k = list(dataset.keys())
     index = 0
     if "train" in dataset.keys():
@@ -161,7 +160,7 @@ if dataset_key is not None:
     with st.form("example_form"):
         st.sidebar.subheader("Random Training Example")
         new_example_button = st.sidebar.button("New Example", key="new_example")
-        if new_example_button or dataset_key != session_state.dataset or session_state.split!=split:
+        if new_example_button or dataset_key != session_state.dataset:
             session_state.example_index = random.randint(0, len(dataset))
             session_state.dataset = dataset_key
         example = dataset[session_state.example_index]
