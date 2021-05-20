@@ -53,3 +53,5 @@ either figure out how to query for available options and let user pick, or only 
 Unclear right now if a template for one configuration can be applied to another in all cases.
 
 **Warning or Error about Darwin on OS X:** Try downgrading PyArrow to 3.0.0.
+
+**Error due to PyYAML version mismatch:** In case you have PyYAML with version <5 previously installed, then follow the steps [here](https://stackoverflow.com/a/53534728) to upgrade it to a version which is >5. 
