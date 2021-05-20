@@ -94,7 +94,6 @@ dataset_list = datasets.list_datasets()
 # Initializes state
 #
 session_state = get_session_state(example_index=0, dataset=dataset_list[0])
-
 #
 # Select a dataset
 #
@@ -123,8 +122,6 @@ if dataset_key is not None:
         )
 
     dataset, _ = get_dataset(dataset_key, str(conf_option.name) if conf_option else None)
-
-    
     
     k = list(dataset.keys())
     index = 0
@@ -132,7 +129,8 @@ if dataset_key is not None:
         index = k.index("train")
     split = st.sidebar.selectbox("Split", k, index=index)
     dataset = dataset[split]
-
+    session_state.example_index = random.randint(0, len(dataset))
+            
     #
     # Display dataset information
     #
@@ -160,11 +158,10 @@ if dataset_key is not None:
     st.sidebar.subheader("Dataset Schema")
     st.sidebar.write(render_features(dataset.features))
 
-    
     with st.form("example_form"):
         st.sidebar.subheader("Random Training Example")
         new_example_button = st.sidebar.button("New Example", key="new_example")
-        if new_example_button or dataset_key != session_state.dataset:
+        if new_example_button or dataset_key != session_state.dataset or session_state.split!=split:
             session_state.example_index = random.randint(0, len(dataset))
             session_state.dataset = dataset_key
         example = dataset[session_state.example_index]
