@@ -157,12 +157,12 @@ if dataset_key is not None:
     st.sidebar.subheader("Dataset Schema")
     st.sidebar.write(render_features(dataset.features))
 
-    with st.form("example_form"):
-        st.sidebar.subheader("Select Example")
-        example_index = st.sidebar.slider("Select the example index", 0, len(dataset)-1)
-       
-        example = dataset[example_index]
-        st.sidebar.write(example)
+    
+    st.sidebar.subheader("Select Example")
+    example_index = st.sidebar.slider("Select the example index", 0, len(dataset)-1)
+    
+    example = dataset[example_index]
+    st.sidebar.write(example)
 
     col1, _, col2 = st.beta_columns([18, 1, 6])
 
