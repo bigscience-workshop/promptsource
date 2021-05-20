@@ -2,7 +2,6 @@ import datasets
 import random
 import streamlit as st
 
-from session_state import get as get_session_state
 from templates import Template, TemplateCollection
 
 
@@ -93,7 +92,6 @@ dataset_list = datasets.list_datasets()
 #
 # Initializes state
 #
-session_state = get_session_state(example_index=0, dataset=dataset_list[0])
 #
 # Select a dataset
 #
@@ -131,7 +129,6 @@ if dataset_key is not None:
         index = k.index("train")
     split = st.sidebar.selectbox("Split", k, index=index)
     dataset = dataset[split]
-    session_state.example_index = random.randint(0, len(dataset))
             
     #
     # Display dataset information
@@ -161,12 +158,10 @@ if dataset_key is not None:
     st.sidebar.write(render_features(dataset.features))
 
     with st.form("example_form"):
-        st.sidebar.subheader("Random Training Example")
-        new_example_button = st.sidebar.button("New Example", key="new_example")
-        if new_example_button or dataset_key != session_state.dataset:
-            session_state.example_index = random.randint(0, len(dataset))
-            session_state.dataset = dataset_key
-        example = dataset[session_state.example_index]
+        st.sidebar.subheader("Select Example")
+        example_index = st.sidebar.slider("Select the example index", 0, len(dataset)-1)
+       
+        example = dataset[example_index]
         st.sidebar.write(example)
 
     col1, _, col2 = st.beta_columns([18, 1, 6])
