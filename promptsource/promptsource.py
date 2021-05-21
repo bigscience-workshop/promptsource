@@ -1,13 +1,14 @@
-import datasets
 import random
-import streamlit as st
 
+import datasets
+import streamlit as st
 from templates import Template, TemplateCollection
 
 
 #
 # Helper functions for datasets library
 #
+
 
 @st.cache(allow_output_mutation=True)
 def get_dataset(path, conf=None):
@@ -21,7 +22,8 @@ def get_dataset(path, conf=None):
     fail = False
     if (
         builder_instance.manual_download_instructions is None
-        and builder_instance.info.size_in_bytes is not None):
+        and builder_instance.info.size_in_bytes is not None
+    ):
         builder_instance.download_and_prepare()
         dts = builder_instance.as_dataset()
         dataset = dts
@@ -66,17 +68,19 @@ st.sidebar.title("PromptSource 🌸")
 # Loads template data
 #
 try:
-    with open("./templates.yaml", 'r') as f:
+    with open("./templates.yaml", "r") as f:
         templates = TemplateCollection.read_from_file(f)
 except FileNotFoundError:
-    st.error("Unable to load the templates file!\n\n"
-             "We expect the file templates.yaml to be in the working directory. "
-             "You might need to restart the app in the root directory of the repo.")
+    st.error(
+        "Unable to load the templates file!\n\n"
+        "We expect the file templates.yaml to be in the working directory. "
+        "You might need to restart the app in the root directory of the repo."
+    )
     st.stop()
 
 
 def save_data(message="Done!"):
-    with open("./templates.yaml", 'w') as f:
+    with open("./templates.yaml", "w") as f:
         templates.write_to_file(f)
         st.success(message)
 
@@ -94,9 +98,12 @@ dataset_list = datasets.list_datasets()
 #
 # TODO: Currently raises an error if you select a dataset that requires a
 # TODO: configuration. Not clear how to query for these options.
-dataset_key = st.sidebar.selectbox('Dataset', dataset_list, key='dataset_select',
-                 help='Select the dataset to work on. Number in parens ' +
-                      'is the number of prompts created.')
+dataset_key = st.sidebar.selectbox(
+    "Dataset",
+    dataset_list,
+    key="dataset_select",
+    help="Select the dataset to work on. Number in parens " + "is the number of prompts created.",
+)
 st.sidebar.write("HINT: Try ag_news or trec for examples.")
 
 #
@@ -112,13 +119,9 @@ if dataset_key is not None:
     conf_option = None
     if conf_avail:
         start = 0
-        conf_option = st.sidebar.selectbox(
-            "Subset", configs, index=start, format_func=lambda a: a.name
-        )
+        conf_option = st.sidebar.selectbox("Subset", configs, index=start, format_func=lambda a: a.name)
 
     dataset, _ = get_dataset(dataset_key, str(conf_option.name) if conf_option else None)
-
-
 
     k = list(dataset.keys())
     index = 0
@@ -126,16 +129,11 @@ if dataset_key is not None:
         index = k.index("train")
     split = st.sidebar.selectbox("Split", k, index=index)
     dataset = dataset[split]
-            
+
     #
     # Display dataset information
     #
-    st.header(
-        "Dataset: "
-        + dataset_key
-        + " "
-        + (("/ " + conf_option.name) if conf_option else "")
-    )
+    st.header("Dataset: " + dataset_key + " " + (("/ " + conf_option.name) if conf_option else ""))
 
     st.markdown(
         "*Homepage*: "
@@ -154,10 +152,9 @@ if dataset_key is not None:
     st.sidebar.subheader("Dataset Schema")
     st.sidebar.write(render_features(dataset.features))
 
-    
     st.sidebar.subheader("Select Example")
-    example_index = st.sidebar.slider("Select the example index", 0, len(dataset)-1)
-    
+    example_index = st.sidebar.slider("Select the example index", 0, len(dataset) - 1)
+
     example = dataset[example_index]
     st.sidebar.write(example)
 
@@ -170,18 +167,24 @@ if dataset_key is not None:
     with col1:
         with st.beta_expander("Select Template", expanded=True):
             with st.form("new_template_form"):
-                new_template_input = st.text_input("New Template Name", key="new_template_key", value="",
-                                                   help="Enter name and hit enter to create a new template.")
+                new_template_input = st.text_input(
+                    "New Template Name",
+                    key="new_template_key",
+                    value="",
+                    help="Enter name and hit enter to create a new template.",
+                )
                 new_template_submitted = st.form_submit_button("Create")
                 if new_template_submitted:
                     new_template_name = new_template_input
                     if new_template_name in templates.get_templates(template_key):
-                        st.error(f"A template with the name {new_template_name} already exists "
-                                 f"for dataset {template_key}.")
+                        st.error(
+                            f"A template with the name {new_template_name} already exists "
+                            f"for dataset {template_key}."
+                        )
                     elif new_template_name == "":
                         st.error(f"Need to provide a template name.")
                     else:
-                        template = Template(new_template_name, '', 'return ""', 'return ""', '')
+                        template = Template(new_template_name, "", 'return ""', 'return ""', "")
                         templates.add_template(template_key, template)
                         save_data()
                 else:
@@ -193,14 +196,13 @@ if dataset_key is not None:
                 index = template_list.index(new_template_name)
             else:
                 index = 0
-            template_name = st.selectbox('', template_list, key='template_select',
-                                          index=index, help='Select the template to work on.')
+            template_name = st.selectbox(
+                "", template_list, key="template_select", index=index, help="Select the template to work on."
+            )
 
             if st.button("Delete Template", key="delete_template"):
                 templates.remove_template(template_key, template_name)
                 save_data("Template deleted!")
-
-
 
         if template_name is not None:
             template = dataset_templates[template_name]
@@ -213,15 +215,15 @@ if dataset_key is not None:
                 with st.form("edit_template_form"):
 
                     code_height = 40
-                    prompt_fn_code = st.text_area('Prompt Function', height=code_height, value=template.prompt_fn)
-                    output_fn_code = st.text_area('Output Function', height=code_height, value=template.output_fn)
+                    prompt_fn_code = st.text_area("Prompt Function", height=code_height, value=template.prompt_fn)
+                    output_fn_code = st.text_area("Output Function", height=code_height, value=template.output_fn)
 
-                    reference = st.text_area("Template Reference",
-                                             help="Your name and/or paper reference.",
-                                             value=template.reference)
+                    reference = st.text_area(
+                        "Template Reference", help="Your name and/or paper reference.", value=template.reference
+                    )
 
                     if st.form_submit_button("Save"):
-                        template.jinja = ''
+                        template.jinja = ""
                         template.prompt_fn = prompt_fn_code
                         template.output_fn = output_fn_code
                         template.reference = reference
@@ -231,17 +233,16 @@ if dataset_key is not None:
                     st.write("Jinja2 Templates.")
 
                     code_height = 40
-                    input_template = st.text_area('Template', height=code_height,
-                                                  value=template.jinja_tpl)
+                    input_template = st.text_area("Template", height=code_height, value=template.jinja_tpl)
 
-                    reference = st.text_area("Template Reference",
-                                             help="Your name and/or paper reference.",
-                                             value=template.reference)
+                    reference = st.text_area(
+                        "Template Reference", help="Your name and/or paper reference.", value=template.reference
+                    )
 
                     if st.form_submit_button("Save"):
                         template.jinja = input_template
-                        template.prompt_fn = ''
-                        template.output_fn = ''
+                        template.prompt_fn = ""
+                        template.output_fn = ""
                         template.reference = reference
                         save_data()
     #
