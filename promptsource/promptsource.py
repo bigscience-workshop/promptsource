@@ -156,6 +156,16 @@ if dataset_key is not None:
 
     st.sidebar.subheader("Dataset Schema")
     st.sidebar.write(render_features(dataset.features))
+    
+    
+    template_key = dataset_key
+    if conf_option:
+        template_key = (dataset_key, conf_option.name)
+    dataset_templates = templates.get_templates(template_key)
+    template_list = list(dataset_templates.keys())
+    num_templates = len(template_list)
+    st.sidebar.subheader("No of Templates created for: " + dataset_key +(("/ " + conf_option.name) if conf_option else ""))
+    st.sidebar.write(num_templates)
 
     
     st.sidebar.subheader("Select Example")
