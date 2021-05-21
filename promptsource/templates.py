@@ -1,5 +1,6 @@
 import yaml
-from jinja2 import Environment, BaseLoader, PackageLoader, select_autoescape
+from jinja2 import BaseLoader, Environment, PackageLoader, select_autoescape
+
 env = Environment(loader=BaseLoader)
 
 
@@ -7,32 +8,32 @@ def get_sample_template_data():
     data = TemplateCollection()
 
     ag_news_template = Template(
-        'basic',
-        'Example template.',
+        "basic",
+        "Example template.",
         'return example["text"] + "\n\nIs this an example of news about world politics, sports, business, or technology?"',
-        'label_map = {\n'
+        "label_map = {\n"
         '    0: "World politics",\n'
         '    1: "Sports",\n'
         '    2: "Business",\n'
         '    3: "Technology"}\n'
         'return label_map[example["label"]]',
-        )
+    )
 
     data.add_template("ag_news", ag_news_template)
 
     trec_template = Template(
-        'basic',
-        'Example template.',
+        "basic",
+        "Example template.",
         'return example["text"] + "\n\nIs this asking about a description, an entity, '
         'an abbreviation, a person, or a quantity?"',
-        'label_map = {\n'
+        "label_map = {\n"
         '    0: "A description",\n'
         '    1: "An entity",\n'
         '    2: "An abbreviation",\n'
         '    3: "A person",\n'
         '    4: "A quantity"}\n'
         'return label_map[example["label-coarse"]]',
-        )
+    )
 
     data.add_template("trec", trec_template)
 
@@ -99,8 +100,7 @@ class TemplateCollection:
             raise ValueError("No templates for dataset exist.")
 
         if template_name not in self.templates[dataset]:
-            raise ValueError(f"No template with name {template_name} " +
-                             f"for dataset {dataset} exists.")
+            raise ValueError(f"No template with name {template_name} " + f"for dataset {dataset} exists.")
 
         del self.templates[dataset][template_name]
 
@@ -130,7 +130,8 @@ class Template(yaml.YAMLObject):
     """
     A prompt template.
     """
-    yaml_tag = u'!Template'
+
+    yaml_tag = "!Template"
 
     def __init__(self, name, reference, prompt_fn=None, output_fn=None, jinja_tpl=None):
         """
@@ -160,7 +161,7 @@ class Template(yaml.YAMLObject):
             return self.jinja
         else:
             return ""
-        
+
     def get_name(self):
         """
         Returns the name of the template
@@ -188,11 +189,11 @@ class Template(yaml.YAMLObject):
             rtemplate = env.from_string(self.jinja_tpl)
             return rtemplate.render(**example).split("|||")
 
-        else:         
+        else:
             fns = {}
             exec(self._make_fun_str("prompt_fn", ["example"], self.prompt_fn), fns)
             exec(self._make_fun_str("output_fn", ["example"], self.output_fn), fns)
-            return (fns['prompt_fn'](example), fns['output_fn'](example))
+            return (fns["prompt_fn"](example), fns["output_fn"](example))
 
     @classmethod
     def _make_fun_str(cls, name, args, body):
@@ -208,5 +209,3 @@ class Template(yaml.YAMLObject):
         signature = f"def {name}({arg_str}):\n"
         body = "\n".join([("    " + line) for line in body.split("\n")])
         return signature + body
-
-
