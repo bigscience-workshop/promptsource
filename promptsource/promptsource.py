@@ -9,6 +9,7 @@ from pygments.lexers import DjangoLexer
 from session import _get_state
 from utils import get_dataset, get_dataset_confs, list_datasets, removeHyphen, renameDatasetColumn, render_features
 
+from augmentation import augment
 from templates import Template, TemplateCollection
 
 
@@ -442,7 +443,9 @@ else:
                         if len(prompt) > 1:
                             st.write("Y")
                             show_text(prompt[1], width=40)
-
+                        st.write("Augmented Prompt (demo)")
+                        aug_subject = template.jinja.split("|||")[0].replace("{{text}}", "").strip()
+                        show_text(augment(aug_subject), width=40)
 
 #
 # Must sync state at end
