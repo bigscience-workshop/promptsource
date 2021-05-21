@@ -5,8 +5,6 @@ import streamlit as st
 from templates import Template, TemplateCollection
 
 
-MAX_SIZE = 100000000
-
 #
 # Helper functions for datasets library
 #
@@ -23,8 +21,7 @@ def get_dataset(path, conf=None):
     fail = False
     if (
         builder_instance.manual_download_instructions is None
-        and builder_instance.info.size_in_bytes is not None
-        and builder_instance.info.size_in_bytes < MAX_SIZE):
+        and builder_instance.info.size_in_bytes is not None):
         builder_instance.download_and_prepare()
         dts = builder_instance.as_dataset()
         dataset = dts
