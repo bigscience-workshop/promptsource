@@ -87,7 +87,7 @@ def save_data(message="Done!"):
 #
 # Loads dataset information
 #
-dataset_list = datasets.list_datasets()
+dataset_list = datasets.list_datasets(with_community_datasets=False)
 
 #
 # Initializes state
