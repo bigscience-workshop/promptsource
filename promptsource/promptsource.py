@@ -1,5 +1,3 @@
-import random
-
 import datasets
 import streamlit as st
 from templates import Template, TemplateCollection
@@ -90,14 +88,10 @@ def save_data(message="Done!"):
 #
 dataset_list = datasets.list_datasets(with_community_datasets=False)
 
-#
-# Initializes state
-#
+
 #
 # Select a dataset
 #
-# TODO: Currently raises an error if you select a dataset that requires a
-# TODO: configuration. Not clear how to query for these options.
 dataset_key = st.sidebar.selectbox(
     "Dataset",
     dataset_list,
@@ -184,7 +178,7 @@ if dataset_key is not None:
                     elif new_template_name == "":
                         st.error(f"Need to provide a template name.")
                     else:
-                        template = Template(new_template_name, "", 'return ""', 'return ""', "")
+                        template = Template(new_template_name, "", "")
                         templates.add_template(template_key, template)
                         save_data()
                 else:
@@ -209,42 +203,17 @@ if dataset_key is not None:
             #
             # If template is selected, displays template editor
             #
-            editor = st.radio("Editor Type", ["Code", "Jinja"], 1 if template.jinja_tpl else 0)
+            with st.form("edit_template_form"):
+                input_template = st.text_area("Template", height=40, value=template.jinja)
 
-            if editor == "Code":
-                with st.form("edit_template_form"):
+                reference = st.text_area(
+                    "Template Reference", help="Your name and/or paper reference.", value=template.reference
+                )
 
-                    code_height = 40
-                    prompt_fn_code = st.text_area("Prompt Function", height=code_height, value=template.prompt_fn)
-                    output_fn_code = st.text_area("Output Function", height=code_height, value=template.output_fn)
-
-                    reference = st.text_area(
-                        "Template Reference", help="Your name and/or paper reference.", value=template.reference
-                    )
-
-                    if st.form_submit_button("Save"):
-                        template.jinja = ""
-                        template.prompt_fn = prompt_fn_code
-                        template.output_fn = output_fn_code
-                        template.reference = reference
-                        save_data()
-            if editor == "Jinja":
-                with st.form("edit_template_form"):
-                    st.write("Jinja2 Templates.")
-
-                    code_height = 40
-                    input_template = st.text_area("Template", height=code_height, value=template.jinja_tpl)
-
-                    reference = st.text_area(
-                        "Template Reference", help="Your name and/or paper reference.", value=template.reference
-                    )
-
-                    if st.form_submit_button("Save"):
-                        template.jinja = input_template
-                        template.prompt_fn = ""
-                        template.output_fn = ""
-                        template.reference = reference
-                        save_data()
+                if st.form_submit_button("Save"):
+                    template.jinja = input_template
+                    template.reference = reference
+                    save_data()
     #
     # Displays template output on current example if a template is selected
     # (in second column)
@@ -256,4 +225,5 @@ if dataset_key is not None:
             template = dataset_templates[template_name]
             prompt = template.apply(example)
             st.write(prompt[0])
-            st.write(prompt[1])
+            if len(prompt) > 1:
+                st.write(prompt[1])
