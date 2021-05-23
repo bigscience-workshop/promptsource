@@ -15,25 +15,18 @@ streamlit run promptsource/promptsource.py
 ```
 
 ## Writing Templates
-Templates are currently represented as three python functions, one to generate each
-piece of a prompting instance: input, prompt, and output.
+A prompt template is expressed in [Jinja](https://jinja.palletsprojects.com/en/3.0.x/). 
 
-You can write arbitrary python in the textboxes. Currently, each piece of code will be
-inserted into a function with a header such as
-```
-def output_fn(example):
-```
-To write a function, fill in just the body of the function. Use no indentation for the
-top-level context.
+It is rendered using an example from the corresponding Hugging Face datasets library
+(a dictionary). The separator ||| should appear once to divide the template into prompt
+and output. Generally, the prompt should provide information on the desired behavior,
+e.g., text passage and instructions, and the output should be a desired response.
 
-For example, to define an output function for ag_news, you could write
-```python
-label_map = {
-    0: "World politics",
-    1: "Sports",
-    2: "Business",
-    3: "Technology"}
-return label_map[example["label"]]
+Here's an example for [AG News](https://huggingface.co/datasets/ag_news):
+```
+{{text}} 
+Is this a piece of news regarding world politics, sports, business, or technology? ||| 
+{{ ["World politics", "Sport", "Business", "Technology"][label] }}
 ```
 
 ## Contributing
@@ -48,10 +41,4 @@ See also the [design doc](https://docs.google.com/document/d/1IQzrrAAMPS0XAn_ArO
 
 ## Known Issues
 
-**Datasets with configurations:** Loading datasets that require a configuration is currently broken. Need to
-either figure out how to query for available options and let user pick, or only use first one or something.
-Unclear right now if a template for one configuration can be applied to another in all cases.
-
 **Warning or Error about Darwin on OS X:** Try downgrading PyArrow to 3.0.0.
-
-**Error due to PyYAML version mismatch:** In case you have PyYAML with version <5 previously installed, then follow the steps [here](https://stackoverflow.com/a/53534728) to upgrade it to a version which is >5. 
