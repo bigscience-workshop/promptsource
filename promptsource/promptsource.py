@@ -1,5 +1,6 @@
 import datasets
 import streamlit as st
+from session import _get_state
 from templates import Template, TemplateCollection
 
 
@@ -58,8 +59,22 @@ def render_features(features):
     return features
 
 
-st.set_page_config(layout="wide")
+def reset_template_state():
+    state.new_template_name = None
+    state.template_name = None
+    state.jinja = None
+    state.reference = None
 
+
+#
+# Loads session state
+#
+state = _get_state()
+
+#
+# Initial page setup
+#
+st.set_page_config(layout="wide")
 st.sidebar.title("PromptSource 🌸")
 
 #
@@ -154,14 +169,20 @@ if dataset_key is not None:
 
     col1, _, col2 = st.beta_columns([18, 1, 6])
 
-    template_key = dataset_key
+    # current_templates_key and state.templates_key are keys for the templates object
+    current_templates_key = dataset_key
     if conf_option:
-        template_key = (dataset_key, conf_option.name)
+        current_templates_key = (dataset_key, conf_option.name)
+
+    # Resets state if there has been a change in templates_key
+    if state.templates_key != current_templates_key:
+        state.templates_key = current_templates_key
+        reset_template_state()
 
     with col1:
         with st.beta_expander("Select Template", expanded=True):
             with st.form("new_template_form"):
-                new_template_input = st.text_input(
+                state.new_template_name = st.text_input(
                     "New Template Name",
                     key="new_template_key",
                     value="",
@@ -169,61 +190,70 @@ if dataset_key is not None:
                 )
                 new_template_submitted = st.form_submit_button("Create")
                 if new_template_submitted:
-                    new_template_name = new_template_input
-                    if new_template_name in templates.get_templates(template_key):
+                    if state.new_template_name in templates.get_templates(state.templates_key):
                         st.error(
-                            f"A template with the name {new_template_name} already exists "
-                            f"for dataset {template_key}."
+                            f"A template with the name {state.new_template_name} already exists "
+                            f"for dataset {state.templates_key}."
                         )
-                    elif new_template_name == "":
+                    elif state.new_template_name == "":
                         st.error(f"Need to provide a template name.")
                     else:
-                        template = Template(new_template_name, "", "")
-                        templates.add_template(template_key, template)
+                        template = Template(state.new_template_name, "", "")
+                        templates.add_template(state.templates_key, template)
                         save_data()
+                        state.template_name = state.new_template_name
                 else:
-                    new_template_name = None
+                    state.new_template_name = None
 
-            dataset_templates = templates.get_templates(template_key)
+            dataset_templates = templates.get_templates(state.templates_key)
             template_list = list(dataset_templates.keys())
-            if new_template_name:
-                index = template_list.index(new_template_name)
+            if state.template_name:
+                index = template_list.index(state.template_name)
             else:
                 index = 0
-            template_name = st.selectbox(
+            state.template_name = st.selectbox(
                 "", template_list, key="template_select", index=index, help="Select the template to work on."
             )
 
             if st.button("Delete Template", key="delete_template"):
-                templates.remove_template(template_key, template_name)
+                templates.remove_template(state.templates_key, state.template_name)
                 save_data("Template deleted!")
+                reset_template_state()
 
-        if template_name is not None:
-            template = dataset_templates[template_name]
+        if state.template_name is not None:
+            template = dataset_templates[state.template_name]
             #
             # If template is selected, displays template editor
             #
+            if not state.jinja:
+                state.jinja = template.jinja
+                state.reference = template.reference
             with st.form("edit_template_form"):
-                input_template = st.text_area("Template", height=40, value=template.jinja)
+                state.jinja = st.text_area("Template", height=40, value=state.jinja)
 
-                reference = st.text_area(
-                    "Template Reference", help="Your name and/or paper reference.", value=template.reference
+                state.reference = st.text_area(
+                    "Template Reference", help="Your name and/or paper reference.", value=state.reference
                 )
 
                 if st.form_submit_button("Save"):
-                    template.jinja = input_template
-                    template.reference = reference
+                    template.jinja = state.jinja
+                    template.reference = state.reference
                     save_data()
     #
     # Displays template output on current example if a template is selected
     # (in second column)
     #
     with col2:
-        if template_name is not None:
+        if state.template_name is not None:
             st.empty()
             st.subheader("Template Output")
-            template = dataset_templates[template_name]
+            template = dataset_templates[state.template_name]
             prompt = template.apply(example)
             st.write(prompt[0])
             if len(prompt) > 1:
                 st.write(prompt[1])
+
+#
+# Must sync state at end
+#
+state.sync()
