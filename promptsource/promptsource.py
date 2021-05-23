@@ -230,6 +230,7 @@ if dataset_key is not None:
 
                 if st.form_submit_button("Save"):
                     template.jinja = state.jinja
+                    template.jinja = template.jinja.replace("-","_")
                     template.reference = state.reference
                     save_data()
     #
