@@ -191,7 +191,7 @@ if dataset_key is not None:
                             f"for dataset {state.templates_key}."
                         )
                     elif new_template_name == "":
-                        st.error(f"Need to provide a template name.")
+                        st.error("Need to provide a template name.")
                     else:
                         template = Template(new_template_name, "", "")
                         templates.add_template(state.templates_key, template)
