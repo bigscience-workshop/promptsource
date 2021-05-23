@@ -2,7 +2,8 @@
 # Code for managing session state, which is needed for multi-input forms
 # See https://github.com/streamlit/streamlit/issues/1557
 #
-# This code is taken from https://gist.github.com/okld/0aba4869ba6fdc8d49132e6974e2e662
+# This code is taken from
+# https://gist.github.com/okld/0aba4869ba6fdc8d49132e6974e2e662
 #
 from streamlit.hashing import _CodeHasher
 from streamlit.report_thread import get_report_ctx
@@ -10,7 +11,6 @@ from streamlit.server.server import Server
 
 
 class _SessionState:
-
     def __init__(self, session, hash_funcs):
         """Initialize SessionState instance."""
         self.__dict__["_state"] = {
@@ -49,7 +49,10 @@ class _SessionState:
         self._state["session"].request_rerun()
 
     def sync(self):
-        """Rerun the app with all state values up to date from the beginning to fix rollbacks."""
+        """
+        Rerun the app with all state values up to date from the beginning to
+        fix rollbacks.
+        """
 
         # Ensure to rerun only once to avoid infinite loops
         # caused by a constantly changing state value at each run.
@@ -59,11 +62,12 @@ class _SessionState:
             self._state["is_rerun"] = False
 
         elif self._state["hash"] is not None:
-            if self._state["hash"] != self._state["hasher"].to_bytes(self._state["data"], None):
+            d_to_b = self._state["hasher"].to_bytes(self._state["data"], None)
+            if self._state["hash"] != d_to_b:
                 self._state["is_rerun"] = True
                 self._state["session"].request_rerun()
 
-        self._state["hash"] = self._state["hasher"].to_bytes(self._state["data"], None)
+        self._state["hash"] = d_to_b
 
 
 def _get_session():
