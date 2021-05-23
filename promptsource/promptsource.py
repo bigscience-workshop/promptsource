@@ -160,6 +160,15 @@ if dataset_key is not None:
     example_index = st.sidebar.slider("Select the example index", 0, len(dataset) - 1)
 
     example = dataset[example_index]
+    example_clean = {}
+    for key in example.keys():
+        if "-" in key:
+           new_key = key.replace("-","_")
+           example_clean[new_key] = example[key]
+        else:
+           example_clean[key] = example[key]
+    example = example_clean
+ 
     st.sidebar.write(example)
 
     col1, _, col2 = st.beta_columns([18, 1, 6])
