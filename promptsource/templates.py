@@ -1,5 +1,6 @@
 import yaml
 from jinja2 import BaseLoader, Environment
+import itertools
 
 env = Environment(loader=BaseLoader)
 
@@ -42,7 +43,7 @@ class TemplateCollection:
         """
         yaml.dump(self.templates, file)
 
-    def add_template(self, dataset, template):
+    def add_template(self, dataset, num_templates, template):
         """
         Adds a new template for the dataset
 
@@ -50,10 +51,11 @@ class TemplateCollection:
         :param template: template
         """
         if dataset not in self.templates:
-            self.templates[dataset] = {}
+            self.templates[dataset] = {}        
         self.templates[dataset][template.get_name()] = template
+        self.templates[dataset]["count"] = num_templates
 
-    def remove_template(self, dataset, template_name):
+    def remove_template(self, dataset, num_templates, template_name):
         """
         Deletes a template
 
@@ -67,7 +69,7 @@ class TemplateCollection:
             raise ValueError(f"No template with name {template_name} " + f"for dataset {dataset} exists.")
 
         del self.templates[dataset][template_name]
-
+        self.templates[dataset]["count"] = num_templates
         if len(self.templates[dataset]) == 0:
             del self.templates[dataset]
 
@@ -81,7 +83,21 @@ class TemplateCollection:
         if dataset not in self.templates:
             return {}
 
-        return self.templates[dataset].copy()
+        dataset_templates_copy = self.templates[dataset].copy()
+        del dataset_templates_copy["count"]
+        return dataset_templates_copy
+    
+    def get_templates_count(self):
+        count_dict = {}
+        for k,v in self.templates.items():
+            if isinstance(k, str):
+                count_dict[k] = v["count"]
+        temp_with_conf = {k:v for k,v in self.templates.items() if isinstance(k, tuple)}
+        groups = itertools.groupby(sorted(temp_with_conf), lambda x:(x[0]))
+        for dataset, group in groups:
+            count_dict[dataset] = sum(self.templates[conf]["count"] for conf in group)
+        return count_dict
+
 
     def __len__(self):
         size = 0

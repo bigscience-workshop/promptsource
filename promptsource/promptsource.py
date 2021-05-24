@@ -91,13 +91,19 @@ def save_data(message="Done!"):
     with open("./templates.yaml", "w") as f:
         templates.write_to_file(f)
         st.success(message)
-
-
 #
 # Loads dataset information
 #
-dataset_list = datasets.list_datasets(with_community_datasets=False)
+def list_datasets(option):
+    dataset_list = datasets.list_datasets(with_community_datasets=False)
+    count_dict  = templates.get_templates_count()
+    if(option):
+        dataset_list = list(set(dataset_list) - set(list(d for d in count_dict if count_dict[d]>2))) 
+        dataset_list.sort() 
+    return dataset_list
 
+option=st.sidebar.checkbox('Priority Datasets')
+dataset_list = list_datasets(option)
 
 #
 # Select a dataset
@@ -202,9 +208,12 @@ if dataset_key is not None:
                         )
                     elif new_template_name == "":
                         st.error("Need to provide a template name.")
+                    elif new_template_name == "count":
+                        st.error("count is a reserved name. Please enter a different name")
                     else:
                         template = Template(new_template_name, "", "")
-                        templates.add_template(state.templates_key, template)
+                        num_templates = num_templates + 1
+                        templates.add_template(state.templates_key, num_templates, template)
                         save_data()
                         reset_template_state()
                         state.template_name = new_template_name
@@ -222,7 +231,8 @@ if dataset_key is not None:
             )
 
             if st.button("Delete Template", key="delete_template"):
-                templates.remove_template(state.templates_key, state.template_name)
+                num_templates = num_templates - 1
+                templates.remove_template(state.templates_key, num_templates, state.template_name)
                 save_data("Template deleted!")
                 reset_template_state()
 
