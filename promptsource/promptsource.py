@@ -102,7 +102,7 @@ def list_datasets(option):
         dataset_list.sort() 
     return dataset_list
 
-option=st.sidebar.checkbox('Priority Datasets')
+option=st.sidebar.checkbox('Filter Priority Datasets')
 dataset_list = list_datasets(option)
 
 #
@@ -208,12 +208,9 @@ if dataset_key is not None:
                         )
                     elif new_template_name == "":
                         st.error("Need to provide a template name.")
-                    elif new_template_name == "count":
-                        st.error("count is a reserved name. Please enter a different name")
                     else:
                         template = Template(new_template_name, "", "")
-                        num_templates = num_templates + 1
-                        templates.add_template(state.templates_key, num_templates, template)
+                        templates.add_template(state.templates_key, template)
                         save_data()
                         reset_template_state()
                         state.template_name = new_template_name
@@ -231,8 +228,7 @@ if dataset_key is not None:
             )
 
             if st.button("Delete Template", key="delete_template"):
-                num_templates = num_templates - 1
-                templates.remove_template(state.templates_key, num_templates, state.template_name)
+                templates.remove_template(state.templates_key, state.template_name)
                 save_data("Template deleted!")
                 reset_template_state()
 

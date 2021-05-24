@@ -4,36 +4,13 @@ ag_news:
       \ or technology? ||| \n{{[\"World politics\", \"Sport\", \"Business\", \"Technology\"\
       ][label] }}"
     name: test1
-    output_fn: ''
-    prompt_fn: ''
     reference: example template_1
   basic: !Template
     jinja: "{{text}} \nIs this text an example of news about world politics, sports,\
       \ business, or technology? ||| \n{{[\"World politics\", \"Sport\", \"Business\"\
       , \"Technology\"][label] }}"
     name: basic
-    output_fn: ''
-    prompt_fn: ''
     reference: Example template.
-  jinja_example: !Template
-    jinja: ''
-    name: jinja_example
-    output_fn: return ""
-    prompt_fn: return ""
-    reference: ''
-  count: 3
-trec:
-  basic: !Template
-    input_fn: return example["text"]
-    name: basic
-    output_fn: "label_map = {\n    0: \"A description\",\n    1: \"An entity\",\n\
-      \    2: \"An abbreviation\",\n    3: \"A person\",\n    4: \"A quantity\"}\n\
-      return label_map[example[\"label-coarse\"]]"
-    prompt_fn: 'return example["text"] + "
-      Is this asking about a description, an entity, an abbreviation, a person, or
-      a quantity?'
-    reference: Example template.
-  count: 1
 ? !!python/tuple
 - glue
 - cola
@@ -41,20 +18,14 @@ trec:
     jinja: '{{sentence}} \nIs this example grammatically correct? ||| {{ ["No", "Yes"][label]
       }}'
     name: jinja_example
-    output_fn: ''
-    prompt_fn: ''
     reference: A sample glue template
-  count: 1
 ? !!python/tuple
 - adversarial_qa
 - adversarialQA
 : test1: !Template
     jinja: "{{context}} \n{{question}}||| \n{{answers.text}}"
     name: test1
-    output_fn: ''
-    prompt_fn: ''
     reference: test template
-  count: 1
 ? !!python/tuple
 - scitail
 - snli_format
@@ -62,19 +33,11 @@ trec:
     jinja: "{{sentence1}} \n{{sentence2}}\nAre these sentences neutral or entailment\
       \ to one another?|||\n{{gold_label}}"
     name: Test1
-    output_fn: ''
-    prompt_fn: ''
     reference: ''
-  count: 1
 ? !!python/tuple
 - ade_corpus_v2
 - Ade_corpus_v2_classification
 : Test1: !Template
-    jinja: '{{text}}
-      Is this sentence ADE-related or not?|||
-      {{["Not-Related", "Related"][label]}}'
+    jinja: '{{text}} Is this sentence ADE-related or not?||| {{["Not-Related", "Related"][label]}}'
     name: Test1
-    output_fn: ''
-    prompt_fn: ''
     reference: ''
-  count: 1

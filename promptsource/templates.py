@@ -43,7 +43,7 @@ class TemplateCollection:
         """
         yaml.dump(self.templates, file)
 
-    def add_template(self, dataset, num_templates, template):
+    def add_template(self, dataset, template):
         """
         Adds a new template for the dataset
 
@@ -53,9 +53,8 @@ class TemplateCollection:
         if dataset not in self.templates:
             self.templates[dataset] = {}        
         self.templates[dataset][template.get_name()] = template
-        self.templates[dataset]["count"] = num_templates
 
-    def remove_template(self, dataset, num_templates, template_name):
+    def remove_template(self, dataset, template_name):
         """
         Deletes a template
 
@@ -69,7 +68,6 @@ class TemplateCollection:
             raise ValueError(f"No template with name {template_name} " + f"for dataset {dataset} exists.")
 
         del self.templates[dataset][template_name]
-        self.templates[dataset]["count"] = num_templates
         if len(self.templates[dataset]) == 0:
             del self.templates[dataset]
 
@@ -82,20 +80,17 @@ class TemplateCollection:
         """
         if dataset not in self.templates:
             return {}
-
-        dataset_templates_copy = self.templates[dataset].copy()
-        del dataset_templates_copy["count"]
-        return dataset_templates_copy
+        return self.templates[dataset].copy()
     
     def get_templates_count(self):
         count_dict = {}
         for k,v in self.templates.items():
             if isinstance(k, str):
-                count_dict[k] = v["count"]
+                count_dict[k] = len(v)
         temp_with_conf = {k:v for k,v in self.templates.items() if isinstance(k, tuple)}
         groups = itertools.groupby(sorted(temp_with_conf), lambda x:(x[0]))
         for dataset, group in groups:
-            count_dict[dataset] = sum(self.templates[conf]["count"] for conf in group)
+            count_dict[dataset] = sum(len(self.templates[conf]) for conf in group)
         return count_dict
 
 
