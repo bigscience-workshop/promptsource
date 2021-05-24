@@ -96,11 +96,10 @@ def save_data(message="Done!"):
 #
 def list_datasets(option):
     dataset_list = datasets.list_datasets(with_community_datasets=False)
+    count_dict  = templates.get_templates_count()
     if(option):
-        for dataset in dataset_list:   
-            if(templates.get_template_count(dataset) > 2):
-                dataset_list = dataset_list.remove(dataset)
-        return dataset_list  
+        dataset_list = list(set(dataset_list) - set(list(d for d in count_dict if count_dict[d]>2))) 
+        dataset_list.sort() 
     return dataset_list
 
 option=st.sidebar.checkbox('Priority Datasets')
