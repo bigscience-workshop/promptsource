@@ -42,7 +42,7 @@ class TemplateCollection:
         """
         yaml.dump(self.templates, file)
 
-    def add_template(self, dataset, template):
+    def add_template(self, dataset, num_templates, template):
         """
         Adds a new template for the dataset
 
@@ -50,10 +50,11 @@ class TemplateCollection:
         :param template: template
         """
         if dataset not in self.templates:
-            self.templates[dataset] = {}
+            self.templates[dataset] = {}        
         self.templates[dataset][template.get_name()] = template
+        self.templates[dataset]["count"] = num_templates
 
-    def remove_template(self, dataset, template_name):
+    def remove_template(self, dataset, num_templates, template_name):
         """
         Deletes a template
 
@@ -67,7 +68,7 @@ class TemplateCollection:
             raise ValueError(f"No template with name {template_name} " + f"for dataset {dataset} exists.")
 
         del self.templates[dataset][template_name]
-
+        self.templates[dataset]["count"] = num_templates
         if len(self.templates[dataset]) == 0:
             del self.templates[dataset]
 
@@ -81,7 +82,15 @@ class TemplateCollection:
         if dataset not in self.templates:
             return {}
 
-        return self.templates[dataset].copy()
+        dataset_templates_copy = self.templates[dataset].copy()
+        del dataset_templates_copy["count"]
+        return dataset_templates_copy
+    
+    def get_template_count(self, dataset):
+        if dataset not in self.templates:
+            return 0
+        return self.templates[dataset]["count"]
+
 
     def __len__(self):
         size = 0
