@@ -91,13 +91,19 @@ def save_data(message="Done!"):
     with open("./templates.yaml", "w") as f:
         templates.write_to_file(f)
         st.success(message)
-
-
 #
 # Loads dataset information
 #
-dataset_list = datasets.list_datasets(with_community_datasets=False)
+def list_datasets(option):
+    dataset_list = datasets.list_datasets(with_community_datasets=False)
+    count_dict  = templates.get_templates_count()
+    if(option):
+        dataset_list = list(set(dataset_list) - set(list(d for d in count_dict if count_dict[d]>2))) 
+        dataset_list.sort() 
+    return dataset_list
 
+option=st.sidebar.checkbox('Filter Priority Datasets')
+dataset_list = list_datasets(option)
 
 #
 # Select a dataset
@@ -155,6 +161,16 @@ if dataset_key is not None:
 
     st.sidebar.subheader("Dataset Schema")
     st.sidebar.write(render_features(dataset.features))
+    
+    
+    template_key = dataset_key
+    if conf_option:
+        template_key = (dataset_key, conf_option.name)
+    dataset_templates = templates.get_templates(template_key)
+    template_list = list(dataset_templates.keys())
+    num_templates = len(template_list)
+    st.sidebar.subheader("No of Templates created for: " + dataset_key +(("/ " + conf_option.name) if conf_option else ""))
+    st.sidebar.write(num_templates)
 
     st.sidebar.subheader("Select Example")
     example_index = st.sidebar.slider("Select the example index", 0, len(dataset) - 1)
