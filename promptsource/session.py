@@ -53,6 +53,7 @@ class _SessionState:
         Rerun the app with all state values up to date from the beginning to
         fix rollbacks.
         """
+        data_to_bytes = self._state["hasher"].to_bytes(self._state["data"], None)
 
         # Ensure to rerun only once to avoid infinite loops
         # caused by a constantly changing state value at each run.
@@ -62,12 +63,11 @@ class _SessionState:
             self._state["is_rerun"] = False
 
         elif self._state["hash"] is not None:
-            d_to_b = self._state["hasher"].to_bytes(self._state["data"], None)
-            if self._state["hash"] != d_to_b:
+            if self._state["hash"] != data_to_bytes:
                 self._state["is_rerun"] = True
                 self._state["session"].request_rerun()
 
-        self._state["hash"] = d_to_b
+        self._state["hash"] = data_to_bytes
 
 
 def _get_session():
