@@ -58,11 +58,13 @@ class _SessionState:
         # caused by a constantly changing state value at each run.
         #
         # Example: state.value += 1
+        d_to_b = self._state["hasher"].to_bytes(self._state["data"], None)
+        
         if self._state["is_rerun"]:
             self._state["is_rerun"] = False
 
         elif self._state["hash"] is not None:
-            d_to_b = self._state["hasher"].to_bytes(self._state["data"], None)
+            
             if self._state["hash"] != d_to_b:
                 self._state["is_rerun"] = True
                 self._state["session"].request_rerun()
