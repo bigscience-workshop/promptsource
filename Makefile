@@ -7,7 +7,7 @@ check_dirs := promptsource
 quality:
 	black --check --line-length 119 --target-version py38 $(check_dirs)
 	isort --check-only $(check_dirs)
-	flake8 $(check_dirs)
+	flake8 $(check_dirs) --max-line-length 119
 
 # Format source code automatically
 

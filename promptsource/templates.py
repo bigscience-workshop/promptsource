@@ -1,43 +1,7 @@
 import yaml
-from jinja2 import BaseLoader, Environment, PackageLoader, select_autoescape
+from jinja2 import BaseLoader, Environment
 
 env = Environment(loader=BaseLoader)
-
-
-def get_sample_template_data():
-    data = TemplateCollection()
-
-    ag_news_template = Template(
-        "basic",
-        "Example template.",
-        'return example["text"] + "\n\nIs this an example of news about world politics, sports, business, or technology?"',
-        "label_map = {\n"
-        '    0: "World politics",\n'
-        '    1: "Sports",\n'
-        '    2: "Business",\n'
-        '    3: "Technology"}\n'
-        'return label_map[example["label"]]',
-    )
-
-    data.add_template("ag_news", ag_news_template)
-
-    trec_template = Template(
-        "basic",
-        "Example template.",
-        'return example["text"] + "\n\nIs this asking about a description, an entity, '
-        'an abbreviation, a person, or a quantity?"',
-        "label_map = {\n"
-        '    0: "A description",\n'
-        '    1: "An entity",\n'
-        '    2: "An abbreviation",\n'
-        '    3: "A person",\n'
-        '    4: "A quantity"}\n'
-        'return label_map[example["label-coarse"]]',
-    )
-
-    data.add_template("trec", trec_template)
-
-    return data
 
 
 class TemplateCollection:
@@ -133,34 +97,25 @@ class Template(yaml.YAMLObject):
 
     yaml_tag = "!Template"
 
-    def __init__(self, name, reference, prompt_fn=None, output_fn=None, jinja_tpl=None):
+    def __init__(self, name, jinja, reference):
         """
         Creates a prompt template.
 
-        A prompt template is made up three main pieces: strings that define
-        three functions, one each for generating the input, the prompt, and the
-        output given an example. These strings should not include the function
-        signature, but should assume that there is an input called "example".
-        Each function should return a string.
+        A prompt template is expressed in Jinja. It is rendered using an example
+        from the corresponding Hugging Face datasets library (a dictionary). The
+        separator ||| should appear once to divide the template into prompt and
+        output. Generally, the prompt should provide information on the desired
+        behavior, e.g., text passage and instructions, and the output should be
+        a desired response.
 
         :param name: unique name (per dataset) for template
+        :param jinja: template expressed in Jinja
         :param reference: string metadata describing author or paper reference
                           for template
-        :param prompt_fn: string defining function that creates prompt from example
-        :param output_fn: string defining function that creates output from example
         """
         self.name = name
-        self.prompt_fn = prompt_fn
-        self.output_fn = output_fn
+        self.jinja = jinja
         self.reference = reference
-        self.jinja = jinja_tpl
-
-    @property
-    def jinja_tpl(self):
-        if hasattr(self, "jinja"):
-            return self.jinja
-        else:
-            return ""
 
     def get_name(self):
         """
@@ -183,29 +138,7 @@ class Template(yaml.YAMLObject):
         Creates a prompt by applying this template to an example
 
         :param example: the dataset example to create a prompt for
-        :return: tuple of 3 strings, for input, prompt, and output
+        :return: tuple of 2 strings, for prompt and output
         """
-        if self.jinja_tpl:
-            rtemplate = env.from_string(self.jinja_tpl)
-            return rtemplate.render(**example).split("|||")
-
-        else:
-            fns = {}
-            exec(self._make_fun_str("prompt_fn", ["example"], self.prompt_fn), fns)
-            exec(self._make_fun_str("output_fn", ["example"], self.output_fn), fns)
-            return (fns["prompt_fn"](example), fns["output_fn"](example))
-
-    @classmethod
-    def _make_fun_str(cls, name, args, body):
-        """
-        Creates a string representation of a Python function.
-
-        :param name: the name of the function
-        :param args: iterable of strings naming function arguments
-        :param body: the function definition. The outermost context should be unindented.
-        :return: full function definition that can be parsed by exec
-        """
-        arg_str = ", ".join(args)
-        signature = f"def {name}({arg_str}):\n"
-        body = "\n".join([("    " + line) for line in body.split("\n")])
-        return signature + body
+        rtemplate = env.from_string(self.jinja)
+        return rtemplate.render(**example).split("|||")
