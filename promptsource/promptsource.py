@@ -4,7 +4,7 @@ import streamlit as st
 
 from session import _get_state
 from templates import Template, TemplateCollection
-from utils import removeHyphen
+from utils import removeHyphen,renameDatasetColumn
 from utils import _ADDITIONAL_ENGLISH_DATSETS
 
 #
@@ -193,7 +193,7 @@ if dataset_key is not None:
 
     st.sidebar.subheader("Dataset Schema")
     st.sidebar.write(render_features(dataset.features))
-
+    dataset = renameDatasetColumn(dataset)
 
     template_key = dataset_key
     if conf_option:
@@ -280,7 +280,6 @@ if dataset_key is not None:
 
                 if st.form_submit_button("Save"):
                     template.jinja = state.jinja
-                    template.jinja = template.jinja.replace("-","_")
                     template.reference = state.reference
                     save_data()
     #

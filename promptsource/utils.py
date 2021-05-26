@@ -129,4 +129,10 @@ def removeHyphen(example):
            example_clean[key] = example[key]
     example = example_clean
     return example
- 
+
+def renameDatasetColumn(dataset):
+    col_names = dataset.column_names
+    for cols in col_names:
+        if "-" in cols:
+           dataset = dataset.rename_column(cols,cols.replace("-","_"))
+    return dataset
