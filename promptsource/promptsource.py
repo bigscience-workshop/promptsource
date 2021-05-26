@@ -4,7 +4,7 @@ import streamlit as st
 
 from session import _get_state
 from templates import Template, TemplateCollection
-from utils.common_utils import removeHyphen
+from utils import removeHyphen
 from utils import _ADDITIONAL_ENGLISH_DATSETS
 
 #
