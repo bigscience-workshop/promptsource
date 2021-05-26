@@ -1,7 +1,6 @@
 import datasets
 import requests
 import streamlit as st
-
 from session import _get_state
 from templates import Template, TemplateCollection
 from utils import _ADDITIONAL_ENGLISH_DATSETS
@@ -94,6 +93,8 @@ def save_data(message="Done!"):
     with open("./templates.yaml", "w") as f:
         templates.write_to_file(f)
         st.success(message)
+
+
 #
 # Loads dataset information
 #
@@ -105,7 +106,7 @@ def filter_english_datasets():
     tags = response.json()
 
     for dataset in tags:
-        dataset_name = dataset['id']
+        dataset_name = dataset["id"]
 
         is_community_dataset = "/" in dataset_name
         if is_community_dataset:
@@ -125,15 +126,33 @@ def filter_english_datasets():
     all_english_datasets = list(set(english_datasets + _ADDITIONAL_ENGLISH_DATSETS))
     return sorted(all_english_datasets)
 
+
 def list_datasets(option):
     dataset_list = filter_english_datasets()
-    count_dict  = templates.get_templates_count()
-    if(option):
-        dataset_list = list(set(dataset_list) - set(list(d for d in count_dict if count_dict[d]>2)))
+    count_dict = templates.get_templates_count()
+    if option:
+        dataset_list = list(
+            set(dataset_list)
+            - set(
+                list(
+                    d for d in count_dict if count_dict[d] > priority_max_templates and d != state.working_priority_ds
+                )
+            )
+        )
         dataset_list.sort()
     return dataset_list
 
-option=st.sidebar.checkbox('Filter Priority Datasets')
+
+option = st.sidebar.checkbox("Filter Priority Datasets")
+if option:
+    priority_max_templates = st.sidebar.number_input(
+        "Max no of templates per dataset", min_value=0, max_value=50, value=2, step=1
+    )
+else:
+    # Clear working priority dataset retained in the
+    # priority list with more than priority_max_templates
+    state.working_priority_ds = None
+
 dataset_list = list_datasets(option)
 
 #
@@ -146,6 +165,11 @@ dataset_key = st.sidebar.selectbox(
     help="Select the dataset to work on. Number in parens " + "is the number of prompts created.",
 )
 st.sidebar.write("HINT: Try ag_news or trec for examples.")
+
+# On dataset change, clear working priority dataset
+# retained in the priority list with more than priority_max_templates
+if dataset_key != state.working_priority_ds:
+    state.working_priority_ds = None
 
 #
 # If a particular dataset is selected, loads dataset and template information
@@ -193,14 +217,15 @@ if dataset_key is not None:
     st.sidebar.subheader("Dataset Schema")
     st.sidebar.write(render_features(dataset.features))
 
-
     template_key = dataset_key
     if conf_option:
         template_key = (dataset_key, conf_option.name)
     dataset_templates = templates.get_templates(template_key)
     template_list = list(dataset_templates.keys())
     num_templates = len(template_list)
-    st.sidebar.subheader("No of Templates created for: " + dataset_key +(("/ " + conf_option.name) if conf_option else ""))
+    st.sidebar.subheader(
+        "No of Templates created for: " + dataset_key + (("/ " + conf_option.name) if conf_option else "")
+    )
     st.sidebar.write(num_templates)
 
     st.sidebar.subheader("Select Example")
@@ -245,6 +270,9 @@ if dataset_key is not None:
                         save_data()
                         reset_template_state()
                         state.template_name = new_template_name
+                        # Keep the current working dataset in priority list
+                        if option:
+                            state.working_priority_ds = dataset_key
                 else:
                     state.new_template_name = None
 
