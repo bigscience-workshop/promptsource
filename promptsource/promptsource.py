@@ -2,6 +2,7 @@ import datasets
 import streamlit as st
 from session import _get_state
 from templates import Template, TemplateCollection
+from utils.common_utils import removeHyphen
 
 #
 # Helper functions for datasets library
@@ -160,14 +161,7 @@ if dataset_key is not None:
     example_index = st.sidebar.slider("Select the example index", 0, len(dataset) - 1)
 
     example = dataset[example_index]
-    example_clean = {}
-    for key in example.keys():
-        if "-" in key:
-           new_key = key.replace("-","_")
-           example_clean[new_key] = example[key]
-        else:
-           example_clean[key] = example[key]
-    example = example_clean
+    example = removeHyphen(example)
  
     st.sidebar.write(example)
 
