@@ -1,8 +1,11 @@
 import datasets
+import requests
 import streamlit as st
+
 from session import _get_state
 from templates import Template, TemplateCollection
 from utils.common_utils import removeHyphen
+from utils import _ADDITIONAL_ENGLISH_DATSETS
 
 #
 # Helper functions for datasets library
@@ -92,13 +95,47 @@ def save_data(message="Done!"):
     with open("./templates.yaml", "w") as f:
         templates.write_to_file(f)
         st.success(message)
-
-
 #
 # Loads dataset information
 #
-dataset_list = datasets.list_datasets(with_community_datasets=False)
+def filter_english_datasets():
+    """Filter English datasets based on language tags in metadata"""
+    english_datasets = []
 
+    response = requests.get("https://huggingface.co/api/datasets?full=true")
+    tags = response.json()
+
+    for dataset in tags:
+        dataset_name = dataset['id']
+
+        is_community_dataset = "/" in dataset_name
+        if is_community_dataset:
+            continue
+
+        if "card_data" not in dataset:
+            continue
+        metadata = dataset["card_data"]
+
+        if "languages" not in metadata:
+            continue
+        languages = metadata["languages"]
+
+        if "en" in languages:
+            english_datasets.append(dataset_name)
+
+    all_english_datasets = list(set(english_datasets + _ADDITIONAL_ENGLISH_DATSETS))
+    return sorted(all_english_datasets)
+
+def list_datasets(option):
+    dataset_list = filter_english_datasets()
+    count_dict  = templates.get_templates_count()
+    if(option):
+        dataset_list = list(set(dataset_list) - set(list(d for d in count_dict if count_dict[d]>2)))
+        dataset_list.sort()
+    return dataset_list
+
+option=st.sidebar.checkbox('Filter Priority Datasets')
+dataset_list = list_datasets(option)
 
 #
 # Select a dataset
@@ -156,6 +193,16 @@ if dataset_key is not None:
 
     st.sidebar.subheader("Dataset Schema")
     st.sidebar.write(render_features(dataset.features))
+
+
+    template_key = dataset_key
+    if conf_option:
+        template_key = (dataset_key, conf_option.name)
+    dataset_templates = templates.get_templates(template_key)
+    template_list = list(dataset_templates.keys())
+    num_templates = len(template_list)
+    st.sidebar.subheader("No of Templates created for: " + dataset_key +(("/ " + conf_option.name) if conf_option else ""))
+    st.sidebar.write(num_templates)
 
     st.sidebar.subheader("Select Example")
     example_index = st.sidebar.slider("Select the example index", 0, len(dataset) - 1)
