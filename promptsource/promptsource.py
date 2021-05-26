@@ -127,10 +127,10 @@ def filter_english_datasets():
     return sorted(all_english_datasets)
 
 
-def list_datasets(option):
+def list_datasets(_priority_filter):
     dataset_list = filter_english_datasets()
     count_dict = templates.get_templates_count()
-    if option:
+    if _priority_filter:
         dataset_list = list(
             set(dataset_list)
             - set(
@@ -143,17 +143,17 @@ def list_datasets(option):
     return dataset_list
 
 
-option = st.sidebar.checkbox("Filter Priority Datasets")
-if option:
+priority_filter = st.sidebar.checkbox("Filter Priority Datasets")
+if priority_filter:
     priority_max_templates = st.sidebar.number_input(
-        "Max no of templates per dataset", min_value=0, max_value=50, value=2, step=1
+        "Max no of templates per dataset", min_value=1, max_value=50, value=2, step=1
     )
 else:
     # Clear working priority dataset retained in the
     # priority list with more than priority_max_templates
     state.working_priority_ds = None
 
-dataset_list = list_datasets(option)
+dataset_list = list_datasets(priority_filter)
 
 #
 # Select a dataset
@@ -271,7 +271,7 @@ if dataset_key is not None:
                         reset_template_state()
                         state.template_name = new_template_name
                         # Keep the current working dataset in priority list
-                        if option:
+                        if priority_filter:
                             state.working_priority_ds = dataset_key
                 else:
                     state.new_template_name = None
