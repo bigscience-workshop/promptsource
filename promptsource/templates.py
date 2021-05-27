@@ -2,9 +2,13 @@ import itertools
 
 import yaml
 from jinja2 import BaseLoader, Environment
+import os
+from typing import Dict, List, Optional
+import glob
+
+TEMPLATES_FOLDER_PATH = './templates/'
 
 env = Environment(loader=BaseLoader)
-
 
 class TemplateCollection:
     """
@@ -99,6 +103,176 @@ class TemplateCollection:
         for dataset in self.templates.keys():
             size += len(self.templates[dataset])
         return size
+
+class DatasetTemplates:
+    """
+    Collection of prompt templates.
+
+    Templates are organized by dataset. The key for a dataset is either the
+    dataset name or, f the dataset requires a configuration, the key is a
+    tuple of (dataset name, configuration name).
+    """
+
+    TEMPLATES_KEY = 'templates'
+    DATASET_KEY = 'dataset'
+    CONFIG_KEY = 'config'
+
+    def __init__(self, dataset_name: str, config_name: str = None):
+        """
+        Initializes an empty template collection.
+        """
+        # dictionary is keyed by template name.
+        self.dataset_name = dataset_name
+        self.config_name = config_name
+        self.path = os.path.join(TEMPLATES_FOLDER_PATH, self.dataset_name)
+
+        self.templates = self.read_from_file()
+
+    @property
+    def keys(self):
+        return list(self.templates.keys())
+
+    @property
+    def folder_path(self):
+        if self.config_name:
+            return os.path.join(TEMPLATES_FOLDER_PATH, self.dataset_name, self.config_name)
+        else:
+            return os.path.join(TEMPLATES_FOLDER_PATH, self.dataset_name)
+
+    @property
+    def yaml_path(self):
+        return os.path.join(self.folder_path, 'templates.yaml')
+
+    def parse_yaml(self, yaml_dict):
+        return yaml_dict['templates']
+
+    def format_yaml(self):
+        formatted_dict = {self.DATASET_KEY: self.dataset_name, self.TEMPLATES_KEY: self.templates}
+        if self.config_name:
+            formatted_dict[self.CONFIG_KEY] = self.config_name
+        return formatted_dict
+
+    def read_from_file(self) -> Dict:
+        """
+        Reads a file containing a prompt collection.
+
+        :param file: file-like object producing strings
+        """
+
+        if not os.path.exists(self.yaml_path):
+            return {}
+        yaml_dict =  yaml.load(open(self.yaml_path, 'r'), Loader=yaml.FullLoader)
+        return yaml_dict[self.TEMPLATES_KEY]
+
+    def write_to_file(self):
+        """
+        Writes to a file with the current prompt collection.
+
+        :param file: file-like object supporting string inputs
+        """
+
+        # We only create the folder if a template is written
+        if not os.path.exists(self.folder_path):
+            os.mkdir(self.folder_path)
+        yaml.dump(self.format_yaml(), open(self.yaml_path, 'w'))
+
+    def add_template(self, template):
+        """
+        Adds a new template for the dataset
+
+        :param dataset: dataset key for the template
+        :param template: template
+        """
+        self.templates[template.get_name()] = template
+
+        self.write_to_file()
+
+    def remove_template(self, template_name):
+        """
+        Deletes a template
+
+        :param dataset: dataset key for the template
+        :param template_name: name of template to remove
+        """
+
+        if template_name not in self.templates.keys():
+            raise ValueError(f"No template with name {template_name} " + f"for dataset {self.dataset_name} exists.")
+
+        del self.templates[template_name]
+
+        self.write_to_file()
+
+    def get_templates(self, dataset):
+        """
+        Returns all templates for a dataset
+
+        :param dataset: dataset key
+        :return: copy of internal dictionary with template names as keys
+        """
+        return self.templates.copy()
+
+    def __getitem__(self, item):
+        return self.templates[item]
+
+    def __len__(self) -> int:
+        return len(self.templates)
+
+
+class NewTemplateCollection:
+    def __init__(self):
+        self.path = TEMPLATES_FOLDER_PATH
+        self.datasets_templates: Dict[(str, Optional[str]), DatasetTemplates] = self._collect_dataset()
+
+    @property
+    def keys(self):
+        return list(self.datasets_templates.keys())
+
+    @staticmethod
+    def parse_yaml_name(name):
+        return name.replace('templates_', '').replace('.yaml', '')
+
+    def _collect_dataset(self):
+        dataset_folders = os.listdir(self.path)
+
+        output = {} # format is {(dataset_name, config_name): DatasetsTemplates}
+        for dataset in dataset_folders:
+            for filename in os.listdir(os.path.join(self.path, dataset)):
+                if filename.endswith('.yaml'):
+                    output[(dataset, None)] = DatasetTemplates(dataset)
+                else:
+                    config = self.parse_yaml_name(filename)
+                    output[(dataset, config)] = DatasetTemplates(dataset, config)
+        return output
+
+    def get_dataset(self, dataset_name: str, config_name: str = None) -> DatasetTemplates:
+        if dataset_name not in self.keys:
+            self.datasets_templates[(dataset_name, config_name)] = DatasetTemplates(dataset_name, config_name)
+
+        print(dataset_name)
+
+        return self.datasets_templates[(dataset_name, config_name)]
+
+    def get_templates(self, dataset, config_name = None) -> DatasetTemplates:
+        """
+        Returns all templates for a dataset
+
+        :param dataset: dataset key
+        :return: copy of internal dictionary with template names as keys
+        """
+        if dataset not in self.datasets_templates:
+            return {}
+        return self.datasets_templates[(dataset, config_name)]
+
+    def get_templates_count(self):
+
+        from collections import defaultdict
+
+        count_dict = defaultdict(int)
+        for k, v in self.datasets_templates.items():
+            # only taking dataset name
+            count_dict[k[0]] += len(v)
+        # converting to regular dict
+        return dict(count_dict)
 
 
 class Template(yaml.YAMLObject):

@@ -2,7 +2,7 @@ import datasets
 import requests
 import streamlit as st
 from session import _get_state
-from templates import Template, TemplateCollection
+from templates import Template, TemplateCollection, DatasetTemplates, NewTemplateCollection
 from utils import _ADDITIONAL_ENGLISH_DATSETS
 
 #
@@ -89,6 +89,19 @@ except FileNotFoundError:
     st.stop()
 
 
+import os
+try:
+    template_collection = NewTemplateCollection()
+except FileNotFoundError:
+    st.error(
+        "problem in new class"
+    )
+    st.stop()
+
+assert templates.get_templates_count() == template_collection.get_templates_count()
+
+
+
 def save_data(message="Done!"):
     with open("./templates.yaml", "w") as f:
         templates.write_to_file(f)
@@ -130,6 +143,11 @@ def filter_english_datasets():
 def list_datasets(_priority_filter):
     dataset_list = filter_english_datasets()
     count_dict = templates.get_templates_count()
+
+    new_count_dict = template_collection.get_templates_count()
+
+    assert count_dict == new_count_dict
+
     if _priority_filter:
         dataset_list = list(
             set(dataset_list)
@@ -221,8 +239,13 @@ if dataset_key is not None:
     if conf_option:
         template_key = (dataset_key, conf_option.name)
     dataset_templates = templates.get_templates(template_key)
+    dataset_object = template_collection.get_dataset(dataset_key,conf_option.name if conf_option else None)
     template_list = list(dataset_templates.keys())
+    new_template_list = dataset_object.keys
     num_templates = len(template_list)
+
+    new_num_templates = len(new_template_list)
+
     st.sidebar.subheader(
         "No of Templates created for: " + dataset_key + (("/ " + conf_option.name) if conf_option else "")
     )
@@ -241,9 +264,18 @@ if dataset_key is not None:
     if conf_option:
         current_templates_key = (dataset_key, conf_option.name)
 
+    new_current_templates_key = (dataset_key, conf_option.name if conf_option else None)
+
+    print(new_current_templates_key)
+
     # Resets state if there has been a change in templates_key
     if state.templates_key != current_templates_key:
         state.templates_key = current_templates_key
+        reset_template_state()
+
+    # Resets state if there has been a change in templates_key
+    if state.new_templates_key != new_current_templates_key:
+        state.new_templates_key = new_current_templates_key
         reset_template_state()
 
     with col1:
@@ -268,6 +300,9 @@ if dataset_key is not None:
                         template = Template(new_template_name, "", "")
                         templates.add_template(state.templates_key, template)
                         save_data()
+
+                        dataset_object.add_template(template)
+
                         reset_template_state()
                         state.template_name = new_template_name
                         # Keep the current working dataset in priority list
@@ -277,7 +312,15 @@ if dataset_key is not None:
                     state.new_template_name = None
 
             dataset_templates = templates.get_templates(state.templates_key)
+            print(state.new_templates_key)
+            new_dataset_templates = template_collection.get_templates(*state.new_templates_key)
+            dataset_object = template_collection.get_dataset(*state.new_templates_key)
             template_list = list(dataset_templates.keys())
+
+            new_template_list = dataset_object.keys
+
+            assert template_list == new_template_list, f'old={template_list} new={new_template_list}'
+
             if state.template_name:
                 index = template_list.index(state.template_name)
             else:
@@ -288,11 +331,17 @@ if dataset_key is not None:
 
             if st.button("Delete Template", key="delete_template"):
                 templates.remove_template(state.templates_key, state.template_name)
+
+                dataset_object.remove_template(state.template_name)
+
                 save_data("Template deleted!")
                 reset_template_state()
 
         if state.template_name is not None:
             template = dataset_templates[state.template_name]
+
+            new_template =  dataset_object[state.template_name]
+
             #
             # If template is selected, displays template editor
             #
@@ -316,6 +365,9 @@ if dataset_key is not None:
             st.empty()
             st.subheader("Template Output")
             template = dataset_templates[state.template_name]
+
+            new_template = dataset_object[state.template_name]
+
             prompt = template.apply(example)
             st.write(prompt[0])
             if len(prompt) > 1:
