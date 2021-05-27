@@ -299,6 +299,7 @@ if dataset_key is not None:
                     else:
                         template = Template(new_template_name, "", "")
                         templates.add_template(state.templates_key, template)
+
                         save_data()
 
                         dataset_object.add_template(template)
@@ -319,7 +320,7 @@ if dataset_key is not None:
 
             new_template_list = dataset_object.keys
 
-            assert template_list == new_template_list, f'old={template_list} new={new_template_list}'
+            assert set(template_list) == set(new_template_list), f'old={template_list} new={new_template_list}'
 
             if state.template_name:
                 index = template_list.index(state.template_name)
@@ -356,6 +357,8 @@ if dataset_key is not None:
                     template.jinja = state.jinja
                     template.reference = state.reference
                     save_data()
+
+                    dataset_object.update_template(template, state.jinja, state.reference)
     #
     # Displays template output on current example if a template is selected
     # (in second column)

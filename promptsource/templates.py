@@ -202,6 +202,12 @@ class DatasetTemplates:
 
         self.write_to_file()
 
+    def update_template(self, template, jinja, reference):
+        self.templates[template.name].jinja = jinja
+        self.templates[template.name].reference = reference
+
+        self.write_to_file()
+
     def get_templates(self, dataset):
         """
         Returns all templates for a dataset
@@ -247,8 +253,6 @@ class NewTemplateCollection:
     def get_dataset(self, dataset_name: str, config_name: str = None) -> DatasetTemplates:
         if dataset_name not in self.keys:
             self.datasets_templates[(dataset_name, config_name)] = DatasetTemplates(dataset_name, config_name)
-
-        print(dataset_name)
 
         return self.datasets_templates[(dataset_name, config_name)]
 
