@@ -1,5 +1,6 @@
 import os
 from collections import defaultdict
+from shutil import rmtree
 from typing import Dict, List, Optional, Tuple
 
 import yaml
@@ -141,7 +142,7 @@ class DatasetTemplates:
 
         # We only create the folder if a template is written
         if not os.path.exists(self.folder_path):
-            os.mkdir(self.folder_path)
+            os.makedirs(self.folder_path)
         yaml.dump(self.format_for_dump(), open(self.yaml_path, "w"))
 
     def add_template(self, template: "Template") -> None:
@@ -166,7 +167,12 @@ class DatasetTemplates:
 
         del self.templates[template_name]
 
-        self.write_to_file()
+        if len(self.templates) == 0:
+            # There is no remaining template, we can remove the entire folder
+            self.delete_folder()
+        else:
+            # We just update the filde
+            self.write_to_file()
 
     def update_template(self, template_name: str, jinja: str, reference: str) -> None:
         """
@@ -180,6 +186,20 @@ class DatasetTemplates:
         self.templates[template_name].reference = reference
 
         self.write_to_file()
+
+    def delete_folder(self) -> None:
+        """
+        Delete the folder corresponding to self.folder_path
+        """
+
+        rmtree(self.folder_path)
+
+        # If it is a subset, we have to check whether to remove the dataset folder
+        if self.subset_name:
+            # have to check for other folders
+            base_dataset_folder = os.path.join(TEMPLATES_FOLDER_PATH, self.dataset_name)
+            if len(os.listdir(base_dataset_folder)) == 0:
+                rmtree(base_dataset_folder)
 
     def __getitem__(self, template_key: str) -> "Template":
         return self.templates[template_key]
