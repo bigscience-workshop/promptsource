@@ -11,9 +11,81 @@ TEMPLATES_FOLDER_PATH = './templates/'
 env = Environment(loader=BaseLoader)
 
 
+class TemplateCollection:
+    """
+    This helper class wraps the DatasetTemplates class
+    - Initialized the DatasetTemplates for all existing template folder
+    - Give access to each DatasetTemplates
+    - Provides aggregated counts over all DatasetTemplates
+    """
+
+    def __init__(self):
+
+        # Dict of all the DatasetTemplates, key is the tuple (dataset_name, subset_name)
+        self.datasets_templates: Dict[(str, Optional[str]), DatasetTemplates] = self._collect_dataset()
+
+    @property
+    def keys(self):
+        return list(self.datasets_templates.keys())
+
+    def _collect_dataset(self) -> Dict[Tuple[str, str], 'DatasetTemplates']:
+        """
+        Initialize a DatasetTemplates object for each templates.yaml detected in the templates folder
+
+        Returns: a dict with key=(dataset_name, subset_name)
+        """
+        dataset_folders = os.listdir(TEMPLATES_FOLDER_PATH)
+
+        output = {}  # format is {(dataset_name, subset_name): DatasetsTemplates}
+        for dataset in dataset_folders:
+            for filename in os.listdir(os.path.join(TEMPLATES_FOLDER_PATH, dataset)):
+                if filename.endswith('.yaml'):
+                    # If there is no sub-folder, there is no subset for this dataset
+                    output[(dataset, None)] = DatasetTemplates(dataset)
+                else:
+                    # This is a subfolder, and its name corresponds to the subset name
+                    output[(dataset, filename)] = DatasetTemplates(dataset_name=dataset,
+                                                                   subset_name=filename)
+        return output
+
+    def get_dataset(
+            self,
+            dataset_name: str,
+            subset_name: Optional[str] = None
+    ) -> 'DatasetTemplates':
+        """
+        Return the DatasetTemplates object corresponding to the dataset name
+
+        :param dataset_name: name of the dataset to get
+        :param subset_name: name of the subset
+        """
+        # if the dataset does not exist, we add it
+        if dataset_name not in self.keys:
+            self.datasets_templates[(dataset_name, subset_name)] = DatasetTemplates(dataset_name,
+                                                                                    subset_name)
+
+        return self.datasets_templates[(dataset_name, subset_name)]
+
+    def get_templates_count(self) -> Dict:
+        """
+        Return the overall number count over all datasets
+
+        NB: we don't breakdown datasets into subsets for the count, i.e subsets count are included
+        into the dataset count
+        """
+
+        count_dict = defaultdict(int)
+        for k, v in self.datasets_templates.items():
+            # Subsets count towards dataset count
+            count_dict[k[0]] += len(v)
+        # converting to regular dict
+        return dict(count_dict)
+
+
 class DatasetTemplates:
     """
-    Class that integrate all helper functions to interact with the template for a specific dataset
+    Class that wraps all templates for a specific dataset/subset and implements all the helper
+    functions necessary to read/write to the yaml file
     """
 
     TEMPLATES_KEY = 'templates'
@@ -23,18 +95,21 @@ class DatasetTemplates:
 
     def __init__(self, dataset_name: str, subset_name: str = None):
         self.dataset_name: str = dataset_name
-        self.config_name: str = subset_name
+        self.subset_name: str = subset_name
         # dictionary is keyed by template name.
         self.templates: Dict = self.read_from_file()
 
     @property
     def keys(self) -> List[str]:
+        """
+        List of all templates names for this dataset
+        """
         return list(self.templates.keys())
 
     @property
     def folder_path(self) -> str:
-        if self.config_name:
-            return os.path.join(TEMPLATES_FOLDER_PATH, self.dataset_name, self.config_name)
+        if self.subset_name:
+            return os.path.join(TEMPLATES_FOLDER_PATH, self.dataset_name, self.subset_name)
         else:
             return os.path.join(TEMPLATES_FOLDER_PATH, self.dataset_name)
 
@@ -47,8 +122,8 @@ class DatasetTemplates:
         Create a formatted dictionary for the class attributes
         """
         formatted_dict = {self.DATASET_KEY: self.dataset_name, self.TEMPLATES_KEY: self.templates}
-        if self.config_name:
-            formatted_dict[self.SUBSET_KEY] = self.config_name
+        if self.subset_name:
+            formatted_dict[self.SUBSET_KEY] = self.subset_name
         return formatted_dict
 
     def read_from_file(self) -> Dict:
@@ -94,7 +169,7 @@ class DatasetTemplates:
 
         if template_name not in self.templates.keys():
             raise ValueError(
-                f"No template with name {template_name} " + f"for dataset {self.dataset_name} exists.")
+                f"No template with name {template_name} for dataset {self.dataset_name} exists.")
 
         del self.templates[template_name]
 
@@ -118,73 +193,6 @@ class DatasetTemplates:
 
     def __len__(self) -> int:
         return len(self.templates)
-
-
-class TemplateCollection:
-    """
-    This helper class wraps the DatasetTemplates class
-    - Initialized the DatasetTemplates for all existing template folder
-    - Give access to each DatasetTemplates
-    - Provides aggregated counts over all DatasetTemplates
-    """
-
-    def __init__(self):
-        self.path = TEMPLATES_FOLDER_PATH
-        self.datasets_templates: Dict[
-            (str, Optional[str]), DatasetTemplates] = self._collect_dataset()
-
-    @property
-    def keys(self):
-        return list(self.datasets_templates.keys())
-
-    def _collect_dataset(self) -> Dict[Tuple[str, str], DatasetTemplates]:
-        """
-        Initialize a DatasetTemplates object for each templates.yaml detected in the templates folder
-
-        Returns: a dict with key=(dataset_name, subset_name)
-        """
-        dataset_folders = os.listdir(self.path)
-
-        output = {}  # format is {(dataset_name, subset_name): DatasetsTemplates}
-        for dataset in dataset_folders:
-            for filename in os.listdir(os.path.join(self.path, dataset)):
-                if filename.endswith('.yaml'):
-                    # If there is no sub-folder, there is no subset for this dataset
-                    output[(dataset, None)] = DatasetTemplates(dataset)
-                else:
-                    # This is a subfolder, and its name corresponds to the subset name
-                    output[(dataset, filename)] = DatasetTemplates(dataset_name=dataset,
-                                                                   subset_name=filename)
-        return output
-
-    def get_dataset(self, dataset_name: str, subset_name: Optional[str] = None) -> DatasetTemplates:
-        """
-        Return the DatasetTemplates object corresponding to the dataset name
-
-        :param dataset_name: name of the dataset to get
-        :param subset_name: name of the subset
-        """
-        # if the dataset does not exist, we add it
-        if dataset_name not in self.keys:
-            self.datasets_templates[(dataset_name, subset_name)] = DatasetTemplates(dataset_name,
-                                                                                    subset_name)
-
-        return self.datasets_templates[(dataset_name, subset_name)]
-
-    def get_templates_count(self) -> Dict:
-        """
-        Return the overall number count over all datasets
-
-        NB: we don't breakdown datasets into subsets for the count, i.e subsets count are included
-        into the dataset count
-        """
-
-        count_dict = defaultdict(int)
-        for k, v in self.datasets_templates.items():
-            # Subsets count towards dataset count
-            count_dict[k[0]] += len(v)
-        # converting to regular dict
-        return dict(count_dict)
 
 
 class Template(yaml.YAMLObject):

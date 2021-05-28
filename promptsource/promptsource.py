@@ -81,8 +81,8 @@ try:
     template_collection = TemplateCollection()
 except FileNotFoundError:
     st.error(
-        "Unable to load the templates file!\n\n"
-        "We expect the file templates.yaml to be in the working directory. "
+        "Unable to find the templates folder!\n\n"
+        "We expect the folder to be in the working directory. "
         "You might need to restart the app in the root directory of the repo."
     )
     st.stop()
@@ -264,7 +264,7 @@ if dataset_key is not None:
                 else:
                     state.new_template_name = None
 
-            dataset_object = template_collection.get_dataset(*state.templates_key)
+            dataset_templates = template_collection.get_dataset(*state.templates_key)
             template_list = dataset_templates.keys
             if state.template_name:
                 index = template_list.index(state.template_name)
