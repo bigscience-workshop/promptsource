@@ -2,8 +2,9 @@ import datasets
 import requests
 import streamlit as st
 from session import _get_state
-from templates import Template, TemplateCollection, DatasetTemplates
 from utils import _ADDITIONAL_ENGLISH_DATSETS
+
+from templates import Template, TemplateCollection
 
 #
 # Helper functions for datasets library
@@ -210,7 +211,7 @@ if dataset_key is not None:
     st.sidebar.subheader("Dataset Schema")
     st.sidebar.write(render_features(dataset.features))
 
-    dataset_templates = template_collection.get_dataset(dataset_key,conf_option.name if conf_option else None)
+    dataset_templates = template_collection.get_dataset(dataset_key, conf_option.name if conf_option else None)
 
     template_list = dataset_templates.keys
     num_templates = len(template_list)

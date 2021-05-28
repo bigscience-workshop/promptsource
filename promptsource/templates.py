@@ -6,7 +6,7 @@ import yaml
 from jinja2 import BaseLoader, Environment
 
 # Local path to the folder containing the templates
-TEMPLATES_FOLDER_PATH = './templates/'
+TEMPLATES_FOLDER_PATH = "./templates/"
 
 env = Environment(loader=BaseLoader)
 
@@ -28,7 +28,7 @@ class TemplateCollection:
     def keys(self):
         return list(self.datasets_templates.keys())
 
-    def _collect_dataset(self) -> Dict[Tuple[str, str], 'DatasetTemplates']:
+    def _collect_dataset(self) -> Dict[Tuple[str, str], "DatasetTemplates"]:
         """
         Initialize a DatasetTemplates object for each templates.yaml detected in the templates folder
 
@@ -39,20 +39,15 @@ class TemplateCollection:
         output = {}  # format is {(dataset_name, subset_name): DatasetsTemplates}
         for dataset in dataset_folders:
             for filename in os.listdir(os.path.join(TEMPLATES_FOLDER_PATH, dataset)):
-                if filename.endswith('.yaml'):
+                if filename.endswith(".yaml"):
                     # If there is no sub-folder, there is no subset for this dataset
                     output[(dataset, None)] = DatasetTemplates(dataset)
                 else:
                     # This is a subfolder, and its name corresponds to the subset name
-                    output[(dataset, filename)] = DatasetTemplates(dataset_name=dataset,
-                                                                   subset_name=filename)
+                    output[(dataset, filename)] = DatasetTemplates(dataset_name=dataset, subset_name=filename)
         return output
 
-    def get_dataset(
-            self,
-            dataset_name: str,
-            subset_name: Optional[str] = None
-    ) -> 'DatasetTemplates':
+    def get_dataset(self, dataset_name: str, subset_name: Optional[str] = None) -> "DatasetTemplates":
         """
         Return the DatasetTemplates object corresponding to the dataset name
 
@@ -61,8 +56,7 @@ class TemplateCollection:
         """
         # if the dataset does not exist, we add it
         if dataset_name not in self.keys:
-            self.datasets_templates[(dataset_name, subset_name)] = DatasetTemplates(dataset_name,
-                                                                                    subset_name)
+            self.datasets_templates[(dataset_name, subset_name)] = DatasetTemplates(dataset_name, subset_name)
 
         return self.datasets_templates[(dataset_name, subset_name)]
 
@@ -88,10 +82,10 @@ class DatasetTemplates:
     functions necessary to read/write to the yaml file
     """
 
-    TEMPLATES_KEY = 'templates'
-    DATASET_KEY = 'dataset'
-    SUBSET_KEY = 'subset'
-    TEMPLATE_FILENAME = 'templates.yaml'
+    TEMPLATES_KEY = "templates"
+    DATASET_KEY = "dataset"
+    SUBSET_KEY = "subset"
+    TEMPLATE_FILENAME = "templates.yaml"
 
     def __init__(self, dataset_name: str, subset_name: str = None):
         self.dataset_name: str = dataset_name
@@ -135,7 +129,7 @@ class DatasetTemplates:
 
         if not os.path.exists(self.yaml_path):
             return {}
-        yaml_dict = yaml.load(open(self.yaml_path, 'r'), Loader=yaml.FullLoader)
+        yaml_dict = yaml.load(open(self.yaml_path, "r"), Loader=yaml.FullLoader)
         return yaml_dict[self.TEMPLATES_KEY]
 
     def write_to_file(self) -> None:
@@ -148,9 +142,9 @@ class DatasetTemplates:
         # We only create the folder if a template is written
         if not os.path.exists(self.folder_path):
             os.mkdir(self.folder_path)
-        yaml.dump(self.format_for_dump(), open(self.yaml_path, 'w'))
+        yaml.dump(self.format_for_dump(), open(self.yaml_path, "w"))
 
-    def add_template(self, template: 'Template') -> None:
+    def add_template(self, template: "Template") -> None:
         """
         Adds a new template for the dataset
 
@@ -168,8 +162,7 @@ class DatasetTemplates:
         """
 
         if template_name not in self.templates.keys():
-            raise ValueError(
-                f"No template with name {template_name} for dataset {self.dataset_name} exists.")
+            raise ValueError(f"No template with name {template_name} for dataset {self.dataset_name} exists.")
 
         del self.templates[template_name]
 
@@ -188,7 +181,7 @@ class DatasetTemplates:
 
         self.write_to_file()
 
-    def __getitem__(self, template_key: str) -> 'Template':
+    def __getitem__(self, template_key: str) -> "Template":
         return self.templates[template_key]
 
     def __len__(self) -> int:
