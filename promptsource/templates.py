@@ -1,6 +1,7 @@
+import itertools
+
 import yaml
 from jinja2 import BaseLoader, Environment
-import itertools
 
 env = Environment(loader=BaseLoader)
 
@@ -51,7 +52,7 @@ class TemplateCollection:
         :param template: template
         """
         if dataset not in self.templates:
-            self.templates[dataset] = {}        
+            self.templates[dataset] = {}
         self.templates[dataset][template.get_name()] = template
 
     def remove_template(self, dataset, template_name):
@@ -81,18 +82,17 @@ class TemplateCollection:
         if dataset not in self.templates:
             return {}
         return self.templates[dataset].copy()
-    
+
     def get_templates_count(self):
         count_dict = {}
-        for k,v in self.templates.items():
+        for k, v in self.templates.items():
             if isinstance(k, str):
                 count_dict[k] = len(v)
-        temp_with_conf = {k:v for k,v in self.templates.items() if isinstance(k, tuple)}
-        groups = itertools.groupby(sorted(temp_with_conf), lambda x:(x[0]))
+        temp_with_conf = {k: v for k, v in self.templates.items() if isinstance(k, tuple)}
+        groups = itertools.groupby(sorted(temp_with_conf), lambda x: (x[0]))
         for dataset, group in groups:
             count_dict[dataset] = sum(len(self.templates[conf]) for conf in group)
         return count_dict
-
 
     def __len__(self):
         size = 0

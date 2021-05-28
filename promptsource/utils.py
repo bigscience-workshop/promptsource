@@ -116,7 +116,7 @@ _ADDITIONAL_ENGLISH_DATSETS = [
     "xquad",
     "xsum",
     "xtreme",
-    "yelp_polarity"
+    "yelp_polarity",
 ]
 
 def removeHyphen(example):
