@@ -3,8 +3,9 @@ import requests
 import streamlit as st
 from session import _get_state
 from templates import Template, TemplateCollection
-from utils import removeHyphen,renameDatasetColumn
-from utils import _ADDITIONAL_ENGLISH_DATSETS
+from utils import _ADDITIONAL_ENGLISH_DATSETS, removeHyphen, renameDatasetColumn
+
+from templates import Template, TemplateCollection
 
 #
 # Helper functions for datasets library
@@ -79,21 +80,14 @@ st.sidebar.title("PromptSource 🌸")
 # Loads template data
 #
 try:
-    with open("./templates.yaml", "r") as f:
-        templates = TemplateCollection.read_from_file(f)
+    template_collection = TemplateCollection()
 except FileNotFoundError:
     st.error(
-        "Unable to load the templates file!\n\n"
-        "We expect the file templates.yaml to be in the working directory. "
+        "Unable to find the templates folder!\n\n"
+        "We expect the folder to be in the working directory. "
         "You might need to restart the app in the root directory of the repo."
     )
     st.stop()
-
-
-def save_data(message="Done!"):
-    with open("./templates.yaml", "w") as f:
-        templates.write_to_file(f)
-        st.success(message)
 
 
 #
@@ -128,9 +122,9 @@ def filter_english_datasets():
     return sorted(all_english_datasets)
 
 
-def list_datasets(_priority_filter):
+def list_datasets(template_collection, _priority_filter):
     dataset_list = filter_english_datasets()
-    count_dict = templates.get_templates_count()
+    count_dict = template_collection.get_templates_count()
     if _priority_filter:
         dataset_list = list(
             set(dataset_list)
@@ -154,7 +148,7 @@ else:
     # priority list with more than priority_max_templates
     state.working_priority_ds = None
 
-dataset_list = list_datasets(priority_filter)
+dataset_list = list_datasets(template_collection, priority_filter)
 
 #
 # Select a dataset
@@ -219,11 +213,9 @@ if dataset_key is not None:
     st.sidebar.write(render_features(dataset.features))
     dataset = renameDatasetColumn(dataset)
 
-    template_key = dataset_key
-    if conf_option:
-        template_key = (dataset_key, conf_option.name)
-    dataset_templates = templates.get_templates(template_key)
-    template_list = list(dataset_templates.keys())
+    dataset_templates = template_collection.get_dataset(dataset_key, conf_option.name if conf_option else None)
+
+    template_list = dataset_templates.keys
     num_templates = len(template_list)
     st.sidebar.subheader(
         "No of Templates created for: " + dataset_key + (("/ " + conf_option.name) if conf_option else "")
@@ -241,9 +233,7 @@ if dataset_key is not None:
     col1, _, col2 = st.beta_columns([18, 1, 6])
 
     # current_templates_key and state.templates_key are keys for the templates object
-    current_templates_key = dataset_key
-    if conf_option:
-        current_templates_key = (dataset_key, conf_option.name)
+    current_templates_key = (dataset_key, conf_option.name if conf_option else None)
 
     # Resets state if there has been a change in templates_key
     if state.templates_key != current_templates_key:
@@ -261,7 +251,7 @@ if dataset_key is not None:
                 )
                 new_template_submitted = st.form_submit_button("Create")
                 if new_template_submitted:
-                    if new_template_name in templates.get_templates(state.templates_key):
+                    if new_template_name in dataset_templates.keys:
                         st.error(
                             f"A template with the name {state.new_template_name} already exists "
                             f"for dataset {state.templates_key}."
@@ -270,8 +260,7 @@ if dataset_key is not None:
                         st.error("Need to provide a template name.")
                     else:
                         template = Template(new_template_name, "", "")
-                        templates.add_template(state.templates_key, template)
-                        save_data()
+                        dataset_templates.add_template(template)
                         reset_template_state()
                         state.template_name = new_template_name
                         # Keep the current working dataset in priority list
@@ -280,8 +269,8 @@ if dataset_key is not None:
                 else:
                     state.new_template_name = None
 
-            dataset_templates = templates.get_templates(state.templates_key)
-            template_list = list(dataset_templates.keys())
+            dataset_templates = template_collection.get_dataset(*state.templates_key)
+            template_list = dataset_templates.keys
             if state.template_name:
                 index = template_list.index(state.template_name)
             else:
@@ -291,8 +280,7 @@ if dataset_key is not None:
             )
 
             if st.button("Delete Template", key="delete_template"):
-                templates.remove_template(state.templates_key, state.template_name)
-                save_data("Template deleted!")
+                dataset_templates.remove_template(state.template_name)
                 reset_template_state()
 
         if state.template_name is not None:
@@ -310,7 +298,7 @@ if dataset_key is not None:
                 if st.form_submit_button("Save"):
                     template.jinja = state.jinja
                     template.reference = state.reference
-                    save_data()
+                    dataset_templates.update_template(template.name, state.jinja, state.reference)
     #
     # Displays template output on current example if a template is selected
     # (in second column)
@@ -321,9 +309,9 @@ if dataset_key is not None:
             st.subheader("Template Output")
             template = dataset_templates[state.template_name]
             prompt = template.apply(example)
-            st.write(prompt[0])
+            st.text(prompt[0])
             if len(prompt) > 1:
-                st.write(prompt[1])
+                st.text(prompt[1])
 
 #
 # Must sync state at end
