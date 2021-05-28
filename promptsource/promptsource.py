@@ -305,9 +305,9 @@ if dataset_key is not None:
             st.subheader("Template Output")
             template = dataset_templates[state.template_name]
             prompt = template.apply(example)
-            st.write(prompt[0])
+            st.text(prompt[0])
             if len(prompt) > 1:
-                st.write(prompt[1])
+                st.text(prompt[1])
 
 #
 # Must sync state at end
