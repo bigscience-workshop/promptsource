@@ -1,0 +1,35 @@
+dataset: xnli
+subset: en
+templates:
+  ANLI GPT3: !Template
+    jinja: "{{premise}}\nQuestion: {{hypothesis}}\nTrue, False or Neither? ||| \n\
+      {% if label == 0 %} \nTrue\n{% elif label == 1 %}\nNeither\n{% else %}\nFalse\n\
+      {% endif %}"
+    name: ANLI GPT3
+    reference: ANLI prompt format from Table G7 in the GPT3 paper
+  Concatenation: !Template
+    jinja: "Sentence 1: {{premise}}\nSentence 2: {{hypothesis}}\n\nDoes Sentence 2\
+      \ entails Sentence 1? Yes, No or Neutral? |||\n{% if label == 0 %} \nYes\n{%\
+      \ elif label == 1 %}\nNeutral\n{% else %}\nNo\n{% endif %}"
+    name: Concatenation
+    reference: Concatenation of premise and hypothesis
+  Concatenation contraposition: !Template
+    jinja: "Sentence 1: {{premise}}\nSentence 2: {{hypothesis}}\n\nDoes Sentence 2\
+      \ contradicts Sentence 1? Yes, No or Neutral? |||\n{% if label == 0 %} \nNo\n\
+      {% elif label == 1 %}\nNeutral\n{% else %}\nYes\n{% endif %}"
+    name: Concatenation contraposition
+    reference: Concatenation contraposition
+  Label binarization: !Template
+    jinja: "Sentence 1: {{premise}}\n\nSentence 2: {{hypothesis}}\n\nDoes Sentence\
+      \ 2 entails Sentence 1? Yes or No? |||\n{% if label == 0 %} \nYes\n{% else %}\n\
+      No\n{% endif %}"
+    name: Label binarization
+    reference: Grouping "neutral" and "contradiction" as a single label following
+      https://arxiv.org/pdf/1902.01007.pdf Section 4 - Implementation and evaluation
+  Label binarization contraposition: !Template
+    jinja: "Sentence 1: {{premise}}\n\nSentence 2: {{hypothesis}}\n\nDoes Sentence\
+      \ 2 contradicts Sentence 1? Yes or No? |||\n{% if label == 2 %} \nYes\n{% else\
+      \ %}\nNo\n{% endif %}"
+    name: Label binarization  contraposition
+    reference: Inspired from https://arxiv.org/pdf/1902.01007.pdf Section 4 - Implementation
+      and evaluation
