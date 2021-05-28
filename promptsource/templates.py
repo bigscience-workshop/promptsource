@@ -171,7 +171,7 @@ class DatasetTemplates:
             # There is no remaining template, we can remove the entire folder
             self.delete_folder()
         else:
-            # We just update the filde
+            # We just update the file
             self.write_to_file()
 
     def update_template(self, template_name: str, jinja: str, reference: str) -> None:
