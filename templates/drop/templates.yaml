@@ -1,0 +1,16 @@
+dataset: drop
+templates:
+  DROP GPT3: !Template
+    jinja: 'Passage: {{passage}}
+
+      Question: {{question}}
+
+      Answer: ||| {{ answers_spans.spans | join(", ") }}'
+    name: DROP GPT3
+    reference: Prompt format from GPT3 - Table G20
+  Span extraction: !Template
+    jinja: "Extract all the text in the passage answering the question.\n===\nPassage:\
+      \ {{passage}}\nQuestion: {{question}} \nAnswer: |||\n{% for span in answers_spans.spans\
+      \ %}- {{span}}\n{% endfor %}"
+    name: Span extraction
+    reference: Listing spans answering the questions (generative span extraction)
