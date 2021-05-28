@@ -123,7 +123,6 @@ def filter_english_datasets():
 def list_datasets(template_collection, _priority_filter):
     dataset_list = filter_english_datasets()
     count_dict = template_collection.get_templates_count()
-
     if _priority_filter:
         dataset_list = list(
             set(dataset_list)
@@ -215,7 +214,6 @@ if dataset_key is not None:
 
     template_list = dataset_templates.keys
     num_templates = len(template_list)
-
     st.sidebar.subheader(
         "No of Templates created for: " + dataset_key + (("/ " + conf_option.name) if conf_option else "")
     )
@@ -231,7 +229,6 @@ if dataset_key is not None:
 
     # current_templates_key and state.templates_key are keys for the templates object
     current_templates_key = (dataset_key, conf_option.name if conf_option else None)
-
 
     # Resets state if there has been a change in templates_key
     if state.templates_key != current_templates_key:
@@ -259,7 +256,6 @@ if dataset_key is not None:
                     else:
                         template = Template(new_template_name, "", "")
                         dataset_templates.add_template(template)
-
                         reset_template_state()
                         state.template_name = new_template_name
                         # Keep the current working dataset in priority list
@@ -270,7 +266,6 @@ if dataset_key is not None:
 
             dataset_object = template_collection.get_dataset(*state.templates_key)
             template_list = dataset_templates.keys
-
             if state.template_name:
                 index = template_list.index(state.template_name)
             else:
@@ -285,7 +280,6 @@ if dataset_key is not None:
 
         if state.template_name is not None:
             template = dataset_templates[state.template_name]
-
             #
             # If template is selected, displays template editor
             #
@@ -299,8 +293,7 @@ if dataset_key is not None:
                 if st.form_submit_button("Save"):
                     template.jinja = state.jinja
                     template.reference = state.reference
-
-                    dataset_templates.update_template(template, state.jinja, state.reference)
+                    dataset_templates.update_template(template.name, state.jinja, state.reference)
     #
     # Displays template output on current example if a template is selected
     # (in second column)
@@ -310,7 +303,6 @@ if dataset_key is not None:
             st.empty()
             st.subheader("Template Output")
             template = dataset_templates[state.template_name]
-
             prompt = template.apply(example)
             st.write(prompt[0])
             if len(prompt) > 1:

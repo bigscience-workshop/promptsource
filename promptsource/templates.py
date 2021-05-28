@@ -5,63 +5,10 @@ from typing import Dict, List, Optional, Tuple
 import yaml
 from jinja2 import BaseLoader, Environment
 
+# Local path to the folder containing the templates
 TEMPLATES_FOLDER_PATH = './templates/'
 
 env = Environment(loader=BaseLoader)
-
-
-class Template(yaml.YAMLObject):
-    """
-    A prompt template.
-    """
-
-    yaml_tag = "!Template"
-
-    def __init__(self, name, jinja, reference):
-        """
-        Creates a prompt template.
-
-        A prompt template is expressed in Jinja. It is rendered using an example
-        from the corresponding Hugging Face datasets library (a dictionary). The
-        separator ||| should appear once to divide the template into prompt and
-        output. Generally, the prompt should provide information on the desired
-        behavior, e.g., text passage and instructions, and the output should be
-        a desired response.
-
-        :param name: unique name (per dataset) for template
-        :param jinja: template expressed in Jinja
-        :param reference: string metadata describing author or paper reference
-                          for template
-        """
-        self.name = name
-        self.jinja = jinja
-        self.reference = reference
-
-    def get_name(self):
-        """
-        Returns the name of the template
-
-        :return: unique (per dataset) name for template
-        """
-        return self.name
-
-    def get_reference(self):
-        """
-        Returns the bibliographic reference (or author) for the template
-
-        :return: reference as a string
-        """
-        return self.reference
-
-    def apply(self, example):
-        """
-        Creates a prompt by applying this template to an example
-
-        :param example: the dataset example to create a prompt for
-        :return: tuple of 2 strings, for prompt and output
-        """
-        rtemplate = env.from_string(self.jinja)
-        return rtemplate.render(**example).split("|||")
 
 
 class DatasetTemplates:
@@ -71,7 +18,7 @@ class DatasetTemplates:
 
     TEMPLATES_KEY = 'templates'
     DATASET_KEY = 'dataset'
-    CONFIG_KEY = 'config'
+    SUBSET_KEY = 'subset'
     TEMPLATE_FILENAME = 'templates.yaml'
 
     def __init__(self, dataset_name: str, subset_name: str = None):
@@ -101,7 +48,7 @@ class DatasetTemplates:
         """
         formatted_dict = {self.DATASET_KEY: self.dataset_name, self.TEMPLATES_KEY: self.templates}
         if self.config_name:
-            formatted_dict[self.CONFIG_KEY] = self.config_name
+            formatted_dict[self.SUBSET_KEY] = self.config_name
         return formatted_dict
 
     def read_from_file(self) -> Dict:
@@ -128,7 +75,7 @@ class DatasetTemplates:
             os.mkdir(self.folder_path)
         yaml.dump(self.format_for_dump(), open(self.yaml_path, 'w'))
 
-    def add_template(self, template: Template) -> None:
+    def add_template(self, template: 'Template') -> None:
         """
         Adds a new template for the dataset
 
@@ -153,7 +100,7 @@ class DatasetTemplates:
 
         self.write_to_file()
 
-    def update_template(self, template: Template, jinja: str, reference: str) -> None:
+    def update_template(self, template_name: str, jinja: str, reference: str) -> None:
         """
         Updates a pre-existing template and writes changes
 
@@ -161,12 +108,12 @@ class DatasetTemplates:
         :param jinja: new jinja entry
         :param reference: new reference entry
         """
-        self.templates[template.name].jinja = jinja
-        self.templates[template.name].reference = reference
+        self.templates[template_name].jinja = jinja
+        self.templates[template_name].reference = reference
 
         self.write_to_file()
 
-    def __getitem__(self, template_key: str) -> Template:
+    def __getitem__(self, template_key: str) -> 'Template':
         return self.templates[template_key]
 
     def __len__(self) -> int:
@@ -238,3 +185,57 @@ class TemplateCollection:
             count_dict[k[0]] += len(v)
         # converting to regular dict
         return dict(count_dict)
+
+
+class Template(yaml.YAMLObject):
+    """
+    A prompt template.
+    """
+
+    yaml_tag = "!Template"
+
+    def __init__(self, name, jinja, reference):
+        """
+        Creates a prompt template.
+
+        A prompt template is expressed in Jinja. It is rendered using an example
+        from the corresponding Hugging Face datasets library (a dictionary). The
+        separator ||| should appear once to divide the template into prompt and
+        output. Generally, the prompt should provide information on the desired
+        behavior, e.g., text passage and instructions, and the output should be
+        a desired response.
+
+        :param name: unique name (per dataset) for template
+        :param jinja: template expressed in Jinja
+        :param reference: string metadata describing author or paper reference
+                          for template
+        """
+        self.name = name
+        self.jinja = jinja
+        self.reference = reference
+
+    def get_name(self):
+        """
+        Returns the name of the template
+
+        :return: unique (per dataset) name for template
+        """
+        return self.name
+
+    def get_reference(self):
+        """
+        Returns the bibliographic reference (or author) for the template
+
+        :return: reference as a string
+        """
+        return self.reference
+
+    def apply(self, example):
+        """
+        Creates a prompt by applying this template to an example
+
+        :param example: the dataset example to create a prompt for
+        :return: tuple of 2 strings, for prompt and output
+        """
+        rtemplate = env.from_string(self.jinja)
+        return rtemplate.render(**example).split("|||")
