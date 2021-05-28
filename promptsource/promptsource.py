@@ -208,17 +208,18 @@ if dataset_key is not None:
     )
     st.markdown(md)
 
-    st.sidebar.subheader("Dataset Schema")
-    st.sidebar.write(render_features(dataset.features))
-
     dataset_templates = template_collection.get_dataset(dataset_key, conf_option.name if conf_option else None)
 
     template_list = dataset_templates.keys
     num_templates = len(template_list)
-    st.sidebar.subheader(
-        "No of Templates created for: " + dataset_key + (("/ " + conf_option.name) if conf_option else "")
+    st.sidebar.write(
+        "No of Templates created for "
+        + f"`{dataset_key + (('/' + conf_option.name) if conf_option else '')}`"
+        + f": **{str(num_templates)}**"
     )
-    st.sidebar.write(num_templates)
+
+    st.sidebar.subheader("Dataset Schema")
+    st.sidebar.write(render_features(dataset.features))
 
     st.sidebar.subheader("Select Example")
     example_index = st.sidebar.slider("Select the example index", 0, len(dataset) - 1)
