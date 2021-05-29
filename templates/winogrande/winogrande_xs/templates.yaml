@@ -1,0 +1,36 @@
+dataset: winogrande
+subset: winogrande_xs
+templates:
+  Fill in the blanks: !Template
+    jinja: 'Fill in the _ in the below sentence!
+
+      {{sentence}}|||
+
+      {% if answer== 1 %}{{option1}}{% else%}{{option2}}{% endif %}'
+    name: Fill in the blanks
+    reference: Fill in the blanks type
+  True or False: !Template
+    jinja: 'The _ in the sentence below refers to {{option1}}. Answer True or False!
+
+      {{sentence}}|||
+
+      {% if answer== 1 %}True{% else%}False{% endif %}'
+    name: True or False
+    reference: True or False Type
+  question_sentence_answer: !Template
+    jinja: 'In the sentence below, does {{option1}} or {{option2}} represent the _
+      ?
+
+      {{sentence}}|||
+
+      {% if answer== 1 %}{{option1}}{% else%}{{option2}}{% endif %}'
+    name: question_sentence_answer
+    reference: question + sentence + answer
+  sentence_question_answer: !Template
+    jinja: '{{sentence}}
+
+      What does the _ in the above sentence refer to? {{option1}} or {{option2}}|||
+
+      {% if answer== 1 %}{{option1}}{% else%}{{option2}}{% endif %}'
+    name: sentence_question_answer
+    reference: sentence + question + answer
