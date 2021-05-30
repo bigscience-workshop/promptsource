@@ -45,6 +45,7 @@ def get_dataset_confs(path):
 
 
 def render_features(features):
+    """Recursively render the dataset schema (i.e. the fields)."""
     if isinstance(features, dict):
         return {k: render_features(v) for k, v in features.items()}
     if isinstance(features, datasets.features.ClassLabel):
@@ -122,6 +123,7 @@ def filter_english_datasets():
 
 
 def list_datasets(template_collection, _priority_filter):
+    """Get all the datasets to work with."""
     dataset_list = filter_english_datasets()
     count_dict = template_collection.get_templates_count()
     if _priority_filter:
@@ -156,9 +158,9 @@ dataset_key = st.sidebar.selectbox(
     "Dataset",
     dataset_list,
     key="dataset_select",
-    help="Select the dataset to work on. Number in parens " + "is the number of prompts created.",
+    help="Select the dataset to work on.",
 )
-st.sidebar.write("HINT: Try ag_news or trec for examples.")
+st.sidebar.write("HINT: Try ag_news or boolq for examples.")
 
 # On dataset change, clear working priority dataset
 # retained in the priority list with more than priority_max_templates
@@ -171,22 +173,21 @@ if dataset_key != state.working_priority_ds:
 if dataset_key is not None:
 
     #
-    # Check for subconfigurations
+    # Check for subconfigurations (i.e. subsets)
     #
     configs = get_dataset_confs(dataset_key)
-    conf_avail = len(configs) > 0
     conf_option = None
-    if conf_avail:
+    if len(configs) > 0:
         start = 0
-        conf_option = st.sidebar.selectbox("Subset", configs, index=start, format_func=lambda a: a.name)
+        conf_option = st.sidebar.selectbox("Subset", configs, index=0, format_func=lambda a: a.name)
 
     dataset, _ = get_dataset(dataset_key, str(conf_option.name) if conf_option else None)
 
-    k = list(dataset.keys())
+    splits = list(dataset.keys())
     index = 0
-    if "train" in dataset.keys():
-        index = k.index("train")
-    split = st.sidebar.selectbox("Split", k, index=index)
+    if "train" in splits:
+        index = splits.index("train")
+    split = st.sidebar.selectbox("Split", splits, index=index)
     dataset = dataset[split]
 
     #
@@ -242,7 +243,7 @@ if dataset_key is not None:
             with st.form("new_template_form"):
                 new_template_name = st.text_input(
                     "New Template Name",
-                    key="new_template_key",
+                    key="new_template",
                     value="",
                     help="Enter name and hit enter to create a new template.",
                 )
@@ -289,7 +290,9 @@ if dataset_key is not None:
                 state.jinja = st.text_area("Template", height=40, value=template.jinja)
 
                 state.reference = st.text_area(
-                    "Template Reference", help="Your name and/or paper reference.", value=template.reference
+                    "Template Reference",
+                    help="Short description of the template and/or paper reference for the template.",
+                    value=template.reference,
                 )
 
                 if st.form_submit_button("Save"):
