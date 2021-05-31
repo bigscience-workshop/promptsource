@@ -82,7 +82,7 @@ if dataset_key is not None:
 
     dataset_templates = template_collection.get_dataset(dataset_key, conf_option.name if conf_option else None)
 
-    template_list = dataset_templates.keys
+    template_list = dataset_templates.all_template_names
     num_templates = len(template_list)
     st.sidebar.write(
         "No of Templates created for "
