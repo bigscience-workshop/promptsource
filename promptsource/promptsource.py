@@ -236,7 +236,7 @@ if dataset_key is not None:
 
     example = dataset[example_index]
     example = removeHyphen(example)
- 
+
     st.sidebar.write(example)
 
     col1, _, col2 = st.beta_columns([18, 1, 6])
