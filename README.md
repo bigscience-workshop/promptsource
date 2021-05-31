@@ -15,7 +15,7 @@ streamlit run promptsource/promptsource.py
 ```
 
 ## Writing Templates
-A prompt template is expressed in [Jinja](https://jinja.palletsprojects.com/en/3.0.x/). 
+A prompt template is expressed in [Jinja](https://jinja.palletsprojects.com/en/3.0.x/).
 
 It is rendered using an example from the corresponding Hugging Face datasets library
 (a dictionary). The separator ||| should appear once to divide the template into prompt
@@ -24,8 +24,8 @@ e.g., text passage and instructions, and the output should be a desired response
 
 Here's an example for [AG News](https://huggingface.co/datasets/ag_news):
 ```
-{{text}} 
-Is this a piece of news regarding world politics, sports, business, or technology? ||| 
+{{text}}
+Is this a piece of news regarding world politics, sports, business, or technology? |||
 {{ ["World politics", "Sport", "Business", "Technology"][label] }}
 ```
 
@@ -38,6 +38,12 @@ places you could start:
 3. Scalability testing. Streamlit is lightweight, and we're reading and writing all prompts on refresh.
 
 See also the [design doc](https://docs.google.com/document/d/1IQzrrAAMPS0XAn_ArOq2hyEDCVfeB7AfcvLUqgSnWxQ/).
+
+Before submitting a PR or pushing a new commit, please run style formattings and quality checks so that your newly added file look nice:
+```bash
+make style
+make quality
+```
 
 ## Known Issues
 

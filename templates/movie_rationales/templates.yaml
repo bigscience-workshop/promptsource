@@ -1,0 +1,66 @@
+dataset: movie_rationales
+templates:
+  Evidences + review: !Template
+    jinja: 'Review: {{review}}
+
+
+      Highlighted extracts:
+
+      {% for evid in evidences %}- {{evid}}
+
+      {% endfor%}
+
+      ===
+
+      Based on this review and the highlighted extracts from the review, decide whether
+      this review is negative or positive. ||| {{["Negative", "Positive"][label]}}'
+    name: Evidences + review
+    reference: Classification based both on evidences and review
+  Evidences sentiment classification: !Template
+    jinja: 'Evidences:
+
+      {% for evid in evidences %}- {{evid}}
+
+      {% endfor %}
+
+      ===
+
+      Based on these review excerpts, is the review positive or negative? ||| {{["Negative",
+      "Positive"][label]}}'
+    name: Evidences sentiment classification
+    reference: Only taking the evidences as input
+  Generate evidences: !Template
+    jinja: 'Review: {{review}}
+
+      ===
+
+      This review is {% if label == 0 %}positive{% else %}negative{% endif %}. Extract
+      from it the passage that indicate it. |||
+
+      {% for evid in evidences %}- {{evid}}
+
+      {% endfor%}'
+    name: Generate evidences
+    reference: From the review, extract the spans of text that let us think that the
+      review is positive or negative.
+  Generate evidences and sentiment: !Template
+    jinja: 'Review: {{review}}
+
+      ====
+
+      Is this review negative or positive? Extract from the review the passage that
+      proves this choice. |||
+
+      {{["Negative", "Positive"][label]}}
+
+      {% for evid in evidences %}- {{evid}}
+
+      {% endfor%}'
+    name: Generate evidences and sentiment
+    reference: From the review, determine whether it is negative or positive and extract
+      the passages supporting this choice
+  Standard binary sentiment analysis: !Template
+    jinja: "Review: {{review}} \n===\nIs this review negative or positive? |||\n{{[\"\
+      Negative\", \"Positive\"][label]}}"
+    name: Standard binary sentiment analysis
+    reference: Standard binary sentiment analysis
