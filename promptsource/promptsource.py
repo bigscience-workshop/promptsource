@@ -214,8 +214,6 @@ if dataset_key is not None:
     )
     st.markdown(md)
 
-    st.sidebar.subheader("Dataset Schema")
-    st.sidebar.write(render_features(dataset.features))
     dataset = renameDatasetColumn(dataset)
 
     dataset_templates = template_collection.get_dataset(dataset_key, conf_option.name if conf_option else None)
