@@ -2,7 +2,8 @@ import datasets
 import requests
 import streamlit as st
 from session import _get_state
-from utils import _ADDITIONAL_ENGLISH_DATSETS
+from utils import (_ADDITIONAL_ENGLISH_DATSETS, removeHyphen,
+                   renameDatasetColumn)
 
 from templates import Template, TemplateCollection
 
@@ -213,6 +214,8 @@ if dataset_key is not None:
     )
     st.markdown(md)
 
+    dataset = renameDatasetColumn(dataset)
+
     dataset_templates = template_collection.get_dataset(dataset_key, conf_option.name if conf_option else None)
 
     template_list = dataset_templates.all_template_names
@@ -230,6 +233,8 @@ if dataset_key is not None:
     example_index = st.sidebar.slider("Select the example index", 0, len(dataset) - 1)
 
     example = dataset[example_index]
+    example = removeHyphen(example)
+
     st.sidebar.write(example)
 
     col1, _, col2 = st.beta_columns([18, 1, 6])

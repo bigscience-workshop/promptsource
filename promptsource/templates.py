@@ -95,9 +95,18 @@ class DatasetTemplates:
         # dictionary is keyed by template name.
         self.templates: Dict = self.read_from_file()
 
+        self.rewrite()
+
         # Mapping from template name to template id
         self.name_to_id_mapping = {}
         self.sync_mapping()
+
+    def rewrite(self):
+        new_dict = {}
+        for template in self.templates.values():
+            new_dict[template.id] = template
+        self.templates = new_dict
+        self.write_to_file()
 
     def sync_mapping(self) -> Dict:
         """
