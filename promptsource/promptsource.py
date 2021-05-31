@@ -2,8 +2,8 @@ import datasets
 import requests
 import streamlit as st
 from session import _get_state
-from templates import Template, TemplateCollection
-from utils import _ADDITIONAL_ENGLISH_DATSETS, removeHyphen, renameDatasetColumn
+from utils import (_ADDITIONAL_ENGLISH_DATSETS, removeHyphen,
+                   renameDatasetColumn)
 
 from templates import Template, TemplateCollection
 
