@@ -99,7 +99,7 @@ class DatasetTemplates:
         self.name_to_id_mapping = {}
         self.sync_mapping()
 
-    def sync_mapping(self) -> Dict:
+    def sync_mapping(self) -> None:
         """
         Re-compute the name_to_id_mapping to ensure it is in sync with self.templates
         """
@@ -108,7 +108,7 @@ class DatasetTemplates:
     @property
     def all_template_names(self) -> List[str]:
         """
-        List of all templates names for this dataset
+        Sorted list of all templates names for this dataset
         """
         return sorted([template.name for template in self.templates.values()])
 
