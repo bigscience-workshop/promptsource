@@ -38,6 +38,7 @@ class TemplateCollection:
         Returns: a dict with key=(dataset_name, subset_name)
         """
         dataset_folders = os.listdir(TEMPLATES_FOLDER_PATH)
+        dataset_folders = [folder for folder in dataset_folders if not folder.startswith(".")]
 
         output = {}  # format is {(dataset_name, subset_name): DatasetsTemplates}
         for dataset in dataset_folders:
