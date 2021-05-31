@@ -1,10 +1,12 @@
 import os
+import uuid
 from collections import defaultdict
 from shutil import rmtree
 from typing import Dict, List, Optional, Tuple
 
 import yaml
 from jinja2 import BaseLoader, Environment
+
 
 # Local path to the folder containing the templates
 TEMPLATES_FOLDER_PATH = "./templates/"
@@ -94,12 +96,22 @@ class DatasetTemplates:
         # dictionary is keyed by template name.
         self.templates: Dict = self.read_from_file()
 
+        # Mapping from template name to template id
+        self.name_to_id_mapping = {}
+        self.sync_mapping()
+
+    def sync_mapping(self) -> None:
+        """
+        Re-compute the name_to_id_mapping to ensure it is in sync with self.templates
+        """
+        self.name_to_id_mapping = {template.name: template.id for template in self.templates.values()}
+
     @property
-    def keys(self) -> List[str]:
+    def all_template_names(self) -> List[str]:
         """
-        List of all templates names for this dataset
+        Sorted list of all templates names for this dataset
         """
-        return list(self.templates.keys())
+        return sorted([template.name for template in self.templates.values()])
 
     @property
     def folder_path(self) -> str:
@@ -139,6 +151,8 @@ class DatasetTemplates:
 
         :param file: file-like object supporting string inputs
         """
+        # Sync the mapping
+        self.sync_mapping()
 
         # We only create the folder if a template is written
         if not os.path.exists(self.folder_path):
@@ -151,7 +165,7 @@ class DatasetTemplates:
 
         :param template: template
         """
-        self.templates[template.get_name()] = template
+        self.templates[template.get_id()] = template
 
         self.write_to_file()
 
@@ -162,10 +176,11 @@ class DatasetTemplates:
         :param template_name: name of template to remove
         """
 
-        if template_name not in self.templates.keys():
+        # Even if we have an ID, we want to check for duplicate names
+        if template_name not in self.all_template_names:
             raise ValueError(f"No template with name {template_name} for dataset {self.dataset_name} exists.")
 
-        del self.templates[template_name]
+        del self.templates[self.name_to_id_mapping[template_name]]
 
         if len(self.templates) == 0:
             # There is no remaining template, we can remove the entire folder
@@ -174,16 +189,19 @@ class DatasetTemplates:
             # We just update the file
             self.write_to_file()
 
-    def update_template(self, template_name: str, jinja: str, reference: str) -> None:
+    def update_template(self, current_template_name: str, new_template_name: str, jinja: str, reference: str) -> None:
         """
         Updates a pre-existing template and writes changes
 
-        :param template: template to be updated
+        :param current_template_name: current name of the template stored in self.templates
+        :param new_template_name: new name for the template
         :param jinja: new jinja entry
         :param reference: new reference entry
         """
-        self.templates[template_name].jinja = jinja
-        self.templates[template_name].reference = reference
+        template_id = self.name_to_id_mapping[current_template_name]
+        self.templates[template_id].name = new_template_name
+        self.templates[template_id].jinja = jinja
+        self.templates[template_id].reference = reference
 
         self.write_to_file()
 
@@ -191,6 +209,7 @@ class DatasetTemplates:
         """
         Delete the folder corresponding to self.folder_path
         """
+        self.sync_mapping()
 
         rmtree(self.folder_path)
 
@@ -202,7 +221,7 @@ class DatasetTemplates:
                 rmtree(base_dataset_folder)
 
     def __getitem__(self, template_key: str) -> "Template":
-        return self.templates[template_key]
+        return self.templates[self.name_to_id_mapping[template_key]]
 
     def __len__(self) -> int:
         return len(self.templates)
@@ -226,14 +245,24 @@ class Template(yaml.YAMLObject):
         behavior, e.g., text passage and instructions, and the output should be
         a desired response.
 
+        :param id: unique identifier to use as key in the yaml file
         :param name: unique name (per dataset) for template
         :param jinja: template expressed in Jinja
         :param reference: string metadata describing author or paper reference
                           for template
         """
+        self.id = str(uuid.uuid4())
         self.name = name
         self.jinja = jinja
         self.reference = reference
+
+    def get_id(self):
+        """
+        Returns the id of the template
+
+        :return: unique id for template
+        """
+        return self.id
 
     def get_name(self):
         """
