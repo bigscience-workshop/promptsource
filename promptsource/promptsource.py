@@ -215,7 +215,7 @@ if dataset_key is not None:
 
     dataset_templates = template_collection.get_dataset(dataset_key, conf_option.name if conf_option else None)
 
-    template_list = dataset_templates.all_names
+    template_list = dataset_templates.all_template_names
     num_templates = len(template_list)
     st.sidebar.write(
         "No of Templates created for "
@@ -253,7 +253,7 @@ if dataset_key is not None:
                 )
                 new_template_submitted = st.form_submit_button("Create")
                 if new_template_submitted:
-                    if new_template_name in dataset_templates.all_names:
+                    if new_template_name in dataset_templates.all_template_names:
                         st.error(
                             f"A template with the name {new_template_name} already exists "
                             f"for dataset {state.templates_key}."
@@ -272,7 +272,7 @@ if dataset_key is not None:
                     state.new_template_name = None
 
             dataset_templates = template_collection.get_dataset(*state.templates_key)
-            template_list = dataset_templates.all_names
+            template_list = dataset_templates.all_template_names
             if state.template_name:
                 index = template_list.index(state.template_name)
             else:
@@ -302,7 +302,7 @@ if dataset_key is not None:
 
                 if st.form_submit_button("Save"):
                     if (
-                        updated_template_name in dataset_templates.all_names
+                        updated_template_name in dataset_templates.all_template_names
                         and updated_template_name != state.template_name
                     ):
                         st.error(
@@ -315,6 +315,7 @@ if dataset_key is not None:
                         dataset_templates.update_template(
                             state.template_name, updated_template_name, state.jinja, state.reference
                         )
+                        # Update the state as well
                         state.template_name = updated_template_name
     #
     # Displays template output on current example if a template is selected

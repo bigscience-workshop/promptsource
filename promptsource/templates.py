@@ -106,7 +106,7 @@ class DatasetTemplates:
         self.name_to_id_mapping = {template.name: template.id for template in self.templates.values()}
 
     @property
-    def all_names(self) -> List[str]:
+    def all_template_names(self) -> List[str]:
         """
         List of all templates names for this dataset
         """
@@ -176,7 +176,7 @@ class DatasetTemplates:
         """
 
         # Even if we have an ID, we want to check for duplicate names
-        if template_name not in self.all_names:
+        if template_name not in self.all_template_names:
             raise ValueError(f"No template with name {template_name} for dataset {self.dataset_name} exists.")
 
         del self.templates[self.name_to_id_mapping[template_name]]
@@ -192,7 +192,8 @@ class DatasetTemplates:
         """
         Updates a pre-existing template and writes changes
 
-        :param template: template to be updated
+        :param current_template_name: current name of the template stored in self.templates
+        :param new_template_name: new name for the template
         :param jinja: new jinja entry
         :param reference: new reference entry
         """
@@ -243,6 +244,7 @@ class Template(yaml.YAMLObject):
         behavior, e.g., text passage and instructions, and the output should be
         a desired response.
 
+        :param id: unique identifier to use as key in the yaml file
         :param name: unique name (per dataset) for template
         :param jinja: template expressed in Jinja
         :param reference: string metadata describing author or paper reference
