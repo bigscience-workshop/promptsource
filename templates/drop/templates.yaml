@@ -1,6 +1,14 @@
 dataset: drop
 templates:
-  DROP GPT3: !Template
+  1ad4b078-988b-48c0-b153-3a837a980ac2: !Template
+    id: 1ad4b078-988b-48c0-b153-3a837a980ac2
+    jinja: "Extract all the text in the passage answering the question.\n===\nPassage:\
+      \ {{passage}}\nQuestion: {{question}} \nAnswer: |||\n{% for span in answers_spans.spans\
+      \ %}- {{span}}\n{% endfor %}"
+    name: Span extraction
+    reference: Listing spans answering the questions (generative span extraction)
+  ab58cc42-a558-4709-8a73-30194fcf9fa2: !Template
+    id: ab58cc42-a558-4709-8a73-30194fcf9fa2
     jinja: 'Passage: {{passage}}
 
       Question: {{question}}
@@ -8,9 +16,3 @@ templates:
       Answer: ||| {{ answers_spans.spans | join(", ") }}'
     name: DROP GPT3
     reference: Prompt format from GPT3 - Table G20
-  Span extraction: !Template
-    jinja: "Extract all the text in the passage answering the question.\n===\nPassage:\
-      \ {{passage}}\nQuestion: {{question}} \nAnswer: |||\n{% for span in answers_spans.spans\
-      \ %}- {{span}}\n{% endfor %}"
-    name: Span extraction
-    reference: Listing spans answering the questions (generative span extraction)

@@ -1,6 +1,27 @@
 dataset: movie_rationales
 templates:
-  Evidences + review: !Template
+  3ea71512-c48a-4898-8e29-6169a7a00752: !Template
+    id: 3ea71512-c48a-4898-8e29-6169a7a00752
+    jinja: "Review: {{review}} \n===\nIs this review negative or positive? |||\n{{[\"\
+      Negative\", \"Positive\"][label]}}"
+    name: Standard binary sentiment analysis
+    reference: Standard binary sentiment analysis
+  5aaa7d8b-631a-4972-aeca-20a4e0518a60: !Template
+    id: 5aaa7d8b-631a-4972-aeca-20a4e0518a60
+    jinja: 'Evidences:
+
+      {% for evid in evidences %}- {{evid}}
+
+      {% endfor %}
+
+      ===
+
+      Based on these review excerpts, is the review positive or negative? ||| {{["Negative",
+      "Positive"][label]}}'
+    name: Evidences sentiment classification
+    reference: Only taking the evidences as input
+  b953c90c-722a-487e-ab8d-c83ae45de139: !Template
+    id: b953c90c-722a-487e-ab8d-c83ae45de139
     jinja: 'Review: {{review}}
 
 
@@ -16,20 +37,8 @@ templates:
       this review is negative or positive. ||| {{["Negative", "Positive"][label]}}'
     name: Evidences + review
     reference: Classification based both on evidences and review
-  Evidences sentiment classification: !Template
-    jinja: 'Evidences:
-
-      {% for evid in evidences %}- {{evid}}
-
-      {% endfor %}
-
-      ===
-
-      Based on these review excerpts, is the review positive or negative? ||| {{["Negative",
-      "Positive"][label]}}'
-    name: Evidences sentiment classification
-    reference: Only taking the evidences as input
-  Generate evidences: !Template
+  e517bce9-5820-4f20-ad86-b2e3db9e6731: !Template
+    id: e517bce9-5820-4f20-ad86-b2e3db9e6731
     jinja: 'Review: {{review}}
 
       ===
@@ -43,7 +52,8 @@ templates:
     name: Generate evidences
     reference: From the review, extract the spans of text that let us think that the
       review is positive or negative.
-  Generate evidences and sentiment: !Template
+  f11ea73a-3a03-43d8-90d8-4da3905161c2: !Template
+    id: f11ea73a-3a03-43d8-90d8-4da3905161c2
     jinja: 'Review: {{review}}
 
       ====
@@ -59,8 +69,3 @@ templates:
     name: Generate evidences and sentiment
     reference: From the review, determine whether it is negative or positive and extract
       the passages supporting this choice
-  Standard binary sentiment analysis: !Template
-    jinja: "Review: {{review}} \n===\nIs this review negative or positive? |||\n{{[\"\
-      Negative\", \"Positive\"][label]}}"
-    name: Standard binary sentiment analysis
-    reference: Standard binary sentiment analysis
