@@ -110,7 +110,7 @@ class DatasetTemplates:
         """
         List of all templates names for this dataset
         """
-        return [template.name for template in self.templates.values()]
+        return sorted([template.name for template in self.templates.values()])
 
     @property
     def folder_path(self) -> str:
