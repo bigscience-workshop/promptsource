@@ -1,0 +1,134 @@
+dataset: trec
+templates:
+  fine_grained: !Template
+    jinja: "{% if label_coarse == 0 %}\nIs this question asking for a definition,\
+      \ a description, a manner of action, or a reason?\n{% elif label_coarse == 1\
+      \ %}\nIs this question asking for an animal, an organ of the body, a color,\
+      \ a creative piece, a currency, a disease or medicine, an event, a food, a musical\
+      \ instrument, a language, a letter, a plant, a product, a religion, a sport,\
+      \ a substance, a symbol, a technique, a term, a vehicle, a word, or other entity?\n\
+      {% elif label_coarse == 2 %}\nIs this question asking for an abbreviation or\
+      \ an expression abbreviated?\n{% elif label_coarse == 3 %}\nIs this question\
+      \ asking for a group, an individual, a title, or a description?\n{% elif label_coarse\
+      \ == 4 %}\nIs this question asking for a code, a count, a date, a distance,\
+      \ a price, an order, period of time, a percentage, a speed, a temperature, a\
+      \ size, a weight, or other number?\n{% else %}\nIs this question asking for\
+      \ a city, a country, a mountain, a state, or other location?\n{% endif %}\n\
+      {{text}}\n|||\n{{ [\"Manner\",\n     \"Creative Piece\",\n     \"Animal\",\n\
+      \      \"Expression abbreviated\",\n      \"Individual\",\n      \"Group\",\n\
+      \      \"Title\",\n      \"Defintion\",\n      \"Date\",\n      \"Reason\",\n\
+      \      \"Event\",\n      \"State\",\n      \"Description\",\n      \"Count\"\
+      ,\n      \"Other\",\n      \"Letter\",\n      \"Religion\",\n      \"Food\"\
+      ,\n      \"Country\",\n      \"Color\",\n      \"Term\",\n      \"City\",\n\
+      \      \"Organ of the body\",\n      \"Disease or medicine\",\n      \"Mountain\"\
+      ,\n      \"Price\",\n      \"Product\",\n      \"Period\",\n      \"Substance\"\
+      ,\n      \"Sport\",\n      \"Plant\",\n      \"Technique\",\n      \"Size\"\
+      ,\n      \"Instrument\",\n      \"Abbreviation\",\n      \"Speed\",\n      \"\
+      Word\",\n      \"Language\",\n      \"Percentage\",\n      \"Code\",\n     \
+      \ \"Distance\",\n      \"Temperature\",\n      \"Symbol\",\n      \"Order\"\
+      ,\n      \"Vehicle\",\n      \"Weight\",\n      \"Currency\"] [label_fine] }}"
+    name: fine_grained
+    reference: Fine grained labels with coarse-label specific options, context provided
+      first
+  fine_grained_context_first: !Template
+    jinja: "{{text}}\n\n{% if label_coarse == 0 %}\nIs this question asking for a\
+      \ definition, a description, a manner of action, or a reason?\n{% elif label_coarse\
+      \ == 1 %}\nIs this question asking for an animal, an organ of the body, a color,\
+      \ a creative piece, a currency, a disease or medicine, an event, a food, a musical\
+      \ instrument, a language, a letter, a plant, a product, a religion, a sport,\
+      \ a substance, a symbol, a technique, a term, a vehicle, a word, or other entity?\n\
+      {% elif label_coarse == 2 %}\nIs this question asking for an abbreviation or\
+      \ an expression abbreviated?\n{% elif label_coarse == 3 %}\nIs this question\
+      \ asking for a group, an individual, a title, or a description?\n{% elif label_coarse\
+      \ == 4 %}\nIs this question asking for a code, a count, a date, a distance,\
+      \ a price, an order, period of time, a percentage, a speed, a temperature, a\
+      \ size, a weight, or other number?\n{% else %}\nIs this question asking for\
+      \ a city, a country, a mountain, a state, or other location?\n{% endif %}|||\n\
+      {{ [\"Manner\",\n     \"Creative Piece\",\n     \"Animal\",\n      \"Expression\
+      \ abbreviated\",\n      \"Individual\",\n      \"Group\",\n      \"Title\",\n\
+      \      \"Defintion\",\n      \"Date\",\n      \"Reason\",\n      \"Event\",\n\
+      \      \"State\",\n      \"Description\",\n      \"Count\",\n      \"Other\"\
+      ,\n      \"Letter\",\n      \"Religion\",\n      \"Food\",\n      \"Country\"\
+      ,\n      \"Color\",\n      \"Term\",\n      \"City\",\n      \"Organ of the\
+      \ body\",\n      \"Disease or medicine\",\n      \"Mountain\",\n      \"Price\"\
+      ,\n      \"Product\",\n      \"Period\",\n      \"Substance\",\n      \"Sport\"\
+      ,\n      \"Plant\",\n      \"Technique\",\n      \"Size\",\n      \"Instrument\"\
+      ,\n      \"Abbreviation\",\n      \"Speed\",\n      \"Word\",\n      \"Language\"\
+      ,\n      \"Percentage\",\n      \"Code\",\n      \"Distance\",\n      \"Temperature\"\
+      ,\n      \"Symbol\",\n      \"Order\",\n      \"Vehicle\",\n      \"Weight\"\
+      ,\n      \"Currency\"] [label_fine] }}"
+    name: fine_grained_context_first
+    reference: Fine grained labels with coarse-label specific options, context provided
+      first
+  fine_grained_open: !Template
+    jinja: "What is this question asking for?\n\n{{text}}\n|||\n{{ [\"Manner\",\n\
+      \     \"Creative Piece\",\n     \"Animal\",\n      \"Expression abbreviated\"\
+      ,\n      \"Individual\",\n      \"Group\",\n      \"Title\",\n      \"Defintion\"\
+      ,\n      \"Date\",\n      \"Reason\",\n      \"Event\",\n      \"State\",\n\
+      \      \"Description\",\n      \"Count\",\n      \"Other\",\n      \"Letter\"\
+      ,\n      \"Religion\",\n      \"Food\",\n      \"Country\",\n      \"Color\"\
+      ,\n      \"Term\",\n      \"City\",\n      \"Organ of the body\",\n      \"\
+      Disease or medicine\",\n      \"Mountain\",\n      \"Price\",\n      \"Product\"\
+      ,\n      \"Period\",\n      \"Substance\",\n      \"Sport\",\n      \"Plant\"\
+      ,\n      \"Technique\",\n      \"Size\",\n      \"Instrument\",\n      \"Abbreviation\"\
+      ,\n      \"Speed\",\n      \"Word\",\n      \"Language\",\n      \"Percentage\"\
+      ,\n      \"Code\",\n      \"Distance\",\n      \"Temperature\",\n      \"Symbol\"\
+      ,\n      \"Order\",\n      \"Vehicle\",\n      \"Weight\",\n      \"Currency\"\
+      ] [label_fine] }}"
+    name: fine_grained_open
+    reference: Fine grained classes without providing choices.
+  fine_grained_open_context_first: !Template
+    jinja: "{{text}}\n\nWhat is this question asking for?\n|||\n{{ [\"Manner\",\n\
+      \     \"Creative Piece\",\n     \"Animal\",\n      \"Expression abbreviated\"\
+      ,\n      \"Individual\",\n      \"Group\",\n      \"Title\",\n      \"Defintion\"\
+      ,\n      \"Date\",\n      \"Reason\",\n      \"Event\",\n      \"State\",\n\
+      \      \"Description\",\n      \"Count\",\n      \"Other\",\n      \"Letter\"\
+      ,\n      \"Religion\",\n      \"Food\",\n      \"Country\",\n      \"Color\"\
+      ,\n      \"Term\",\n      \"City\",\n      \"Organ of the body\",\n      \"\
+      Disease or medicine\",\n      \"Mountain\",\n      \"Price\",\n      \"Product\"\
+      ,\n      \"Period\",\n      \"Substance\",\n      \"Sport\",\n      \"Plant\"\
+      ,\n      \"Technique\",\n      \"Size\",\n      \"Instrument\",\n      \"Abbreviation\"\
+      ,\n      \"Speed\",\n      \"Word\",\n      \"Language\",\n      \"Percentage\"\
+      ,\n      \"Code\",\n      \"Distance\",\n      \"Temperature\",\n      \"Symbol\"\
+      ,\n      \"Order\",\n      \"Vehicle\",\n      \"Weight\",\n      \"Currency\"\
+      ] [label_fine] }}"
+    name: fine_grained_open_context_first
+    reference: Fine grained classes without providing choices, context first.
+  gao_et_al_1: !Template
+    jinja: '{{text}} : ||| {{ ["Description", "Entity", "Abbreviation", "Person",
+      "Quantity", "Location"] [label_coarse] }}'
+    name: gao_et_al_1
+    reference: Adapted from Making Pre-trained Language Models Better Few-shot Learners.
+      Tianyu Gao, Adam Fisch, and Danqi Chen. ArXiv 2020. Table B.1.
+  gao_et_al_2: !Template
+    jinja: '{{text}} Answer: ||| {{ ["Description", "Entity", "Abbreviation", "Person",
+      "Quantity", "Location"] [label_coarse] }}'
+    name: gao_et_al_2
+    reference: Adapted from Making Pre-trained Language Models Better Few-shot Learners.
+      Tianyu Gao, Adam Fisch, and Danqi Chen. ArXiv 2020. Table E.1.
+  trec1: !Template
+    jinja: '{{text}}
+
+
+      Is this asking about a description, an entity, an abbreviation, a person, a
+      quantity, or a location?
+
+      |||
+
+      {{ ["Description", "Entity", "Abbreviation", "Person", "Quantity", "Location"]
+      [label_coarse] }}'
+    name: trec1
+    reference: Context then prompt
+  trec2: !Template
+    jinja: 'Is the following question asking about a description, an entity, an abbreviation,
+      a person, a quantity, or a location?
+
+
+      {{text}}
+
+      |||
+
+      {{ ["Description", "Entity", "Abbreviation", "Person", "Quantity", "Location"]
+      [label_coarse] }}'
+    name: trec2
+    reference: Prompt then context
