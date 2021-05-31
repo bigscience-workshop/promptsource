@@ -6,6 +6,7 @@ from typing import Dict, List, Optional, Tuple
 import yaml
 from jinja2 import BaseLoader, Environment
 
+
 # Local path to the folder containing the templates
 TEMPLATES_FOLDER_PATH = "./templates/"
 
