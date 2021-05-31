@@ -14,6 +14,11 @@ From the root directory of the repo, you can launch the editor with
 streamlit run promptsource/promptsource.py
 ```
 
+To check the templates you wrote or already written templates, you can visualize templates on entire datasets with
+```
+streamlit run promptsource.py/promptviz.py
+```
+
 ## Writing Templates
 A prompt template is expressed in [Jinja](https://jinja.palletsprojects.com/en/3.0.x/).
 
