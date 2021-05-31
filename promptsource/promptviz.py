@@ -1,5 +1,5 @@
 import streamlit as st
-from utils import get_dataset, get_dataset_confs, list_datasets, render_features
+from utils import get_dataset, get_dataset_confs, list_datasets, removeHyphen, renameDatasetColumn, render_features
 
 from templates import TemplateCollection
 
@@ -79,6 +79,7 @@ if dataset_key is not None:
         index = splits.index("train")
     split = st.sidebar.selectbox("Split", splits, key="split_select", index=index)
     dataset = dataset[split]
+    dataset = renameDatasetColumn(dataset)
 
     dataset_templates = template_collection.get_dataset(dataset_key, conf_option.name if conf_option else None)
 
@@ -149,6 +150,7 @@ if dataset_key is not None:
         if ex_idx >= len(dataset):
             continue
         example = dataset[ex_idx]
+        example = removeHyphen(example)
         col1, _, col2 = st.beta_columns([12, 1, 12])
         with col1:
             st.write(example)
