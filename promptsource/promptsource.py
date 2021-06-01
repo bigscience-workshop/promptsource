@@ -1,7 +1,8 @@
 import streamlit as st
+import textwrap
 from session import _get_state
 from utils import get_dataset, get_dataset_confs, list_datasets, removeHyphen, renameDatasetColumn, render_features
-
+import pandas as pd
 from templates import Template, TemplateCollection
 
 
@@ -68,12 +69,13 @@ dataset_list = list_datasets(
 
 
 #
-# Select a dataset
+# Select a dataset - starts with ag_news
 #
 dataset_key = st.sidebar.selectbox(
     "Dataset",
     dataset_list,
     key="dataset_select",
+    index=4,
     help="Select the dataset to work on.",
 )
 st.sidebar.write("HINT: Try ag_news or boolq for examples.")
@@ -152,6 +154,9 @@ if dataset_key is not None:
 
     st.sidebar.write(example)
 
+
+    st.markdown("## Template Creator")
+    
     col1, _, col2 = st.beta_columns([18, 1, 6])
 
     # current_templates_key and state.templates_key are keys for the templates object
@@ -248,11 +253,43 @@ if dataset_key is not None:
             template = dataset_templates[state.template_name]
             prompt = template.apply(example)
             st.write("Prompt + X")
-            st.text(prompt[0])
+            st.text(textwrap.fill(prompt[0], width=40))
             if len(prompt) > 1:
                 st.write("Y")
-                st.text(prompt[1])
+                st.text(textwrap.fill(prompt[1], width=40))
 
+
+    st.markdown("## Template Viewer")
+
+
+    dataset_templates = template_collection.get_dataset(*state.templates_key)
+    template_list = dataset_templates.all_template_names
+
+    all_templates = []
+    for name in template_list:
+        template = dataset_templates[name]
+        output = template.apply(example)
+        all_templates.append({"name" : template.name,
+                              "template" : template.jinja,
+                              "example_X" : output[0],
+                              "example_Y" : output[1],
+        })
+    df = pd.DataFrame(all_templates)
+    
+    styles = [
+        dict(
+            selector="th",
+            props=[("font-size", "150%"), ("text-align", "center")],
+        ),
+        dict(selector="caption", props=[("caption-side", "bottom")]),
+    ]
+
+    # Table view. Use pandas styling.
+    df = df.style.set_properties(
+        **{"text-align": "left", "white-space": "pre"}
+    ).set_table_styles([dict(selector="th", props=[("text-align", "left")])])
+    #df = df.set_table_styles(styles)
+    st.write(df)
 #
 # Must sync state at end
 #
