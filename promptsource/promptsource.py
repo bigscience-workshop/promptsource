@@ -265,15 +265,47 @@ if dataset_key is not None:
     dataset_templates = template_collection.get_dataset(*state.templates_key)
     template_list = dataset_templates.all_template_names
 
+    from pygments import highlight
+    from pygments.lexers import DjangoLexer
+    from pygments.formatters import HtmlFormatter
+
+    code = 'print "Hello World"'
+    
     all_templates = []
+    st.markdown("<style>"+HtmlFormatter().get_style_defs('.highlight')+"</style>", unsafe_allow_html=True)
     for name in template_list:
         template = dataset_templates[name]
         output = template.apply(example)
-        all_templates.append({"name" : template.name,
-                              "template" : template.jinja,
-                              "example_X" : output[0],
-                              "example_Y" : output[1],
-        })
+        jinjas = template.jinja.split("|||")
+        WIDTH = 80
+        d = {"name" : template.name,
+             "template_X" : textwrap.fill(jinjas[0].strip(), width=WIDTH),
+             "example_X" : textwrap.fill(output[0], width=WIDTH),
+        }
+        if len(output) > 1:
+            d["template_Y"] = textwrap.fill(jinjas[1].strip(), width=WIDTH)
+            d["example_Y"] = textwrap.fill(output[1], width=WIDTH)
+            
+        st.markdown("### " + d["name"])
+
+        col1, _, col2 = st.beta_columns([10, 1, 10])
+
+        with col1:
+            st.markdown(highlight(d["template_X"],
+                                  DjangoLexer(), HtmlFormatter()),
+                        unsafe_allow_html=True)
+        with col2:
+            st.markdown(d["example_X"])
+        col1, _, col2 = st.beta_columns([10, 1, 10])
+        with col1:
+            st.markdown(highlight(d["template_Y"],
+                                  DjangoLexer(), HtmlFormatter()),
+                        unsafe_allow_html=True)
+
+        with col2:
+            st.markdown(d["example_Y"])
+
+        # all_templates.append(d)
     df = pd.DataFrame(all_templates)
     
     styles = [
@@ -286,10 +318,13 @@ if dataset_key is not None:
 
     # Table view. Use pandas styling.
     df = df.style.set_properties(
-        **{"text-align": "left", "white-space": "pre"}
-    ).set_table_styles([dict(selector="th", props=[("text-align", "left")])])
-    #df = df.set_table_styles(styles)
-    st.write(df)
+        **{"text-align": "left"}
+    ).set_table_styles([dict(selector="th",
+                             props=[("text-align", "left")])])
+    df = df.set_table_styles(styles)
+    st.table(df)
+
+
 #
 # Must sync state at end
 #
