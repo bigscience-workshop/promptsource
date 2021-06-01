@@ -38,9 +38,12 @@ reference in the "Template Reference" section. You can also add a description of
 what your template does.
 1. **Save the template**. Hit the "Save" button. The output of the template
 applied to the current example will appear in the right sidebar.
+1. **Verify the template**. Check that you didn't missed any case by scrolling through a handful of examples of the prompted dataset using the "Prompted dataset viewer" mode.
 1. **Upload the template(s).** Submit a PR using the instructions
 [here](#uploading-templates).
-
+1. **Duplicate the template(s).** If the dataset you have chosen bear the same
+format as other datasets (for instance `MNLI` and `SNLI` have identical format),
+you can simply claim these datasets and duplicate the templates you have written to these additional datasets.
 ## Getting Started Using Jinja to Write Templates
 Here is a quick crash course on using [Jinja](https://jinja.palletsprojects.com/en/3.0.x/)
 to write templates. More advanced usage is in the [cookbook](#jinja-cookbook).
@@ -52,7 +55,7 @@ prompt and output to a specific example.
 To write text that should be rendered as written, just write it normally. The
 following "template" will produce the same text every time:
 ```jinja2
-This is just literal text that will be printed the same way every time. 
+This is just literal text that will be printed the same way every time.
 ```
 
 To make your template do something more interesting, you'll need to use Jinja
@@ -95,11 +98,11 @@ Finally, remember that a template must produce two strings: a prompt and an outp
 To separate these two pieces, use three vertical bars `|||`.
 So, a complete template for AG News could be:
 ```jinja2
-{{text}} 
-Is this a piece of news regarding {{"world politics"}}, {{"sports"}}, {{"business"}}, {{"science and technology"}}? ||| 
+{{text}}
+Is this a piece of news regarding {{"world politics"}}, {{"sports"}}, {{"business"}}, {{"science and technology"}}? |||
 {{ ["World politics", "Sports", "Business", "Science and technology"][label] }}
 ```
-   
+
 ## Best Practices
 
 A few miscellaneous things:
@@ -113,16 +116,22 @@ correctness.
 doesn't make sense to write templates for. For example, a dataset might just be
 text without any annotations. For other cases, ask on Slack. If skipping a dataset,
 mark it in red on the spreadsheet.
+* **Choosing input and output pairs.** Lots of datasets have multiple columns that can be
+combined to form different (input, output) pairs i.e. different "tasks". Don't hesitate to
+introduce some diversity by prompting a given dataset into multiple tasks and provide some
+description in the "Template Reference" text box. An example is given
+in the already prompted `movie_rationales`.
 
 ## Uploading Templates
 
 Once you save or modify a template, the corresponding file inside the `templates`
 directory in the repo will be modified. To upload it, following these steps:
-1. Run `make style` and `make quality`.
-2. Commit the modified template files (anything under `templates`) to git.
-3. Push to your fork on GitHub.
-4. Open a pull request against `main` on the PromptSource repo.
-5. When the PR is merged into main, mark the dataset in green on the spreadsheet. 
+1.
+2. Run `make style` and `make quality`.
+3. Commit the modified template files (anything under `templates`) to git.
+4. Push to your fork on GitHub.
+5. Open a pull request against `main` on the PromptSource repo.
+6. When the PR is merged into main, mark the dataset in green on the spreadsheet.
 
 
 ## Jinja Cookbook
