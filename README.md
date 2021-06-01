@@ -16,7 +16,7 @@ streamlit run promptsource/promptsource.py
 
 To check the templates you wrote or already written templates, you can visualize templates on entire datasets with
 ```
-streamlit run promptsource.py/promptviz.py
+streamlit run promptsource/promptviz.py
 ```
 
 ## Writing Templates
