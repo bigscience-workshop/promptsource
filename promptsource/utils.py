@@ -158,10 +158,7 @@ def get_dataset(path, conf=None):
     else:
         builder_instance = builder_cls(cache_dir=None)
     fail = False
-    if (
-        builder_instance.manual_download_instructions is None
-        and builder_instance.info.size_in_bytes is not None
-    ):
+    if builder_instance.manual_download_instructions is None and builder_instance.info.size_in_bytes is not None:
         builder_instance.download_and_prepare()
         dts = builder_instance.as_dataset()
         dataset = dts
@@ -232,9 +229,7 @@ def filter_english_datasets():
     return sorted(all_english_datasets)
 
 
-def list_datasets(
-    template_collection, _priority_filter, _priority_max_templates, _state
-):
+def list_datasets(template_collection, _priority_filter, _priority_max_templates, _state):
     """Get all the datasets to work with."""
     dataset_list = filter_english_datasets()
     count_dict = template_collection.get_templates_count()
@@ -245,8 +240,7 @@ def list_datasets(
                 list(
                     d
                     for d in count_dict
-                    if count_dict[d] > _priority_max_templates
-                    and d != _state.working_priority_ds
+                    if count_dict[d] > _priority_max_templates and d != _state.working_priority_ds
                 )
             )
         )

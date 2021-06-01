@@ -1,13 +1,14 @@
-import streamlit as st
 import textwrap
+
 import pandas as pd
+import streamlit as st
 from pygments import highlight
-from pygments.lexers import DjangoLexer
 from pygments.formatters import HtmlFormatter
+from pygments.lexers import DjangoLexer
 from session import _get_state
 from utils import get_dataset, get_dataset_confs, list_datasets, removeHyphen, renameDatasetColumn, render_features
-from templates import Template, TemplateCollection
 
+from templates import Template, TemplateCollection
 
 
 #
@@ -17,11 +18,11 @@ from templates import Template, TemplateCollection
 get_dataset = st.cache(allow_output_mutation=True)(get_dataset)
 get_dataset_confs = st.cache(get_dataset_confs)
 
+
 def reset_template_state():
     state.template_name = None
     state.jinja = None
     state.reference = None
-
 
 
 #
@@ -36,10 +37,9 @@ st.set_page_config(layout="wide")
 st.sidebar.title("PromptSource 🌸")
 
 #
-# Adds pygments styles to the page. 
+# Adds pygments styles to the page.
 #
-st.markdown("<style>" + HtmlFormatter().get_style_defs('.highlight') + "</style>",
-            unsafe_allow_html=True)
+st.markdown("<style>" + HtmlFormatter().get_style_defs(".highlight") + "</style>", unsafe_allow_html=True)
 
 #
 # Loads template data
@@ -87,7 +87,7 @@ dataset_key = st.sidebar.selectbox(
     dataset_list,
     key="dataset_select",
     format_func=lambda a: f"{a} ({str(counts.get(a, 0))})",
-    index=12, # AG_NEWS
+    index=12,  # AG_NEWS
     help="Select the dataset to work on.",
 )
 
@@ -107,8 +107,7 @@ if dataset_key is not None:
     configs = get_dataset_confs(dataset_key)
     conf_option = None
     if len(configs) > 0:
-        conf_option = st.sidebar.selectbox("Subset", configs, index=0,
-                                           format_func=lambda a: a.name)
+        conf_option = st.sidebar.selectbox("Subset", configs, index=0, format_func=lambda a: a.name)
 
     dataset, failed = get_dataset(dataset_key, str(conf_option.name) if conf_option else None)
     if failed:
@@ -167,7 +166,7 @@ if dataset_key is not None:
     st.sidebar.write(example)
 
     st.markdown("## Template Creator")
-    
+
     col1a, col1b, _, col2 = st.beta_columns([9, 9, 1, 6])
 
     # current_templates_key and state.templates_key are keys for the templates object
@@ -219,9 +218,9 @@ if dataset_key is not None:
         if st.button("Delete Template", key="delete_template"):
             dataset_templates.remove_template(state.template_name)
             reset_template_state()
-            
-    col1,  _, col2 = st.beta_columns([18, 1, 6])
-    with col1: 
+
+    col1, _, col2 = st.beta_columns([18, 1, 6])
+    with col1:
         if state.template_name is not None:
             template = dataset_templates[state.template_name]
             #
@@ -236,7 +235,6 @@ if dataset_key is not None:
                 )
 
                 state.jinja = st.text_area("Template", height=40, value=template.jinja)
-
 
                 if st.form_submit_button("Save"):
                     if (
@@ -271,14 +269,12 @@ if dataset_key is not None:
                 st.text(textwrap.fill(prompt[1], width=40))
 
     #
-    # Template viewer section 
+    # Template viewer section
     #
     st.markdown("## Template Viewer")
 
     dataset_templates = template_collection.get_dataset(*state.templates_key)
-    template_list = dataset_templates.all_template_names    
-    
-
+    template_list = dataset_templates.all_template_names
 
     #
     # Displays each template for the dataset with examples
@@ -288,6 +284,7 @@ if dataset_key is not None:
         output = template.apply(example)
         jinjas = template.jinja.split("|||")
         WIDTH = 80
+
         def show_jinja(t):
             wrap = textwrap.fill(t, width=WIDTH, replace_whitespace=False)
             out = highlight(wrap, DjangoLexer(), HtmlFormatter())
@@ -296,7 +293,7 @@ if dataset_key is not None:
         def show_text(t):
             wrap = textwrap.fill(t, width=WIDTH, replace_whitespace=False)
             st.markdown(wrap)
-            
+
         st.markdown("### " + template.name)
 
         col1, _, col2 = st.beta_columns([10, 1, 10])
@@ -315,8 +312,7 @@ if dataset_key is not None:
 
 # Sidebar total progress
 st.sidebar.markdown("## Global Progress")
-df = pd.DataFrame(template_collection.get_templates_count().items(),
-                  columns=["Dataset", "Templates"])
+df = pd.DataFrame(template_collection.get_templates_count().items(), columns=["Dataset", "Templates"])
 st.sidebar.table(df)
 
 #
