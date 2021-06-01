@@ -41,8 +41,10 @@ except FileNotFoundError:
 if mode == "Helicopter view":
     st.title("High level metrics")
     st.write("We can improve these metrics, please contribute!")
-    st.write("If you want to take ownership for prompting a particular dataset, " +
-             "put your name in [this spreadsheet](https://docs.google.com/spreadsheets/d/10SBt96nXutB49H52PV2Lvne7F1NvVr_WZLXD8_Z0JMw/edit?usp=sharing).")
+    st.write(
+        "If you want to take ownership for prompting a particular dataset, "
+        + "put your name in [this spreadsheet](https://docs.google.com/spreadsheets/d/10SBt96nXutB49H52PV2Lvne7F1NvVr_WZLXD8_Z0JMw/edit?usp=sharing)."
+    )
 
     counts = template_collection.get_templates_count()
     nb_prompted_datasets = len(counts)
@@ -131,7 +133,11 @@ elif mode == "Prompted dataset viewer":
 
         if num_templates > 0:
             template_name = st.sidebar.selectbox(
-                "Template name", template_list, key="template_select", index=0, help="Select the template to visualize."
+                "Template name",
+                template_list,
+                key="template_select",
+                index=0,
+                help="Select the template to visualize.",
             )
 
         step = 50
