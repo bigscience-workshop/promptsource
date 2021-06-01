@@ -1,5 +1,10 @@
+import textwrap
+
 import pandas as pd
 import streamlit as st
+from pygments import highlight
+from pygments.formatters import HtmlFormatter
+from pygments.lexers import DjangoLexer
 from utils import get_dataset, get_dataset_confs, list_datasets, removeHyphen, renameDatasetColumn, render_features
 
 from templates import TemplateCollection
@@ -24,6 +29,26 @@ mode = st.sidebar.selectbox(
 )
 # TODO: ultimately we can have a third mode for creating template (i.e. merging the main app)
 st.sidebar.title(f"Prompt sourcing 🌸 - {mode}")
+
+#
+# Adds pygments styles to the page.
+#
+st.markdown("<style>" + HtmlFormatter().get_style_defs(".highlight") + "</style>", unsafe_allow_html=True)
+
+WIDTH = 80
+
+
+def show_jinja(t):
+    wrap = textwrap.fill(t, width=WIDTH, replace_whitespace=False)
+    out = highlight(wrap, DjangoLexer(), HtmlFormatter())
+    st.write(out.replace("\n\n", "\n"), unsafe_allow_html=True)
+
+
+def show_text(t):
+    wrap = [textwrap.fill(subt, width=WIDTH, replace_whitespace=False) for subt in t.split("\n")]
+    wrap = "\n".join(wrap)
+    st.text(wrap)
+
 
 #
 # Loads template data
@@ -185,7 +210,12 @@ elif mode == "Prompted dataset viewer":
             st.markdown("##### Reference")
             st.text(template.reference)
             st.markdown("##### Jinja")
-            st.text(template.jinja)
+            splitted_template = template.jinja.split("|||")
+            st.markdown("###### Prompt + X")
+            show_jinja(splitted_template[0])
+            if len(splitted_template) > 1:
+                st.markdown("###### Y")
+                show_jinja(splitted_template[1])
             st.markdown("***")
 
         #
@@ -203,8 +233,8 @@ elif mode == "Prompted dataset viewer":
                 with col2:
                     prompt = template.apply(example)
                     st.write("Prompt + X")
-                    st.text(prompt[0])
+                    show_text(prompt[0])
                     if len(prompt) > 1:
                         st.write("Y")
-                        st.text(prompt[1])
+                        show_text(prompt[1])
             st.markdown("***")
