@@ -86,7 +86,6 @@ dataset_key = st.sidebar.selectbox(
     "Dataset",
     dataset_list,
     key="dataset_select",
-    format_func=lambda a: f"{a} ({str(counts.get(a, 0))})",
     index=12,  # AG_NEWS
     help="Select the dataset to work on.",
 )
@@ -288,7 +287,7 @@ if dataset_key is not None:
         def show_jinja(t):
             wrap = textwrap.fill(t, width=WIDTH, replace_whitespace=False)
             out = highlight(wrap, DjangoLexer(), HtmlFormatter())
-            st.markdown(out, unsafe_allow_html=True)
+            st.write(out.replace("\n\n", "\n"), unsafe_allow_html=True)
 
         def show_text(t):
             wrap = textwrap.fill(t, width=WIDTH, replace_whitespace=False)
