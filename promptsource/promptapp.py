@@ -22,6 +22,7 @@ mode = st.sidebar.selectbox(
     index=0,
     key="mode_select",
 )
+# TODO: ultimately we can have a third mode for creating template (i.e. merging the main app)
 st.sidebar.title(f"Prompt sourcing 🌸 - {mode}")
 
 #
