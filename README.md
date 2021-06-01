@@ -14,9 +14,11 @@ From the root directory of the repo, you can launch the editor with
 streamlit run promptsource/promptsource.py
 ```
 
-To check the templates you wrote or already written templates, you can visualize templates on entire datasets with
+There is a secondary app (that will eventually be merged with the main) displaying two modes:
+- Helicopter view: collect high level metrics on the current state of the sourcing
+- Prompted dataset viewer: check the templates you wrote or already written on entire dataset
 ```
-streamlit run promptsource.py/promptviz.py
+streamlit run promptsource.py/promptapp.py
 ```
 
 ## Writing Templates
