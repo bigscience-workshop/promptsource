@@ -1,9 +1,13 @@
 import streamlit as st
 import textwrap
+import pandas as pd
+from pygments import highlight
+from pygments.lexers import DjangoLexer
+from pygments.formatters import HtmlFormatter
 from session import _get_state
 from utils import get_dataset, get_dataset_confs, list_datasets, removeHyphen, renameDatasetColumn, render_features
-import pandas as pd
 from templates import Template, TemplateCollection
+
 
 
 #
@@ -12,7 +16,6 @@ from templates import Template, TemplateCollection
 
 get_dataset = st.cache(allow_output_mutation=True)(get_dataset)
 get_dataset_confs = st.cache(get_dataset_confs)
-
 
 def reset_template_state():
     state.template_name = None
@@ -66,6 +69,7 @@ dataset_list = list_datasets(
     priority_max_templates,
     state,
 )
+counts = template_collection.get_templates_count()
 
 
 #
@@ -75,10 +79,10 @@ dataset_key = st.sidebar.selectbox(
     "Dataset",
     dataset_list,
     key="dataset_select",
-    index=4,
+    format_func=lambda a: f"{a} ({str(counts.get(a, 0))})",
+    index=12,
     help="Select the dataset to work on.",
 )
-st.sidebar.write("HINT: Try ag_news or boolq for examples.")
 
 # On dataset change, clear working priority dataset
 # retained in the priority list with more than priority_max_templates
@@ -96,7 +100,8 @@ if dataset_key is not None:
     configs = get_dataset_confs(dataset_key)
     conf_option = None
     if len(configs) > 0:
-        conf_option = st.sidebar.selectbox("Subset", configs, index=0, format_func=lambda a: a.name)
+        conf_option = st.sidebar.selectbox("Subset", configs, index=0,
+                                           format_func=lambda a: a.name)
 
     dataset, failed = get_dataset(dataset_key, str(conf_option.name) if conf_option else None)
     if failed:
@@ -154,10 +159,9 @@ if dataset_key is not None:
 
     st.sidebar.write(example)
 
-
     st.markdown("## Template Creator")
     
-    col1, _, col2 = st.beta_columns([18, 1, 6])
+    col1a, col1b, _, col2 = st.beta_columns([9, 9, 1, 6])
 
     # current_templates_key and state.templates_key are keys for the templates object
     current_templates_key = (dataset_key, conf_option.name if conf_option else None)
@@ -167,63 +171,65 @@ if dataset_key is not None:
         state.templates_key = current_templates_key
         reset_template_state()
 
-    with col1:
-        with st.beta_expander("Select Template", expanded=True):
-            with st.form("new_template_form"):
-                new_template_name = st.text_input(
-                    "New Template Name",
-                    key="new_template",
-                    value="",
-                    help="Enter name and hit enter to create a new template.",
-                )
-                new_template_submitted = st.form_submit_button("Create")
-                if new_template_submitted:
-                    if new_template_name in dataset_templates.all_template_names:
-                        st.error(
-                            f"A template with the name {new_template_name} already exists "
-                            f"for dataset {state.templates_key}."
-                        )
-                    elif new_template_name == "":
-                        st.error("Need to provide a template name.")
-                    else:
-                        template = Template(new_template_name, "", "")
-                        dataset_templates.add_template(template)
-                        reset_template_state()
-                        state.template_name = new_template_name
-                        # Keep the current working dataset in priority list
-                        if priority_filter:
-                            state.working_priority_ds = dataset_key
-                else:
-                    state.new_template_name = None
-
-            dataset_templates = template_collection.get_dataset(*state.templates_key)
-            template_list = dataset_templates.all_template_names
-            if state.template_name:
-                index = template_list.index(state.template_name)
-            else:
-                index = 0
-            state.template_name = st.selectbox(
-                "", template_list, key="template_select", index=index, help="Select the template to work on."
+    with col1a, st.form("new_template_form"):
+            new_template_name = st.text_input(
+                "Create a New Template",
+                key="new_template",
+                value="",
+                help="Enter name and hit enter to create a new template.",
             )
+            new_template_submitted = st.form_submit_button("Create")
+            if new_template_submitted:
+                if new_template_name in dataset_templates.all_template_names:
+                    st.error(
+                        f"A template with the name {new_template_name} already exists "
+                        f"for dataset {state.templates_key}."
+                    )
+                elif new_template_name == "":
+                    st.error("Need to provide a template name.")
+                else:
+                    template = Template(new_template_name, "", "")
+                    dataset_templates.add_template(template)
+                    reset_template_state()
+                    state.template_name = new_template_name
+                    # Keep the current working dataset in priority list
+                    if priority_filter:
+                        state.working_priority_ds = dataset_key
+            else:
+                state.new_template_name = None
 
-            if st.button("Delete Template", key="delete_template"):
-                dataset_templates.remove_template(state.template_name)
-                reset_template_state()
+    with col1b, st.beta_expander("or Select Template", expanded=True):
 
+        dataset_templates = template_collection.get_dataset(*state.templates_key)
+        template_list = dataset_templates.all_template_names
+        if state.template_name:
+            index = template_list.index(state.template_name)
+        else:
+            index = 0
+        state.template_name = st.selectbox(
+            "", template_list, key="template_select", index=index, help="Select the template to work on."
+        )
+
+        if st.button("Delete Template", key="delete_template"):
+            dataset_templates.remove_template(state.template_name)
+            reset_template_state()
+    col1,  _, col2 = st.beta_columns([18, 1, 6])
+    with col1: 
         if state.template_name is not None:
             template = dataset_templates[state.template_name]
             #
             # If template is selected, displays template editor
             #
             with st.form("edit_template_form"):
-                updated_template_name = st.text_area("Name", height=40, value=template.name)
-                state.jinja = st.text_area("Template", height=40, value=template.jinja)
-
-                state.reference = st.text_area(
+                updated_template_name = st.text_input("Name", value=template.name)
+                state.reference = st.text_input(
                     "Template Reference",
                     help="Short description of the template and/or paper reference for the template.",
                     value=template.reference,
                 )
+
+                state.jinja = st.text_area("Template", height=40, value=template.jinja)
+
 
                 if st.form_submit_button("Save"):
                     if (
@@ -246,10 +252,11 @@ if dataset_key is not None:
     # Displays template output on current example if a template is selected
     # (in second column)
     #
+
+
     with col2:
         if state.template_name is not None:
             st.empty()
-            st.subheader("Template Output")
             template = dataset_templates[state.template_name]
             prompt = template.apply(example)
             st.write("Prompt + X")
@@ -259,17 +266,14 @@ if dataset_key is not None:
                 st.text(textwrap.fill(prompt[1], width=40))
 
 
+    
+                
     st.markdown("## Template Viewer")
 
 
     dataset_templates = template_collection.get_dataset(*state.templates_key)
     template_list = dataset_templates.all_template_names
 
-    from pygments import highlight
-    from pygments.lexers import DjangoLexer
-    from pygments.formatters import HtmlFormatter
-
-    code = 'print "Hello World"'
     
     all_templates = []
     st.markdown("<style>"+HtmlFormatter().get_style_defs('.highlight')+"</style>", unsafe_allow_html=True)
@@ -278,52 +282,37 @@ if dataset_key is not None:
         output = template.apply(example)
         jinjas = template.jinja.split("|||")
         WIDTH = 80
-        d = {"name" : template.name,
-             "template_X" : textwrap.fill(jinjas[0].strip(), width=WIDTH),
-             "example_X" : textwrap.fill(output[0], width=WIDTH),
-        }
-        if len(output) > 1:
-            d["template_Y"] = textwrap.fill(jinjas[1].strip(), width=WIDTH)
-            d["example_Y"] = textwrap.fill(output[1], width=WIDTH)
+        def show_jinja(t):
+            wrap = textwrap.fill(t, width=WIDTH, replace_whitespace=False)
+            out = highlight(wrap, DjangoLexer(), HtmlFormatter())
+            st.markdown(out, unsafe_allow_html=True)
+
+        def show_text(t):
+            wrap = textwrap.fill(t, width=WIDTH, replace_whitespace=False)
+            st.markdown(wrap)
             
-        st.markdown("### " + d["name"])
+        st.markdown("### " + template.name)
 
         col1, _, col2 = st.beta_columns([10, 1, 10])
 
         with col1:
-            st.markdown(highlight(d["template_X"],
-                                  DjangoLexer(), HtmlFormatter()),
-                        unsafe_allow_html=True)
+            show_jinja(jinjas[0])
         with col2:
-            st.markdown(d["example_X"])
-        col1, _, col2 = st.beta_columns([10, 1, 10])
-        with col1:
-            st.markdown(highlight(d["template_Y"],
-                                  DjangoLexer(), HtmlFormatter()),
-                        unsafe_allow_html=True)
+            show_text(output[0])
+        if len(output) > 1:
+            col1, _, col2 = st.beta_columns([10, 1, 10])
+            with col1:
+                show_jinja(jinjas[1])
+            with col2:
+                show_text(output[1])
 
-        with col2:
-            st.markdown(d["example_Y"])
 
-        # all_templates.append(d)
-    df = pd.DataFrame(all_templates)
-    
-    styles = [
-        dict(
-            selector="th",
-            props=[("font-size", "150%"), ("text-align", "center")],
-        ),
-        dict(selector="caption", props=[("caption-side", "bottom")]),
-    ]
+# Sidebar total progress
+st.sidebar.write("Global Progress")
 
-    # Table view. Use pandas styling.
-    df = df.style.set_properties(
-        **{"text-align": "left"}
-    ).set_table_styles([dict(selector="th",
-                             props=[("text-align", "left")])])
-    df = df.set_table_styles(styles)
-    st.table(df)
-
+df = pd.DataFrame(template_collection.get_templates_count().items(),
+                  columns=["Dataset", "Templates"])
+st.sidebar.table(df)
 
 #
 # Must sync state at end
