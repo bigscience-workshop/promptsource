@@ -22,11 +22,6 @@ def reset_template_state():
     state.jinja = None
     state.reference = None
 
-#
-# Adds pygments styles to the page. 
-#
-st.markdown("<style>" + HtmlFormatter().get_style_defs('.highlight') + "</style>",
-            unsafe_allow_html=True)
 
 
 #
@@ -39,6 +34,12 @@ state = _get_state()
 #
 st.set_page_config(layout="wide")
 st.sidebar.title("PromptSource 🌸")
+
+#
+# Adds pygments styles to the page. 
+#
+st.markdown("<style>" + HtmlFormatter().get_style_defs('.highlight') + "</style>",
+            unsafe_allow_html=True)
 
 #
 # Loads template data
