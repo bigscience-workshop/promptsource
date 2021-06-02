@@ -14,12 +14,10 @@ From the root directory of the repo, you can launch the editor with
 streamlit run promptsource/promptsource.py
 ```
 
-There is a secondary app (that will eventually be merged with the main) displaying two modes:
-- Helicopter view: collect high level metrics on the current state of the sourcing
-- Prompted dataset viewer: check the templates you wrote or already written on entire dataset
-```
-streamlit run promptsource/promptapp.py
-```
+There are 3 modes in the app:
+- **Helicopter view**: aggregate high level metrics on the current state of the sourcing
+- **Prompted dataset viewer**: check the templates you wrote or already written on entire dataset
+- **Sourcing**: write new prompts
 
 ## Writing Templates
 A prompt template is expressed in [Jinja](https://jinja.palletsprojects.com/en/3.0.x/).
