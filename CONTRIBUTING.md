@@ -126,12 +126,11 @@ in the already prompted `movie_rationales`.
 
 Once you save or modify a template, the corresponding file inside the `templates`
 directory in the repo will be modified. To upload it, following these steps:
-1.
-2. Run `make style` and `make quality`.
-3. Commit the modified template files (anything under `templates`) to git.
-4. Push to your fork on GitHub.
-5. Open a pull request against `main` on the PromptSource repo.
-6. When the PR is merged into main, mark the dataset in green on the spreadsheet.
+1. Run `make style` and `make quality`.
+2. Commit the modified template files (anything under `templates`) to git.
+3. Push to your fork on GitHub.
+4. Open a pull request against `main` on the PromptSource repo.
+5. When the PR is merged into main, mark the dataset in green on the spreadsheet.
 
 
 ## Jinja Cookbook
