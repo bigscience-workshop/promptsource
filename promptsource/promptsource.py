@@ -267,53 +267,6 @@ if dataset_key is not None:
                 st.write("Y")
                 st.text(textwrap.fill(prompt[1], width=40))
 
-    #
-    # Template viewer section
-    #
-    st.markdown("## Template Viewer")
-
-    dataset_templates = template_collection.get_dataset(*state.templates_key)
-    template_list = dataset_templates.all_template_names
-
-    #
-    # Displays each template for the dataset with examples
-    #
-    for name in template_list:
-        template = dataset_templates[name]
-        output = template.apply(example)
-        jinjas = template.jinja.split("|||")
-        WIDTH = 80
-
-        def show_jinja(t):
-            wrap = textwrap.fill(t, width=WIDTH, replace_whitespace=False)
-            out = highlight(wrap, DjangoLexer(), HtmlFormatter())
-            st.write(out.replace("\n\n", "\n"), unsafe_allow_html=True)
-
-        def show_text(t):
-            wrap = textwrap.fill(t, width=WIDTH, replace_whitespace=False)
-            st.markdown(wrap)
-
-        st.markdown("### " + template.name)
-
-        col1, _, col2 = st.beta_columns([10, 1, 10])
-
-        with col1:
-            show_jinja(jinjas[0])
-        with col2:
-            show_text(output[0])
-        if len(output) > 1:
-            col1, _, col2 = st.beta_columns([10, 1, 10])
-            with col1:
-                show_jinja(jinjas[1])
-            with col2:
-                show_text(output[1])
-
-
-# Sidebar total progress
-st.sidebar.markdown("## Global Progress")
-df = pd.DataFrame(template_collection.get_templates_count().items(), columns=["Dataset", "Templates"])
-st.sidebar.table(df)
-
 #
 # Must sync state at end
 #
