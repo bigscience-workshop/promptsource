@@ -38,7 +38,7 @@ reference in the "Template Reference" section. You can also add a description of
 what your template does.
 1. **Save the template**. Hit the "Save" button. The output of the template
 applied to the current example will appear in the right sidebar.
-1. **Verify the template**. Check that you didn't missed any case by scrolling
+1. **Verify the template**. Check that you didn't miss any case by scrolling
 through a handful of examples of the prompted dataset using the
 "Prompted dataset viewer" mode.
 1. **Duplicate the template(s).** If the dataset you have chosen bear the same
@@ -136,7 +136,7 @@ capture this with the following template:
 {% if label_coarse == 0 %}
 Is this question asking for a {{"definition"}}, a {{"description"}}, a {{"manner of action"}}, or a {{"reason"}}?
 {{text}}
-||| 
+|||
 {{ {0: "Manner", 7: "Defintion", 9: "Reason", 12: "Description"}[label_fine] }}
 {% endif %}
 ```
@@ -153,6 +153,25 @@ directory in the repo will be modified. To upload it, following these steps:
 
 
 ## Jinja Cookbook
+
+- Accessing nested attributes of a dict
+```jinja
+{{ answers_spans.spans }}
+```
+
+- Joining list
+```jinja
+{{ spans_list | join(", ") }}
+```
+
+- If conditions
+```jinja
+{% if label==0 %}
+do_something
+{% elif condition %}
+do_something_else
+{% endif %}
+```
 
 Jinja includes lots of complex features but for most instances you likely only
 need to use the methods above. If there's something you're not sure how to do,
