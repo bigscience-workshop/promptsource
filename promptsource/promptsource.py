@@ -1,10 +1,7 @@
 import textwrap
 
-import pandas as pd
 import streamlit as st
-from pygments import highlight
 from pygments.formatters import HtmlFormatter
-from pygments.lexers import DjangoLexer
 from session import _get_state
 from utils import get_dataset, get_dataset_confs, list_datasets, removeHyphen, renameDatasetColumn, render_features
 
