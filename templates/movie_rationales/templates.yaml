@@ -10,9 +10,7 @@ templates:
     id: 5aaa7d8b-631a-4972-aeca-20a4e0518a60
     jinja: 'Evidences:
 
-      {% for evid in evidences %}- {{evid}}
-
-      {% endfor %}
+      - {{ evidences | join("\n- ") }}
 
       ===
 
@@ -27,9 +25,7 @@ templates:
 
       Highlighted extracts:
 
-      {% for evid in evidences %}- {{evid}}
-
-      {% endfor%}
+      - {{ evidences | join("\n- ") }}
 
       ===
 
@@ -46,9 +42,7 @@ templates:
       This review is {% if label == 0 %}positive{% else %}negative{% endif %}. Extract
       from it the passage that indicate it. |||
 
-      {% for evid in evidences %}- {{evid}}
-
-      {% endfor%}'
+      - {{ evidences | join("\n- ") }}'
     name: Generate evidences
     reference: From the review, extract the spans of text that let us think that the
       review is positive or negative.
@@ -63,9 +57,7 @@ templates:
 
       {{["Negative", "Positive"][label]}}
 
-      {% for evid in evidences %}- {{evid}}
-
-      {% endfor%}'
+      - {{ evidences | join("\n- ") }}'
     name: Generate evidences and sentiment
     reference: From the review, determine whether it is negative or positive and extract
       the passages supporting this choice
