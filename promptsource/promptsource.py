@@ -79,12 +79,14 @@ except FileNotFoundError:
 
 if mode == "Helicopter view":
     st.title("High level metrics")
-    st.write("We can improve these metrics, please contribute!")
     st.write(
-        "If you want to take ownership for prompting a particular dataset, "
+        "If you want to take ownership for prompting a specific dataset, "
         + "put your name in [this spreadsheet](https://docs.google.com/spreadsheets/d/10SBt96nXutB49H52PV2Lvne7F1NvVr_WZLXD8_Z0JMw/edit?usp=sharing)."
     )
 
+    #
+    # Global metrics
+    #
     counts = template_collection.get_templates_count()
     nb_prompted_datasets = len(counts)
     st.write(f"## Number of *prompted datasets*: `{nb_prompted_datasets}`")
@@ -92,6 +94,9 @@ if mode == "Helicopter view":
     st.write(f"## Number of *prompts*: `{nb_prompts}`")
     st.markdown("***")
 
+    #
+    # Metrics per dataset/subset
+    #
     st.write("Details per dataset")
     results = []
     for (dataset_name, subset_name) in template_collection.keys:
@@ -106,7 +111,7 @@ if mode == "Helicopter view":
             }
         )
     results_df = pd.DataFrame(results)
-    results_df.sort_values(["Number of templates"], inplace=True)
+    results_df.sort_values(["Number of templates"], inplace=True, ascending=False)
     results_df.reset_index(drop=True, inplace=True)
     st.table(results_df)
 
@@ -116,10 +121,10 @@ else:
     assert mode in ["Prompted dataset viewer", "Sourcing"], ValueError(
         f"`mode` ({mode}) should be in `[Helicopter view, Prompted dataset viewer, Sourcing]`"
     )
+
     #
     # Loads dataset information
     #
-
     if mode == "Prompted dataset viewer":
         priority_filter = False
         priority_max_templates = None
@@ -250,6 +255,10 @@ else:
         )
         st.markdown(md)
 
+        #
+        # Body of the app: display prompted examples in mode `Prompted dataset viewer`
+        # or text boxes to create new prompts in mode `Sourcing`
+        #
         if mode == "Prompted dataset viewer":
             #
             # Display template information
@@ -293,6 +302,9 @@ else:
         else:  # mode = Sourcing
             st.markdown("## Template Creator")
 
+            #
+            # Create a new template or select an existing one
+            #
             col1a, col1b, _, col2 = st.beta_columns([9, 9, 1, 6])
 
             # current_templates_key and state.templates_key are keys for the templates object
@@ -345,6 +357,9 @@ else:
                     dataset_templates.remove_template(state.template_name)
                     reset_template_state()
 
+            #
+            # Edit the created or selected template
+            #
             col1, _, col2 = st.beta_columns([18, 1, 6])
             with col1:
                 if state.template_name is not None:
