@@ -21,7 +21,7 @@ prompt.
 [here](https://docs.google.com/spreadsheets/d/10SBt96nXutB49H52PV2Lvne7F1NvVr_WZLXD8_Z0JMw/)
 and find an unclaimed one. Put your name under "Who's Prompting it?" and
 mark it yellow to show it's in progress.
-1. **Examine the dataset.** Select the dataset from the dropdown in the app.
+1. **Examine the dataset.** Select or type the dataset into the dropdown in the app.
 If the dataset has subsets (subsets are not the same as splits), you can select
 which one to work on. Note that templates are subset specific. You can find
 out background information on the dataset by reading the information in the
@@ -38,13 +38,18 @@ reference in the "Template Reference" section. You can also add a description of
 what your template does.
 1. **Save the template**. Hit the "Save" button. The output of the template
 applied to the current example will appear in the right sidebar.
-1. **Verify the template**. Check that you didn't missed any case by scrolling through a handful of examples of the prompted dataset using the "Prompted dataset viewer" mode.
-1. **Upload the template(s).** Submit a PR using the instructions
-[here](#uploading-templates).
+1. **Verify the template**. Check that you didn't missed any case by scrolling
+through a handful of examples of the prompted dataset using the
+"Prompted dataset viewer" mode.
 1. **Duplicate the template(s).** If the dataset you have chosen bear the same
 format as other datasets (for instance `MNLI` and `SNLI` have identical format),
-you can simply claim these datasets and duplicate the templates you have written to these additional datasets.
+you can simply claim these datasets and duplicate the templates you have written
+to these additional datasets.
+1. **Upload the template(s).** Submit a PR using the instructions
+[here](#uploading-templates).
+
 ## Getting Started Using Jinja to Write Templates
+
 Here is a quick crash course on using [Jinja](https://jinja.palletsprojects.com/en/3.0.x/)
 to write templates. More advanced usage is in the [cookbook](#jinja-cookbook).
 
@@ -99,7 +104,7 @@ To separate these two pieces, use three vertical bars `|||`.
 So, a complete template for AG News could be:
 ```jinja2
 {{text}}
-Is this a piece of news regarding {{"world politics"}}, {{"sports"}}, {{"business"}}, {{"science and technology"}}? |||
+Is this a piece of news regarding {{"world politics"}}, {{"sports"}}, {{"business"}}, or {{"science and technology"}}? |||
 {{ ["World politics", "Sports", "Business", "Science and technology"][label] }}
 ```
 
@@ -121,6 +126,20 @@ combined to form different (input, output) pairs i.e. different "tasks". Don't h
 introduce some diversity by prompting a given dataset into multiple tasks and provide some
 description in the "Template Reference" text box. An example is given
 in the already prompted `movie_rationales`.
+* **Filtering templates.** If a template is applied to an example and produces an
+empty string, that template/example pair will be skipped. You can therefore create
+templates that only apply to a subset of the examples by wrapping them in Jinja
+if statements. For example, in the `TREC` dataset, there are fine-grained
+categories that are only applicable to certain coarse-grained categories. We can
+capture this with the following template:
+```jinja2
+{% if label_coarse == 0 %}
+Is this question asking for a {{"definition"}}, a {{"description"}}, a {{"manner of action"}}, or a {{"reason"}}?
+{{text}}
+||| 
+{{ {0: "Manner", 7: "Defintion", 9: "Reason", 12: "Description"}[label_fine] }}
+{% endif %}
+```
 
 ## Uploading Templates
 
@@ -134,4 +153,8 @@ directory in the repo will be modified. To upload it, following these steps:
 
 
 ## Jinja Cookbook
-TODO
+
+Jinja includes lots of complex features but for most instances you likely only
+need to use the methods above. If there's something you're not sure how to do,
+just message the prompt engineering group on Slack. We'll collect other frequent
+patterns here.
