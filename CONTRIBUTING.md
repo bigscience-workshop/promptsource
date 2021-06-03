@@ -41,6 +41,9 @@ applied to the current example will appear in the right sidebar.
 1. **Verify the template**. Check that you didn't miss any case by scrolling
 through a handful of examples of the prompted dataset using the
 "Prompted dataset viewer" mode.
+1. **Write between 5 and 10 templates**. Repeat the steps 4 to 8 to create between 5
+and 10 (more if you want!) templates per dataset. Feel free to introduce some diversity
+both in the format and the formulation.
 1. **Duplicate the template(s).** If the dataset you have chosen bear the same
 format as other datasets (for instance `MNLI` and `SNLI` have identical format),
 you can simply claim these datasets and duplicate the templates you have written
