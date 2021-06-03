@@ -47,7 +47,10 @@ both in the format and the formulation.
 1. **Duplicate the template(s).** If the dataset you have chosen bear the same
 format as other datasets (for instance, `MNLI` and `SNLI` have identical formats),
 you can simply claim these datasets and duplicate the templates you have written
-to these additional datasets.
+to these additional datasets. The most straighforward way to do it is to copy-paste
+the `templates.yaml` file in right subfolder (the `templates` folder is broken down by dataset/subset).
+Please make sure you adapt the `dataset` and `subset` keys in the yaml file. You don't need to wory
+about the `id` as it is unique for a given dataset/subset.
 1. **Upload the template(s).** Submit a PR using the instructions
 [here](#uploading-templates).
 
