@@ -6,12 +6,12 @@ templates:
       \ 1 contradict Sentence 2? Yes, No, or Neutral? |||\n{% if label == 0 %} \n\
       No\n{% elif label == 1 %}\nNeutral\n{% else %}\nYes\n{% endif %}"
     name: does S1 contradict S2?
-    reference: Copied from Victor's prompt for XNLI.
+    reference: Copied from Victor's prompts for XNLI.
   5459237b-97de-4340-bf7b-2939c3f7ca19: !Template
     id: 5459237b-97de-4340-bf7b-2939c3f7ca19
     jinja: Given that {{premise}} Does it follow that {{hypothesis}} Yes, no, or maybe?
       ||| {{ ["Yes", "Maybe", "No"][label] }}
-    name: "given\u2026 does it follows that\u2026 "
+    name: "given\u2026 does it follow that\u2026 "
     reference: "\"Does it follow that\" could be replaced with \"can we infer that\u2026\
       \ \", \"is it guaranteed that\u2026\", etc. Ideally there should be a question\
       \ mark after \"does it follow that {hypothesis}?\", but the hypothesis string\
@@ -37,12 +37,14 @@ templates:
       \ 1 entail Sentence 2? Yes, No, or Neutral? |||\n{% if label == 0 %} \nYes\n\
       {% elif label == 1 %}\nNeutral\n{% else %}\nNo\n{% endif %}"
     name: does S1 entail S2?
-    reference: Copied from Victor's prompt for XNLI.
+    reference: Copied from Victor's prompts for XNLI.
   e0e8b914-c32c-4c85-8b8f-0f61ae79e2b3: !Template
     id: e0e8b914-c32c-4c85-8b8f-0f61ae79e2b3
     jinja: Given that {{premise}}, it {{"must be true, might be true, or must be false"}}
       that {{hypothesis}}? ||| It {{ ["must be true", "might be true", "must be false"][label]
       }}.
-    name: "given\u2026 must be true that\u2026"
-    reference: Anecdotally this is the most natural way of how I say an NLI sentence
-      pair out loud to humans.
+    name: "given\u2026 it must be true that\u2026"
+    reference: 'Maybe a little verbose for a generative model, but anecdotally this
+      is the most natural way of how I say an NLI sentence pair out loud to humans.
+      Caveat: NLI annotations are not meant to be strictly truth-conditional entailment,
+      so "must" is not ideal.'
