@@ -1,0 +1,48 @@
+dataset: anli
+templates:
+  391acb43-732a-4c09-8c10-e02d226d8854: !Template
+    id: 391acb43-732a-4c09-8c10-e02d226d8854
+    jinja: "Sentence 1: {{premise}}\nSentence 2: {{hypothesis}}\nQuestion: Does Sentence\
+      \ 1 contradict Sentence 2? Yes, No, or Neutral? |||\n{% if label == 0 %} \n\
+      No\n{% elif label == 1 %}\nNeutral\n{% else %}\nYes\n{% endif %}"
+    name: does S1 contradict S2?
+    reference: Copied from Victor's prompt for XNLI.
+  5459237b-97de-4340-bf7b-2939c3f7ca19: !Template
+    id: 5459237b-97de-4340-bf7b-2939c3f7ca19
+    jinja: Given that {{premise}} Does it follow that {{hypothesis}} Yes, no, or maybe?
+      ||| {{ ["Yes", "Maybe", "No"][label] }}
+    name: "given\u2026 does it follows that\u2026 "
+    reference: "\"Does it follow that\" could be replaced with \"can we infer that\u2026\
+      \ \", \"is it guaranteed that\u2026\", etc. Ideally there should be a question\
+      \ mark after \"does it follow that {hypothesis}?\", but the hypothesis string\
+      \ often comes with ending punctuations of its own."
+  620aa3fc-d5eb-46f5-a1ee-4c754527aa97: !Template
+    id: 620aa3fc-d5eb-46f5-a1ee-4c754527aa97
+    jinja: '{{premise}}
+
+      Question: {{hypothesis}} True, False, or Neither? ||| {{ ["True", "Neither",
+      "False"][label] }}'
+    name: GPT-3 style
+    reference: 'Same as reported in Figure G7 of the GPT-3 paper, except that there
+      is no task identifying tokens like "anli R1: ".'
+  9b613182-c6ab-4427-9221-3d68f6d62765: !Template
+    id: 9b613182-c6ab-4427-9221-3d68f6d62765
+    jinja: '{{premise}} Based on the previous passage, is it true that {{hypothesis}}
+      Yes, no, or maybe? ||| {{ ["Yes", "Maybe", "No"][label] }}'
+    name: based on the previous passage
+    reference: "Adopted from the BoolQ prompts in Schick & Sch\xFCtze 2021."
+  cf55f09b-bc68-439d-a9b2-781263509f99: !Template
+    id: cf55f09b-bc68-439d-a9b2-781263509f99
+    jinja: "Sentence 1: {{premise}}\nSentence 2: {{hypothesis}}\nQuestion: Does Sentence\
+      \ 1 entail Sentence 2? Yes, No, or Neutral? |||\n{% if label == 0 %} \nYes\n\
+      {% elif label == 1 %}\nNeutral\n{% else %}\nNo\n{% endif %}"
+    name: does S1 entail S2?
+    reference: Copied from Victor's prompt for XNLI.
+  e0e8b914-c32c-4c85-8b8f-0f61ae79e2b3: !Template
+    id: e0e8b914-c32c-4c85-8b8f-0f61ae79e2b3
+    jinja: Given that {{premise}}, it {{"must be true, might be true, or must be false"}}
+      that {{hypothesis}}? ||| It {{ ["must be true", "might be true", "must be false"][label]
+      }}.
+    name: "given\u2026 must be true that\u2026"
+    reference: Anecdotally this is the most natural way of how I say an NLI sentence
+      pair out loud to humans.
