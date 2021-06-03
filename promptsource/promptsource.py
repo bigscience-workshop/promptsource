@@ -293,11 +293,14 @@ else:
                 if num_templates > 0:
                     with col2:
                         prompt = template.apply(example)
-                        st.write("Prompt + X")
-                        show_text(prompt[0])
-                        if len(prompt) > 1:
-                            st.write("Y")
-                            show_text(prompt[1])
+                        if prompt == [""]:
+                            st.write("∅∅∅ *Blank result*")
+                        else:
+                            st.write("Prompt + X")
+                            show_text(prompt[0])
+                            if len(prompt) > 1:
+                                st.write("Y")
+                                show_text(prompt[1])
                 st.markdown("***")
         else:  # mode = Sourcing
             st.markdown("## Template Creator")
@@ -403,11 +406,14 @@ else:
                     st.empty()
                     template = dataset_templates[state.template_name]
                     prompt = template.apply(example)
-                    st.write("Prompt + X")
-                    show_text(prompt[0], width=40)
-                    if len(prompt) > 1:
-                        st.write("Y")
-                        show_text(prompt[1], width=40)
+                    if prompt == [""]:
+                        st.write("∅∅∅ *Blank result*")
+                    else:
+                        st.write("Prompt + X")
+                        show_text(prompt[0], width=40)
+                        if len(prompt) > 1:
+                            st.write("Y")
+                            show_text(prompt[1], width=40)
 
 
 #
