@@ -1,0 +1,46 @@
+dataset: super_glue
+subset: wic
+templates:
+  14e73f39-a0d1-44c2-b9a4-4e48f9f1608e: !Template
+    id: 14e73f39-a0d1-44c2-b9a4-4e48f9f1608e
+    jinja: "Determine if the word '{{word}}' used in the same way in the two\nsentences\
+      \ below? Yes, No?\n{{sentence1}}\n{{sentence2}}\n||| \n{% if label == 0 %} \n\
+      No\n{% elif label == 1 %}\nYes\n{% endif %}"
+    name: question-context-with-label
+    reference: Generalized question-context format with label
+  3503ead5-4fa5-4f77-95dc-f0c2ed3eecdc: !Template
+    id: 3503ead5-4fa5-4f77-95dc-f0c2ed3eecdc
+    jinja: "Does the word `{{word}}` used in same context in the two\nsentences below?\n\
+      {{sentence1}}\n{{sentence2}}\n||| \n{% if label == 0 %} \nNo\n{% elif label\
+      \ == 1 %}\nYes\n{% endif %}"
+    name: question-context-meaning
+    reference: Generalized question-context format
+  3f7ce102-bb94-4df0-894a-caa35a8e7bcd: !Template
+    id: 3f7ce102-bb94-4df0-894a-caa35a8e7bcd
+    jinja: "{{sentence1}}\n{{sentence2}}\nQuestion: Is the word '{{word}}' used in\
+      \ the same context in the two\nsentences above?\n||| \n{% if label == 0 %} \n\
+      No\n{% elif label == 1 %}\nYes\n{% endif %}"
+    name: GPT-3-prompt-modified
+    reference: Following table G32. https://arxiv.org/pdf/2005.14165.pdf
+  c3a0a5d8-cfe9-4a7f-8a3c-3c526e0ad0c6: !Template
+    id: c3a0a5d8-cfe9-4a7f-8a3c-3c526e0ad0c6
+    jinja: "{{sentence1}}\n{{sentence2}}\nQuestion: Is the word '{{word}}' used in\
+      \ the same way in the two\nsentences above?\n||| \n{% if label == 0 %} \nNo\n\
+      {% elif label == 1 %}\nYes\n{% endif %}"
+    name: GPT-3-prompt
+    reference: Following table G32. https://arxiv.org/pdf/2005.14165.pdf
+  cfbc1637-10b8-4f20-a31c-55292f3cebd0: !Template
+    id: cfbc1637-10b8-4f20-a31c-55292f3cebd0
+    jinja: "Determine if the word '{{word}}' used in the same way in the two\nsentences\
+      \ below? \n{{sentence1}}\n{{sentence2}}\n||| \n{% if label == 0 %} \nNo\n{%\
+      \ elif label == 1 %}\nYes\n{% endif %}"
+    name: question-context
+    reference: Generalized question-context format
+  d9e1db2a-ab0b-4621-bb41-01d5788d3873: !Template
+    id: d9e1db2a-ab0b-4621-bb41-01d5788d3873
+    jinja: "{{sentence1}}\n{{sentence2}}\nQuestion: Is the word '{{word}}' used in\
+      \ the same way in the two\nsentences above? Yes, No?\n||| \n{% if label == 0\
+      \ %} \nNo\n{% elif label == 1 %}\nYes\n{% endif %}"
+    name: GPT-3-prompt-with-label
+    reference: Following table G32. https://arxiv.org/pdf/2005.14165.pdf add additional
+      label
