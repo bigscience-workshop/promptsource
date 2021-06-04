@@ -1,4 +1,4 @@
-from jinja2 import BaseLoader, Environment, meta
+from jinja2 import BaseLoader, Environment, meta, TemplateError
 from templates import TemplateCollection
 from utils import get_dataset_builder
 
@@ -33,7 +33,12 @@ for (dataset_name, subset_name) in template_collection.keys:
         template = dataset_templates[template_name]
 
         # Check 1: Jinja and all features valid?
-        parse = env.parse(template.jinja)
+        try:
+            parse = env.parse(template.jinja)
+        except TemplateError as e:
+            raise ValueError(f"Template for dataset {dataset_name}/{subset_name} "
+                             f"with uuid {template.get_id()} failed to parse.") from e
+
         variables = meta.find_undeclared_variables(parse)
         for variable in variables:
             if variable not in features:
