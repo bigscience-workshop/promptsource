@@ -7,7 +7,7 @@ from utils import get_dataset_builder
 # checks:
 #
 # 0. Are all templates parsable YAML?
-# 1. Are all referenced variables in the dataset schema?
+# 1. Do all templates parse in Jinja and are all referenced variables in the dataset schema?
 # 2. Does the template contain a prompt/output separator "|||" ?
 # 3. Are all names and templates within a data (sub)set unique?
 #
@@ -32,7 +32,7 @@ for (dataset_name, subset_name) in template_collection.keys:
     for template_name in dataset_templates.all_template_names:
         template = dataset_templates[template_name]
 
-        # Check 1: Are all features valid?
+        # Check 1: Jinja and all features valid?
         parse = env.parse(template.jinja)
         variables = meta.find_undeclared_variables(parse)
         for variable in variables:
