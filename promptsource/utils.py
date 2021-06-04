@@ -149,14 +149,20 @@ def renameDatasetColumn(dataset):
 #
 
 
-def get_dataset(path, conf=None):
-    "Get a dataset from name and conf."
+def get_dataset_builder(path, conf=None):
+    "Get a dataset builder from name and conf."
     module_path = datasets.load.prepare_module(path, dataset=True)
     builder_cls = datasets.load.import_main_class(module_path[0], dataset=True)
     if conf:
         builder_instance = builder_cls(name=conf, cache_dir=None)
     else:
         builder_instance = builder_cls(cache_dir=None)
+    return builder_instance
+
+
+def get_dataset(path, conf=None):
+    "Get a dataset from name and conf."
+    builder_instance = get_dataset_builder(path, conf)
     fail = False
     if builder_instance.manual_download_instructions is None and builder_instance.info.size_in_bytes is not None:
         builder_instance.download_and_prepare()

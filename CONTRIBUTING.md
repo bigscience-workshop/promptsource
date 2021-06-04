@@ -42,8 +42,9 @@ applied to the current example will appear in the right sidebar.
 through a handful of examples of the prompted dataset using the
 "Prompted dataset viewer" mode.
 1. **Write between 5 and 10 templates**. Repeat the steps 4 to 8 to create between 5
-and 10 (more if you want!) templates per dataset/subset. Feel free to introduce some diversity
-both in the format and the formulation.
+and 10 (more if you want!) templates per dataset/subset. Feel free to introduce
+a mix of formats, some that follow the templates listed in the [best practices](#best-practices)
+and some that are more diverse in the format and the formulation. 
 1. **Duplicate the template(s).** If the dataset you have chosen bear the same
 format as other datasets (for instance, `MNLI` and `SNLI` have identical formats),
 you can simply claim these datasets and duplicate the templates you have written
@@ -116,7 +117,6 @@ Is this a piece of news regarding {{"world politics"}}, {{"sports"}}, {{"busines
 
 ## Best Practices
 
-A few miscellaneous things:
 
 * **Writing outputs.** When writing a template for a task that requires outputting
 a label, don't use articles or other stop words before the label name in the output.
@@ -156,6 +156,27 @@ into a conditional generation format
 ```jinja2
 Given that {{premise}}, it {{ "must be true, might be true, or must be false" }} that {{hypothesis}}?|||
 {{ ["must be true", "might be true", "must be false"][label] }}
+```
+* **Pre-defined formats.** The goal is to collect a diverse set of prompts with diverse formats, but
+we also want to include a few less diverse prompts that follow the following two structures:
+1) A question-answer pair with optional multiple choices like:
+```
+[Context]                         # optional depending on the task
+[Question]
+[Label1], [Label2], [Label3]      # optional depending on the task
+```
+So for SNLI it will look like:
+```jinja2
+{{premise}}
+Is it the case that {{hypothesis}}?
+{{ "Yes", "No", "Maybe" }} ||| {{ ["Yes", "No", "Maybe"][label] }}
+```
+
+2) Task description followed by the input. So for SNLI it will look like:
+```jinja2
+Determine the relation between the following two sentences. The relations are entailment, contradiction, or neutral.
+{{premise}}
+{{hypothesis}} ||| {{label}}
 ```
 
 ## Uploading Templates
