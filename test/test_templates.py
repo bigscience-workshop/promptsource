@@ -1,23 +1,29 @@
 from jinja2 import BaseLoader, Environment, meta, TemplateError
+import pytest
 from templates import TemplateCollection
 from utils import get_dataset_builder
-
-#
-# This script validates all the templates in the repository with simple syntactic
-# checks:
-#
-# 0. Are all templates parsable YAML?
-# 1. Do all templates parse in Jinja and are all referenced variables in the dataset schema?
-# 2. Does the template contain a prompt/output separator "|||" ?
-# 3. Are all names and templates within a data (sub)set unique?
-#
 
 # Sets up Jinja environment
 env = Environment(loader=BaseLoader)
 
 # Loads templates and iterates over each data (sub)set
 template_collection = TemplateCollection()
-for (dataset_name, subset_name) in template_collection.keys:
+
+
+@pytest.mark.parametrize("dataset", template_collection.keys)
+def test_dataset(dataset):
+    """
+    Validates all the templates in the repository with simple syntactic checks:
+    0. Are all templates parsable YAML?
+    1. Do all templates parse in Jinja and are all referenced variables in the dataset schema?
+    2. Does the template contain a prompt/output separator "|||" ?
+    3. Are all names and templates within a data (sub)set unique?
+
+    :param dataset: (dataset_name, subset_name) pair to test
+
+    """
+    dataset_name, subset_name = dataset
+
     # Loads dataset information
     builder_instance = get_dataset_builder(dataset_name, subset_name)
     features = builder_instance.info.features.keys()
