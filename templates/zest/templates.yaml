@@ -12,7 +12,7 @@ templates:
 
       {% else %}
 
-      answer[0]
+      {{answer[0]}}
 
       {% endif %}'
     name: concatenate
@@ -35,7 +35,8 @@ templates:
     reference: Decide whether this question is answerable
   6f694e45-1d17-4067-a1f6-7dae89c148db: !Template
     id: 6f694e45-1d17-4067-a1f6-7dae89c148db
-    jinja: 'My daughter is asking me a question about {{domain}}: {{question}}
+    jinja: 'My daughter is asking me a question about {{domain | replace("_", " ")}}:
+      {{question}}
 
       Here''s what I found on the internet: {{context}}
 
@@ -49,7 +50,7 @@ templates:
 
       {% else %}
 
-      answer[0]
+      {{answer[0]}}
 
       {% endif %}'
     name: curious_kid
@@ -69,7 +70,7 @@ templates:
 
       {% else %}
 
-      answer[0]
+      {{answer[0]}}
 
       {% endif %}'
     name: gpt3instruct_format
@@ -78,7 +79,8 @@ templates:
     id: 846cc8ff-0527-4b2f-8da4-46613e915ff5
     jinja: '{% if answer[0] != "n/a" %}{{context}}
 
-      Based on the previous passage, generate a question which has for answer {{answer[0]}}.
+      Based on the previous passage, generate a question which has the following passage
+      for an answer {{answer[0]}}.
 
       |||
 
@@ -89,7 +91,7 @@ templates:
     reference: Generate the question
   a69d7845-8503-48c4-b3d2-17bdc6820794: !Template
     id: a69d7845-8503-48c4-b3d2-17bdc6820794
-    jinja: '{% if answer[0] != "n/a" %}Generate a question about {{domain}} based
+    jinja: '{% if answer[0] != "n/a" %}Generate a question about {{domain | replace("_", " ")}} based
       on this passage: {{context}}.
 
       The answer to the question should be: {{answer[0]}}.
@@ -103,7 +105,7 @@ templates:
     reference: Generate the question with domain
   bdaf4f8a-2344-4e46-a52b-2045a080a4b2: !Template
     id: bdaf4f8a-2344-4e46-a52b-2045a080a4b2
-    jinja: 'Answer this question about {{domain}} based on the context. If the question
+    jinja: 'Answer this question about {{domain | replace("_", " ")}} based on the context. If the question
       is not answerable with the context alone, say "can''t answer".
 
       {{context}}
@@ -116,14 +118,14 @@ templates:
 
       {% else %}
 
-      answer[0]
+      {{answer[0]}}
 
       {% endif %}'
     name: gpt3instruct_format_with_domain
     reference: Template format from GPT3 instruct with the question's domain
   cd563834-49ee-495d-ac46-99f0264e58d5: !Template
     id: cd563834-49ee-495d-ac46-99f0264e58d5
-    jinja: 'I am giving my students the following question "{{question}}" about {{domain}}.
+    jinja: 'I am giving my students the following question "{{question}}" about {{domain | replace("_", " ")}}.
 
       What should be their answer based on this context: {{context}}|||
 
@@ -133,7 +135,7 @@ templates:
 
       {% else %}
 
-      answer[0]
+      {{answer[0]}}
 
       {% endif %}'
     name: teacher_student
