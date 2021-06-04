@@ -181,10 +181,13 @@ else:
 
         dataset, failed = get_dataset(dataset_key, str(conf_option.name) if conf_option else None)
         if failed:
+            st.error(f"Loading dataset {dataset_key} failed.\n{dataset}. Please skip for the moment.")
+            """
             if dataset.manual_download_instructions is not None:
                 st.error(f"Dataset {dataset_key} requires manual download. Please skip for the moment.")
             else:
                 st.error(f"Loading dataset {dataset_key} failed.\n{dataset}. Please skip for the moment.")
+            """
 
         splits = list(dataset.keys())
         index = 0

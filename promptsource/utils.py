@@ -2,6 +2,7 @@
 
 import datasets
 import requests
+from datasets import load_dataset
 
 
 def removeHyphen(example):
@@ -42,16 +43,11 @@ def get_dataset_builder(path, conf=None):
 
 def get_dataset(path, conf=None):
     "Get a dataset from name and conf."
-    builder_instance = get_dataset_builder(path, conf)
-    fail = False
-    if builder_instance.manual_download_instructions is None and builder_instance.info.size_in_bytes is not None:
-        builder_instance.download_and_prepare()
-        dts = builder_instance.as_dataset()
-        dataset = dts
-    else:
-        dataset = builder_instance
-        fail = True
-    return dataset, fail
+    try:
+        dataset = load_dataset(path, conf)
+        return dataset, False
+    except:
+        return None, True
 
 
 def get_dataset_confs(path):
