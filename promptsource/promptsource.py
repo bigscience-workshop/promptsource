@@ -2,6 +2,7 @@ import textwrap
 
 import pandas as pd
 import streamlit as st
+from augmentation import augment
 from jinja2 import TemplateSyntaxError
 from pygments import highlight
 from pygments.formatters import HtmlFormatter
@@ -9,7 +10,6 @@ from pygments.lexers import DjangoLexer
 from session import _get_state
 from utils import get_dataset, get_dataset_confs, list_datasets, removeHyphen, renameDatasetColumn, render_features
 
-from augmentation import augment
 from templates import Template, TemplateCollection
 
 
@@ -444,8 +444,7 @@ else:
                             st.write("Y")
                             show_text(prompt[1], width=40)
                         st.write("Augmented Prompt (demo)")
-                        aug_subject = template.jinja.split("|||")[0].replace("{{text}}", "").strip()
-                        show_text(augment(aug_subject), width=40)
+                        show_text(augment(template.jinja), width=40)
 
 #
 # Must sync state at end
