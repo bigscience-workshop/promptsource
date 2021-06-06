@@ -1,0 +1,48 @@
+dataset: super_glue
+subset: cb
+templates:
+  0acadc5c-8cd0-4e33-b117-379321bc0df1: !Template
+    id: 0acadc5c-8cd0-4e33-b117-379321bc0df1
+    jinja: "Sentence 1: {{premise}}\nSentence 2: {{hypothesis}}\nQuestion: Does Sentence\
+      \ 1 contradict Sentence 2? Yes, No, or Neutral? |||\n{% if label == 0 %} \n\
+      No\n{% elif label == 1 %}\nNeutral\n{% else %}\nYes\n{% endif %}"
+    name: does S1 contradict S2?
+    reference: Copied from Victor's prompts for XNLI.
+  5bca1a90-340b-42b4-9c0d-e5eb1c25605e: !Template
+    id: 5bca1a90-340b-42b4-9c0d-e5eb1c25605e
+    jinja: Given that {{premise}} Does it follow that {{hypothesis}} Yes, no, or maybe?
+      ||| {{ ["Yes", "Maybe", "No"][label] }}
+    name: "given\u2026 does it follow that\u2026 "
+    reference: ''
+  684f44af-f09a-4231-a318-94473a9624b7: !Template
+    id: 684f44af-f09a-4231-a318-94473a9624b7
+    jinja: Given that {{premise}}, it {{"must be true, might be true, or must be false"}}
+      that {{hypothesis}}? ||| It {{ ["must be true", "might be true", "must be false"][label]
+      }}.
+    name: "given\u2026 it must be true that\u2026"
+    reference: 'Maybe a little verbose for a generative model, but anecdotally this
+      is the most natural way of how I say an NLI sentence pair out loud to humans.
+      Caveat: NLI annotations are not meant to be strictly truth-conditional entailment,
+      so "must" is not ideal.'
+  774c170e-9fff-4b0b-871a-30967b0186f6: !Template
+    id: 774c170e-9fff-4b0b-871a-30967b0186f6
+    jinja: '{{premise}} Based on the previous passage, is it true that {{hypothesis}}
+      Yes, no, or maybe? ||| {{ ["Yes", "Maybe", "No"][label] }}'
+    name: based on the previous passage
+    reference: "Adapted from the BoolQ prompts in Schick & Sch\xFCtze 2021."
+  86120953-771a-4dca-a681-d628117ba6d2: !Template
+    id: 86120953-771a-4dca-a681-d628117ba6d2
+    jinja: "Sentence 1: {{premise}}\nSentence 2: {{hypothesis}}\nQuestion: Does Sentence\
+      \ 1 entail Sentence 2? Yes, No, or Neutral? |||\n{% if label == 0 %} \nYes\n\
+      {% elif label == 1 %}\nNeutral\n{% else %}\nNo\n{% endif %}"
+    name: does S1 entail S2?
+    reference: Copied from Victor's prompts for XNLI.
+  bab42d43-d1e6-4a42-8112-75a398fd582c: !Template
+    id: bab42d43-d1e6-4a42-8112-75a398fd582c
+    jinja: '{{premise}}
+
+      Question: {{hypothesis}} True, False, or Neither? ||| {{ ["True", "Neither",
+      "False"][label] }}'
+    name: GPT-3 style
+    reference: 'Same as reported in Figure G7 of the GPT-3 paper, except that there
+      is no task identifying tokens like "anli R1: ".'

@@ -1,0 +1,51 @@
+dataset: super_glue
+subset: rte
+templates:
+  0583671e-b717-4353-a0d4-ea1e4ac56429: !Template
+    id: 0583671e-b717-4353-a0d4-ea1e4ac56429
+    jinja: Given that {{premise}} Does it follow that {{hypothesis}} Yes or no? |||
+      {{ ["Yes", "No"][label] }}
+    name: "given\u2026 does it follow that\u2026 "
+    reference: Ideally there should be a question mark after "does it follow that
+      {hypothesis}?", but the hypothesis string often comes with ending punctuations
+      of its own.
+  1abaa658-e7f0-4e54-b7ad-312ba009d544: !Template
+    id: 1abaa658-e7f0-4e54-b7ad-312ba009d544
+    jinja: "Sentence 1: {{premise}}\nSentence 2: {{hypothesis}}\nQuestion: Does Sentence\
+      \ 1 entail Sentence 2? Yes or no? |||\n{% if label == 0 %} \nYes\n{% else %}\n\
+      No\n{% endif %}"
+    name: does S1 entail S2?
+    reference: Adapted from Victor's prompts for XNLI.
+  1bf2eee4-448b-48df-98e0-dee86edf7b96: !Template
+    id: 1bf2eee4-448b-48df-98e0-dee86edf7b96
+    jinja: '{{premise}} Therefore, we are licensed to say that {{hypothesis}} True
+      or false? ||| {{ ["True", "False"][label] }}'
+    name: "\u2026 Therefore, we're licensed to say that\u2026"
+    reference: ''
+  2721e378-68b2-40e6-be7e-fc2783b16042: !Template
+    id: 2721e378-68b2-40e6-be7e-fc2783b16042
+    jinja: '{{premise}}
+
+      Question: {{hypothesis}} True or False? ||| {{ ["True", "False"][label] }}'
+    name: GPT-3 style
+    reference: Same as reported in Figure G31 of the GPT-3 paper, although I'm not
+      sure about phrasing the not_entailment label (could be either neutral and contradiction)
+      simply as "False".
+  325dbe5c-167d-4b17-95db-1d93d8806782: !Template
+    id: 325dbe5c-167d-4b17-95db-1d93d8806782
+    jinja: Suppose {{premise}} Can we infer that {{hypothesis}}? ||| {{ ["Yes", "No"][label]
+      }}
+    name: "Suppose\u2026 Can we infer that\u2026"
+    reference: ''
+  4aac6388-3e90-4d06-be90-68fc31a89fa4: !Template
+    id: 4aac6388-3e90-4d06-be90-68fc31a89fa4
+    jinja: '{{premise}} Does the previous passage support the claim that {{hypothesis}}?
+      ||| {{ ["Yes", "No"][label] }}'
+    name: "\u2026does the previous passage support the claim that"
+    reference: ''
+  ad3361d7-505f-4b5d-93dd-e426394a3943: !Template
+    id: ad3361d7-505f-4b5d-93dd-e426394a3943
+    jinja: '{{premise}} Based on the previous passage, is it true that {{hypothesis}}?
+      ||| {{ ["Yes", "No"][label] }}'
+    name: based on the previous passage
+    reference: "Adapted from the BoolQ prompts in Schick & Sch\xFCtze 2021."

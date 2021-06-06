@@ -14,4 +14,3 @@ quality:
 style:
 	black --line-length 119 --target-version py38 $(check_dirs)
 	isort $(check_dirs)
-
