@@ -1,0 +1,15 @@
+dataset: super_glue
+subset: record
+templates:
+  a5ed27ed-162b-4ac1-9c7a-85059d5214be: !Template
+    id: a5ed27ed-162b-4ac1-9c7a-85059d5214be
+    jinja: "{{ passage }} \n{{ query }} \nThe{% if answers | length < 2 %} placeholder\
+      \ refers {% else %} placeholders refer {% endif %}to ||| {{ answers | join(\"\
+      , \") }}"
+    name: "the placeholders refer to\u2026"
+    reference: ''
+  ff9aee36-c6da-48ca-816d-b4222526f8cd: !Template
+    id: ff9aee36-c6da-48ca-816d-b4222526f8cd
+    jinja: "{{ passage }} \n{{ query }} ||| {{ answers | join(\", \") }}"
+    name: naive LM
+    reference: "Adapted from Schick & Sch\xFCtz 2021."
