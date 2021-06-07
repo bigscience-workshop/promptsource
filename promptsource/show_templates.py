@@ -1,17 +1,19 @@
 import argparse
 import textwrap
+
 from utils import get_dataset, get_dataset_confs, list_datasets, removeHyphen, renameDatasetColumn, render_features
+
 from templates import Template, TemplateCollection
 
-parser = argparse.ArgumentParser(description='Process some integers.')
-parser.add_argument('dataset', type=str,
-                    help='dataset name')
-parser.add_argument('--subset', type=str, default="",
-                    help='dataset name')
+
+parser = argparse.ArgumentParser(description="Process some integers.")
+parser.add_argument("dataset_path", type=str, help="path to dataset name")
 
 args = parser.parse_args()
-dataset_name = args.dataset
-subset_name = args.subset
+path = args.dataset_path.split("/")
+
+dataset_name = path[1]
+subset_name = path[2] if len(path) == 4 else ""
 template_collection = TemplateCollection()
 
 dataset, _ = get_dataset(dataset_name, subset_name)
@@ -30,12 +32,11 @@ for template_name in template_list:
     print()
     print(template.jinja)
     print()
-    
 
     for example_index in range(10):
         example = dataset[example_index]
         print()
-        print("\tExample ",  example)
+        print("\tExample ", example)
         print()
         xp, yp = template.apply(example)
         print()
@@ -46,5 +47,3 @@ for template_name in template_list:
         print("\tY")
         for l in textwrap.wrap(yp, width=width, replace_whitespace=False):
             print("\t", l.replace("\n", "\n\t"))
-        
-args.dataset
