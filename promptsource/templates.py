@@ -13,10 +13,13 @@ TEMPLATES_FOLDER_PATH = "./templates/"
 
 env = Environment(loader=BaseLoader)
 
+
 def highlight(input):
     return "<span style='color: #F08080'>" + input + "</span>"
 
-env.filters['highlight'] = highlight
+
+env.filters["highlight"] = highlight
+
 
 class TemplateCollection:
     """
