@@ -41,7 +41,7 @@ for template_name in template_list:
 
     for example_index in range(10):
         example = dataset[example_index]
-        print()
+        print("\t--------")
         print("\tExample ", example)
         print("\t--------")
         xp, yp = template.apply(example)
