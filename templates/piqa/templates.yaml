@@ -45,7 +45,7 @@ templates:
     id: 99565244-4eaf-4004-a28b-4362ba5bcac3
     jinja: '{{goal}} {{sol2}}
 
-      Does this solution make sense?
+      Does this phrase make sense?
 
       |||
 
@@ -73,13 +73,13 @@ templates:
     id: b5c69473-eedb-4c4f-a5fa-d4e266e43535
     jinja: 'Given a sentence, correct it if it doesn''t make sense.
 
-      Input: {{goal}} {{sol2}}
+      Input: {{goal}} {{sol2[0].lower() + sol2[1:]}}
 
       Output:
 
       |||
 
-      {{goal}} {{[sol1, sol2][label]}}
+      {{goal}} {{[sol1[0].lower() + sol1[1:], sol2[0].lower() + sol2[1:]][label]}}
 
       '
     name: 'Correct the solution if false: from sol 2'
@@ -90,14 +90,14 @@ templates:
 
       |||
 
-      {{[sol1, sol2][label]}}'
+      {{[sol1[0].lower() + sol1[1:], sol2[0].lower() + sol2[1:]][label]}}'
     name: no prompt needed
     reference: ''
   f044def7-01c2-42de-b6ad-4e8c63ab2bf1: !Template
     id: f044def7-01c2-42de-b6ad-4e8c63ab2bf1
-    jinja: '{{goal}} {{sol1}}
+    jinja: '{{goal}} {{sol1[0].lower() + sol1[1:]}}
 
-      Does this solution make sense?
+      Does this phrase make sense?
 
       |||
 
@@ -108,13 +108,13 @@ templates:
     id: f42cd457-a14b-465a-a139-d7d2407a3bac
     jinja: 'Given a sentence, correct it if it doesn''t make sense.
 
-      Input: {{goal}} {{sol1}}
+      Input: {{goal}} {{sol1[0].lower() + sol1[1:]}}
 
       Output:
 
       |||
 
-      {{goal}} {{[sol1, sol2][label]}}
+      {{goal}} {{[sol1[0].lower() + sol1[1:], sol2[0].lower() + sol2[1:]][label]}}
 
       '
     name: 'Correct the solution if false: from sol 1'
