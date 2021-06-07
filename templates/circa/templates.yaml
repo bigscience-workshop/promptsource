@@ -12,16 +12,18 @@ templates:
     reference: ''
   70b7a94a-6a39-4a81-9a6e-0709a0acdb28: !Template
     id: 70b7a94a-6a39-4a81-9a6e-0709a0acdb28
-    jinja: "What is the most common judgement in a less strict way given the question-answer\
-      \ pair of X and Y in the context of {{context}}?\n\nX: {{question_X}} \nY: {{answer_Y}}\
-      \ |||\n\n{{   \n [\n  \"Yes\",\n  \"No\",\n  \"In the middle, neither yes nor\
-      \ no\",\n  \"Yes, subject to some conditions\",\n  \"Other\"\n]\n [goldstandard2]\
-      \ }}"
+    jinja: "{% if goldstandard2 != -1 %}\n\nWhat is the most common judgement in a\
+      \ less strict way, \"{{\"Yes\"}}\",  \"{{\"No\"}}\", \"{{\"In the middle, neither\
+      \ yes nor no\"}}\", \"{{\"Yes, subject to some conditions\"}}\", \"{{\"Other\"\
+      }}\", given the question-answer pair of X and Y in the context of {{context}}?\n\
+      \nX: {{question_X}} \nY: {{answer_Y}} |||\n\n{{   \n [\n  \"Yes\",\n  \"No\"\
+      ,\n  \"In the middle, neither yes nor no\",\n  \"Yes, subject to some conditions\"\
+      ,\n  \"Other\"\n]\n [goldstandard2] }}\n\n{% endif %}"
     name: goldstandard2_judgement
     reference: ''
   73466d0f-b1b1-4c61-8f03-346e121ae06c: !Template
     id: 73466d0f-b1b1-4c61-8f03-346e121ae06c
-    jinja: 'What is a possible question to ask someone given the context of {{context}}?
+    jinja: 'What is a possible question X could ask Y given the context of {{context}}?
       |||
 
       {{question_X}}'
@@ -31,25 +33,23 @@ templates:
     id: 997f7f96-d420-48c1-85f7-ecade54adbd7
     jinja: "What is the most common judgement given the question-answer pair of X\
       \ and Y in the context of {{context}} ?\n\nX: {{question_X}} \nY: {{answer_Y}}\
-      \ |||\n\n{{goldstandard1}}"
+      \ |||\n\n{{[\n  \"Yes\",\n  \"No\",\n  \"In the middle, neither yes nor no\"\
+      ,\n  \"Probably yes / sometimes yes\",\n  \"Probably no\",\n  \"Yes, subject\
+      \ to some conditions\",\n  \"Other\",\n  \"I am not sure how X will interpret\
+      \ Y\u2019s answer\"\n]\n[goldstandard1]\n}}"
     name: judgement
     reference: ''
   a15c1a30-5ef0-451f-b202-987a16752a0a: !Template
     id: a15c1a30-5ef0-451f-b202-987a16752a0a
-    jinja: "What is the most common judgement given the question-answer pair of X\
-      \ and Y in the context of {{context}} ?\n\nX: {{question_X}} \nY: {{answer_Y}}\
+    jinja: "{% if goldstandard1 != -1 %}\n\nWhat is the most common judgement, \"\
+      {{\"Yes\"}}\", \"{{\"No\"}}\", \"{{\"In the middle, neither yes nor no\"}}\"\
+      , \"{{\"Probably yes / sometimes yes\"}}\", \"{{\"Probably no\"}}\", \"{{\"\
+      Yes, subject to some conditions\"}}\", \"{{\"Other\"}}\" or \"{{\"I am not sure\
+      \ how X will interpret Y\u2019s answer\"}}\", given the question-answer pair\
+      \ of X and Y in the context of {{context}} ?\n\nX: {{question_X}} \nY: {{answer_Y}}\
       \ |||\n\n{{   [\n  \"Yes\",\n  \"No\",\n  \"In the middle, neither yes nor no\"\
       ,\n  \"Probably yes / sometimes yes\",\n  \"Probably no\",\n  \"Yes, subject\
       \ to some conditions\",\n  \"Other\",\n  \"I am not sure how X will interpret\
-      \ Y\u2019s answer\"\n] [goldstandard1]}}"
+      \ Y\u2019s answer\"\n] [goldstandard1]}}\n\n{% endif %}"
     name: goldstandard1_judgement
-    reference: ''
-  e09ed91b-694b-454c-be26-38a291c3ff75: !Template
-    id: e09ed91b-694b-454c-be26-38a291c3ff75
-    jinja: 'Answer the following question given the {{context}} answer the following:
-
-      {{question_X}} |||
-
-      {{answer_Y}}'
-    name: conversational_qa
     reference: ''
