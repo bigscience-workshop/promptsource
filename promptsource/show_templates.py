@@ -1,9 +1,9 @@
 import argparse
 import textwrap
 
-from utils import get_dataset, get_dataset_confs, list_datasets, removeHyphen, renameDatasetColumn, render_features
+from utils import get_dataset
 
-from templates import Template, TemplateCollection
+from templates import TemplateCollection
 
 
 parser = argparse.ArgumentParser(description="Process some integers.")
@@ -44,9 +44,9 @@ for template_name in template_list:
         xp, yp = template.apply(example)
         print()
         print("\tPrompt | X")
-        for l in textwrap.wrap(xp, width=width, replace_whitespace=False):
-            print("\t", l.replace("\n", "\n\t"))
+        for line in textwrap.wrap(xp, width=width, replace_whitespace=False):
+            print("\t", line.replace("\n", "\n\t"))
         print()
         print("\tY")
-        for l in textwrap.wrap(yp, width=width, replace_whitespace=False):
-            print("\t", l.replace("\n", "\n\t"))
+        for line in textwrap.wrap(yp, width=width, replace_whitespace=False):
+            print("\t", line.replace("\n", "\n\t"))
