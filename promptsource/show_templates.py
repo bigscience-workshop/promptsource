@@ -27,10 +27,13 @@ dataset_templates = template_collection.get_dataset(dataset_name, subset_name)
 template_list = dataset_templates.all_template_names
 
 width = 80
+print("DATASET ", args.dataset_path)
 for template_name in template_list:
     template = dataset_templates[template_name]
     print()
-    print("TEMPLATE", template_name)
+    print("TEMPLATE")
+    print("NAME:", template_name)
+    print("REFERENCE:", template.reference)
     print("--------")
     print()
     print(template.jinja)
