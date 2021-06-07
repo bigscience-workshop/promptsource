@@ -10,6 +10,9 @@ parser = argparse.ArgumentParser(description="Process some integers.")
 parser.add_argument("dataset_path", type=str, help="path to dataset name")
 
 args = parser.parse_args()
+if "templates.yaml" not in args.dataset_path:
+    exit()
+
 path = args.dataset_path.split("/")
 
 dataset_name = path[1]
