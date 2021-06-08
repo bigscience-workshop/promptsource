@@ -180,10 +180,53 @@ Determine the relation between the following two sentences. The relations are en
 {{premise}}
 {{hypothesis}} ||| {{label}}
 ```
+* **Long text.** Some prompts will have to be truncated because of the model's
+maximum input size. You can better preserve the meaning of your template by
+putting a long field at the end. For example, consider replacing
+```jinja2
+{{ long_text }} What's a good summary for this text? ||| {{ summary }}
+```
+with
+```jinja2
+What's a good summary for this text? {{ long_text }} ||| {{ summary }}
+``` 
 
 ## More Examples
 
 Here are a few interesting examples of templates with explanations.
+
+Here's one for `hellaswag`:
+```jinja2
+First, {{ ctx_a.lower() }} Then, {{ ctx_b.lower() }}...
+
+Complete the above description with a chosen ending:
+
+Ending 1: {{ endings[0] }}
+
+Ending 2: {{ endings[1] }}
+
+Ending 3: {{ endings[2] }}
+
+Ending 4: {{ endings[3] }}
+
+||| {{ {"0": "Ending 1", "1": "Ending 2", "2": "Ending 3", "3": "Ending 4"}[label] }}
+```
+Notice how it uses functions to consistently capitalize the information and provides lots
+of context (referring explicitly to "description" and "chosen ending.")
+
+Here's one for `head_qa`:
+```jinja2
+Given this list of statements about {{category}}: {{ answers | map(attribute="atext")
+| map("lower") | map("trim", ".") | join(", ") }}.
+Which one is the most appropriate answer/completion for the paragraph that follows?
+{{qtext}}
+|||
+{% for answer in answers if answer["aid"]==ra -%}
+{{answer["atext"]}}
+{%- endfor %}
+```
+Like above, it uses functions to present the choices in a readable way. Also, it
+uses a for loop with conditions to handle the more intricate dataset schema. 
 
 Here's one for `paws`:
 ```jinja2
