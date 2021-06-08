@@ -169,7 +169,7 @@ So for SNLI it will look like:
 ```jinja2
 {{premise}}
 Is it the case that {{hypothesis}}?
-{{ "Yes", "No", "Maybe" }} ||| {{ ["Yes", "No", "Maybe"][label] }}
+{{ "Yes" }}, {{ "No" }}, {{ "Maybe" }} ||| {{ ["Yes", "No", "Maybe"][label] }}
 ```
 
 2) Task description followed by the input. So for SNLI it will look like:
