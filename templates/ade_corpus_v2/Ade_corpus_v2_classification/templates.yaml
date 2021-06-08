@@ -1,9 +1,43 @@
 dataset: ade_corpus_v2
 subset: Ade_corpus_v2_classification
 templates:
-  7670c23f-d76e-4491-bad3-55ea6b0073f7: !Template
-    id: 7670c23f-d76e-4491-bad3-55ea6b0073f7
-    jinja: '{{text}} Is this sentence Adverse Drug Event {{"related or not"}}?|||
-      {{["Not-Related", "Related"][label]}}'
-    name: Test1
+  16830a03-568f-4374-9c77-263d8ab50d71: !Template
+    id: 16830a03-568f-4374-9c77-263d8ab50d71
+    jinja: "Read the below text and answer the question.\n\nText: {{text}} \n\nQuestion:\
+      \ Is the text related to adverse drug effect (ADE)?\n\n1. Yes\n2. No\n|||\n\
+      {{[\"Yes\", \"No\"][label]}}"
+    name: baseline-even-more-verbose
+    reference: ''
+  469d2f5a-9eb0-4a05-8110-231016c36068: !Template
+    id: 469d2f5a-9eb0-4a05-8110-231016c36068
+    jinja: "Text: {{text}} \n\nQuestion: Is the text related to adverse drug effect\
+      \ (ADE)?\n|||\n{{[\"Not-Related\", \"Related\"][label]}}"
+    name: baseline-verbose
+    reference: ''
+  5398b646-fc60-4483-915c-9d1f0136412c: !Template
+    id: 5398b646-fc60-4483-915c-9d1f0136412c
+    jinja: Is "{{text}}" related to adverse drug effect (ADE)? ||| {{["Yes", "No"][label]}}
+    name: baseline-YN
+    reference: ''
+  56bd12a8-b8ee-464e-98cc-5f586ba9f74d: !Template
+    id: 56bd12a8-b8ee-464e-98cc-5f586ba9f74d
+    jinja: Is "{{text}}" related to adverse drug effect (ADE)? ||| {{["Not-Related",
+      "Related"][label]}}
+    name: baseline
+    reference: ''
+  78c4ce65-dd66-46ed-878d-11f4eca5e544: !Template
+    id: 78c4ce65-dd66-46ed-878d-11f4eca5e544
+    jinja: "Read the below text and answer the question.\n\nText: {{text}} \n\nQuestion:\
+      \ Is the above text related to adverse drug effect (ADE)?\n\nA. Yes, it is related\
+      \ to adverse drug effect.\n\nB. No, it is not related to adverse drug effect.\n\
+      |||\n{{[\"Yes, it is related to adverse drug effect.\", \"No, it is not related\
+      \ to adverse drug effect.\"][label]}}"
+    name: baseline-even-far-more-verbose
+    reference: ''
+  bf217138-3edd-46fc-b405-a5735d5e470b: !Template
+    id: bf217138-3edd-46fc-b405-a5735d5e470b
+    jinja: "Read the below text and answer the question.\n\nText: {{text}} \n\nQuestion:\
+      \ Is the text related to adverse drug effect (ADE)?\n|||\n{{[\"Not-Related\"\
+      , \"Related\"][label]}}"
+    name: baseline-more-verbose
     reference: ''
