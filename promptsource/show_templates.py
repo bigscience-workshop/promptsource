@@ -39,12 +39,17 @@ for template_name in template_list:
     print(template.jinja)
     print()
 
-    for example_index in range(10):
-        example = dataset[example_index]
+    print_counter = 0
+    for example in dataset:
         print("\t--------")
         print("\tExample ", example)
         print("\t--------")
-        xp, yp = template.apply(example)
+        output = template.apply(example)
+        if output == [""]:
+            print("\t Blank result")
+            continue
+
+        xp, yp = output
         print()
         print("\tPrompt | X")
         for line in textwrap.wrap(xp, width=width, replace_whitespace=False):
@@ -53,3 +58,7 @@ for template_name in template_list:
         print("\tY")
         for line in textwrap.wrap(yp, width=width, replace_whitespace=False):
             print("\t", line.replace("\n", "\n\t"))
+
+        print_counter += 1
+        if print_counter >= 10:
+            break
