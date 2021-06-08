@@ -178,6 +178,13 @@ else:
         if len(configs) > 0:
             conf_option = st.sidebar.selectbox("Subset", configs, index=0, format_func=lambda a: a.name)
 
+        if st.sidebar.checkbox("Manually enter a subset name"):
+            conf_option = st.sidebar.text_input(
+                "Subset Name",
+                value=conf_option,
+                help="In case the subset name is not present in `dataset_infos.json`.",
+            )
+
         dataset, failed = get_dataset(dataset_key, str(conf_option.name) if conf_option else None)
         if failed:
             if dataset.manual_download_instructions is not None:
