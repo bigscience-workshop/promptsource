@@ -1,0 +1,84 @@
+dataset: duorc
+subset: SelfRC
+templates:
+  01b2046a-2c72-45e8-b130-0c19ca8b63d0: !Template
+    id: 01b2046a-2c72-45e8-b130-0c19ca8b63d0
+    jinja: '{{plot}}
+
+      Is the following question answerable: {{question}}
+
+
+      {% if no_answer %}
+
+      No
+
+      {% else %}
+
+      Yes
+
+      {% endif %}'
+    name: answerable_question
+    reference: Given the plot and the question, determine if the question is answerable.
+  1e6e6a07-4655-4dd8-a694-373bd3049698: !Template
+    id: 1e6e6a07-4655-4dd8-a694-373bd3049698
+    jinja: '{{plot}}{{question}}
+
+      |||
+
+      {% if no_answer %}
+
+      Insufficient information to provide an answer.
+
+      {% else %}
+
+      {{answers[0]}}
+
+      {% endif %}
+
+      '
+    name: question_answering
+    reference: Given a passage and a question, generate an answer.
+  840f6409-4273-4968-9a17-a0c300e9412f: !Template
+    id: 840f6409-4273-4968-9a17-a0c300e9412f
+    jinja: 'Generate a question for the following plot: "{{ plot }}".
+
+      |||
+
+      {{ question }}'
+    name: generate_question
+    reference: Given the plot, generate a question.
+  e2d42f3f-d835-4127-a93e-2e8e257590eb: !Template
+    id: e2d42f3f-d835-4127-a93e-2e8e257590eb
+    jinja: "{% if no_answer %}\n Build a story around this: \"{{ question }}\".\n\
+      {% else %}\nBuild a story around this: \"{{ question }}{{answers[0]}}\".\n{%\
+      \ endif %}\n|||\n{{ plot }}"
+    name: build_story_around_qa
+    reference: Given the question-answer pair, generate a relevant plot.
+  e453150d-ae6c-44e0-b6e3-cde724256ba7: !Template
+    id: e453150d-ae6c-44e0-b6e3-cde724256ba7
+    jinja: '{% if no_answer %}
+
+      For the plot: "{{ plot }}", generate a question.
+
+      {% else %}
+
+      For the plot: "{{ plot }}", generate a question which has the following answer:
+      "{{answers[0]}}".
+
+      {% endif %}
+
+      |||
+
+      {{question}}'
+    name: generate_question_by_answer
+    reference: Given the passage and the answer, generate a question which has that
+      answer.
+  e847d8db-8807-4eab-8cb5-d4bc8175a6cf: !Template
+    id: e847d8db-8807-4eab-8cb5-d4bc8175a6cf
+    jinja: 'Given the following plot: "{{plot}}", suggest a good title for the movie.
+
+      |||
+
+      {{title}}'
+    name: title_generation
+    reference: Given the plot for the movie, suggest a title.
