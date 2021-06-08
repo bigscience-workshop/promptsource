@@ -14,6 +14,13 @@ TEMPLATES_FOLDER_PATH = "./templates/"
 env = Environment(loader=BaseLoader)
 
 
+def highlight(input):
+    return "<span style='color: #F08080'>" + input + "</span>"
+
+
+env.filters["highlight"] = highlight
+
+
 class TemplateCollection:
     """
     This helper class wraps the DatasetTemplates class
@@ -281,12 +288,16 @@ class Template(yaml.YAMLObject):
         """
         return self.reference
 
-    def apply(self, example):
+    def apply(self, example, highlight_variables=False):
         """
         Creates a prompt by applying this template to an example
 
         :param example: the dataset example to create a prompt for
+        :param highlight_variables: highlight the added variables
         :return: tuple of 2 strings, for prompt and output
         """
-        rtemplate = env.from_string(self.jinja)
+        jinja = self.jinja
+        if highlight_variables:
+            jinja = jinja.replace("}}", " | highlight }}")
+        rtemplate = env.from_string(jinja)
         return rtemplate.render(**example).split("|||")
