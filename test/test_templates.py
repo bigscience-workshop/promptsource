@@ -1,7 +1,7 @@
 from jinja2 import BaseLoader, Environment, meta, TemplateError
 import pytest
-from templates import TemplateCollection
-from utils import get_dataset_builder
+from promptsource.templates import TemplateCollection
+from promptsource.utils import get_dataset_builder
 
 # Sets up Jinja environment
 env = Environment(loader=BaseLoader)
