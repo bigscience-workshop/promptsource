@@ -3,7 +3,7 @@ subset: SelfRC
 templates:
   1e6e6a07-4655-4dd8-a694-373bd3049698: !Template
     id: 1e6e6a07-4655-4dd8-a694-373bd3049698
-    jinja: "{{plot}} {{question}}
+    jinja: ' {{question}} {{plot}}
 
       |||
 
@@ -17,12 +17,12 @@ templates:
 
       {% endif %}
 
-      "
+      '
     name: question_answering
     reference: Given a passage and a question, generate an answer.
   840f6409-4273-4968-9a17-a0c300e9412f: !Template
     id: 840f6409-4273-4968-9a17-a0c300e9412f
-    jinja: 'Generate a question for the following plot: "{{ plot }}".
+    jinja: 'Generate a question for the following plot: {{ plot }}
 
       |||
 
@@ -31,35 +31,22 @@ templates:
     reference: Given the plot, generate a question.
   e2d42f3f-d835-4127-a93e-2e8e257590eb: !Template
     id: e2d42f3f-d835-4127-a93e-2e8e257590eb
-    jinja:
-      "{% if no_answer %}\n Build a story around this: \"{{ question }}\".\n\
-      {% else %}\nBuild a story around this: \"{{ question }} {{answers[0]}}\".\n\
-      {% endif %}\n|||\n{{ plot }}"
+    jinja: "{% if no_answer %}\n Build a story around this: {{ question }}\n{% else\
+      \ %}\nBuild a story around this: {{ question }} {{answers[0]}}\n{% endif %}\n\
+      |||\n{{ plot }}"
     name: build_story_around_qa
     reference: Given the question-answer pair, generate a relevant plot.
   e453150d-ae6c-44e0-b6e3-cde724256ba7: !Template
     id: e453150d-ae6c-44e0-b6e3-cde724256ba7
-    jinja: '{% if no_answer %}
-
-      Generate a question for the following plot: "{{plot}}"
-
-      {% else %}
-
-      Generate a question which has the following answer: "{{answers[0]}}" for the
-      following plot: Generate a question for the following plot: "{{plot}}".
-
-      {% endif %}
-
-      |||
-
-      {{question}}'
+    jinja: "{% if no_answer %}\nGenerate a question for the following plot: {{plot}}\n\
+      {% else %}\nGenerate a question which has the following answer: \n{{answers[0]}}\
+      \ \nfor the following plot: \n{{plot}}\n{% endif %}\n|||\n{{question}}"
     name: generate_question_by_answer
-    reference:
-      Given the passage and the answer, generate a question which has that
+    reference: Given the passage and the answer, generate a question which has that
       answer.
   e847d8db-8807-4eab-8cb5-d4bc8175a6cf: !Template
     id: e847d8db-8807-4eab-8cb5-d4bc8175a6cf
-    jinja: 'Suggest a movie title for the following plot: "{{plot}}"
+    jinja: 'Suggest a movie title for the following plot: {{plot}}
 
       |||
 
