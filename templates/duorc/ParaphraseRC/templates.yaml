@@ -3,7 +3,7 @@ subset: ParaphraseRC
 templates:
   1e6e6a07-4655-4dd8-a694-373bd3049698: !Template
     id: 1e6e6a07-4655-4dd8-a694-373bd3049698
-    jinja: "{{plot}} {{question}}
+    jinja: '{{plot}} {{question}}
 
       |||
 
@@ -17,7 +17,7 @@ templates:
 
       {% endif %}
 
-      "
+      '
     name: question_answering
     reference: Given a passage and a question, generate an answer.
   840f6409-4273-4968-9a17-a0c300e9412f: !Template
@@ -29,10 +29,32 @@ templates:
       {{ question }}'
     name: generate_question
     reference: Given the plot, generate a question.
+  9a99cb83-3b24-4516-b952-25cd70ca0f78: !Template
+    id: 9a99cb83-3b24-4516-b952-25cd70ca0f78
+    jinja: 'Is the following question answerable:
+
+      "{{question}}"
+
+      from the given plot:
+
+      "{{plot}}"
+
+      |||
+
+      {% if no_answer %}
+
+      Yes
+
+      {% else %}
+
+      No
+
+      {% endif %}'
+    name: answerable_question
+    reference: Given the plot and the question, determine if the question is answerable.
   e2d42f3f-d835-4127-a93e-2e8e257590eb: !Template
     id: e2d42f3f-d835-4127-a93e-2e8e257590eb
-    jinja:
-      "{% if no_answer %}\n Build a story around this: \"{{ question }}\".\n\
+    jinja: "{% if no_answer %}\n Build a story around this: \"{{ question }}\".\n\
       {% else %}\nBuild a story around this: \"{{ question }} {{answers[0]}}\".\n\
       {% endif %}\n|||\n{{ plot }}"
     name: build_story_around_qa
@@ -54,8 +76,7 @@ templates:
 
       {{question}}'
     name: generate_question_by_answer
-    reference:
-      Given the passage and the answer, generate a question which has that
+    reference: Given the passage and the answer, generate a question which has that
       answer.
   e847d8db-8807-4eab-8cb5-d4bc8175a6cf: !Template
     id: e847d8db-8807-4eab-8cb5-d4bc8175a6cf
