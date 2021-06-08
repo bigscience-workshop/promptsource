@@ -6,7 +6,7 @@ on:
   pull_request:
     branches: [ main ]
   workflow_dispatch:
-    
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -24,6 +24,7 @@ jobs:
           pip install -r requirements.txt
       - id: files
         uses: jitterbit/get-changed-files@v1
+        continue-on-error: true
       - name: Prompt outputs
         run: |
             for changed_file in ${{ steps.files.outputs.all }}; do
