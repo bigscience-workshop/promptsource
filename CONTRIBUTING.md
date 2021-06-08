@@ -234,12 +234,12 @@ Here's one for `paws`:
 Sentence 1: {{sentence1}}
 Sentence 2: {{sentence2}}
 Question: Does Sentence 1 paraphrase Sentence 2? Yes or No?
-Yes
 {% endif %}
 ||| 
 {% if label == 0 %} 
 No
 {% elif label == 1 %}
+Yes
 {% endif %}
 
 ```
@@ -267,7 +267,7 @@ directory in the repo will be modified. To upload it, follow these steps:
 ```
 
 - Joining list
-```jinja
+```jinja=
 {{ spans_list | join(", ") }}
 ```
 
