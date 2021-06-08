@@ -134,11 +134,12 @@ introduce some diversity by prompting a given dataset into multiple tasks and pr
 description in the "Template Reference" text box. An example is given
 in the already prompted `movie_rationales`.
 * **Filtering templates.** If a template is applied to an example and produces an
-empty string, that template/example pair will be skipped. You can therefore create
-templates that only apply to a subset of the examples by wrapping them in Jinja
-if statements. For example, in the `TREC` dataset, there are fine-grained
-categories that are only applicable to certain coarse-grained categories. We can
-capture this with the following template:
+empty string, that template/example pair will be skipped. (Either the entire output
+is whitespace or the text on either side of the separator `|||` is whitespace.
+You can therefore create templates that only apply to a subset of the examples by
+wrapping them in Jinja if statements. For example, in the `TREC` dataset, there
+are fine-grained categories that are only applicable to certain coarse-grained categories.
+We can capture this with the following template:
 ```jinja2
 {% if label_coarse == 0 %}
 Is this question asking for a {{"definition"}}, a {{"description"}}, a {{"manner of action"}}, or a {{"reason"}}?
@@ -189,18 +190,18 @@ Here's one for `paws`:
 {% if label == 0 or label == 1 %} 
 Sentence 1: {{sentence1}}
 Sentence 2: {{sentence2}}
-Question: Does Sentence 1 paraphrase Sentence 2? Yes or No? 
+Question: Does Sentence 1 paraphrase Sentence 2? Yes or No?
+Yes
+{% endif %}
 ||| 
 {% if label == 0 %} 
 No
 {% elif label == 1 %}
-Yes
-{% endif %}
 {% endif %}
 
 ```
 This template has to do a few things, even though it's a yes no question. First,
-the label might be unknown, so the whole thing is wrapped in an if statement.
+the label might be unknown, so the pieces are wrapped in if statements.
 Second, notice that the choices `Yes or No` are not escaped. Yes/no, true/false
 are choices that do not need to be escaped (unlike categories).
 
