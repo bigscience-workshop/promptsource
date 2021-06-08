@@ -180,16 +180,6 @@ Determine the relation between the following two sentences. The relations are en
 {{premise}}
 {{hypothesis}} ||| {{label}}
 ```
-* **Long text.** Some prompts will have to be truncated because of the model's
-maximum input size. You can better preserve the meaning of your template by
-putting a long field at the end. For example, consider replacing
-```jinja2
-{{ long_text }} What's a good summary for this text? ||| {{ summary }}
-```
-with
-```jinja2
-What's a good summary for this text? {{ long_text }} ||| {{ summary }}
-``` 
 
 ## More Examples
 
