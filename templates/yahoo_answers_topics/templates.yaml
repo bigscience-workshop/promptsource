@@ -1,0 +1,59 @@
+dataset: yahoo_answers_topics
+templates:
+  21e4d34e-0f80-4056-8870-bb303ba12dca: !Template
+    id: 21e4d34e-0f80-4056-8870-bb303ba12dca
+    jinja: '
+
+      Given the answer below suggest a possible question title:
+
+
+      Answer: {{ best_answer}} |||
+
+      {{ question_title}}'
+    name: answer_from_qn
+    reference: ''
+  253315cd-dd9d-4c15-82a0-9c8138a70d94: !Template
+    id: 253315cd-dd9d-4c15-82a0-9c8138a70d94
+    jinja: 'Given the following email body which contains details for a question,
+      suggest a subject for this email:
+
+
+      Email body: {{question_content}} |||
+
+      {{ question_title }}'
+    name: subject
+    reference: ''
+  32ca4b76-fbb1-4846-94c9-9e968c627ed9: !Template
+    id: 32ca4b76-fbb1-4846-94c9-9e968c627ed9
+    jinja: 'Given the question title and the question content, answer the question:
+
+
+      Question Title: {{ "question_title" }}
+
+
+      Question content: {{ "question_content" }} |||
+
+      {{ best_answer }}'
+    name: qa
+    reference: ''
+  568a5d5e-ec5c-4ceb-9620-df5e86280143: !Template
+    id: 568a5d5e-ec5c-4ceb-9620-df5e86280143
+    jinja: "{% set topics = [\n  \"Society & Culture\",\n  \"Science & Mathematics\"\
+      ,\n  \"Health\",\n  \"Education & Reference\",\n  \"Computers & Internet\",\n\
+      \  \"Sports\",\n  \"Business & Finance\",\n  \"Entertainment & Music\",\n  \"\
+      Family & Relationships\",\n  \"Politics & Government\"\n] %}\nGiven the question\
+      \ title and the question content, classify the question into one of these topics,{{topics}}\
+      \ :\n\nQuestion Title: {{ question_title }}\n\nQuestion content: {{ question_content\
+      \ }} |||\n{{ topics[topic]}}"
+    name: topic
+    reference: ''
+  b56d1289-d3df-4e66-88b5-737dce09b467: !Template
+    id: b56d1289-d3df-4e66-88b5-737dce09b467
+    jinja: "{% set topics = [\n  \"Society & Culture\",\n  \"Science & Mathematics\"\
+      ,\n  \"Health\",\n  \"Education & Reference\",\n  \"Computers & Internet\",\n\
+      \  \"Sports\",\n  \"Business & Finance\",\n  \"Entertainment & Music\",\n  \"\
+      Family & Relationships\",\n  \"Politics & Government\"\n] %}\nGiven the question\
+      \ titlebelow, classify the question into one of these topics,{{topics}} :\n\n\
+      Question Title: {{ question_title }} |||\n{{ topics[topic]}}"
+    name: title_class
+    reference: ''
