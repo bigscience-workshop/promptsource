@@ -180,6 +180,30 @@ Determine the relation between the following two sentences. The relations are en
 {{hypothesis}} ||| {{label}}
 ```
 
+## More Examples
+
+Here are a few interesting examples of templates with explanations.
+
+Here's one for `paws`:
+```jinja2
+{% if label == 0 or label == 1 %} 
+Sentence 1: {{sentence1}}
+Sentence 2: {{sentence2}}
+Question: Does Sentence 1 paraphrase Sentence 2? Yes or No? 
+||| 
+{% if label == 0 %} 
+No
+{% elif label == 1 %}
+Yes
+{% endif %}
+{% endif %}
+
+```
+This template has to do a few things, even though it's a yes no question. First,
+the label might be unknown, so the whole thing is wrapped in an if statement.
+Second, notice that the choices `Yes or No` are not escaped. Yes/no, true/false
+are choices that do not need to be escaped (unlike categories).
+
 ## Uploading Templates
 
 Once you save or modify a template, the corresponding file inside the `templates`
