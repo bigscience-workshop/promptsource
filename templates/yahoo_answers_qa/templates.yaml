@@ -3,8 +3,8 @@ templates:
   1a6eda86-debc-4681-b643-f1f16fedd713: !Template
     id: 1a6eda86-debc-4681-b643-f1f16fedd713
     jinja: "{% if nbestanswers|length > 1 %} \n\nGive the top two answers for the\
-      \ following question:\n\n{{question}} |||\n{{nbestanswers[0]}}\n\n{{nbestanswers[1]}}\n\
-      \n{% endif %}"
+      \ following question:\n\n{{question}} |||\nThe best answer is {{nbestanswers[0]}}\
+      \ and the second best answer is {{nbestanswers[1]}}\n\n{% endif %}"
     name: n_best_answer
     reference: ''
   2c214261-f32b-42ab-ac90-b22f4f2f465f: !Template
@@ -21,7 +21,8 @@ templates:
     reference: ''
   7ba7a99c-be14-47d4-859d-093ce07a2798: !Template
     id: 7ba7a99c-be14-47d4-859d-093ce07a2798
-    jinja: 'Given the n-best answers , {{nbestanswers}}, generate the question |||
+    jinja: 'Given the top answers , {{ nbestanswers|join(", ")  }}, generate the question
+      |||
 
       {{question}}'
     name: generate_question
