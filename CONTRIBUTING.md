@@ -105,6 +105,7 @@ curly braces and quoted. For example:
 ```jinja2
 The choices are {{"a"}}, {{"b"}}, and {{"c"}}.
 ```
+You can leave binary options like yes/no, true/false, etc. unprotected.
 
 Finally, remember that a template must produce two strings: a prompt and an output.
 To separate these two pieces, use three vertical bars `|||`.
