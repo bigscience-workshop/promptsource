@@ -1,0 +1,118 @@
+dataset: squad_v2
+templates:
+  17b83a3f-f748-42e6-9cdf-b2951dd8299d: !Template
+    id: 17b83a3f-f748-42e6-9cdf-b2951dd8299d
+    jinja: '{% if answers.text == [] %}
+
+      Answer the question depending on the context.
+
+      Context: {{context}};
+
+      Question: {{question}};
+
+      Answer: |||
+
+      Answer not in context
+
+      {% else %}
+
+      Answer the question depending on the context.
+
+      Context: {{context}};
+
+      Question: {{question}};
+
+      Answer: |||
+
+      {{answers.text[0]}}
+
+      {% endif %}'
+    name: Questions with Context
+    reference: Given context and question, give answer
+  189dcc58-fd13-4771-ad03-7879a61c7ab7: !Template
+    id: 189dcc58-fd13-4771-ad03-7879a61c7ab7
+    jinja: '{% if answers.text != [] %}
+
+      Determine the question to the answer with the given context.
+
+      Context: {{context}};
+
+      Answer: {{answers.text[0]}};
+
+      Question: |||
+
+      {{question}}
+
+      {% endif %}
+
+      '
+    name: Jeopardy with Context
+    reference: Given context and an answer, guess the question.
+  7a44cd99-7420-4456-aaaa-34e2c81d1679: !Template
+    id: 7a44cd99-7420-4456-aaaa-34e2c81d1679
+    jinja: '{% if answers.text != [] %}
+
+      Determine the question to the answer.
+
+      Answer: {{answers.text[0]}};
+
+      Question: |||
+
+      {{question}}
+
+      {% endif %}
+
+      '
+    name: Jeopardy without Context
+    reference: Given an answer, output a viable question. Context is omitted.
+  8bea1123-fd8d-4bac-96bf-b8a289ee74b3: !Template
+    id: 8bea1123-fd8d-4bac-96bf-b8a289ee74b3
+    jinja: '{% if answers.text == [] %}
+
+      {{context}} {{question}}|||
+
+      Answer not in context
+
+      {% else %}
+
+      {{context}} {{question}}|||
+
+      {{answers.text[0]}}
+
+      {% endif %}'
+    name: Questions with Context - Without Prompt Keywords
+    reference: Given context and question, give answer. No keywords to delineate context
+      and question is given.
+  d768c181-1c9b-40c3-aa01-fc78c3b29875: !Template
+    id: d768c181-1c9b-40c3-aa01-fc78c3b29875
+    jinja: '{% if answers.text != [] %}
+
+      {{question}}|||
+
+      {{answers.text[0]}}
+
+      {% endif %}'
+    name: Trivia
+    reference: Given input and directly outputs answer.
+  e51c23b9-5b10-4db3-a0d1-ba546830173d: !Template
+    id: e51c23b9-5b10-4db3-a0d1-ba546830173d
+    jinja: '{% if answers.text != [] %}
+
+      Determine the topic of the question-answer pair.
+
+      Question: {{question}};  Answer: {{answers.text[0]}}; Topic: |||
+
+      {{title}}
+
+      {% endif %}'
+    name: Topic Prediction - Question and Answer Pair
+    reference: Given a Question-Answer pair, generate the topic.
+  fdcf132e-6c70-4188-999e-93601ee8e089: !Template
+    id: fdcf132e-6c70-4188-999e-93601ee8e089
+    jinja: 'What is the follow passage about?
+
+      {{context}} |||
+
+      {{title | replace("_", " ")}}'
+    name: Topic Prediction - Context
+    reference: Predict the topic from the passage
