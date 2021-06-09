@@ -1,0 +1,42 @@
+dataset: lambada
+templates:
+  2a1a054e-ecd2-44f9-bb8f-82cf7ed25138: !Template
+    id: 2a1a054e-ecd2-44f9-bb8f-82cf7ed25138
+    jinja: '{% set genre = domain.split(''\\'') %}
+
+
+      Write a story in the genre of {{genre[-1]}}: |||
+
+      {{text}}'
+    name: create_story
+    reference: ''
+  3999d186-c792-4147-aa14-6f0644d6515f: !Template
+    id: 3999d186-c792-4147-aa14-6f0644d6515f
+    jinja: '{% set genre = domain.split(''\\'') %}
+
+
+      Classify the following novel (full text provided) according to its genre:
+
+
+      {{text}} |||
+
+      {{genre[-1]}}'
+    name: domain_class
+    reference: ''
+  6d9a1af2-8889-4245-aa30-0a946b5822bf: !Template
+    id: 6d9a1af2-8889-4245-aa30-0a946b5822bf
+    jinja: '{% set genre = domain.split(''\\'') %}
+
+
+      Amazon.com wants to classify the following novel (full text provided below)
+      into a genre for buyers to find this novel easily. What genre would be the best
+      fit for this novel?
+
+
+      {{text}} |||
+
+      {{genre[-1]}}
+
+      '
+    name: amazon
+    reference: ''
