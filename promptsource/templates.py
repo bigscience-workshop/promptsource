@@ -197,7 +197,7 @@ class DatasetTemplates:
             # We just update the file
             self.write_to_file()
 
-    def update_template(self, current_template_name: str, new_template_name: str, jinja: str, reference: str) -> None:
+    def update_template(self, current_template_name: str, new_template_name: str, jinja: str, reference: str, task_template: bool) -> None:
         """
         Updates a pre-existing template and writes changes
 
@@ -210,6 +210,7 @@ class DatasetTemplates:
         self.templates[template_id].name = new_template_name
         self.templates[template_id].jinja = jinja
         self.templates[template_id].reference = reference
+        self.templates[template_id].task_template = task_template
 
         self.write_to_file()
 
@@ -242,7 +243,7 @@ class Template(yaml.YAMLObject):
 
     yaml_tag = "!Template"
 
-    def __init__(self, name, jinja, reference):
+    def __init__(self, name, jinja, reference, task_template=False):
         """
         Creates a prompt template.
 
@@ -263,6 +264,7 @@ class Template(yaml.YAMLObject):
         self.name = name
         self.jinja = jinja
         self.reference = reference
+        self.task_template = task_template
 
     def get_id(self):
         """
@@ -288,6 +290,12 @@ class Template(yaml.YAMLObject):
         """
         return self.reference
 
+    def get_task_template(self):
+        if hasattr(self, "task_template"):
+            return self.task_template
+        else:
+            return False
+    
     def apply(self, example, highlight_variables=False):
         """
         Creates a prompt by applying this template to an example

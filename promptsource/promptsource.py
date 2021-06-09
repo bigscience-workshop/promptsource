@@ -376,7 +376,7 @@ else:
                             help="Short description of the template and/or paper reference for the template.",
                             value=template.reference,
                         )
-
+                        state.task_template = st.checkbox("Task Template?", value=template.get_task_template(), help="Task templates correspond one-to-one with the original task.")
                         state.jinja = st.text_area("Template", height=40, value=template.jinja)
 
                         if st.form_submit_button("Save"):
@@ -392,7 +392,7 @@ else:
                                 st.error("Need to provide a template name.")
                             else:
                                 dataset_templates.update_template(
-                                    state.template_name, updated_template_name, state.jinja, state.reference
+                                    state.template_name, updated_template_name, state.jinja, state.reference, state.task_template
                                 )
                                 # Update the state as well
                                 state.template_name = updated_template_name
