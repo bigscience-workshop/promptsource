@@ -197,7 +197,9 @@ class DatasetTemplates:
             # We just update the file
             self.write_to_file()
 
-    def update_template(self, current_template_name: str, new_template_name: str, jinja: str, reference: str, task_template: bool) -> None:
+    def update_template(
+        self, current_template_name: str, new_template_name: str, jinja: str, reference: str, task_template: bool
+    ) -> None:
         """
         Updates a pre-existing template and writes changes
 
@@ -259,6 +261,8 @@ class Template(yaml.YAMLObject):
         :param jinja: template expressed in Jinja
         :param reference: string metadata describing author or paper reference
                           for template
+        :param task_template: bool whether this template corresponds 1-1 with the dataset task
+
         """
         self.id = str(uuid.uuid4())
         self.name = name
@@ -291,11 +295,17 @@ class Template(yaml.YAMLObject):
         return self.reference
 
     def get_task_template(self):
+        """
+        Returns whether this template corresponds 1-1 with the dataset task
+
+        :return: bool
+        """
+
         if hasattr(self, "task_template"):
             return self.task_template
         else:
             return False
-    
+
     def apply(self, example, highlight_variables=False):
         """
         Creates a prompt by applying this template to an example
