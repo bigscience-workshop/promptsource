@@ -1,0 +1,84 @@
+dataset: mdd
+subset: task3_qarecs
+templates:
+  1614890b-362c-4ee8-850d-841cf511d169: !Template
+    id: 1614890b-362c-4ee8-850d-841cf511d169
+    jinja: "Speaker 1: {{dialogue_turns.utterance[0]}}
+
+
+      Speaker 2: {{dialogue_turns.utterance[1]}}
+
+
+      Speaker 1: {{dialogue_turns.utterance[2]}}
+
+
+      Speaker 2:|||{{dialogue_turns.utterance[3]}}"
+    name: next_utterance_4
+    reference: Given the first three dialogues,  generate next utterance.
+  3e5a19e5-aa33-467a-bcd2-f84d99f32759: !Template
+    id: 3e5a19e5-aa33-467a-bcd2-f84d99f32759
+    jinja: "{{dialogue_turns.utterance[0]}}|||{{dialogue_turns.utterance[1]}}"
+    name: recommend_movie_1
+    reference: Given likes, recommend a movie.
+  76888d6e-76fa-47db-a8b3-9980f082df51: !Template
+    id: 76888d6e-76fa-47db-a8b3-9980f082df51
+    jinja:
+      "{% if dialogue_turns.utterance|length==6 %}{{dialogue_turns.utterance[4]}}|||{{dialogue_turns.utterance[5]}}{%
+      else %}|||{% endif %}"
+    name: recommend_movie_2
+    reference:
+      Given a single preference, recommend a movie. Only works for dialogues
+      with 6 utterances.
+  91f33bcf-3c0e-49e6-ae86-28f77e224734: !Template
+    id: 91f33bcf-3c0e-49e6-ae86-28f77e224734
+    jinja:
+      "{% if dialogue_turns.utterance|length==6 %} {{dialogue_turns.utterance[1]}}
+
+
+      {{dialogue_turns.utterance[3]}}
+
+
+      {{dialogue_turns.utterance[4]}}|||{{dialogue_turns.utterance[5]}}{% else %}|||{%
+      endif %}"
+    name: recommend_movie_3
+    reference:
+      Given previous suggestion, some movie description, and preference,
+      recommend a movie.
+  92cb9273-b89f-410f-a7f2-db8c84f42862: !Template
+    id: 92cb9273-b89f-410f-a7f2-db8c84f42862
+    jinja:
+      "{% if dialogue_turns.utterance|length==6 %}{{dialogue_turns.utterance[0]}}
+
+
+      {{dialogue_turns.utterance[4]}}|||{{dialogue_turns.utterance[5]}}{% else %}|||{%
+      endif %}"
+    name: recommend_movie_4
+    reference: Given likes and preferences, recommend a movie.
+  de1179b3-b6d6-4acf-9b0a-82cb2fa9d58f: !Template
+    id: de1179b3-b6d6-4acf-9b0a-82cb2fa9d58f
+    jinja: "Speaker 1: {{dialogue_turns.utterance[0]}}
+
+
+      Speaker 2: {{dialogue_turns.utterance[1]}}
+
+
+      Speaker 1: {{dialogue_turns.utterance[2]}}
+
+
+      {% if dialogue_turns.utterance|length==6 %} Speaker 2: {{dialogue_turns.utterance[3]}}
+
+
+      Speaker 1: {{dialogue_turns.utterance[4]}}
+
+
+      {% endif %} Speaker 2:|||{{dialogue_turns.utterance[-1]}}"
+    name: next_utterance_4_and_6
+    reference: Given the first dialogues, return the next utterance.
+  e37a6f9c-344c-4b85-a41f-85bb84bab934: !Template
+    id: e37a6f9c-344c-4b85-a41f-85bb84bab934
+    jinja: "{{dialogue_turns.utterance[1]}}
+
+
+      {{dialogue_turns.utterance[2]}}|||{{dialogue_turns.utterance[3]}}"
+    name: qa_about movie
+    reference: Given the movie name and a question, answer the question.

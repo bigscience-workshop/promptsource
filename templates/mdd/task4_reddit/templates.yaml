@@ -1,0 +1,17 @@
+dataset: mdd
+subset: task4_reddit
+templates:
+  8bfa29b3-f205-41dc-afcb-d7cadb41f479: !Template
+    id: 8bfa29b3-f205-41dc-afcb-d7cadb41f479
+    jinja: '{% for i in range(dialogue_turns.utterance|length-1) %}
+
+      Speaker {{dialogue_turns.speaker[i]+1}}: {{dialogue_turns.utterance[i]}}
+
+
+      {% endfor %}
+
+      Speaker {{dialogue_turns.speaker[-1]+1}}:|||{{dialogue_turns.utterance[-1]}}
+
+      '
+    name: generate_response
+    reference: Given the initial dialogues, return the next utterance.
