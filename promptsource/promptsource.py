@@ -105,6 +105,7 @@ if mode == "Helicopter view":
                 "Dataset name": dataset_name,
                 "Subset name": "" if subset_name is None else subset_name,
                 "Number of templates": len(dataset_templates),
+                "Number of task templates": sum([t.get_task_template() for t in dataset_templates.templates.values()]),
                 "Template names": [t.name for t in dataset_templates.templates.values()],
                 # TODO: template name is not very informative... refine that
             }
@@ -269,6 +270,8 @@ else:
                 st.text(template.name)
                 st.markdown("##### Reference")
                 st.text(template.reference)
+                st.markdown("##### Task Template? ")
+                st.text(template.get_task_template())
                 st.markdown("##### Jinja")
                 splitted_template = template.jinja.split("|||")
                 st.markdown("###### Prompt + X")
