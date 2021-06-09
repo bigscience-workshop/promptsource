@@ -1,14 +1,16 @@
-name: check_templates
+name: show_new_templates
 
 on:
   push:
     branches: [ main ]
   pull_request:
     branches: [ main ]
+  workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v2
       - name: Set up Python 3.8
@@ -19,7 +21,13 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install .
+          pip install black isort flake8
           pip install -r requirements.txt
-      - name: Check templates
+      - id: files
+        uses: jitterbit/get-changed-files@v1
+        continue-on-error: true
+      - name: Prompt outputs
         run: |
-          pytest test/test_templates.py
+            for changed_file in ${{ steps.files.outputs.all }}; do
+                python test/show_templates.py ${changed_file}
+            done
