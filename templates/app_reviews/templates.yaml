@@ -1,0 +1,88 @@
+dataset: app_reviews
+templates:
+  2da8f134-58db-4f9d-b3b0-8c6b50693ab5: !Template
+    id: 2da8f134-58db-4f9d-b3b0-8c6b50693ab5
+    jinja: 'Given this review: {{review}}
+
+      Would you recommend this app to a friend?
+
+      |||
+
+      {% if star==5 %}
+
+      Definitely
+
+      {% elif star==4%}
+
+      Yes
+
+      {% elif star==3%}
+
+      Maybe
+
+      {% elif star==2%}
+
+      No
+
+      {% else %}
+
+      Not at all
+
+      {% endif %}'
+    name: categorize_rating_using_review
+    reference: Given the review, return a categorical answer.
+  8086b434-a75e-45a4-87fb-4364601e2e05: !Template
+    id: 8086b434-a75e-45a4-87fb-4364601e2e05
+    jinja: 'Generate a {{star}} start review about an app with package {{package_name}}.
+
+      |||
+
+      {{review}}'
+    name: generate_review
+    reference: Generate a review from the rating.
+  9746ce4b-ac58-4dfb-9783-d77c95cb62cf: !Template
+    id: 9746ce4b-ac58-4dfb-9783-d77c95cb62cf
+    jinja: "What would be the star rating of this review?\n{% if star==5 %}\n\u2B50\
+      \u2B50\u2B50\u2B50\u2B50\n{% elif star==4%}\n\u2B50\u2B50\u2B50\u2B50\n{% elif\
+      \ star==3%}\n\u2B50\u2B50\u2B50\n{% elif star==2%}\n\u2B50\u2B50\n{% else %}\n\
+      \u2B50\n{% endif %}"
+    name: convert_to_start_rating
+    reference: Given the review, generate a star rating.
+  d34e1413-2699-4701-baa2-05d931d012ba: !Template
+    id: d34e1413-2699-4701-baa2-05d931d012ba
+    jinja: 'What would be the star rating of this review: {{review}}?
+
+      |||
+
+      {{star}}'
+    name: convert_to_rating
+    reference: Convert review to rating
+  f923aeeb-1150-486d-99cd-c4ab93ed5130: !Template
+    id: f923aeeb-1150-486d-99cd-c4ab93ed5130
+    jinja: 'Would you recommend an app to a friend which has a {{star}} star rating?
+
+      |||
+
+      {% if star==5 %}
+
+      Definitely
+
+      {% elif star==4%}
+
+      Yes
+
+      {% elif star==3%}
+
+      Maybe
+
+      {% elif star==2%}
+
+      No
+
+      {% else %}
+
+      Not at all
+
+      {% endif %}'
+    name: categorize_rating
+    reference: Categorize the rating.
