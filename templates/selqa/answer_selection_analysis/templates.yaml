@@ -37,14 +37,14 @@ templates:
     reference: ''
   c2be1297-cfce-48bd-9ef0-9f46fc898e84: !Template
     id: c2be1297-cfce-48bd-9ef0-9f46fc898e84
-    jinja: '{% set rand_val = range(0,candidates|length)|random %}{% set rand_index
-      = namespace(value=rand_val)%}{% set real_fake_answers = [candidates[rand_index.value],
-      candidates[answers[0]]] %}{% for answer in answers|sort(reverse=True)%}{% if
-      rand_index.value == answer %}{% set rand_index.value = rand_index.value - 1
-      %}{% endif %}{% endfor %}{% if range(0,2)|random %}{% set response="1" %}{%
-      set real_fake_answers = [candidates[answers[0]], candidates[rand_index.value]]
-      %}{% else %}{% set response="2" %}{% endif %}The next question was "{{ question
-      }}" Which is the correct answer? 1: "{{ real_fake_answers|join(''" or 2: "'')
-      }} ||| {{ response }}'
+    jinja: "{% set rand_val = range(0,candidates|length)|random %}{% set rand_index\
+      \ = namespace(value=rand_val)%}\n{% for answer in answers|sort(reverse=True)%}\n\
+      \  {% if rand_index.value == answer %}\n  {% set rand_index.value = rand_index.value\
+      \ - 1 %}\n{% endif %}\n{% endfor %}\n{% set response=\"2\" %}{% set real_fake_answers\
+      \ = [candidates[rand_index.value], candidates[answers[0]]] %}\n{% if range(0,2)|random\
+      \ %}{% set response=\"1\" %}{% set real_fake_answers = [candidates[answers[0]],\
+      \ candidates[rand_index.value]] %}{% endif %}\nThe next question was \"{{ question\
+      \ }}\" Which is the correct answer? 1: \"{{ real_fake_answers|join('\" or 2:\
+      \ \"') }} ||| {{ response }}\n"
     name: which-answer-1st-vs-random
     reference: ''
