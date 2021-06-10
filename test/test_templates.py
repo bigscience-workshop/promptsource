@@ -1,13 +1,13 @@
-from jinja2 import BaseLoader, Environment, meta, TemplateError
+from jinja2 import meta, TemplateError
 import pytest
-from promptsource.templates import TemplateCollection
+import promptsource.templates
 from promptsource.utils import get_dataset_builder
 
 # Sets up Jinja environment
-env = Environment(loader=BaseLoader)
+env = promptsource.templates.env
 
 # Loads templates and iterates over each data (sub)set
-template_collection = TemplateCollection()
+template_collection = promptsource.templates.TemplateCollection()
 
 
 @pytest.mark.parametrize("dataset", template_collection.keys)
