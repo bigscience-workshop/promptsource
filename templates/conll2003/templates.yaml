@@ -2,30 +2,10 @@ dataset: conll2003
 templates:
   3b777e30-bdd1-4c4a-b5d9-3372c7a756f4: !Template
     id: 3b777e30-bdd1-4c4a-b5d9-3372c7a756f4
-    jinja: "Generate named entities from the following sentence.\n{% set flag = 0\
-      \ %}\n{% for i in tokens -%}\n    {% if flag != 0 -%}\n        &nbsp;\n    {%\
-      \ endif -%}\n    {% set flag = 1 -%}\n    {{ i }}\n{% endfor %} \n|||\n{% set\
-      \ flag = 0 %}\n{% set _ner_lable_dict = ({\n0:\"O\",\n1:\"B-PER\",\n2:\"I-PER\"\
-      ,\n3:\"B-ORG\",\n4:\"I-ORG\",\n5:\"B-LOC\",\n6:\"I-LOC\",\n7:\"B-MISC\",\n8:\"\
-      I-MISC\"\n}) \n%}\n{% set outer_cnt = namespace(value=0) -%}\n{% for tok in\
-      \ tokens -%}\n    {% set inner_cnt = namespace(value=0) -%}\n    {% for lable\
-      \ in ner_tags -%}\n         {% if outer_cnt.value == inner_cnt.value -%}\n \
-      \           {% if flag != 0 -%}\n                &nbsp;\n            {% endif\
-      \ -%}\n            {% set flag = 1 -%}\n            {{tok}}:{{ _ner_lable_dict[lable]\
-      \ }}\n        {% endif -%}\n        {% set inner_cnt.value = inner_cnt.value\
-      \ + 1 -%}\n    {% endfor -%} \n    {% set outer_cnt.value = outer_cnt.value\
-      \ + 1 -%}\n{% endfor -%} \n\n"
-    name: flat_question_without_lable
-    reference: Natural question
-  8613a9bb-94c7-4b91-998c-3c298087d719: !Template
-    id: 8613a9bb-94c7-4b91-998c-3c298087d719
     jinja: "{% set _ner_lable_dict = ({\n0:\"O\",\n1:\"B-PER\",\n2:\"I-PER\",\n3:\"\
       B-ORG\",\n4:\"I-ORG\",\n5:\"B-LOC\",\n6:\"I-LOC\",\n7:\"B-MISC\",\n8:\"I-MISC\"\
-      \n}) %}\nGenerate named entities from the following sentence. The named entities\
-      \ are {% set flag = 0 %}\n{% for i in ner_tags -%}\n    {% if flag != 0 -%}\n\
-      \        ,&nbsp;\n    {% endif -%}\n    {% set flag = 1 -%}\n    {{ _ner_lable_dict[i]\
-      \ }}\n{% endfor %} \n{% set flag = 0 %}\n{% for i in tokens -%}\n    {% if flag\
-      \ != 0 -%}\n        &nbsp;\n    {% endif -%}\n    {% set flag = 1 -%}\n    {{\
+      \n}) %}\nGenerate named entities from the following sentence. \n{{\"\"}}\n{%\
+      \ for i in tokens -%}\n    {{- \" \" if not loop.last else \"\" -}}\n    {{\
       \ i }}\n{% endfor %} \n|||\n{% set flag = 0 %}\n{% set outer_cnt = namespace(value=0)\
       \ -%}\n{% for tok in tokens -%}\n    {% set inner_cnt = namespace(value=0) -%}\n\
       \    {% for lable in ner_tags -%}\n         {% if outer_cnt.value == inner_cnt.value\
@@ -34,5 +14,111 @@ templates:
       \ }}\n        {% endif -%}\n        {% set inner_cnt.value = inner_cnt.value\
       \ + 1 -%}\n    {% endfor -%} \n    {% set outer_cnt.value = outer_cnt.value\
       \ + 1 -%}\n{% endfor -%} \n\n"
-    name: flat_question_with_lable
+    name: ner_flat_question_without_lable
     reference: Natural question
+  6345fd1a-5272-4a8d-b5b2-02c1d837e521: !Template
+    id: 6345fd1a-5272-4a8d-b5b2-02c1d837e521
+    jinja: "{% set _pos_lable_dict = ({\n0:'\"',\n1:\"''\",\n2:\"#\",\n3:\"\\$\",\n\
+      4:\"(\",\n5:\")\",\n6:\",\",\n7:\".\",\n8:\":\",\n9:\"``\",\n10:\"CC\",\n11:\"\
+      CD\",\n12:\"DT\",\n13:\"EX\",\n14:\"FW\",\n15:\"IN\",\n16:\"JJ\",\n17:\"JJR\"\
+      ,\n18:\"JJS\",\n19:\"LS\",\n20:\"MD\",\n21:\"NN\",\n22:\"NNP\",\n23:\"NNPS\"\
+      ,\n24:\"NNS\",\n25:\"NN|SYM\",\n26:\"PDT\",\n27:\"POS\",\n28:\"PRP\",\n29:\"\
+      PRP\\$\",\n30:\"RB\",\n31:\"RBR\",\n32:\"RBS\",\n33:\"RP\",\n34:\"SYM\",\n35:\"\
+      TO\",\n36:\"UH\",\n37:\"VB\",\n38:\"VBD\",\n39:\"VBG\",\n40:\"VBN\",\n41:\"\
+      VBP\",\n42:\"VBZ\",\n43:\"WDT\",\n44:\"WP\",\n45:\"WP$\",\n46:\"WRB\"\n}) %}\n\
+      \n\nGenerate parts of speech from the following sentence. \n{% set flag = 0\
+      \ %}\n{% for i in tokens -%}\n    {% if flag != 0 -%}\n        &nbsp;\n    {%\
+      \ endif -%}\n    {% set flag = 1 -%}\n    {{ i }}\n{% endfor %} \n|||\n{% set\
+      \ flag = 0 %}\n{% set outer_cnt = namespace(value=0) -%}\n{% for tok in tokens\
+      \ -%}\n    {% set inner_cnt = namespace(value=0) -%}\n    {% for lable in pos_tags\
+      \ -%}\n         {% if outer_cnt.value == inner_cnt.value -%}\n            {%\
+      \ if flag != 0 -%}\n                &nbsp;\n            {% endif -%}\n     \
+      \       {% set flag = 1 -%}\n            {{tok}}:{{ _pos_lable_dict[lable] }}\n\
+      \        {% endif -%}\n        {% set inner_cnt.value = inner_cnt.value + 1\
+      \ -%}\n    {% endfor -%} \n    {% set outer_cnt.value = outer_cnt.value + 1\
+      \ -%}\n{% endfor -%} "
+    name: pos_flat_question_without_label
+    reference: Natural Question
+  71eadc14-9533-43a8-82dc-6d6a171119ef: !Template
+    id: 71eadc14-9533-43a8-82dc-6d6a171119ef
+    jinja: "{% set _chunk_lable_dict = ({\n0:\"O\",\n1:\"B-ADJP\",\n2:\"I-ADJP\",\n\
+      3:\"B-ADVP\",\n4:\"I-ADVP\",\n5:\"B-CONJP\",\n6:\"I-CONJP\",\n7:\"B-INTJ\",\n\
+      8:\"I-INTJ\",\n9:\"B-LST\",\n10:\"I-LST\",\n11:\"B-NP\",\n12:\"I-NP\",\n13:\"\
+      B-PP\",\n14:\"I-PP\",\n15:\"B-PRT\",\n16:\"I-PRT\",\n17:\"B-SBAR\",\n18:\"I-SBAR\"\
+      ,\n19:\"B-UCP\",\n20:\"I-UCP\",\n21:\"B-VP\",\n22:\"I-VP\"\n}) %}\nGenerate\
+      \ chunk tag from the following sentence. The chunk tags are\n{% for k,v in _chunk_lable_dict.items()\
+      \ -%}\n    {{ v }}\n    {{- \", \" if not loop.last else \"\" -}}\n    {{- \"\
+      \\n\" if loop.last -}}\n{% endfor %} \n{% for i in tokens -%}\n    {{- \" \"\
+      \ if not loop.last else \"\" -}}\n    {{ i }}\n{% endfor %} \n|||\n{% set flag\
+      \ = 0 %}\n{% set outer_cnt = namespace(value=0) -%}\n{% for tok in tokens -%}\n\
+      \    {% set inner_cnt = namespace(value=0) -%}\n    {% for lable in ner_tags\
+      \ -%}\n         {% if outer_cnt.value == inner_cnt.value -%}\n            {%\
+      \ if flag != 0 -%}\n                &nbsp;\n            {% endif -%}\n     \
+      \       {% set flag = 1 -%}\n            {{tok}}:{{ _chunk_lable_dict[lable]\
+      \ }}\n        {% endif -%}\n        {% set inner_cnt.value = inner_cnt.value\
+      \ + 1 -%}\n    {% endfor -%} \n    {% set outer_cnt.value = outer_cnt.value\
+      \ + 1 -%}\n{% endfor -%} \n\n"
+    name: chunk_flat_question_with_label
+    reference: Natural Question
+  8613a9bb-94c7-4b91-998c-3c298087d719: !Template
+    id: 8613a9bb-94c7-4b91-998c-3c298087d719
+    jinja: "{% set _ner_lable_dict = ({\n0:\"O\",\n1:\"B-PER\",\n2:\"I-PER\",\n3:\"\
+      B-ORG\",\n4:\"I-ORG\",\n5:\"B-LOC\",\n6:\"I-LOC\",\n7:\"B-MISC\",\n8:\"I-MISC\"\
+      \n}) %}\nGenerate named entities from the following sentence. The named entities\
+      \ are\n{% for k,v in _ner_lable_dict.items() -%}\n    {{ v }}\n    {{- \", \"\
+      \ if not loop.last else \"\" -}}\n    {{- \"\\n\" if loop.last -}}\n{% endfor\
+      \ %} \n{% for i in tokens -%}\n    {{- \" \" if not loop.last else \"\" -}}\n\
+      \    {{ i }}\n{% endfor %} \n|||\n{% set flag = 0 %}\n{% set outer_cnt = namespace(value=0)\
+      \ -%}\n{% for tok in tokens -%}\n    {% set inner_cnt = namespace(value=0) -%}\n\
+      \    {% for lable in ner_tags -%}\n         {% if outer_cnt.value == inner_cnt.value\
+      \ -%}\n            {% if flag != 0 -%}\n                &nbsp;\n           \
+      \ {% endif -%}\n            {% set flag = 1 -%}\n            {{tok}}:{{ _ner_lable_dict[lable]\
+      \ }}\n        {% endif -%}\n        {% set inner_cnt.value = inner_cnt.value\
+      \ + 1 -%}\n    {% endfor -%} \n    {% set outer_cnt.value = outer_cnt.value\
+      \ + 1 -%}\n{% endfor -%} \n\n"
+    name: ner_flat_question_with_lable
+    reference: Natural question
+  87bb05ff-f6bf-4c0d-bbcc-56f75095f4a1: !Template
+    id: 87bb05ff-f6bf-4c0d-bbcc-56f75095f4a1
+    jinja: "{% set _chunk_lable_dict = ({\n0:\"O\",\n1:\"B-ADJP\",\n2:\"I-ADJP\",\n\
+      3:\"B-ADVP\",\n4:\"I-ADVP\",\n5:\"B-CONJP\",\n6:\"I-CONJP\",\n7:\"B-INTJ\",\n\
+      8:\"I-INTJ\",\n9:\"B-LST\",\n10:\"I-LST\",\n11:\"B-NP\",\n12:\"I-NP\",\n13:\"\
+      B-PP\",\n14:\"I-PP\",\n15:\"B-PRT\",\n16:\"I-PRT\",\n17:\"B-SBAR\",\n18:\"I-SBAR\"\
+      ,\n19:\"B-UCP\",\n20:\"I-UCP\",\n21:\"B-VP\",\n22:\"I-VP\"\n}) %}\nGenerate\
+      \ chunk tag from the following sentence. \n{% for i in tokens -%}\n    {{- \"\
+      \ \" if not loop.last else \"\" -}}\n    {{ i }}\n{% endfor %} \n|||\n{% set\
+      \ flag = 0 %}\n{% set outer_cnt = namespace(value=0) -%}\n{% for tok in tokens\
+      \ -%}\n    {% set inner_cnt = namespace(value=0) -%}\n    {% for lable in ner_tags\
+      \ -%}\n         {% if outer_cnt.value == inner_cnt.value -%}\n            {%\
+      \ if flag != 0 -%}\n                &nbsp;\n            {% endif -%}\n     \
+      \       {% set flag = 1 -%}\n            {{tok}}:{{ _chunk_lable_dict[lable]\
+      \ }}\n        {% endif -%}\n        {% set inner_cnt.value = inner_cnt.value\
+      \ + 1 -%}\n    {% endfor -%} \n    {% set outer_cnt.value = outer_cnt.value\
+      \ + 1 -%}\n{% endfor -%} \n\n"
+    name: chunk_flat_question_without_label
+    reference: Natural question
+  d10ab706-e2ea-4b7a-b6b4-371aa0ab483b: !Template
+    id: d10ab706-e2ea-4b7a-b6b4-371aa0ab483b
+    jinja: "{% set _pos_lable_dict = ({\n0:'\"',\n1:\"''\",\n2:\"#\",\n3:\"\\$\",\n\
+      4:\"(\",\n5:\")\",\n6:\",\",\n7:\".\",\n8:\":\",\n9:\"``\",\n10:\"CC\",\n11:\"\
+      CD\",\n12:\"DT\",\n13:\"EX\",\n14:\"FW\",\n15:\"IN\",\n16:\"JJ\",\n17:\"JJR\"\
+      ,\n18:\"JJS\",\n19:\"LS\",\n20:\"MD\",\n21:\"NN\",\n22:\"NNP\",\n23:\"NNPS\"\
+      ,\n24:\"NNS\",\n25:\"NN|SYM\",\n26:\"PDT\",\n27:\"POS\",\n28:\"PRP\",\n29:\"\
+      PRP\\$\",\n30:\"RB\",\n31:\"RBR\",\n32:\"RBS\",\n33:\"RP\",\n34:\"SYM\",\n35:\"\
+      TO\",\n36:\"UH\",\n37:\"VB\",\n38:\"VBD\",\n39:\"VBG\",\n40:\"VBN\",\n41:\"\
+      VBP\",\n42:\"VBZ\",\n43:\"WDT\",\n44:\"WP\",\n45:\"WP$\",\n46:\"WRB\"\n}) %}\n\
+      \n\nGenerate parts of speech from the following sentence. The parts of speech\
+      \ tags are\n{% for k,v in _pos_lable_dict.items() -%}\n    {{ v }}\n    {{-\
+      \ \", \" if not loop.last else \"\" -}}\n    {{- \"\\n\" if loop.last -}}\n\
+      {% endfor %} \n{% set flag = 0 %}\n{% for i in tokens -%}\n    {% if flag !=\
+      \ 0 -%}\n        &nbsp;\n    {% endif -%}\n    {% set flag = 1 -%}\n    {{ i\
+      \ }}\n{% endfor %} \n|||\n{% set flag = 0 %}\n{% set outer_cnt = namespace(value=0)\
+      \ -%}\n{% for tok in tokens -%}\n    {% set inner_cnt = namespace(value=0) -%}\n\
+      \    {% for lable in pos_tags -%}\n         {% if outer_cnt.value == inner_cnt.value\
+      \ -%}\n            {% if flag != 0 -%}\n                &nbsp;\n           \
+      \ {% endif -%}\n            {% set flag = 1 -%}\n            {{tok}}:{{ _pos_lable_dict[lable]\
+      \ }}\n        {% endif -%}\n        {% set inner_cnt.value = inner_cnt.value\
+      \ + 1 -%}\n    {% endfor -%} \n    {% set outer_cnt.value = outer_cnt.value\
+      \ + 1 -%}\n{% endfor -%} "
+    name: pos_flat_question_with_lable
+    reference: ' Natural question'
