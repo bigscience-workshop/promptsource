@@ -1,9 +1,8 @@
 import argparse
 import textwrap
 
-from utils import get_dataset
-
-from templates import TemplateCollection
+from promptsource.templates import TemplateCollection
+from promptsource.utils import get_dataset
 
 
 parser = argparse.ArgumentParser(description="Process some integers.")
