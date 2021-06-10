@@ -1,0 +1,54 @@
+dataset: social_i_qa
+templates:
+  1830fe92-4884-4704-b2d6-fbf6e4f0ad54: !Template
+    id: 1830fe92-4884-4704-b2d6-fbf6e4f0ad54
+    jinja: "{{context}}\n\nGiven the question \"{{question}}\", is \"{{answerB}}\"\
+      \ a valid answer?\n\n|||\n\n{% if label == \"2\" %}\n    Yes\n{% else %}\n \
+      \   No\n{% endif %}"
+    name: social_i_qa6
+    reference: Check if answerB is a valid question
+  666f415b-e3ac-47bf-a79b-19024c4a4143: !Template
+    id: 666f415b-e3ac-47bf-a79b-19024c4a4143
+    jinja: "{{context}}\n\nGiven the context: {{question}}\n\nPossible answers: {{answerA}},\
+      \ {{answerB}}, {{answerC}}\n|||\n\n{% if label == \"1\" %}\n    <p>{{answerA}}</p>\n\
+      {% elif label == \"2\" %}\n    <p>{{answerB}}</p>\n{% elif label == \"3\" %}\n\
+      \    <p>{{answerC}}</p>\n{% endif %}"
+    name: social_i_qa1
+    reference: Show possible answers and generate correct possible answer
+  991f78cc-82d3-482f-b1de-f37a7179a316: !Template
+    id: 991f78cc-82d3-482f-b1de-f37a7179a316
+    jinja: "{{context}}\n\nGiven the question \"{{question}}\", is \"{{answerA}}\"\
+      \ a valid answer?\n\n|||\n\n{% if label == \"1\" %}\n    Yes\n{% else %}\n \
+      \   No\n{% endif %}"
+    name: social_i_qa5
+    reference: Check if answerA is a valid answer to the question
+  b980667e-b4ca-44ce-aba9-5b47d3ccf406: !Template
+    id: b980667e-b4ca-44ce-aba9-5b47d3ccf406
+    jinja: "{{context}}\n\nGiven that the answer to a question is \"{% if label ==\
+      \ \"1\" %}\n    {{answerA}}\n{% elif label == \"2\" %}\n    {{answerB}}\n{%\
+      \ elif label == \"3\" %}\n    {{answerC}}\n{% endif %}\", what is the question?\n\
+      \n|||\n\n{{question}}"
+    name: social_i_qa4
+    reference: Generate the question from the answer
+  cbad777f-5794-4d71-bf3d-54da6043e5f1: !Template
+    id: cbad777f-5794-4d71-bf3d-54da6043e5f1
+    jinja: "{{context}}\n\nGiven the context: {{question}}\n\n|||\n\n{% if label ==\
+      \ \"1\" %}\n    <p>{{answerA}}</p>\n{% elif label == \"2\" %}\n    <p>{{answerB}}</p>\n\
+      {% elif label == \"3\" %}\n    <p>{{answerC}}</p>\n{% endif %}"
+    name: social_i_qa2
+    reference: Generate answer without seeing possible answers
+  e2316120-2461-4664-943d-962a85008e23: !Template
+    id: e2316120-2461-4664-943d-962a85008e23
+    jinja: "{{context}}\n\nGiven the context: {{question}}\n\nPossible answers: {{answerA}},\
+      \ {{answerB}}, {{answerC}}\n|||\n\n{% if label == \"1\" %}\n    <p>First answer</p>\n\
+      {% elif label == \"2\" %}\n    <p>Second answer</p>\n{% elif label == \"3\"\
+      \ %}\n    <p>Third answer</p>\n{% endif %}"
+    name: social_i_qa3
+    reference: Show possible answers and find the index of the good answer.
+  eda05f21-cc5c-4243-b1e5-5173c14d6a65: !Template
+    id: eda05f21-cc5c-4243-b1e5-5173c14d6a65
+    jinja: "{{context}}\n\nGiven the question \"{{question}}\", is \"{{answerA}}\"\
+      \ a valid answer?\n\n|||\n\n{% if label == \"3\" %}\n    Yes\n{% else %}\n \
+      \   No\n{% endif %}"
+    name: social_i_qa7
+    reference: Check if answerB is a valid question
