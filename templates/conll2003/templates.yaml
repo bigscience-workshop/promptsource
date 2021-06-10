@@ -1,0 +1,38 @@
+dataset: conll2003
+templates:
+  3b777e30-bdd1-4c4a-b5d9-3372c7a756f4: !Template
+    id: 3b777e30-bdd1-4c4a-b5d9-3372c7a756f4
+    jinja: "Generate named entities from the following sentence.\n{% set flag = 0\
+      \ %}\n{% for i in tokens -%}\n    {% if flag != 0 -%}\n        &nbsp;\n    {%\
+      \ endif -%}\n    {% set flag = 1 -%}\n    {{ i }}\n{% endfor %} \n|||\n{% set\
+      \ flag = 0 %}\n{% set _ner_lable_dict = ({\n0:\"O\",\n1:\"B-PER\",\n2:\"I-PER\"\
+      ,\n3:\"B-ORG\",\n4:\"I-ORG\",\n5:\"B-LOC\",\n6:\"I-LOC\",\n7:\"B-MISC\",\n8:\"\
+      I-MISC\"\n}) \n%}\n{% set outer_cnt = namespace(value=0) -%}\n{% for tok in\
+      \ tokens -%}\n    {% set inner_cnt = namespace(value=0) -%}\n    {% for lable\
+      \ in ner_tags -%}\n         {% if outer_cnt.value == inner_cnt.value -%}\n \
+      \           {% if flag != 0 -%}\n                &nbsp;\n            {% endif\
+      \ -%}\n            {% set flag = 1 -%}\n            {{tok}}:{{ _ner_lable_dict[lable]\
+      \ }}\n        {% endif -%}\n        {% set inner_cnt.value = inner_cnt.value\
+      \ + 1 -%}\n    {% endfor -%} \n    {% set outer_cnt.value = outer_cnt.value\
+      \ + 1 -%}\n{% endfor -%} \n\n"
+    name: flat_question_without_lable
+    reference: Natural question
+  8613a9bb-94c7-4b91-998c-3c298087d719: !Template
+    id: 8613a9bb-94c7-4b91-998c-3c298087d719
+    jinja: "{% set _ner_lable_dict = ({\n0:\"O\",\n1:\"B-PER\",\n2:\"I-PER\",\n3:\"\
+      B-ORG\",\n4:\"I-ORG\",\n5:\"B-LOC\",\n6:\"I-LOC\",\n7:\"B-MISC\",\n8:\"I-MISC\"\
+      \n}) %}\nGenerate named entities from the following sentence. The named entities\
+      \ are {% set flag = 0 %}\n{% for i in ner_tags -%}\n    {% if flag != 0 -%}\n\
+      \        ,&nbsp;\n    {% endif -%}\n    {% set flag = 1 -%}\n    {{ _ner_lable_dict[i]\
+      \ }}\n{% endfor %} \n{% set flag = 0 %}\n{% for i in tokens -%}\n    {% if flag\
+      \ != 0 -%}\n        &nbsp;\n    {% endif -%}\n    {% set flag = 1 -%}\n    {{\
+      \ i }}\n{% endfor %} \n|||\n{% set flag = 0 %}\n{% set outer_cnt = namespace(value=0)\
+      \ -%}\n{% for tok in tokens -%}\n    {% set inner_cnt = namespace(value=0) -%}\n\
+      \    {% for lable in ner_tags -%}\n         {% if outer_cnt.value == inner_cnt.value\
+      \ -%}\n            {% if flag != 0 -%}\n                &nbsp;\n           \
+      \ {% endif -%}\n            {% set flag = 1 -%}\n            {{tok}}:{{ _ner_lable_dict[lable]\
+      \ }}\n        {% endif -%}\n        {% set inner_cnt.value = inner_cnt.value\
+      \ + 1 -%}\n    {% endfor -%} \n    {% set outer_cnt.value = outer_cnt.value\
+      \ + 1 -%}\n{% endfor -%} \n\n"
+    name: flat_question_with_lable
+    reference: Natural question
