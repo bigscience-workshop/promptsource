@@ -1,0 +1,31 @@
+dataset: cbt
+subset: P
+templates:
+  0725fe5e-1bba-4e08-a448-9e0038164914: !Template
+    id: 0725fe5e-1bba-4e08-a448-9e0038164914
+    jinja: 'Write the next sentence of this story: {{sentences | join('''')}}
+
+      |||
+
+      {{ question.replace("XXXXX", answer) }}'
+    name: next_sentence_generation
+    reference: Generate the next sentence given the story.
+  2c326181-dbba-401e-accb-d84ea0162f0a: !Template
+    id: 2c326181-dbba-401e-accb-d84ea0162f0a
+    jinja: "Read the passage and fill in the XXXXX:
+
+      {{ sentences | join('') }} {{question}}
+
+      |||
+
+      {{ answer }}"
+    name: answer_prediction
+    reference: Fill in the blank without options.
+  b26cae56-1fbd-47a5-8c8d-d981ca098239: !Template
+    id: b26cae56-1fbd-47a5-8c8d-d981ca098239
+    jinja:
+      "Which of the following options replaces XXXXX the best?\n{{ options |\
+      \ join (\", \") }}\nin this story: \n{{sentences | join ('')}} {{question}}\n\
+      |||\n{{ answer }}"
+    name: multi_choice
+    reference: Given the sentences, fill the blanks using the options.
