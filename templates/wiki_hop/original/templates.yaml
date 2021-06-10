@@ -1,0 +1,132 @@
+dataset: wiki_hop
+subset: original
+templates:
+  0bb6b603-115e-4ae9-b17b-881fa72b2e81: !Template
+    id: 0bb6b603-115e-4ae9-b17b-881fa72b2e81
+    jinja: "Information:\n- {{ supports | join(\"\\n- \") }}\n\n{% set question_split\
+      \ = question.split(' ') %}\nQuestion: ({{ question_split[1:] | join(\" \")}},\
+      \ {{ question_split[0] }}, ?)\n\nCandidate Answers: \n- {{ candidates | join(\"\
+      \\n- \") }}\n|||\n{{answer}}"
+    name: Choose Best Object Candidate
+    reference: Given information and possible object candidates, choose the best object
+      for the fact triple.
+  23e0d05a-8777-45c4-8692-13f3dc5a40bb: !Template
+    id: 23e0d05a-8777-45c4-8692-13f3dc5a40bb
+    jinja: 'Information:
+
+      - {{ supports | join("\n- ") }}
+
+
+      {% set question_split = question.split('' '') %}
+
+      What is the relationship between "{{ question_split[1:] | join(" ")}}" and "{{answer}}"?
+
+
+      |||
+
+      {{ question_split[0] }}'
+    name: Explain Relation
+    reference: Given information, explain the relation between the subject entity
+      and the object entity in a fact triple.
+  2fadafea-f814-4ff1-a3aa-cace9067f31f: !Template
+    id: 2fadafea-f814-4ff1-a3aa-cace9067f31f
+    jinja: 'Information:
+
+      - {{ supports | join("\n- ") }}
+
+
+      {% set question_split = question.split('' '') %}
+
+      Question: ({{ question_split[1:] | join(" ")}}, {{ question_split[0] }}, ?)
+
+
+      |||
+
+      {{answer}}'
+    name: Generate Object Answer
+    reference: Given information, generate the best object entity for the fact triple.
+  40bdb0e7-def9-4829-9a37-a05d354ef7cd: !Template
+    id: 40bdb0e7-def9-4829-9a37-a05d354ef7cd
+    jinja: 'Information:
+
+      - {{ supports | join("\n- ") }}
+
+
+      {% set question_split = question.split('' '') %}
+
+      Question: (?, {{ question_split[0] }}, {{answer}})
+
+
+      |||
+
+      {{ question_split[1:] | join(" ")}}'
+    name: Generate Subject Answer
+    reference: Given information, generate the best subject entity for the fact triple.
+  61018021-393f-4d4f-8fba-cda7df7ce240: !Template
+    id: 61018021-393f-4d4f-8fba-cda7df7ce240
+    jinja: '{% set question_split = question.split('' '') %}
+
+      {% if question_split[0]=="place_of_birth" %}
+
+      Information:
+
+      - {{ supports | join("\n- ") }}
+
+
+      Where was {{ question_split[1:] | join(" ")}} born? Choose from the following:
+
+      - {{ candidates | join("\n- ") }}
+
+      {% elif question_split[0]=="country_of_citizenship" %}
+
+      Information:
+
+      - {{ supports | join("\n- ") }}
+
+
+      What country is {{ question_split[1:] | join(" ")}} a citizen of? Choose from
+      the following:
+
+      - {{ candidates | join("\n- ") }}
+
+      {% elif question_split[0]=="place_of_death" %}
+
+      Information:
+
+      - {{ supports | join("\n- ") }}
+
+
+      Where did {{ question_split[1:] | join(" ")}} die? Choose from the following:
+
+      - {{ candidates | join("\n- ") }}
+
+      {% endif %}
+
+      |||
+
+      {% if question_split[0] in ["place_of_birth", "country_of_citizenship", "place_of_death"]
+      %}
+
+      {{answer}}
+
+      {% endif %}'
+    name: Indirect Question about Birthplace / Citizenship / Place of Death
+    reference: Ask about place of birth, citizenship, or place of death for the subject
+      entity.
+  c4675106-0ac5-4bf0-a400-f628daae81db: !Template
+    id: c4675106-0ac5-4bf0-a400-f628daae81db
+    jinja: 'Information:
+
+      - {{ supports | join("\n- ") }}
+
+
+      {% set question_split = question.split('' '') %}
+
+      Generate a fact triple for the information above.
+
+
+      |||
+
+      ({{ question_split[1:] | join(" ") }}, {{ question_split[0] }}, {{answer}})'
+    name: Generate Fact Triple
+    reference: Given information, generate a fact triple.
