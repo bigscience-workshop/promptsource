@@ -2,6 +2,7 @@ import textwrap
 
 import pandas as pd
 import streamlit as st
+from jinja2 import TemplateSyntaxError
 from pygments import highlight
 from pygments.formatters import HtmlFormatter
 from pygments.lexers import DjangoLexer
@@ -291,7 +292,10 @@ else:
                     st.write(example)
                 if num_templates > 0:
                     with col2:
-                        prompt = template.apply(example, highlight_variables=True)
+                        try:
+                            prompt = template.apply(example, highlight_variables=True)
+                        except TemplateSyntaxError:
+                            prompt = template.apply(example, highlight_variables=False)
                         if prompt == [""]:
                             st.write("∅∅∅ *Blank result*")
                         else:
