@@ -1,4 +1,5 @@
 import os
+import random
 import uuid
 from collections import defaultdict
 from shutil import rmtree
@@ -18,7 +19,12 @@ def highlight(input):
     return "<span style='color: #F08080'>" + input + "</span>"
 
 
+def choice(choices):
+    return random.choice(choices)
+
+
 env.filters["highlight"] = highlight
+env.filters["choice"] = choice
 
 
 class TemplateCollection:
