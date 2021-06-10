@@ -1,0 +1,51 @@
+dataset: go_emotions
+subset: simplified
+templates:
+  8a80ad98-6785-46d8-a68b-c27d1c173fcd: !Template
+    id: 8a80ad98-6785-46d8-a68b-c27d1c173fcd
+    jinja: "What do you think the person was feeling when he wrote this:  {{ text\
+      \ }}?\n|||\n{% if labels|length==0 %}\nunclear\n{% else %}\n{% set labels_list=\
+      \ ([\n  \"admiration\",\n  \"amusement\",\n  \"anger\",\n  \"annoyance\",\n\
+      \  \"approval\",\n  \"caring\",\n  \"confusion\",\n  \"curiosity\",\n  \"desire\"\
+      ,\n  \"disappointment\",\n  \"disapproval\",\n  \"disgust\",\n  \"embarrassment\"\
+      ,\n  \"excitement\",\n  \"fear\",\n  \"gratitude\",\n  \"grief\",\n  \"joy\"\
+      ,\n  \"love\",\n  \"nervousness\",\n  \"optimism\",\n  \"pride\",\n  \"realization\"\
+      ,\n  \"relief\",\n  \"remorse\",\n  \"sadness\",\n  \"surprise\",\n  \"neutral\"\
+      \n]) %}\n{% set current_sentiment_list = [] %}\n{% for label_index in labels\
+      \ %}\n{% set current_sentiment_list = current_sentiment_list.append(labels_list[label_index])\
+      \ %}\n{% endfor %}\n{% if current_sentiment_list|length == 0 %}\nunclear\n{%\
+      \ else %}\n{{ current_sentiment_list|join(', ') }}\n{% endif %}\n{% endif %}"
+    name: get_all_sentiments_from_text
+    reference: Given the text, provide all the sentiments.
+  c0a0af62-9282-4bb4-9aed-883d2a0e9a8d: !Template
+    id: c0a0af62-9282-4bb4-9aed-883d2a0e9a8d
+    jinja: "{% set labels_list= ([\n  \"admiration\",\n  \"amusement\",\n  \"anger\"\
+      ,\n  \"annoyance\",\n  \"approval\",\n  \"caring\",\n  \"confusion\",\n  \"\
+      curiosity\",\n  \"desire\",\n  \"disappointment\",\n  \"disapproval\",\n  \"\
+      disgust\",\n  \"embarrassment\",\n  \"excitement\",\n  \"fear\",\n  \"gratitude\"\
+      ,\n  \"grief\",\n  \"joy\",\n  \"love\",\n  \"nervousness\",\n  \"optimism\"\
+      ,\n  \"pride\",\n  \"realization\",\n  \"relief\",\n  \"remorse\",\n  \"sadness\"\
+      ,\n  \"surprise\",\n  \"neutral\"\n]) %}\n{% set random_label= range(28)|list|random\
+      \ %}\nDo you think the following text has the \"{{labels_list[random_label]}}\"\
+      \ sentiment:  {{ text }}?\n|||\n{% if example_very_unclear %}\nunclear\n{% else\
+      \ %}\n{% if random_label in labels %}\nyes\n{% else %}\nno\n{% endif %}\n{%\
+      \ endif %}"
+    name: true_or_false_sentiment
+    reference: Given the text and asked about a random sentiment, answer whether the
+      text has that sentiment or not.
+  fa307ac0-67ba-49f5-ab87-795491d2b9d1: !Template
+    id: fa307ac0-67ba-49f5-ab87-795491d2b9d1
+    jinja: "Describe the sentiment of this text in one word:  {{ text }}?\n|||\n{%\
+      \ if labels|length==0 %}\nunclear\n{% else %}\n{% set labels_list= ([\n  \"\
+      admiration\",\n  \"amusement\",\n  \"anger\",\n  \"annoyance\",\n  \"approval\"\
+      ,\n  \"caring\",\n  \"confusion\",\n  \"curiosity\",\n  \"desire\",\n  \"disappointment\"\
+      ,\n  \"disapproval\",\n  \"disgust\",\n  \"embarrassment\",\n  \"excitement\"\
+      ,\n  \"fear\",\n  \"gratitude\",\n  \"grief\",\n  \"joy\",\n  \"love\",\n  \"\
+      nervousness\",\n  \"optimism\",\n  \"pride\",\n  \"realization\",\n  \"relief\"\
+      ,\n  \"remorse\",\n  \"sadness\",\n  \"surprise\",\n  \"neutral\"\n]) %}\n{%\
+      \ set current_sentiment_list = [] %}\n{% for label_index in labels %}\n{% set\
+      \ current_sentiment_list = current_sentiment_list.append(labels_list[label_index])\
+      \ %}\n{% endfor %}\n{% if current_sentiment_list|length == 0 %}\nunclear\n{%\
+      \ else %}\n{{ current_sentiment_list|random}}\n{% endif %}\n{% endif %}"
+    name: get_single_sentiment_from_text
+    reference: Given the text, describe the sentiment in a single word.
