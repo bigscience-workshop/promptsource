@@ -294,7 +294,7 @@ else:
                     with col2:
                         try:
                             prompt = template.apply(example, highlight_variables=True)
-                        except TemplateSyntaxError:
+                        except (TemplateSyntaxError, TypeError):
                             prompt = template.apply(example, highlight_variables=False)
                         if prompt == [""]:
                             st.write("∅∅∅ *Blank result*")
