@@ -1,17 +1,5 @@
 dataset: common_gen
 templates:
-  4b12e3f8-08f1-45c0-8723-d78d41ec8313: !Template
-    id: 4b12e3f8-08f1-45c0-8723-d78d41ec8313
-    jinja: "We have a set of concepts: {{ concepts | join(\", \") }}.\nConstruct a\
-      \ sentence with all the concepts: \n|||\n{{target}}"
-    name: We have...
-    reference: 'This prompt has the prefix "We have..." '
-  65c5a117-ab6f-486b-987d-64685e17db76: !Template
-    id: 65c5a117-ab6f-486b-987d-64685e17db76
-    jinja: "Generate a coherent sentence from the list of concepts: \n{{ concepts\
-      \ | join(\", \") }}\n|||\n{{target}}"
-    name: Task description
-    reference: 'Provide a task description '
   684f1859-0b8d-4efe-82e1-7218838813cd: !Template
     id: 684f1859-0b8d-4efe-82e1-7218838813cd
     jinja: 'Put the concepts together to form a sentence: {{ concepts | join(", ")
@@ -22,6 +10,20 @@ templates:
       {{target}}'
     name: Put together
     reference: This is similar to a task description
+  a4991cc7-cc91-4f37-af80-1983a02eb950: !Template
+    id: a4991cc7-cc91-4f37-af80-1983a02eb950
+    jinja: "Construct a sentence with the word {{ concepts | choice }}. \n\nHint:\
+      \ Use {{concepts | join(\", \")}} to restrict the output sentence.\n|||\n{{target}}"
+    name: choice in concept centric sentence generation
+    reference: ''
+    task_template: false
+  ed215962-8e51-45e7-b025-6e822f877098: !Template
+    id: ed215962-8e51-45e7-b025-6e822f877098
+    jinja: "We have the sentence: {{target}}; \nExtract all the key concepts: \n|||\n\
+      {{ concepts | join(\", \") }}"
+    name: sentence to concepts type 1
+    reference: Template identifies the concepts from the sentence
+    task_template: false
   fa787974-86dd-4f66-b2d7-6d3523ce00e1: !Template
     id: fa787974-86dd-4f66-b2d7-6d3523ce00e1
     jinja: "Humans can easily string together abstract concepts to form a coherent\
