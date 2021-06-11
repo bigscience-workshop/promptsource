@@ -25,6 +25,56 @@ templates:
       {{ choices[''text''][choices[''label''].index(answerKey)] }}'
     name: qa
     reference: ''
+  42fca80b-b614-4288-aad2-2525360543cb: !Template
+    id: 42fca80b-b614-4288-aad2-2525360543cb
+    jinja: 'Pick the most suitable answer for the following question:
+
+
+      {{question}}
+
+
+      Options:
+
+
+      {% for i in range(choices[''text'']|length) %}
+
+      <b>{{choices[''label''][i]}}</b>: {{choices[''text''][i]}}
+
+      {% endfor %} |||
+
+      {{ answerKey }}'
+    name: test_question
+    reference: ''
+  4e46612a-a320-4692-bddc-37df45680df4: !Template
+    id: 4e46612a-a320-4692-bddc-37df45680df4
+    jinja: 'Pick all the incorrect/false options for the following question:
+
+
+      {{question}}
+
+
+      Options:
+
+
+      {% for i in range(choices[''text'']|length) %}
+
+      - {{choices[''text''][i]}}
+
+      {% endfor %} |||
+
+      {% for i in range(choices[''text'']|length) %}
+
+      {% if i != choices[''label''].index(answerKey) %}
+
+      - {{ choices[''text''][i] }}
+
+      {% endif %}
+
+      {% endfor %}
+
+      '
+    name: test_question_false
+    reference: ''
   8e3f63fa-9ae6-4105-bd51-874b5e1d6b8e: !Template
     id: 8e3f63fa-9ae6-4105-bd51-874b5e1d6b8e
     jinja: 'Pick the most suitable answer for the following question:
