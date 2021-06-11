@@ -3,10 +3,13 @@ subset: light
 templates:
   5f79fa25-3804-4e32-9493-a12c1c2ddff0: !Template
     id: 5f79fa25-3804-4e32-9493-a12c1c2ddff0
-    jinja: "{% if annotations.type[0] == \"multipleQAs\" %}\n   {% set random_question_id\
-      \ = range(0, annotations.qaPairs[0].question | length) | choice%}\n   {% set\
-      \ selected_question = annotations.qaPairs[0].question[random_question_id] %}\n\
-      \   {% set selected_answer = annotations.qaPairs[0].answer[random_question_id]\
+    jinja: "{# Assignement in if clause breaks test, we need to declare variables\
+      \ in global scope first: https://github.com/pallets/jinja/issues/1314 #}\n{%\
+      \ set selected_question = \"\" %}\n{% set selected_answer = \"\" %}\n{% set\
+      \ random_question_id = -1 %}\n{% if annotations.type[0] == \"multipleQAs\" %}\n\
+      \   {% set random_question_id = range(0, annotations.qaPairs[0].question | length)\
+      \ | choice%}\n   {% set selected_question = annotations.qaPairs[0].question[random_question_id]\
+      \ %}\n   {% set selected_answer = annotations.qaPairs[0].answer[random_question_id]\
       \ | choice %}\n{% else %}\n    {% set selected_question = question %}\n    {%\
       \ set selected_answer = annotations.answer | choice %}\n{% endif %}\n\n{{selected_question}}\n\
       |||\n{{selected_answer}}"
@@ -16,10 +19,13 @@ templates:
     task_template: false
   72bf511b-44ce-4b9f-a2d0-5ed6334f0e07: !Template
     id: 72bf511b-44ce-4b9f-a2d0-5ed6334f0e07
-    jinja: "{% if annotations.type[0] == \"multipleQAs\" %}\n   {% set random_question_id\
-      \ = range(0, annotations.qaPairs[0].question | length) | choice%}\n   {% set\
-      \ random_answer_id = range(0, annotations.qaPairs[0].answer | length) | choice%}\n\
-      \   {% set selected_question = annotations.qaPairs[0].question[random_question_id]\
+    jinja: "{# Assignement in if clause breaks test, we need to declare variables\
+      \ in global scope first: https://github.com/pallets/jinja/issues/1314 #}\n{%\
+      \ set random_question_id = -1 %}\n{% set random_answer_id = -1 %}\n{% set selected_question\
+      \ = \"\" %}\n{% set selected_answer = \"\" %}\n{% if annotations.type[0] ==\
+      \ \"multipleQAs\" %}\n   {% set random_question_id = range(0, annotations.qaPairs[0].question\
+      \ | length) | choice%}\n   {% set random_answer_id = range(0, annotations.qaPairs[0].answer\
+      \ | length) | choice%}\n   {% set selected_question = annotations.qaPairs[0].question[random_question_id]\
       \ %}\n   {% set selected_answer = annotations.qaPairs[0].answer[random_answer_id]\
       \ | choice%}\n{% else %}\n   {% set random_question_id = 0 %}\n   {% set random_answer_id\
       \ = 0 %}\n   {% set selected_question = question %}\n   {% set selected_answer\
@@ -31,21 +37,25 @@ templates:
     task_template: false
   7655d2aa-70df-42cf-9bfa-80484521f856: !Template
     id: 7655d2aa-70df-42cf-9bfa-80484521f856
-    jinja: "{{question}}\n\n|||\n\n{% if annotations.type[0] == \"singleAnswer\" %}\n\
-      \    {# Dummy assignement otherwise test don't seem to pass when we assign a\
-      \ variable in one conditional branch #}\n    {% set random_answer = \"\" %}\n\
-      \    {% set random_answer_form = annotations.answer[0] | choice %}\n{% else\
-      \ %}\n    {% set random_answer = annotations.qaPairs[0].answer | choice %}\n\
-      \    {% set random_answer_form = random_answer | choice %}\n{% endif %}\n{{random_answer_form}}"
+    jinja: "{{question}}\n\n|||\n\n{# Assignement in if clause breaks test, we need\
+      \ to declare variables in global scope first: https://github.com/pallets/jinja/issues/1314\
+      \ #}\n{% set random_answer = \"\" %}\n{% set random_answer_form = \"\" %}\n\
+      {% if annotations.type[0] == \"singleAnswer\" %}\n    {% set random_answer_form\
+      \ = annotations.answer[0] | choice %}\n{% else %}\n    {% set random_answer\
+      \ = annotations.qaPairs[0].answer | choice %}\n    {% set random_answer_form\
+      \ = random_answer | choice %}\n{% endif %}\n\n{{random_answer_form}}"
     name: ambig_qa_light1
     reference: Given the question, we choose the answer in single QA and randomly
       choose when in multipleQA.
     task_template: false
   bb089312-23cb-475d-93b5-952781bc6be4: !Template
     id: bb089312-23cb-475d-93b5-952781bc6be4
-    jinja: "{% if annotations.type[0] == \"multipleQAs\" %}\n   {% set random_question_id\
-      \ = range(0, annotations.qaPairs[0].question | length) | choice%}\n   {% set\
-      \ selected_question = annotations.qaPairs[0].question[random_question_id]%}\n\
+    jinja: "{# Assignement in if clause breaks test, we need to declare variables\
+      \ in global scope first: https://github.com/pallets/jinja/issues/1314 #}\n{%\
+      \ set selected_question = \"\" %}\n{% set selected_answer = \"\" %}\n{% set\
+      \ random_question_id = -1 %}\n{% if annotations.type[0] == \"multipleQAs\" %}\n\
+      \   {% set random_question_id = range(0, annotations.qaPairs[0].question | length)\
+      \ | choice%}\n   {% set selected_question = annotations.qaPairs[0].question[random_question_id]%}\n\
       \   {% set selected_answer = annotations.qaPairs[0].answer[random_question_id]\
       \ | choice%}\n{% else %}\n   {% set selected_question = question %}\n   {% set\
       \ selected_answer = annotations.answer | choice %}\n{% endif %}\nKnowing that\
