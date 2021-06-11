@@ -1,13 +1,13 @@
-from jinja2 import BaseLoader, Environment, meta, TemplateError
+from jinja2 import meta, TemplateError
 import pytest
-from promptsource.templates import TemplateCollection
+import promptsource.templates
 from promptsource.utils import get_dataset_builder
 
 # Sets up Jinja environment
-env = Environment(loader=BaseLoader)
+env = promptsource.templates.env
 
 # Loads templates and iterates over each data (sub)set
-template_collection = TemplateCollection()
+template_collection = promptsource.templates.TemplateCollection()
 
 
 @pytest.mark.parametrize("dataset", template_collection.keys)
@@ -35,9 +35,10 @@ def test_dataset(dataset):
 
     # Iterates over each template for current data (sub)set
     dataset_templates = template_collection.get_dataset(dataset_name, subset_name)
+    any_task = False
     for template_name in dataset_templates.all_template_names:
         template = dataset_templates[template_name]
-
+        any_task = any_task or template.get_task_template()
         # Check 1: Jinja and all features valid?
         try:
             parse = env.parse(template.jinja)
@@ -67,3 +68,6 @@ def test_dataset(dataset):
 
         template_name_set.add(template.get_name())
         template_jinja_set.add(template.jinja)
+
+    # Turned off for now until we fix.
+    #assert any_task, "There must be at least one task template for each dataset"
