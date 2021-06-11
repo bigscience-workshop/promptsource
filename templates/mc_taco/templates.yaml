@@ -20,18 +20,20 @@ templates:
       {{["No", "Yes"][label]}}'
     name: mc_taco_1
     reference: Basic Context, QA Pair, ask for plausibility
+    task_template: true
   38ab730f-1ed8-4362-99e1-c0d305aa056e: !Template
     id: 38ab730f-1ed8-4362-99e1-c0d305aa056e
     jinja: "I've been grappling with the temporal accuracy of this answer for a while:\n\
       \nQ: \"{{question}}\"\n\nI have the following information: \"{{sentence}}\"\n\
       \nA: \"{{answer}}\" \n\nThis is definitely not a/an ||| {{[\"plausible\", \"\
-      implausible\"]}} answer."
+      implausible\"][label]}} answer."
     name: mc_taco_6
     reference: Context, QA Pair, Negation
+    task_template: true
   5bc98cb7-350e-471e-b986-ad52a46f403c: !Template
     id: 5bc98cb7-350e-471e-b986-ad52a46f403c
-    jinja: 'There are five temporal categories: Event Duration, Event Ordering, Frequency,
-      Typical Time, Stationarity.
+    jinja: 'There are five temporal categories: {{"Event Duration"}}, {{"Event Ordering"}},
+      {{"Frequency"}}, {{"Typical Time"}}, {{"Stationarity"}}.
 
 
       Out of the above temporal categories, which one does the question "{{question}}"
@@ -40,9 +42,12 @@ templates:
       {{["Event Duration", "Event Ordering", "Frequency", "Typical Time", "Stationarity"][category]}}'
     name: mc_taco_4
     reference: Temporal categories as part of the prompt
+    task_template: false
   5e5cedef-b943-439a-a75a-1140478b0620: !Template
     id: 5e5cedef-b943-439a-a75a-1140478b0620
-    jinja: 'I have the following passage:
+    jinja: '{% if label %}
+
+      I have the following passage:
 
 
       {{sentence}}
@@ -51,20 +56,15 @@ templates:
       My query is: "{{question}}"
 
 
-      I want an answer that makes "temporal sense". |||
+      I want an answer that is "temporally plausible". |||
 
-
-      {% if label %}
 
       {{answer}}
-
-      {% else %}
-
-      I am not sure.
 
       {% endif %}'
     name: mc_taco_5
     reference: Generate answer from question+context (if plausible)
+    task_template: false
   b08c4c20-f8a2-4bdb-8a9b-235f782c7386: !Template
     id: b08c4c20-f8a2-4bdb-8a9b-235f782c7386
     jinja: 'True/False?
@@ -76,6 +76,7 @@ templates:
       {{["False", "True"][label]}}'
     name: mc_taco_3
     reference: Context, QA Pair, T/F question
+    task_template: true
   df9ad236-1385-48ea-b056-171aa3f8d0bd: !Template
     id: df9ad236-1385-48ea-b056-171aa3f8d0bd
     jinja: 'Which temporal category does the question "{{question}}" belong to? |||
