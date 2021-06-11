@@ -32,9 +32,9 @@ templates:
   7655d2aa-70df-42cf-9bfa-80484521f856: !Template
     id: 7655d2aa-70df-42cf-9bfa-80484521f856
     jinja: "{{question}}\n\n|||\n\n{% if annotations.type[0] == \"singleAnswer\" %}\n\
-      \    {{annotations.answer[0] | choice}}\n{% else %}\n    {% set random_answer\
-      \ = annotations.qaPairs[0].answer | choice%}\n    {% set random_answer_form\
-      \ = random_answer | choice%}\n    {{random_answer_form}}\n{% endif %}"
+      \    {% set random_answer_form = annotations.answer[0] | choice %}\n{% else\
+      \ %}\n    {% set random_answer = annotations.qaPairs[0].answer | choice %}\n\
+      \    {% set random_answer_form = random_answer | choice %}\n{% endif %}\n{{random_answer_form}}"
     name: ambig_qa_light1
     reference: Given the question, we choose the answer in single QA and randomly
       choose when in multipleQA.
