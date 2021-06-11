@@ -133,6 +133,7 @@ combined to form different (input, output) pairs i.e. different "tasks". Don't h
 introduce some diversity by prompting a given dataset into multiple tasks and provide some
 description in the "Template Reference" text box. An example is given
 in the already prompted `movie_rationales`.
+* **Task Template Checkbox** While there are many different ways to prompt the tasks, only some of them correspond to the original intention of the dataset. For instance, for a summary dataset you can generate a summary or hallucinate an article. However, only the first was the true original task for the dataset. Use the *Task template* check box to indicate true task prompts. (We realize there are some corner cases, for instance, if there was no original task, you should leave this blank. If there are multiple original tasks you can check it for each of them. If you are confused for your dataset, consult with us in slack.) 
 * **Filtering templates.** If a template is applied to an example and produces an
 empty string, that template/example pair will be skipped. (Either the entire output
 is whitespace or the text on either side of the separator `|||` is whitespace.
