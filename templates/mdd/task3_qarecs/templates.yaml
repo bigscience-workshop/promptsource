@@ -32,7 +32,7 @@ templates:
   3e5a19e5-aa33-467a-bcd2-f84d99f32759: !Template
     id: 3e5a19e5-aa33-467a-bcd2-f84d99f32759
     jinja: '{% set context_init= ["", "Someone said", "He said", "She
-      said", "They said", "A friend asked me", "A colleague asked me"]|random %}
+      said", "They said", "A friend asked me", "A colleague asked me"]|choice %}
 
       {{context_init}}
 
@@ -47,7 +47,7 @@ templates:
     jinja: '{% if dialogue_turns.utterance|length==6 %}
 
       {% set context_init = ["", "Someone said", "He said", "She said",
-      "They asked", "A friend asked me", "A colleague asked me"]|random %}
+      "They asked", "A friend asked me", "A colleague asked me"]|choice %}
 
       {% set pronoun = "he" %}
 
@@ -64,8 +64,8 @@ templates:
       {% set pronoun = "they" %}
 
       {% elif "colleague" in context_init or "friend" in context_init %}
-      {% set random_idx = range(3)|list|random %}
-      {% set pronoun = ["he","she","they"][random_idx] %}
+      {% set choice_idx = range(3)|list|choice %}
+      {% set pronoun = ["he","she","they"][choice_idx] %}
       {%endif%}
 
       {{context_init}}{% if context_init=="" %}{{dialogue_turns.utterance[4]}}|||{{dialogue_turns.utterance[5]}}
@@ -90,7 +90,7 @@ templates:
       {% set context_init= ["I am aware", "Someone is aware", "He is aware", "She
       is aware", "They are aware", "A friend is aware", "A colleague is aware", "A
       person is aware", "I know", "Someone knows", "He knows", "She knows", "They
-      know", "A friend knows", "A colleague knows", "A person knows"]|random %}
+      know", "A friend knows", "A colleague knows", "A person knows"]|choice %}
 
       {% set pronoun = "he" %}
 
@@ -123,11 +123,11 @@ templates:
 
       {% elif "colleague" in context_init or "friend" in context_init %}
 
-      {% set random_idx = range(3)|list|random %}
+      {% set choice_idx = range(3)|list|choice %}
 
-      {% set pronoun = ["he","she","they"][random_idx] %}
+      {% set pronoun = ["he","she","they"][choice_idx] %}
 
-      {% set pronoun_2 = ["him","her","them"][random_idx] %}
+      {% set pronoun_2 = ["him","her","them"][choice_idx] %}
 
       {%endif%}
 
@@ -153,7 +153,7 @@ templates:
     jinja: '{% if dialogue_turns.utterance|length==6 %}
 
       {% set context_init= ["", "He said", "She said", "They said", "Someone said",
-      "A friend said", "A colleague said", "A person said"]|random %}
+      "A friend said", "A colleague said", "A person said"]|choice %}
 
       {% set pronoun = "he" %}
 
@@ -180,11 +180,11 @@ templates:
 
       {% elif "colleague" in context_init or "friend" in context_init %}
 
-      {% set random_idx = range(3)|list|random %}
+      {% set choice_idx = range(3)|list|choice %}
 
-      {% set pronoun = ["he","she","they"][random_idx] %}
+      {% set pronoun = ["he","she","they"][choice_idx] %}
 
-      {% set pronoun_2 = ["him","her","them"][random_idx] %}
+      {% set pronoun_2 = ["him","her","them"][choice_idx] %}
 
       {%endif%}
 
