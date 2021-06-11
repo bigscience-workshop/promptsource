@@ -13,6 +13,27 @@ templates:
       \   {%- endfor -%} \n{%- endfor -%} \n\n"
     name: ner_flat_question_without_label
     reference: Natural question
+  445b9d29-f7af-41a8-bb06-f8ca9bcfb117: !Template
+    id: 445b9d29-f7af-41a8-bb06-f8ca9bcfb117
+    jinja: "{% set _ner_label_dict = ({\n0:\"O\",\n1:\"B-PER\",\n2:\"I-PER\",\n3:\"\
+      B-ORG\",\n4:\"I-ORG\",\n5:\"B-LOC\",\n6:\"I-LOC\",\n7:\"B-MISC\",\n8:\"I-MISC\"\
+      \n}) %}\n{% set _random_ner_label_dict = ({}) %}\n{% for k,v in _ner_label_dict.items()\
+      \ -%}\n    {% set _rand_num=range(0, 100) | random %}\n    {% if _rand_num >\
+      \ 50 %}\n        {% set _dummy = _random_ner_label_dict.update({k:v}) %}\n \
+      \   {% endif %}\n{% endfor %}\n{%- if label not in _random_ner_label_dict -%}\n\
+      \    {% set _dummy = _random_ner_label_dict.update({0:\"O\"}) %}\n{% endif %}\n\
+      Generate named entities from the following sentence. The named entities are\n\
+      {% for k,v in _random_ner_label_dict.items() -%}\n    {{ v }}\n    {{- \", \"\
+      \ if not loop.last else \"\" -}}\n{% endfor %}\n{{\"\"}}\n{% for i in tokens\
+      \ -%}\n    {{- \" \" if not loop.last else \"\" -}}\n    {{ i }}\n{% endfor\
+      \ %}\n|||\n{%- for tok in tokens -%}\n    {%- set outer_loop = loop -%}\n  \
+      \  {%- for label in ner_tags -%}\n         {%- if outer_loop.index == loop.index\
+      \ -%}\n            {{- \"\" if outer_loop.first else \" \" -}}\n           \
+      \ {%- if label in _random_ner_label_dict -%}\n                {{tok}}:{{ _random_ner_label_dict[label]\
+      \ }}\n            {%- else -%}\n                {{tok}}:O\n            {% endif\
+      \ %}\n        {%- endif -%}\n    {%- endfor -%}\n{%- endfor -%}"
+    name: ner_flat_question_with_random_label
+    reference: Natural question with random label
   6345fd1a-5272-4a8d-b5b2-02c1d837e521: !Template
     id: 6345fd1a-5272-4a8d-b5b2-02c1d837e521
     jinja: "{% set _pos_label_dict = ({\n0:'\"',\n1:\"''\",\n2:\"#\",\n3:\"\\$\",\n\
@@ -80,6 +101,58 @@ templates:
       {%- endfor -%} "
     name: chunk_flat_question_without_label
     reference: Natural question
+  bda35bf9-1934-4fd4-a5c7-0e2ea2818caf: !Template
+    id: bda35bf9-1934-4fd4-a5c7-0e2ea2818caf
+    jinja: "{% set _pos_label_dict = ({\n0:'\"',\n1:\"''\",\n2:\"#\",\n3:\"\\$\",\n\
+      4:\"(\",\n5:\")\",\n6:\",\",\n7:\".\",\n8:\":\",\n9:\"\\`\\`\",\n10:\"CC\",\n\
+      11:\"CD\",\n12:\"DT\",\n13:\"EX\",\n14:\"FW\",\n15:\"IN\",\n16:\"JJ\",\n17:\"\
+      JJR\",\n18:\"JJS\",\n19:\"LS\",\n20:\"MD\",\n21:\"NN\",\n22:\"NNP\",\n23:\"\
+      NNPS\",\n24:\"NNS\",\n25:\"NN|SYM\",\n26:\"PDT\",\n27:\"POS\",\n28:\"PRP\",\n\
+      29:\"PRP\\$\",\n30:\"RB\",\n31:\"RBR\",\n32:\"RBS\",\n33:\"RP\",\n34:\"SYM\"\
+      ,\n35:\"TO\",\n36:\"UH\",\n37:\"VB\",\n38:\"VBD\",\n39:\"VBG\",\n40:\"VBN\"\
+      ,\n41:\"VBP\",\n42:\"VBZ\",\n43:\"WDT\",\n44:\"WP\",\n45:\"WP$\",\n46:\"WRB\"\
+      \n}) %}\n{% set _random_pos_label_dict = ({}) %}\n{% for k,v in _pos_label_dict.items()\
+      \ -%}\n    {% set _rand_num=range(0, 100) | random %}\n    {% if _rand_num >\
+      \ 50 %}\n        {% if k>=0 and k<= 9 %}\n            {% set _dummy = _random_pos_label_dict.update({0:\"\
+      O\"}) %}\n        {% else %}\n            {% set _dummy = _random_pos_label_dict.update({k:v})\
+      \ %}\n        {% endif %}\n    {% endif %}\n{% endfor %}\n{%- if label not in\
+      \ _random_pos_label_dict -%}\n    {% set _dummy = _random_pos_label_dict.update({0:\"\
+      O\"}) %}\n{% endif %}\nGenerate parts of speech from the following sentence.\
+      \ The parts of speech tags are\n{% for k,v in _random_pos_label_dict.items()\
+      \ -%}\n    {{ v }}\n    {{- \", \" if not loop.last else \"\" -}}\n{% endfor\
+      \ %} \n{{\"\"}}\n{% for i in tokens -%}\n    {{- \" \" if not loop.last else\
+      \ \"\" -}}\n    {{ i }}\n{% endfor %} \n|||\n{%- for tok in tokens -%}\n   \
+      \ {%- set outer_loop = loop -%}\n    {%- for label in pos_tags -%}\n       \
+      \  {%- if outer_loop.index == loop.index -%}\n            {{- \"\" if outer_loop.first\
+      \ else \" \" -}}\n            {%- if label in _random_pos_label_dict -%}\n \
+      \               {{tok}}:{{ _random_pos_label_dict[label] }}\n            {%-\
+      \ else -%}\n                {{tok}}:O\n            {% endif %}\n        {%-\
+      \ endif -%}\n    {%- endfor -%} \n{%- endfor -%} \n"
+    name: pos_flat_question_with_random_label
+    reference: Natural question with random label
+  c6bde73f-43f8-4dde-8e3b-11b725e497e5: !Template
+    id: c6bde73f-43f8-4dde-8e3b-11b725e497e5
+    jinja: "{% set _chunk_label_dict = ({\n0:\"O\",\n1:\"B-ADJP\",\n2:\"I-ADJP\",\n\
+      3:\"B-ADVP\",\n4:\"I-ADVP\",\n5:\"B-CONJP\",\n6:\"I-CONJP\",\n7:\"B-INTJ\",\n\
+      8:\"I-INTJ\",\n9:\"B-LST\",\n10:\"I-LST\",\n11:\"B-NP\",\n12:\"I-NP\",\n13:\"\
+      B-PP\",\n14:\"I-PP\",\n15:\"B-PRT\",\n16:\"I-PRT\",\n17:\"B-SBAR\",\n18:\"I-SBAR\"\
+      ,\n19:\"B-UCP\",\n20:\"I-UCP\",\n21:\"B-VP\",\n22:\"I-VP\"\n}) %}\n{% set _random_chunk_label_dict\
+      \ = ({}) %}\n{% for k,v in _chunk_label_dict.items() -%}\n    {% set _rand_num=range(0,\
+      \ 100) | random %}\n    {% if _rand_num > 50 %}\n        {% set _dummy = _random_chunk_label_dict.update({k:v})\
+      \ %}\n    {% endif %}\n{% endfor %}\n{%- if label not in _random_chunk_label_dict-%}\n\
+      \    {% set _dummy = _random_chunk_label_dict.update({0:\"O\"}) %}\n{% endif\
+      \ %}\nGenerate chunk tag from the following sentence. The chunk tags are\n{%\
+      \ for k,v in _random_chunk_label_dict.items() -%}\n    {{ v }}\n    {{- \",\
+      \ \" if not loop.last else \"\" -}}\n{% endfor %} \n{{\"\"}}\n{% for i in tokens\
+      \ -%}\n    {{- \" \" if not loop.last else \"\" -}}\n    {{ i }}\n{% endfor\
+      \ %} \n|||\n{%- for tok in tokens -%}\n    {%- set outer_loop = loop -%}\n \
+      \   {%- for label in chunk_tags -%}\n         {%- if outer_loop.index == loop.index\
+      \ -%}\n            {{- \"\" if outer_loop.first else \" \" -}}\n           \
+      \ {%- if label in _random_chunk_label_dict -%}\n                {{tok}}:{{ _random_chunk_label_dict[label]\
+      \ }}\n            {%- else -%}\n                {{tok}}:O\n            {% endif\
+      \ %}\n        {%- endif -%}\n    {%- endfor -%} \n{%- endfor -%} \n\n"
+    name: chunk_flat_question_with_random_label
+    reference: Natural question with random label
   d10ab706-e2ea-4b7a-b6b4-371aa0ab483b: !Template
     id: d10ab706-e2ea-4b7a-b6b4-371aa0ab483b
     jinja: "{% set _pos_label_dict = ({\n0:'\"',\n1:\"''\",\n2:\"#\",\n3:\"\\$\",\n\
