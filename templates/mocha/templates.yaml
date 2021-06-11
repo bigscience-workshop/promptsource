@@ -1,0 +1,63 @@
+dataset: mocha
+templates:
+  1c390ee6-fab9-4b16-8028-2649fca56866: !Template
+    id: 1c390ee6-fab9-4b16-8028-2649fca56866
+    jinja: "On a scale of 1 to 5, how similar are these two sentences \n\n(1) \"{{candidate}}\"\
+      \n\n(2) \"{{reference}}\" \n\ngiven the question of \"{{ question }}\" and the\
+      \ context of \"{{ context }}\"?\n\n{% if candidate2 %}\nFollow-up question:\
+      \ What about these two sentences: \n(1) \"{{reference}}\"\n(2) \"{{ candidate2\
+      \ }}\"\n{% endif %}\n|||\n{{ score }} \n\n{{ score2 if candidate2 else \"\"\
+      \ }}\n"
+    name: (Regression) Scoring Candidate against Reference
+    reference: Similarity measure between candidate and reference answers (in a regression
+      manner)
+  2816084e-0193-4284-9a4f-9de4ae03e9d6: !Template
+    id: 2816084e-0193-4284-9a4f-9de4ae03e9d6
+    jinja: "Given the passage and the answers given below, generate a relevant question\
+      \ and pick the corresponding answer.\n\nPassage: {{ context }}\n\nAnswer 1 (Gold):\
+      \ {{ reference }}\n\nAnswer 2: {{ candidate }}\n\n{% if candidate2 %}\nAnswer\
+      \ 3: {{ candidate2 }}\n{% endif %} \n|||\n{{ question }}"
+    name: Generate Question
+    reference: Given passage and the answers, generate a question for the gold answer.
+  6269d541-6e7b-48c1-ae7a-2808385c40c6: !Template
+    id: 6269d541-6e7b-48c1-ae7a-2808385c40c6
+    jinja: "{% if score != 3 %}\nPassage: {{ context }}\n\nQuestion: {{ question }}\n\
+      \nAnswer: {{ reference }}\n\nIs the answer \"{{ candidate }}\" similar to the\
+      \ answer above? Answer yes or no. \n\n{% if candidate2 and score2 != 3 %}\n\
+      Is the answer \"{{ candidate2 }}\" similar to the answer above? Answer yes or\
+      \ no. \n{% endif %}\n|||\n{{ [\"no\", \"yes\"][score > 3] }} \n\n{{[\"no\",\
+      \ \"yes\"][score2 > 3] if candidate2 != \"\"}}\n{% endif %}"
+    name: (Classification) Scoring Candidate against Reference
+    reference: Similarity measure between candidate and reference answers (in a classification
+      manner)
+  7ebdd3bc-4896-425b-b8c2-3e4ea3944de8: !Template
+    id: 7ebdd3bc-4896-425b-b8c2-3e4ea3944de8
+    jinja: '{{ context }}
+
+
+      Given the passage above, what is the answer to the question "{{ question }}"
+
+
+      You can refer to the following candidate answer(s):
+
+
+      Candidate Answer 1: {{ candidate }}
+
+
+      Candidate Answer 2: {{ candidate2 if candidate2 else "-" }}
+
+      |||
+
+      {{ reference }}'
+    name: Generate Correct Answer using Noisy Candidate
+    reference: Given the passage, the question, and the candidate answer (that may
+      be incorrect), generate the correct answer.
+  c06f4d3a-5a95-4b6a-b339-32391c8e6d94: !Template
+    id: c06f4d3a-5a95-4b6a-b339-32391c8e6d94
+    jinja: "Passage: {{ context }}\n\nQuestion: {{ question }}\n\nAnswers: \n\n1.\
+      \ {{ reference }}\n\n2. {{ candidate }}\n\n{% if candidate2 %}\n3. {{ candidate2\
+      \ }}\n{% endif %}\n\nSelect all the correct answers to the question, given the\
+      \ passage above.\n|||\n1 {{ \"2\" if score >= 3 }} {{ \"3\" if score2 >= 3 }}"
+    name: Pick Correct Answers
+    reference: Given passage, question, and all possible answers, pick correct answers  (using
+      similarity cutoff >=3 to reference answer)
