@@ -1,53 +1,48 @@
 dataset: bing_coronavirus_query_set
 templates:
-  27e325b3-68d2-4cb4-9418-a683a8870239: !Template
-    id: 27e325b3-68d2-4cb4-9418-a683a8870239
-    jinja: "This query does not talk about the coronavirus explicitly ? \n{{Query}}\n\
-      |||\n{% if IsImplicitIntent %}\nYes\n{% else %}\nNo\n{% endif %}"
-    name: 'is_explicit_negation '
-    reference: ''
-    task_template: true
   43332782-9e92-4bb2-94bf-28759f3fe181: !Template
     id: 43332782-9e92-4bb2-94bf-28759f3fe181
-    jinja: "This query talks about the coronavirus and was published on {{Date}}.\
+    jinja: "This search query talks about the coronavirus and was published on {{Date}}.\
       \ In what country was it issued ? \n{{Query}}\n|||\n{{Country}}"
     name: 'what_country '
     reference: ''
     task_template: false
   68f9c063-1907-4866-ab1b-756cc57e5695: !Template
     id: 68f9c063-1907-4866-ab1b-756cc57e5695
-    jinja: "The user is searching for coronavirus results. Is the intent implicit\
-      \ or explicit ? \n{{Query}}\n|||\n{% if IsImplicitIntent %}\nimplicit\n{% else\
-      \ %}\nexplicit\n{% endif %}"
+    jinja: "The user is searching for coronavirus results on Bing.com. Is the intent\
+      \ implicit or explicit ? \n{{Query}}\n|||\n{% if IsImplicitIntent == \"True\"\
+      \ %}\nimplicit\n{% else %}\nexplicit\n{% endif %}"
     name: 'is_implicit_or_explicit '
     reference: ''
     task_template: true
   992d541f-9e0c-466d-b4c4-92e9e236f863: !Template
     id: 992d541f-9e0c-466d-b4c4-92e9e236f863
-    jinja: "This query about coronavirus was issued in {{Country}} on {{Date}}. Is\
-      \ the intent implicit or explicit ? \n{{Query}}\n|||\n{% if IsImplicitIntent\
-      \ %}\nimplicit\n{% else %}\nexplicit \n{% endif %}"
+    jinja: "This search query about coronavirus was issued in {{Country}} on {{Date}}.\
+      \ Is the intent implicit or explicit ? \n{{Query}}\n|||\n{% if IsImplicitIntent\
+      \ == \"True\" %}\nimplicit\n{% else %}\nexplicit \n{% endif %}"
     name: 'is_explicit_country_date '
     reference: ''
     task_template: true
   d4a251d7-0e23-4feb-8bf2-18e32c553199: !Template
     id: d4a251d7-0e23-4feb-8bf2-18e32c553199
-    jinja: "In what date was this query issued, during the Covid-19 pandemic ? \n\
-      {{Query}}\n|||\n{{Date}}"
+    jinja: "On what date was this search engine query  issued, during the Covid-19\
+      \ pandemic ? \n{{Query}}\n|||\n{{Date}}"
     name: 'what_date '
     reference: ''
     task_template: false
   df53652c-36dc-45fe-a015-d0781e32cd33: !Template
     id: df53652c-36dc-45fe-a015-d0781e32cd33
-    jinja: "This query has an indirect relation to Covid-19 ? \n{{Query}}\n|||\n{%\
-      \ if IsImplicitIntent %}\nYes\n{% else %}\nNo\n{% endif %}"
+    jinja: "Does this search engine query have an indirect relation to Covid-19 ?\
+      \ \n{{Query}}\n|||\n{% if IsImplicitIntent == \"True\" %}\nYes\n{% else %}\n\
+      No\n{% endif %}"
     name: is_implicit_query
     reference: ''
     task_template: true
   df7bc2ee-686c-4826-ad84-3a056a2da4d4: !Template
     id: df7bc2ee-686c-4826-ad84-3a056a2da4d4
-    jinja: "This query talks about the  coronavirus explicitly ? \n{{Query}}\n|||\n\
-      {% if IsImplicitIntent %}\nNo\n{% else %}\nYes\n{% endif %}"
+    jinja: "Does this search query on Bing.com talk about the  coronavirus explicitly\
+      \ ? \n{{Query}}\n|||\n{% if IsImplicitIntent == \"True\" %}\nNo\n{% else %}\n\
+      Yes\n{% endif %}"
     name: is_explicit_query
     reference: ''
     task_template: true
