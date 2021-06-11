@@ -3,10 +3,10 @@ subset: task3_qarecs
 templates:
   1614890b-362c-4ee8-850d-841cf511d169: !Template
     id: 1614890b-362c-4ee8-850d-841cf511d169
-    jinja: '{% if dialogue_turns.utterance|length==6%}
+    jinja: "{% if dialogue_turns.utterance|length==6%}
 
       This is a film-related dialogue between Speaker 1 and Speaker 2. Complete Speaker
-      2''s intervention to answer Speaker 1''s question.
+      2's intervention to answer Speaker 1's question.
 
 
       Speaker 1: {{dialogue_turns.utterance[0]}}
@@ -24,13 +24,15 @@ templates:
 
       |||
 
-      {% endif %}'
+      {% endif %}"
     name: next_utterance_4_for_6
-    reference: Given the first three dialogues,  generate next utterance for dialogues
+    reference:
+      Given the first three dialogues,  generate next utterance for dialogues
       of length 6.
   3e5a19e5-aa33-467a-bcd2-f84d99f32759: !Template
     id: 3e5a19e5-aa33-467a-bcd2-f84d99f32759
-    jinja: '{% set context_begin= ["", "Someone said", "It said", "He said", "She
+    jinja:
+      '{% set context_begin= ["", "Someone said", "It said", "He said", "She
       said", "They said", "A friend asked me", "A colleague asked me"]|random %}
 
       {{context_begin}}
@@ -40,26 +42,55 @@ templates:
       endif %}'
     name: recommend_movie_1
     reference: Given likes, recommend a movie.
+    task_template: false
   76888d6e-76fa-47db-a8b3-9980f082df51: !Template
     id: 76888d6e-76fa-47db-a8b3-9980f082df51
     jinja: '{% if dialogue_turns.utterance|length==6 %}
 
-      {% set context_begin= ["", "Someone said", "He said", "It said", "She said",
+      {% set context_begin = ["", "Someone said", "He said", "It said", "She said",
       "They asked", "A friend asked me", "A colleague asked me"]|random %}
 
-      {{context_begin}}
+      {% if "He" in context_begin %}
 
-      {% if context_begin =="" %}{{dialogue_turns.utterance[4]}}|||{{dialogue_turns.utterance[5]}}{%
-      else %}"{{dialogue_turns.utterance[4]}}". Which movie do you think {% if "He"
-      in context_begin %}he{% elif "She" in context_begin %}she{% elif "They" in context_begin
-      or "Someone" in context_begin %}they{% elif "It" in context_begin %}it{% elif
-      "colleague" in context_begin or "friend" in context_begin %}{{["he","she","they"]|random}}{%endif%}
+      {% set pronoun = "he" %}
+
+      {% elif "I" in content_begin %}
+
+      {% set pronoun = "I" %}
+
+      {% elif "She" in context_begin %}
+
+      {% set pronoun = "she" %}
+
+      {% elif "They" in context_begin or "Someone" in context_begin or "person" in
+
+      context_begin%}
+
+      {% set pronoun = "they" %}
+
+      {% elif "colleague" in context_begin or "friend" in context_begin %}
+
+      {% set random_index = range(3)|list|random %}
+
+      {% set pronoun = ["he","she","they"][random_index] %}
+
+      {%endif%}
+
+      {{context_begin}}{% if context_begin=="" %}{{dialogue_turns.utterance[4]}}|||{{dialogue_turns.utterance[5]}}
+
+      {% else %} "{{dialogue_turns.utterance[4]}}". Which movie do you think {{pronoun}}
       will like?|||{{dialogue_turns.utterance[5]}}{% endif %}
 
-      {% else %}|||{% endif %}'
+      {% else %}
+
+      |||
+
+      {% endif %}'
     name: recommend_movie_2
-    reference: Given a single preference, recommend a movie. Only works for dialogues
+    reference:
+      Given a single preference, recommend a movie. Only works for dialogues
       with 6 utterances.
+    task_template: false
   91f33bcf-3c0e-49e6-ae86-28f77e224734: !Template
     id: 91f33bcf-3c0e-49e6-ae86-28f77e224734
     jinja: '{% if dialogue_turns.utterance|length==6 %}
@@ -117,8 +148,10 @@ templates:
 
       {% endif %}'
     name: recommend_movie_3
-    reference: Given previous suggestion, some movie description, and preference,
+    reference:
+      Given previous suggestion, some movie description, and preference,
       recommend a movie.
+    task_template: false
   92cb9273-b89f-410f-a7f2-db8c84f42862: !Template
     id: 92cb9273-b89f-410f-a7f2-db8c84f42862
     jinja: '{% if dialogue_turns.utterance|length==6 %}
@@ -173,10 +206,12 @@ templates:
       {% endif %}'
     name: recommend_movie_4
     reference: Given likes and preferences, recommend a movie.
+    task_template: false
   de1179b3-b6d6-4acf-9b0a-82cb2fa9d58f: !Template
     id: de1179b3-b6d6-4acf-9b0a-82cb2fa9d58f
-    jinja: 'Complete this movie-trivia-related dialogue between Speaker 1 and Speaker
-      2 by answering Speaker 1''s question as Speaker 2.
+    jinja:
+      "Complete this movie-trivia-related dialogue between Speaker 1 and Speaker
+      2 by answering Speaker 1's question as Speaker 2.
 
 
       Speaker 1: {{dialogue_turns.utterance[0]}}
@@ -194,14 +229,16 @@ templates:
       Speaker 1: {{dialogue_turns.utterance[4]}}
 
 
-      {% endif %} Speaker 2:|||{{dialogue_turns.utterance[-1]}}'
+      {% endif %} Speaker 2:|||{{dialogue_turns.utterance[-1]}}"
     name: next_utterance_4_and_6
     reference: Given the first dialogues, return the next utterance.
   e37a6f9c-344c-4b85-a41f-85bb84bab934: !Template
     id: e37a6f9c-344c-4b85-a41f-85bb84bab934
-    jinja: 'For the movie - {{dialogue_turns.utterance[1]}}, answer this question:
+    jinja:
+      "For the movie - {{dialogue_turns.utterance[1]}}, answer this question:
 
 
-      {{dialogue_turns.utterance[2]}}|||{{dialogue_turns.utterance[3]}}'
+      {{dialogue_turns.utterance[2]}}|||{{dialogue_turns.utterance[3]}}"
     name: qa_about movie
     reference: Given the movie name and a question, answer the question.
+    task_template: false
