@@ -1,0 +1,88 @@
+dataset: ropes
+templates:
+  0791ec30-6361-4e62-8dce-ca9cbf997acc: !Template
+    id: 0791ec30-6361-4e62-8dce-ca9cbf997acc
+    jinja: "Please answer correctly the following question related to the paragraph\
+      \ below. \n\n{{ question }}\n\n{{ situation }}\n\nHint: {{ background }}\n|||\n\
+      {{ answers.text[0] }}\n"
+    name: prompt_beginning
+    reference: ''
+    task_template: true
+  0909d72d-50c7-4cbb-bec4-1f891123717c: !Template
+    id: 0909d72d-50c7-4cbb-bec4-1f891123717c
+    jinja: "{{ situation }}\n\nGiven the paragraph above, please answer correctly\
+      \ the following question: \n\n{{ question }}\n|||\n{{ answers.text[0] }}"
+    name: prompt_bottom_no_hint
+    reference: ''
+    task_template: false
+  1e4944e7-4d5b-475c-8b04-4b523e96bc51: !Template
+    id: 1e4944e7-4d5b-475c-8b04-4b523e96bc51
+    jinja: 'Background: {{ background }}
+
+
+      Paragraph: {{ situation }}
+
+
+      Given the paragraph above, please answer correctly the following question: {{
+      question }}
+
+      |||
+
+      {{answers.text[0]}}'
+    name: prompt_bottom_hint_beginning
+    reference: ''
+    task_template: true
+  31faf808-80ff-47af-ac49-d2cd7a7abcaf: !Template
+    id: 31faf808-80ff-47af-ac49-d2cd7a7abcaf
+    jinja: '{{ situation }}
+
+
+      {{ question }}
+
+
+      |||
+
+      {{ answers.text[0] }}'
+    name: plain_no_background
+    reference: Task without background
+    task_template: false
+  473f2c9c-9731-443c-a641-5e43770f7df6: !Template
+    id: 473f2c9c-9731-443c-a641-5e43770f7df6
+    jinja: '{{ situation }}
+
+
+      {{ question }}
+
+
+      Hint: {{ background }}
+
+      |||
+
+      {{ answers.text[0] }}'
+    name: plain_bottom_hint
+    reference: ''
+    task_template: true
+  a04f69ac-8122-4618-8426-185fc043feca: !Template
+    id: a04f69ac-8122-4618-8426-185fc043feca
+    jinja: '{{ background }}
+
+
+      {{ situation }}
+
+
+      {{ question }}
+
+      |||
+
+      {{answers.text[0]}}'
+    name: plain
+    reference: ''
+    task_template: true
+  cc8f3c6b-b800-4b47-b6ec-e8febfdaad6f: !Template
+    id: cc8f3c6b-b800-4b47-b6ec-e8febfdaad6f
+    jinja: "{{ situation }}\n\nGiven the paragraph above, please answer correctly\
+      \ the following question: \n\n{{ question }}\n\nHint: {{ background }}\n|||\n\
+      {{ answers.text[0] }}"
+    name: prompt_mix
+    reference: ''
+    task_template: true
