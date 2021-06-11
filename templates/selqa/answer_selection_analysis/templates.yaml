@@ -3,30 +3,33 @@ subset: answer_selection_analysis
 templates:
   39f5f57c-50b9-40b3-bb4f-3f0e4fec7776: !Template
     id: 39f5f57c-50b9-40b3-bb4f-3f0e4fec7776
-    jinja: '{% set rand_index = range(0,10)|random %} He asked me "{{ question }}"
+    jinja: '{% set rand_index = range(0,10)|choice %} He asked me "{{ question }}"
       Is he talking about {{ ["MUSIC", "TV","TRAVEL","ART","SPORT","COUNTRY","MOVIES","HISTORICAL
       EVENTS","SCIENCE","FOOD"][rand_index]|lower}}? ||| {% if topic == rand_index
       %}Yes{% else %}No{% endif %}'
     name: is-he-talking-about
     reference: ''
+    task_template: false
   5354e98d-8aa2-49d0-a50b-fc72a503d7d4: !Template
     id: 5354e98d-8aa2-49d0-a50b-fc72a503d7d4
-    jinja: '{% set rand_index = range(0,candidates|length)|random %} Would it make
+    jinja: '{% set rand_index = range(0,candidates|length)|choice %} Would it make
       sense to reply "{{ candidates[rand_index]|trim|trim(''.'') }}" to the question
       "{{ question }}"? ||| {% if rand_index in answers %}Yes{%else %}No{%endif%}
 
       '
     name: would-make-sense-qu-rand
     reference: ''
+    task_template: false
   721463cf-bae4-4a22-bd19-7bdbb0777856: !Template
     id: 721463cf-bae4-4a22-bd19-7bdbb0777856
-    jinja: '{% set rand_index = range(0,10)|random %}{% set rand_index = rand_index
+    jinja: '{% set rand_index = range(0,10)|choice %}{% set rand_index = rand_index
       - 1 if rand_index == topic else rand_index %}{% set topics = ["MUSIC", "TV","TRAVEL","ART","SPORT","COUNTRY","MOVIES","HISTORICAL
       EVENTS","SCIENCE","FOOD"]%} What is the topic of the question "{{ question }}"?
       Is it {{ topics[rand_index]|lower}} or {{ topics[topic]|lower}}? ||| {{ topics[topic]|lower
       }}'
     name: about-topic-vs-random
     reference: ''
+    task_template: false
   9de0a553-63e7-4b67-a6c5-1a15ac0d5483: !Template
     id: 9de0a553-63e7-4b67-a6c5-1a15ac0d5483
     jinja: 'Someone asked me "{{ question }}" I replied "{{ candidates[0] }} Does
@@ -37,14 +40,15 @@ templates:
     reference: ''
   c2be1297-cfce-48bd-9ef0-9f46fc898e84: !Template
     id: c2be1297-cfce-48bd-9ef0-9f46fc898e84
-    jinja: "{% set rand_val = range(0,candidates|length)|random %}{% set rand_index\
+    jinja: "{% set rand_val = range(0,candidates|length)|choice %}{% set rand_index\
       \ = namespace(value=rand_val)%}\n{% for answer in answers|sort(reverse=True)%}\n\
       \  {% if rand_index.value == answer %}\n  {% set rand_index.value = rand_index.value\
       \ - 1 %}\n{% endif %}\n{% endfor %}\n{% set response=\"2\" %}{% set real_fake_answers\
-      \ = [candidates[rand_index.value], candidates[answers[0]]] %}\n{% if range(0,2)|random\
+      \ = [candidates[rand_index.value], candidates[answers[0]]] %}\n{% if range(0,2)|choice\
       \ %}{% set response=\"1\" %}{% set real_fake_answers = [candidates[answers[0]],\
       \ candidates[rand_index.value]] %}{% endif %}\nThe next question was \"{{ question\
       \ }}\" Which is the correct answer? 1: \"{{ real_fake_answers|join('\" or 2:\
       \ \"') }} ||| {{ response }}\n"
     name: which-answer-1st-vs-random
     reference: ''
+    task_template: false
