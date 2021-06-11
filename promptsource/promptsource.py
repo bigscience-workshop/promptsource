@@ -2,6 +2,7 @@ import textwrap
 
 import pandas as pd
 import streamlit as st
+from jinja2 import TemplateSyntaxError
 from pygments import highlight
 from pygments.formatters import HtmlFormatter
 from pygments.lexers import DjangoLexer
@@ -105,6 +106,7 @@ if mode == "Helicopter view":
                 "Dataset name": dataset_name,
                 "Subset name": "" if subset_name is None else subset_name,
                 "Number of templates": len(dataset_templates),
+                "Number of task templates": sum([t.get_task_template() for t in dataset_templates.templates.values()]),
                 "Template names": [t.name for t in dataset_templates.templates.values()],
                 # TODO: template name is not very informative... refine that
             }
@@ -269,6 +271,8 @@ else:
                 st.text(template.name)
                 st.markdown("##### Reference")
                 st.text(template.reference)
+                st.markdown("##### Task Template? ")
+                st.text(template.get_task_template())
                 st.markdown("##### Jinja")
                 splitted_template = template.jinja.split("|||")
                 st.markdown("###### Prompt + X")
@@ -291,7 +295,10 @@ else:
                     st.write(example)
                 if num_templates > 0:
                     with col2:
-                        prompt = template.apply(example, highlight_variables=True)
+                        try:
+                            prompt = template.apply(example, highlight_variables=True)
+                        except (TemplateSyntaxError, TypeError):
+                            prompt = template.apply(example, highlight_variables=False)
                         if prompt == [""]:
                             st.write("∅∅∅ *Blank result*")
                         else:
@@ -390,7 +397,11 @@ else:
                             help="Short description of the template and/or paper reference for the template.",
                             value=template.reference,
                         )
-
+                        state.task_template = st.checkbox(
+                            "Task Template?",
+                            value=template.get_task_template(),
+                            help="Task templates correspond one-to-one with the original task.",
+                        )
                         state.jinja = st.text_area("Template", height=40, value=template.jinja)
 
                         if st.form_submit_button("Save"):
@@ -406,7 +417,11 @@ else:
                                 st.error("Need to provide a template name.")
                             else:
                                 dataset_templates.update_template(
-                                    state.template_name, updated_template_name, state.jinja, state.reference
+                                    state.template_name,
+                                    updated_template_name,
+                                    state.jinja,
+                                    state.reference,
+                                    state.task_template,
                                 )
                                 # Update the state as well
                                 state.template_name = updated_template_name
