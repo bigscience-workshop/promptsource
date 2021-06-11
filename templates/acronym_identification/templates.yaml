@@ -1,14 +1,9 @@
 dataset: acronym_identification
 templates:
-  801463a9-da1f-4fb4-bf67-c812bf5e65b0: !Template
-    id: 801463a9-da1f-4fb4-bf67-c812bf5e65b0
-    jinja: ''
-    name: find_abbreviation_for_expansion
-    reference: ''
-    task_template: false
   81babc83-18cd-4eed-a343-8ede56b21df5: !Template
     id: 81babc83-18cd-4eed-a343-8ede56b21df5
-    jinja: "Given the BIO encoding as follows:  \"{{\"B-short\"}}\" and \"{{\"I-short\"\
+    jinja:
+      "Given the BIO encoding as follows:  \"{{\"B-short\"}}\" and \"{{\"I-short\"\
       }}\" represent the beginning and intermediate tokens for abbreviations.\"{{\"\
       B-long\"}}\" and \"{{\"I-long\"}}\" represent the beginning and intermediate\
       \ tokens for expansions of the abbreviations. All other tokens are represented\
@@ -21,7 +16,8 @@ templates:
     task_template: true
   8832e5f7-7c45-46da-b85f-71fcb444f264: !Template
     id: 8832e5f7-7c45-46da-b85f-71fcb444f264
-    jinja: "Find all the expansions of the acronyms present in the following comma-separated\
+    jinja:
+      "Find all the expansions of the acronyms present in the following comma-separated\
       \ tokens: \n\n{{tokens|join(', ')}}\n|||\n{% set abbr_string=namespace(value='')\
       \ %}\n{% set answer_list=namespace(value=[]) %}\n{% for label_idx in range(labels|length)\
       \ %}\n{% if labels[label_idx] == 0 %}\n{% set abbr_string.value = tokens[label_idx]\
@@ -37,7 +33,8 @@ templates:
     task_template: false
   cae58242-cde9-472d-ae9e-56fc7e79c0d1: !Template
     id: cae58242-cde9-472d-ae9e-56fc7e79c0d1
-    jinja: "Find all the acryonyms in the following comma-separated tokens: \n\n{{tokens|join(',\
+    jinja:
+      "Find all the acryonyms in the following comma-separated tokens: \n\n{{tokens|join(',\
       \ ')}}\n|||\n{% set abbr_string=namespace(value='') %}\n{% set answer_list=namespace(value=[])\
       \ %}\n{% for label_idx in range(labels|length) %}\n{% if labels[label_idx] ==\
       \ 1 %}\n{% set abbr_string.value = tokens[label_idx] %}\n{% elif abbr_string.value!=''\
