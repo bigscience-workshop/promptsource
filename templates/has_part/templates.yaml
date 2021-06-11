@@ -1,0 +1,47 @@
+dataset: has_part
+templates:
+  03f9060e-df5f-41ed-8cd4-4de7be1538f5: !Template
+    id: 03f9060e-df5f-41ed-8cd4-4de7be1538f5
+    jinja: '{{arg1}} has the part
+
+      |||
+
+      {{arg2}}'
+    name: generation form
+    reference: This is similar to COMET (https://arxiv.org/pdf/1906.05317.pdf)
+    task_template: false
+  32b7be1f-15a0-489e-b1a1-218e63bbf01b: !Template
+    id: 32b7be1f-15a0-489e-b1a1-218e63bbf01b
+    jinja: 'We extract knowledge tuples from {{wikipedia_primary_page|join(", ")}}
+      page(s). For each extracted knowledge tuple, we give a confidence score. For
+      example, the confidence score for the knowledge tuple {{arg1}} has the part
+      {{arg2}} is:
+
+      |||
+
+      {{(score|round)}}'
+    name: example form
+    reference: ''
+    task_template: false
+  366816ce-e48a-4fa8-ae03-ac4691182e68: !Template
+    id: 366816ce-e48a-4fa8-ae03-ac4691182e68
+    jinja: "Return a score between 0.0 and 1.0 to indicate if {{arg2}} is a part of\
+      \ {{arg1}}. \n|||\n{{(score|round)}}"
+    name: basic
+    reference: 'This prompt is similar to the sstb '
+    task_template: false
+  9ce08fc0-dd86-47f0-9939-0bd1a4766ee6: !Template
+    id: 9ce08fc0-dd86-47f0-9939-0bd1a4766ee6
+    jinja: "Concepts can be arranged in a hierarchy. For instance, {{arg2}} is a part\
+      \ of \n|||\n{{arg1}}"
+    name: reverse generation form
+    reference: 'This is similar to COMET (https://arxiv.org/pdf/1906.05317.pdf). This
+      learns the '
+    task_template: false
+  be76b796-7d0a-49ff-bc09-b9ee27d5ac81: !Template
+    id: be76b796-7d0a-49ff-bc09-b9ee27d5ac81
+    jinja: "{{arg1}} has part {{arg2}}. \nWhat is the likelihood that the relationship\
+      \ is true? (0.0 to 1.0)\n|||\n{{(score|round)}}"
+    name: Interrogative form
+    reference: ''
+    task_template: false
