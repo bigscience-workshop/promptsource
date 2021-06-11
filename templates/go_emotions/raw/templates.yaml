@@ -3,9 +3,7 @@ subset: raw
 templates:
   8a80ad98-6785-46d8-a68b-c27d1c173fcd: !Template
     id: 8a80ad98-6785-46d8-a68b-c27d1c173fcd
-    jinja:
-      "What do you think the person was feeling when he wrote this:  {{ text\
-      \ }}?\n|||\n{% if example_very_unclear %}\nunclear\n{% else %}\n{% set sentiment_dict\
+    jinja: "{% set sentiment_dict\
       \ = ({\n    \"admiration\": admiration,\n    \"amusement\": amusement,\n   \
       \ \"anger\": anger,\n    \"annoyance\": annoyance,\n    \"approval\": approval,\n\
       \    \"author\": author,\n    \"caring\": caring,\n    \"confusion\": confusion,\n\
@@ -16,8 +14,12 @@ templates:
       \   \"joy\": joy,\n    \"love\": love,\n    \"nervousness\": nervousness,\n\
       \    \"neutral\": neutral,\n    \"optimism\": optimism,\n    \"pride\": pride,\n\
       \    \"realization\": realization,\n    \"relief\": relief,\n    \"remorse\"\
-      : remorse,\n    \"sadness\": sadness,\n    \"surprise\": surprise,\n}) %}\n\
-      {% set current_sentiment_list = [] %}\n{% for item,value in sentiment_dict.items()\
+      : remorse,\n    \"sadness\": sadness,\n    \"surprise\": surprise,\n}) %}
+
+      {% set current_sentiment_list = [] %}
+
+      What do you think the person was feeling when he wrote this:  {{ text\
+      \ }}?\n|||\n{% if example_very_unclear %}\nunclear\n{% else %}\n{% for item,value in sentiment_dict.items()\
       \ %}\n{% if value==1 %}\n{% set current_sentiment_list = current_sentiment_list.append(item)\
       \ %}\n{% endif %}\n{% endfor %}\n{% if current_sentiment_list|length == 0 %}\n\
       unclear\n{% else %}\n{{ current_sentiment_list|join(', ') }}\n{% endif %}\n\
@@ -48,8 +50,7 @@ templates:
       text has that sentiment or not.
   fa307ac0-67ba-49f5-ab87-795491d2b9d1: !Template
     id: fa307ac0-67ba-49f5-ab87-795491d2b9d1
-    jinja: "Describe the sentiment of this text in one word:  {{ text\
-      \ }}?\n|||\n{% if example_very_unclear %}\nunclear\n{% else %}\n{% set sentiment_dict\
+    jinja: "{% set sentiment_dict\
       \ = ({\n    \"admiration\": admiration,\n    \"amusement\": amusement,\n   \
       \ \"anger\": anger,\n    \"annoyance\": annoyance,\n    \"approval\": approval,\n\
       \    \"author\": author,\n    \"caring\": caring,\n    \"confusion\": confusion,\n\
@@ -60,8 +61,13 @@ templates:
       \   \"joy\": joy,\n    \"love\": love,\n    \"nervousness\": nervousness,\n\
       \    \"neutral\": neutral,\n    \"optimism\": optimism,\n    \"pride\": pride,\n\
       \    \"realization\": realization,\n    \"relief\": relief,\n    \"remorse\"\
-      : remorse,\n    \"sadness\": sadness,\n    \"surprise\": surprise,\n}) %}\n\
-      {% set current_sentiment_list = [] %}\n{% for item,value in sentiment_dict.items()\
+      : remorse,\n    \"sadness\": sadness,\n    \"surprise\": surprise,\n}) %}
+
+      {% set current_sentiment_list = [] %}
+
+      Describe the sentiment of this text in one word:  {{ text\
+      \ }}?\n|||\n{% if example_very_unclear %}\nunclear\n{% else %}\n\
+      \n{% for item,value in sentiment_dict.items()\
       \ %}\n{% if value==1 %}\n{% set current_sentiment_list = current_sentiment_list.append(item)\
       \ %}\n{% endif %}\n{% endfor %}\n{% if current_sentiment_list|length == 0 %}\n\
       unclear\n{% else %}\n{{ current_sentiment_list|random }}\n{% endif %}\n{% endif\
