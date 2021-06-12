@@ -1,0 +1,47 @@
+dataset: winogrande
+subset: winogrande_debiased
+templates:
+  0cc669d0-da87-411d-9e1c-8e102da63c2c: !Template
+    id: 0cc669d0-da87-411d-9e1c-8e102da63c2c
+    jinja: "{{sentence}}\nReplace the _ in the above sentence with the correct option:\
+      \ \nOption1: {{option1}}\nOption2: {{option2}}\n|||\n{% if answer== 1 %}{{option1}}{%\
+      \ else%}{{option2}}{% endif %}"
+    name: Replace
+    reference: ''
+  13b2dbe4-abf3-4b09-b7cb-459224881844: !Template
+    id: 13b2dbe4-abf3-4b09-b7cb-459224881844
+    jinja: 'The _ in the sentence below refers to {{option1}}. Answer True or False!
+
+      {{sentence}}|||
+
+      {% if answer== 1 %}True{% else%}False{% endif %}'
+    name: True or False
+    reference: ''
+  3f82c3c9-6736-40d2-9312-a9ca61d3b4d8: !Template
+    id: 3f82c3c9-6736-40d2-9312-a9ca61d3b4d8
+    jinja: '{{sentence}}
+
+      What does the _ in the above sentence refer to? {{option1}} or {{option2}}|||
+
+      {% if answer== 1 %}{{option1}}{% else%}{{option2}}{% endif %}'
+    name: sentence_question_answer
+    reference: ''
+  5f874d91-c3aa-4437-90d0-4319904030a1: !Template
+    id: 5f874d91-c3aa-4437-90d0-4319904030a1
+    jinja: 'In the sentence below, does {{option1}} or {{option2}} represent the _
+      ?
+
+      {{sentence}}|||
+
+      {% if answer== 1 %}{{option1}}{% else%}{{option2}}{% endif %}'
+    name: question_sentence_answer
+    reference: ''
+  de4bbc72-1db1-4440-aed6-74f3c1cfd423: !Template
+    id: de4bbc72-1db1-4440-aed6-74f3c1cfd423
+    jinja: 'Fill in the _ in the below sentence!
+
+      {{sentence}}|||
+
+      {% if answer== 1 %}{{option1}}{% else%}{{option2}}{% endif %}'
+    name: Fill in the blanks
+    reference: ''
