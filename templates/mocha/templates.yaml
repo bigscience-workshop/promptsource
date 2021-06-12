@@ -56,19 +56,19 @@ templates:
       be incorrect), generate the correct answer.
   c06f4d3a-5a95-4b6a-b339-32391c8e6d94: !Template
     id: c06f4d3a-5a95-4b6a-b339-32391c8e6d94
-    jinja: "{% set candidates = [] %}\n{{ candidates.append(reference) or ''}}\n{{\
-      \ candidates.append(candidate) or ''}}\n\n{% if candidate2 %}\n{{ candidates.append(candidate2)\
-      \ }}\n{% endif %}\n\n{# arbitrarily right shift the candidates list so the answer\
-      \ listed out in prompt looks random #}\n{% set length_text = context | length\
-      \ %}\n\n{% if length_text % 2 == 1 %}\n{% set new_candidates = candidates[-1:]\
-      \ + candidates[:-1] %}\n{% else %}\n{% set new_candidates = candidates[:] %}\n\
-      {% endif %}\n\nPassage: {{ context }}\n\nQuestion: {{ question }}\n\nAnswers:\
-      \ \n\n{% for cd in new_candidates %}\n{{loop.index}}. {{cd}}\n{% endfor %}\n\
-      \n\nSelect all the correct answers to the question, given the passage above.\n\
-      |||\n{% for cd in new_candidates %}\n{% if cd == reference %}\n{{ loop.index\
-      \ }}\n{% elif cd == candidate and score >= 3%}\n{{ loop.index }}\n{% elif cd\
-      \ == candidate2 and score2 >= 3%}\n{{ loop.index }}\n{% endif %}\n{% endfor\
-      \ %}"
+    jinja: "{% set candidates = [] %}\n{% set new_candidates = [] %}\n{{ candidates.append(reference)\
+      \ or ''}}\n{{ candidates.append(candidate) or ''}}\n\n{% if candidate2 %}\n\
+      {{ candidates.append(candidate2) }}\n{% endif %}\n\n{# arbitrarily right shift\
+      \ the candidates list so the answer listed out in prompt looks random #}\n{%\
+      \ set length_text = context | length %}\n\n{% if length_text % 2 == 1 %}\n{%\
+      \ set new_candidates = candidates[-1:] + candidates[:-1] %}\n{% else %}\n{%\
+      \ set new_candidates = candidates[:] %}\n{% endif %}\n\nPassage: {{ context\
+      \ }}\n\nQuestion: {{ question }}\n\nAnswers: \n\n{% for cd in new_candidates\
+      \ %}\n{{loop.index}}. {{cd}}\n{% endfor %}\n\n\nSelect all the correct answers\
+      \ to the question, given the passage above.\n|||\n{% for cd in new_candidates\
+      \ %}\n{% if cd == reference %}\n{{ loop.index }}\n{% elif cd == candidate and\
+      \ score >= 3%}\n{{ loop.index }}\n{% elif cd == candidate2 and score2 >= 3%}\n\
+      {{ loop.index }}\n{% endif %}\n{% endfor %}"
     name: Pick Correct Answers
     reference: Given passage, question, and all possible answers, pick correct answers  (using
       similarity cutoff >=3 to reference answer)
