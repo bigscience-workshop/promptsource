@@ -63,11 +63,8 @@ templates:
       \ chunk tag from the following sentence. The chunk tags are\n{% for k,v in _chunk_label_dict.items()\
       \ -%}\n    {{ v }}\n    {{- \", \" if not loop.last else \"\" -}}\n{% endfor\
       \ %} \n{{\"\"}}\n{% for i in tokens -%}\n    {{- \" \" if not loop.last else\
-      \ \"\" -}}\n    {{ i }}\n{% endfor %} \n|||\n{%- for tok in tokens -%}\n   \
-      \ {%- set outer_loop = loop -%}\n    {%- for label in chunk_tags -%}\n     \
-      \    {%- if outer_loop.index == loop.index -%}\n            {{- \"\" if outer_loop.first\
-      \ else \" \" -}}\n            {{tok}}:{{ _chunk_label_dict[label] }}\n     \
-      \   {%- endif -%}\n    {%- endfor -%} \n{%- endfor -%} \n\n"
+      \ \"\" -}}\n    {{ i }}\n{% endfor %} \n|||\n{%- for tok, label in zip(tokens,chunk_tags)\
+      \ -%}\n    {{tok}}:{{ _chunk_label_dict[label] }}\n{%- endfor -%} \n\n"
     name: chunk_flat_question_with_label
     reference: Natural Question
   8613a9bb-94c7-4b91-998c-3c298087d719: !Template
