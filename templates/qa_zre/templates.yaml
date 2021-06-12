@@ -1,0 +1,50 @@
+dataset: qa_zre
+templates:
+  2d6b6ec6-4cba-4a07-a0d1-f6b7cb103281: !Template
+    id: 2d6b6ec6-4cba-4a07-a0d1-f6b7cb103281
+    jinja: 'Extract the appropriate relation from the following question
+
+
+      {{question}} |||
+
+      {{relation}}'
+    name: relation
+    reference: https://www.aclweb.org/anthology/K17-1034.pdf
+  5a970b88-53a0-4148-b45e-7ac410df263f: !Template
+    id: 5a970b88-53a0-4148-b45e-7ac410df263f
+    jinja: "What is a possible question that can be generated from the following context\
+      \ and answer(s)?\n\n{{context}} \n\n{{answers|join(\", \")}} |||\n{{question|replace(\"\
+      XXX\",subject)}} "
+    name: possible_qn_with_answer
+    reference: ''
+  6368de04-070a-4f67-a8bf-fd6d2c07d401: !Template
+    id: 6368de04-070a-4f67-a8bf-fd6d2c07d401
+    jinja: 'What does "XXX" represent in the following context-question pair?
+
+
+      {{context}}
+
+      {{question}} |||
+
+      {{subject}}'
+    name: subject
+    reference: ''
+  b2195890-a3c5-4e33-be4a-5e53af75e6dd: !Template
+    id: b2195890-a3c5-4e33-be4a-5e53af75e6dd
+    jinja: '{{context}}
+
+      {{question.replace("XXX",subject)}} |||
+
+      {{answers|join(", ")}}'
+    name: qa
+    reference: ''
+  efb8ac0c-643d-4ff5-96b5-71ae80d71119: !Template
+    id: efb8ac0c-643d-4ff5-96b5-71ae80d71119
+    jinja: 'What is a possible question that can be generated from the following context?
+
+
+      {{context}} |||
+
+      {{question|replace("XXX",subject)}} '
+    name: possible_qn
+    reference: ''
