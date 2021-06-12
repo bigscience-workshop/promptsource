@@ -11,6 +11,7 @@ templates:
     name: (Regression) Scoring Candidate against Reference
     reference: Similarity measure between candidate and reference answers (in a regression
       manner)
+    task_template: true
   2816084e-0193-4284-9a4f-9de4ae03e9d6: !Template
     id: 2816084e-0193-4284-9a4f-9de4ae03e9d6
     jinja: "Given the passage and the answers given below, generate a relevant question\
@@ -26,10 +27,11 @@ templates:
       \ answer above? Answer yes or no. \n\n{% if candidate2 and score2 != 3 %}\n\
       Is the answer \"{{ candidate2 }}\" similar to the answer above? Answer yes or\
       \ no. \n{% endif %}\n|||\n{{ [\"no\", \"yes\"][score > 3] }} \n\n{{[\"no\",\
-      \ \"yes\"][score2 > 3] if candidate2 != \"\"}}\n{% endif %}"
+      \ \"yes\"][score2 > 3] if candidate2 != \"\" else \"\"}}\n{% endif %}"
     name: (Classification) Scoring Candidate against Reference
     reference: Similarity measure between candidate and reference answers (in a classification
       manner)
+    task_template: false
   7ebdd3bc-4896-425b-b8c2-3e4ea3944de8: !Template
     id: 7ebdd3bc-4896-425b-b8c2-3e4ea3944de8
     jinja: '{{ context }}
@@ -54,10 +56,20 @@ templates:
       be incorrect), generate the correct answer.
   c06f4d3a-5a95-4b6a-b339-32391c8e6d94: !Template
     id: c06f4d3a-5a95-4b6a-b339-32391c8e6d94
-    jinja: "Passage: {{ context }}\n\nQuestion: {{ question }}\n\nAnswers: \n\n1.\
-      \ {{ reference }}\n\n2. {{ candidate }}\n\n{% if candidate2 %}\n3. {{ candidate2\
-      \ }}\n{% endif %}\n\nSelect all the correct answers to the question, given the\
-      \ passage above.\n|||\n1 {{ \"2\" if score >= 3 }} {{ \"3\" if score2 >= 3 }}"
+    jinja: "{% set candidates = [] %}\n{{ candidates.append(reference) or ''}}\n{{\
+      \ candidates.append(candidate) or ''}}\n\n{% if candidate2 %}\n{{ candidates.append(candidate2)\
+      \ }}\n{% endif %}\n\n{# arbitrarily right shift the candidates list so the answer\
+      \ listed out in prompt looks random #}\n{% set length_text = context | length\
+      \ %}\n{% if length_text % 2 == 1 %}\n{% set new_candidates = candidates[-1:]\
+      \ + candidates[:-1] %}\n{{ candidates.append(candidate2) }}\n{% else %}\n{%\
+      \ set new_candidates = candidates %}\n{% endif %}\n\nPassage: {{ context }}\n\
+      \nQuestion: {{ question }}\n\nAnswers: \n\n{% for cd in new_candidates %}\n\
+      {{loop.index}}. {{cd}}\n{% endfor %}\n\n\nSelect all the correct answers to\
+      \ the question, given the passage above.\n|||\n{% for cd in new_candidates %}\n\
+      {% if cd == reference %}\n{{ loop.index }}\n{% elif cd == candidate and score\
+      \ >= 3%}\n{{ loop.index }}\n{% elif cd == candidate2 and score2 >= 3%}\n{{ loop.index\
+      \ }}\n{% endif %}\n{% endfor %}"
     name: Pick Correct Answers
     reference: Given passage, question, and all possible answers, pick correct answers  (using
       similarity cutoff >=3 to reference answer)
+    task_template: false
