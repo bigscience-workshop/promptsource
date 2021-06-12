@@ -3,14 +3,16 @@ templates:
   0791ec30-6361-4e62-8dce-ca9cbf997acc: !Template
     id: 0791ec30-6361-4e62-8dce-ca9cbf997acc
     jinja: "Please answer correctly the following question related to the paragraph\
-      \ below. \n\n{{ question }}\n\n{{ situation }}\n\nHint: {{ background }}\n|||\n"
+      \ below. \n\n{{ question }}\n\n{{ situation }}\n\nHint: {{ background }}\n|||\n\
+      {{ answers.text[0] if  answers.text[0] != None }}"
     name: prompt_beginning
     reference: ''
     task_template: true
   0909d72d-50c7-4cbb-bec4-1f891123717c: !Template
     id: 0909d72d-50c7-4cbb-bec4-1f891123717c
     jinja: "{{ situation }}\n\nGiven the paragraph above, please answer correctly\
-      \ the following question: \n\n{{ question }}\n|||"
+      \ the following question: \n\n{{ question }}\n|||\n{{ answers.text[0] if  answers.text[0]\
+      \ != None }}"
     name: prompt_bottom_no_hint
     reference: ''
     task_template: false
@@ -25,7 +27,9 @@ templates:
       Given the paragraph above, please answer correctly the following question: {{
       question }}
 
-      |||'
+      |||
+
+      {{ answers.text[0] if  answers.text[0] != None }}'
     name: prompt_bottom_hint_beginning
     reference: ''
     task_template: true
@@ -37,7 +41,9 @@ templates:
       {{ question }}
 
 
-      |||'
+      |||
+
+      {{ answers.text[0] if  answers.text[0] != None }}'
     name: plain_no_background
     reference: Task without background
     task_template: false
@@ -51,7 +57,9 @@ templates:
 
       Hint: {{ background }}
 
-      |||'
+      |||
+
+      {{ answers.text[0] if  answers.text[0] != None }}'
     name: plain_bottom_hint
     reference: ''
     task_template: true
@@ -65,14 +73,34 @@ templates:
 
       {{ question }}
 
-      |||'
+      |||
+
+      {{ answers.text[0] if  answers.text[0] != None }}'
     name: plain
     reference: ''
     task_template: true
   cc8f3c6b-b800-4b47-b6ec-e8febfdaad6f: !Template
     id: cc8f3c6b-b800-4b47-b6ec-e8febfdaad6f
     jinja: "{{ situation }}\n\nGiven the paragraph above, please answer correctly\
-      \ the following question: \n\n{{ question }}\n\nHint: {{ background }}\n|||"
+      \ the following question: \n\n{{ question }}\n\nHint: {{ background }}\n|||\n\
+      {{ answers.text[0] if  answers.text[0] != None }}"
     name: prompt_mix
+    reference: ''
+    task_template: true
+  f62e0adb-ca74-4280-8ed3-8b53411d87ce: !Template
+    id: f62e0adb-ca74-4280-8ed3-8b53411d87ce
+    jinja: 'I read this background article the other day: {{background}}
+
+
+      I am facing a new situation today: {{situation}}
+
+
+      Using the knowledge I acquired from the background article, how should I answer
+      correctly the following question regarding my new situation: {{question}}|||
+
+      {{ answers.text[0] if  answers.text[0] != None }}
+
+      '
+    name: funky_prompt
     reference: ''
     task_template: true
