@@ -1,0 +1,46 @@
+dataset: species_800
+templates:
+  3eaaba97-b0b7-4c00-b3ff-a82e6462c21d: !Template
+    id: 3eaaba97-b0b7-4c00-b3ff-a82e6462c21d
+    jinja: 'Please write the species of the NCBI Taxonomy mentioned in the following
+      text.
+
+
+      {{ tokens | join(" ") | replace(" .", ".") | replace(" ,", ",") | replace("
+      ;", ";") | replace(" :", ":") | replace(" - ", "-") }}
+
+      |||
+
+      {% set diseases = {"list": [], "disease_started": False} %}
+
+      {% set disease_token = ""  %}
+
+      {% for ner_tag in ner_tags %}
+
+      {% if ner_tag > 0 %}
+
+      {{ diseases.update({"disease_started": True}) |default("", True)}}
+
+      {% set disease_token = tokens[loop.index - 1]  %}
+
+      {{ diseases.list.append(" ") |default("", True)}}
+
+      {{ diseases.list.append((disease_token[0]|upper) + disease_token[1:] if ner_tag
+      == 1 else disease_token) |default("", True)}}
+
+      {% elif diseases.disease_started %}
+
+      {{ diseases.update({"disease_started": False}) |default("", True)}}
+
+      {{ diseases.list.append(",") |default("", True)}}
+
+      {% endif %}
+
+      {% endfor %}
+
+      {{diseases.list | join  | replace(" .", ".") | replace(" ,", ",") | replace("
+      ;", ";") | replace(" :", ":") | replace(" - ", "-") | trim(",") if (diseases.list
+      | length) > 0 else "No diseases found!"}}'
+    name: prompt1
+    reference: ''
+    task_template: false
