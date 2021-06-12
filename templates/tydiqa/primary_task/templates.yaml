@@ -1,0 +1,156 @@
+dataset: tydiqa
+subset: primary_task
+templates:
+  4b21e3be-fba4-49b7-beb1-a61de26eb0ac: !Template
+    id: 4b21e3be-fba4-49b7-beb1-a61de26eb0ac
+    jinja: '{% if language == "english" %}
+
+      {% if annotations.yes_no_answer[0] == "YES" or annotations.yes_no_answer[0]
+      == "NO" %}
+
+      {% set _position = ["above", "following"] |choice %}
+
+      {% if  _position == "above" %}
+
+      Question: {{question_text}}
+
+      {{"\n"}}
+
+      {% endif %}
+
+      Answer the {{_position}} question as YES, NO.
+
+      {% if  _position == "following" %}
+
+      {{"\n"}}
+
+      Question: {{question_text}}
+
+      {% endif %}
+
+      |||
+
+      {{annotations. yes_no_answer[0]}}
+
+      {% endif %}
+
+      {% endif %}'
+    name: binary_question_without_context_2
+    reference: Answer Yes/No question
+    task_template: true
+  6835dd64-96bd-4bf8-9ba5-645d6a7b8472: !Template
+    id: 6835dd64-96bd-4bf8-9ba5-645d6a7b8472
+    jinja: "{% if language == \"english\" %}\n{{question_text}}\n{{\"\\n\"}}\nIs this\
+      \ a \"Yes/No\" question?\n|||\n{% if annotations. yes_no_answer[0] == \"YES\"\
+      \ or annotations. yes_no_answer[0] == \"NO\" %}\n    {{\"Yes\"}}\n{% else %}\n\
+      \    {{\"No\"}}\n{% endif %}\n{% endif %}"
+    name: yes_no_question
+    reference: Ask if this is a yes no question
+    task_template: true
+  6c2e002a-a582-44cc-971e-3919585072d7: !Template
+    id: 6c2e002a-a582-44cc-971e-3919585072d7
+    jinja: '{% if language == "english" %}
+
+      {% if annotations.yes_no_answer[0] == "YES" or annotations.yes_no_answer[0]
+      == "NO" %}
+
+      {% set _position = ["above", "following"] |choice %}
+
+      {% if  _position == "above" %}
+
+      Question: {{question_text}}
+
+      {{"\n"}}
+
+      {% endif %}
+
+      Answer the {{_position}} question from wikipedia.
+
+      {% if  _position == "following" %}
+
+      {{"\n"}}
+
+      Question: {{question_text}}
+
+      {% endif %}
+
+      |||
+
+      {{annotations. yes_no_answer[0]}}
+
+      {% endif %}
+
+      {% endif %}'
+    name: binary_question_without_context_wikipedia
+    reference: Ask a yes/no question mentioning KB.
+    task_template: true
+  b4f7c441-41b1-4665-93f9-f2e875aed92a: !Template
+    id: b4f7c441-41b1-4665-93f9-f2e875aed92a
+    jinja: '{% if language == "english" %}
+
+      {% if annotations.yes_no_answer[0] == "YES" or annotations.yes_no_answer[0]
+      == "NO" %}
+
+      {% set _position = ["above", "following"] |choice %}
+
+      {% if  _position == "above" %}
+
+      Question: {{question_text}}
+
+      {{"\n"}}
+
+      {% endif %}
+
+      Answer the {{_position}} question.
+
+      {% if  _position == "following" %}
+
+      {{"\n"}}
+
+      Question: {{question_text}}
+
+      {% endif %}
+
+      |||
+
+      {{annotations. yes_no_answer[0]}}
+
+      {% endif %}
+
+      {% endif %}'
+    name: binary_question_without_context_1
+    reference: Ask Yes/No question
+    task_template: true
+  b8af581b-d993-4e53-8d80-96f515eb6ee0: !Template
+    id: b8af581b-d993-4e53-8d80-96f515eb6ee0
+    jinja: '{% if language == "english" %}
+
+      {% set _position = ["above", "following"] |choice %}
+
+      {% if  _position == "above" %}
+
+      Question: {{question_text}}
+
+      {{"\n"}}
+
+      {% endif %}
+
+      Answer the {{_position}} question as YES, NO. If it is not possible then answer
+      NONE.
+
+      {% if  _position == "following" %}
+
+      {{"\n"}}
+
+      Question: {{question_text}}
+
+      {% endif %}
+
+      |||
+
+      {{annotations. yes_no_answer[0]}}
+
+      {% endif %}'
+    name: binary_question_without_context_3
+    reference: Answer Yes/No/None Question.
+    task_template: true
