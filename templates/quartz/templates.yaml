@@ -1,0 +1,142 @@
+dataset: quartz
+templates:
+  005b9776-2170-47f8-a5d2-03e83d0e55ae: !Template
+    id: 005b9776-2170-47f8-a5d2-03e83d0e55ae
+    jinja: "Use information from the paragraph to answer the question.\n\nQuestion:\n\
+      \n{% if '_____' in question %}\n{{ question | trim(\".?!\") | replace(\"_____\"\
+      , choices[\"text\"] | join(\" or \")) }}{{ \"?\" }} \n{% else %}\n{{ question\
+      \ | trim(\".?!\") }} {{  choices[\"text\"] | join(\" or \") }}{{ \"?\" }} \n\
+      {% endif %}\n\nParagraph :\n\n{{ para }}\n|||\n{% for i in range(choices[\"\
+      label\"] | length) if choices[\"label\"][i]==answerKey -%}\n\n{{ choices[\"\
+      text\"][i]}}\n\n{%- endfor %}"
+    name: question-para-2
+    reference: ''
+    task_template: true
+  01d6ae3e-87bb-456c-9722-92a214f6ff19: !Template
+    id: 01d6ae3e-87bb-456c-9722-92a214f6ff19
+    jinja: "{{ para }}\n{% if '_____' in question %}\n{{ question | trim(\".?!\")\
+      \ | replace(\"_____\", choices[\"text\"] | join(\" or \")) }}{{ \"?\" }} \n\
+      {% else %}\n{{ question | trim(\".?!\")}} {{  choices[\"text\"] | join(\" or\
+      \ \") }}{{ \"?\" }} \n{% endif %}\n|||\n{% for i in range(choices[\"label\"\
+      ] | length) if choices[\"label\"][i]==answerKey -%}\n\n{{ choices[\"text\"][i]}}\n\
+      \n{%- endfor %}"
+    name: para-question-plain
+    reference: ''
+    task_template: true
+  07c22583-a52c-4416-8141-993202f2036f: !Template
+    id: 07c22583-a52c-4416-8141-993202f2036f
+    jinja: "Answer the question based on the following text.\n\nQuestion:\n\n{% if\
+      \ '_____' in question %}\n{{ question | trim(\".?!\") | replace(\"_____\", choices[\"\
+      text\"] | reverse | join(\" or \")) }}{{ \"?\" }} \n{% else %}\n{{ question\
+      \ | trim(\".?!\") }} {{  choices[\"text\"] | reverse | join(\" or \") }}{{ \"\
+      ?\" }} \n{% endif %}\n\nText:\n\n{{ para }}|||\n{% for i in range(choices[\"\
+      label\"] | length) if choices[\"label\"][i]==answerKey -%}\n\n{{ choices[\"\
+      text\"][i]}}\n\n{%- endfor %}"
+    name: question-para-3-reverse
+    reference: ''
+    task_template: true
+  19519902-adc9-439a-998b-f1e86e6a23ab: !Template
+    id: 19519902-adc9-439a-998b-f1e86e6a23ab
+    jinja: "Given the fact that:\n\n{{ para }}\n\nAnswer the question:\n\n{% if '_____'\
+      \ in question %}\n{{ question | trim(\".?!\") | replace(\"_____\", choices[\"\
+      text\"] | reverse | join(\" or \")) }}{{ \"?\" }} \n{% else %}\n{{ question\
+      \ | trim(\".?!\") }} {{  choices[\"text\"] | reverse | join(\" or \") }}{{ \"\
+      ?\" }} \n{% endif %}\n|||\n{% for i in range(choices[\"label\"] | length) if\
+      \ choices[\"label\"][i]==answerKey -%}\n\n{{ choices[\"text\"][i]}}\n\n{%- endfor\
+      \ %}"
+    name: para-question-1-reverse
+    reference: ''
+    task_template: true
+  22e29cab-f57f-4af7-92fc-72b131a96878: !Template
+    id: 22e29cab-f57f-4af7-92fc-72b131a96878
+    jinja: "Use information from the paragraph to answer the question.\n\nParagraph\
+      \ :\n\n{{ para }}\n\nQuestion:\n\n{% if '_____' in question %}\n{{ question\
+      \ | trim(\".?!\") | replace(\"_____\", choices[\"text\"] | join(\" or \")) }}{{\
+      \ \"?\" }} \n{% else %}\n{{ question | trim(\".?!\") }} {{  choices[\"text\"\
+      ] | join(\" or \") }}{{ \"?\" }} \n{% endif %}\n|||\n{% for i in range(choices[\"\
+      label\"] | length) if choices[\"label\"][i]==answerKey -%}\n\n{{ choices[\"\
+      text\"][i]}}\n\n{%- endfor %}"
+    name: para-question-2
+    reference: ''
+    task_template: true
+  2f6baa0c-3b69-48be-b195-cc00cb5c96fa: !Template
+    id: 2f6baa0c-3b69-48be-b195-cc00cb5c96fa
+    jinja: "Answer the question based on the following text.\n\nQuestion:\n\n{% if\
+      \ '_____' in question %}\n{{ question | trim(\".?!\") | replace(\"_____\", choices[\"\
+      text\"] | join(\" or \")) }}{{ \"?\" }} \n{% else %}\n{{ question | trim(\"\
+      .?!\") }} {{  choices[\"text\"] | join(\" or \") }}{{ \"?\" }} \n{% endif %}\n\
+      \nText:\n\n{{ para }}|||\n{% for i in range(choices[\"label\"] | length) if\
+      \ choices[\"label\"][i]==answerKey -%}\n\n{{ choices[\"text\"][i]}}\n\n{%- endfor\
+      \ %}"
+    name: question-para-3
+    reference: ''
+    task_template: true
+  397bdb29-03e8-478b-9840-1bfe9d57d6fb: !Template
+    id: 397bdb29-03e8-478b-9840-1bfe9d57d6fb
+    jinja: "Answer the question below:\n\n{% if '_____' in question %}\n{{ question\
+      \ | trim(\".?!\") | replace(\"_____\", choices[\"text\"] | join(\" or \")) }}{{\
+      \ \"?\" }} \n{% else %}\n{{ question | trim(\".?!\") }} {{  choices[\"text\"\
+      ] | join(\" or \") }}{{ \"?\" }} \n{% endif %}\n\nAssuming that:\n\n{{ para\
+      \ }}|||\n{% for i in range(choices[\"label\"] | length) if choices[\"label\"\
+      ][i]==answerKey -%}\n\n{{ choices[\"text\"][i]}}\n\n{%- endfor %}"
+    name: question-para-1
+    reference: ''
+    task_template: true
+  39a67851-fdf5-4f0d-bda2-4902be3a6bff: !Template
+    id: 39a67851-fdf5-4f0d-bda2-4902be3a6bff
+    jinja: "Read the passage below and choose the right answer to the following question\
+      \ (choices are {{ choices[\"text\"] | join(\" or \") }} ):\n\n{{ para }}\n\n\
+      {% if '_____' in question %}\n{{ question | trim(\".?!\") | replace(\"_____\"\
+      , choices[\"text\"] | join(\" or \")) }}{{ \"?\" }} \n{% else %}\n{{ question\
+      \ | trim(\".?!\") }} {{  choices[\"text\"] | join(\" or \") }}{{ \"?\" }} \n\
+      {% endif %}\n|||\n{% for i in range(choices[\"label\"] | length) if choices[\"\
+      label\"][i]==answerKey -%}\n\n{{ choices[\"text\"][i]}}\n\n{%- endfor %}"
+    name: para-question-4-choices
+    reference: ''
+    task_template: true
+  5c794ff0-32b9-43d4-b496-1a4d246ecfc0: !Template
+    id: 5c794ff0-32b9-43d4-b496-1a4d246ecfc0
+    jinja: "{{ para }}\n\nHaving read the above passage, choose the right answer to\
+      \ the following question (choices are {{ choices[\"text\"] | reverse | join(\"\
+      \ or \") }} ):\n\n{% if '_____' in question %}\n{{ question | trim(\".?!\")\
+      \ | replace(\"_____\", choices[\"text\"] | join(\" or \")) }}{{ \"?\" }} \n\
+      {% else %}\n{{ question | trim(\".?!\") }} {{  choices[\"text\"] | join(\" or\
+      \ \") }}{{ \"?\" }} \n{% endif %}\n|||\n{% for i in range(choices[\"label\"\
+      ] | length) if choices[\"label\"][i]==answerKey -%}\n\n{{ choices[\"text\"][i]}}\n\
+      \n{%- endfor %}"
+    name: para-question-3-choices
+    reference: ''
+    task_template: true
+  a8c6ae4c-4874-47d1-93ea-801b6e080a58: !Template
+    id: a8c6ae4c-4874-47d1-93ea-801b6e080a58
+    jinja: "Given the fact that:\n\n{{ para }}\n\nAnswer the question:\n\n{% if '_____'\
+      \ in question %}\n{{ question | trim(\".?!\") | replace(\"_____\", choices[\"\
+      text\"] | join(\" or \")) }}{{ \"?\" }} \n{% else %}\n{{ question | trim(\"\
+      .?!\") }} {{  choices[\"text\"] | join(\" or \") }}{{ \"?\" }} \n{% endif %}\n\
+      |||\n{% for i in range(choices[\"label\"] | length) if choices[\"label\"][i]==answerKey\
+      \ -%}\n\n{{ choices[\"text\"][i]}}\n\n{%- endfor %}"
+    name: para-question-1
+    reference: ''
+    task_template: true
+  b040acbf-43d0-44cd-86a2-43978d590fd7: !Template
+    id: b040acbf-43d0-44cd-86a2-43978d590fd7
+    jinja: "Answer the question below:\n\n{% if '_____' in question %}\n{{ question\
+      \ | trim(\".?!\") | replace(\"_____\", choices[\"text\"] | reverse | join(\"\
+      \ or \")) }}{{ \"?\" }} \n{% else %}\n{{ question | trim(\".?!\") }} {{  choices[\"\
+      text\"] | reverse | join(\" or \") }}{{ \"?\" }} \n{% endif %}\n\nAssuming that:\n\
+      \n{{ para }}|||\n{% for i in range(choices[\"label\"] | length) if choices[\"\
+      label\"][i]==answerKey -%}\n\n{{ choices[\"text\"][i]}}\n\n{%- endfor %}"
+    name: question-para-1-reverse
+    reference: ''
+    task_template: true
+  d92ffda6-8e26-4a5a-ba30-2bc11699a0a7: !Template
+    id: d92ffda6-8e26-4a5a-ba30-2bc11699a0a7
+    jinja: "{{ para }}\n{% if '_____' in question %}\n{{ question | trim(\".?!\")\
+      \ | replace(\"_____\", choices[\"text\"] | reverse | join(\" or \")) }}{{ \"\
+      ?\" }} \n{% else %}\n{{ question | trim(\".?!\")}} {{  choices[\"text\"] | reverse\
+      \ | join(\" or \") }}{{ \"?\" }} \n{% endif %}\n|||\n{% for i in range(choices[\"\
+      label\"] | length) if choices[\"label\"][i]==answerKey -%}\n\n{{ choices[\"\
+      text\"][i]}}\n\n{%- endfor %}"
+    name: para-question-plain-reverse
+    reference: ''
+    task_template: true
