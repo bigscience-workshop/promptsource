@@ -5,13 +5,17 @@ templates:
     jinja: '{{sentence}}
 
 
-      What is the last moving entity mentioned in the sentence if any?
+      What is the last entity in motion mentioned in the sentence if any?
 
       |||
 
       {% if (motion_entities  | length) > 0 %}
 
       {{ (motion_entities | sort(attribute="start_index") | last)["entity"] }}
+
+      {% else %}
+
+      {{"No entity in motion"}}
 
       {% endif %}'
     name: last_moving_entity
@@ -22,7 +26,7 @@ templates:
     jinja: '{{sentence}}
 
 
-      Is there any motion entities in the sentence?
+      Are there any entities in motion in the sentence?
 
 
       |||
@@ -34,7 +38,7 @@ templates:
     task_template: false
   3f1689a9-b255-4d8d-b780-062ca2f83596: !Template
     id: 3f1689a9-b255-4d8d-b780-062ca2f83596
-    jinja: "{{sentence}}\n\nWhat are the moving entities in the previous sentence?\
+    jinja: "{{sentence}}\n\nWhat are the entities in motion in the previous sentence?\
       \ Return {{\"'No entity'\"}} if you can't find any. \n\n|||\n{% if (motion_entities\
       \  | length) == 0 %}\n{{ \"No entity\" }}\n{% else %}\n{{motion_entities | map(attribute=\"\
       entity\") | join(\", \")}}\n{% endif %}"
@@ -80,8 +84,8 @@ templates:
     task_template: false
   957deab1-7570-4cbf-a31f-55bfad5212a7: !Template
     id: 957deab1-7570-4cbf-a31f-55bfad5212a7
-    jinja: "Name the motion entities in the following sentence. Respond {{\"'No entity'\"\
-      }} if you can't find any. \n\n{{sentence}}\n\n|||\n\n{% if (motion_entities\
+    jinja: "Name the entities in motion in the following sentence. Respond {{\"'No\
+      \ entity'\"}} if you can't find any. \n\n{{sentence}}\n\n|||\n\n{% if (motion_entities\
       \ | length) == 0 %}\n{{\"No entity\"}}\n{% else %}\n{{motion_entities | map(attribute=\"\
       entity\") | join(\", \")}}\n{% endif %}"
     name: find_entities_affirm
@@ -92,7 +96,7 @@ templates:
     jinja: '{{sentence}}
 
 
-      Name the first motion entity mentioned in the sentence if any
+      Name the first entity in motion mentioned in the sentence if any
 
 
       |||
@@ -101,6 +105,10 @@ templates:
       {% if (motion_entities  | length) > 0 %}
 
       {{ (motion_entities | sort(attribute="start_index") | first)["entity"] }}
+
+      {% else %}
+
+      {{"No entity in motion"}}
 
       {% endif %}'
     name: first_moving_entity
