@@ -12,7 +12,7 @@ from jinja2 import BaseLoader, Environment
 # Local path to the folder containing the templates
 TEMPLATES_FOLDER_PATH = "./templates/"
 
-env = Environment(loader=BaseLoader, extensions=['jinja2.ext.do'])
+env = Environment(loader=BaseLoader, extensions=["jinja2.ext.do"])
 
 # Allow the python function zip()
 env.globals.update(zip=zip)
@@ -21,8 +21,10 @@ env.globals.update(zip=zip)
 def highlight(input):
     return "<span style='color: #F08080'>" + input + "</span>"
 
+
 def choice(choices):
     return random.choice(choices)
+
 
 def shuffle(input):
     return random.shuffle(input)
