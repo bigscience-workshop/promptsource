@@ -16,12 +16,13 @@ templates:
   3c9260ef-ca10-40fc-b775-39bae9d28ae5: !Template
     id: 3c9260ef-ca10-40fc-b775-39bae9d28ae5
     jinja: "Generate titles (in the format of \"paragraph : title\") for each of the\
-      \ paragraph below:\n{% for sents in context.sentences %}\n  - {{sents | join(\"\
+      \ paragraphs below:\n{% for sents in context.sentences %}\n  - {{sents | join(\"\
       \")}}\n{% endfor %}\n||| \n{% for sents in context.sentences %}\n  - {{sents\
       \ | join(\"\")}} : {{context.title[loop.index0]}}\n{% endfor %}"
     name: 'Generate Title #2'
     reference: 'Given a list of paragraphs, generate titles for each of them with
       the format of "paragraph: title".'
+    task_template: false
   43e2a527-a0b1-498f-ac1c-e0b3c272603d: !Template
     id: 43e2a527-a0b1-498f-ac1c-e0b3c272603d
     jinja: "Information:\n{% for sents in context.sentences %}\n  - {{sents | join(\"\
@@ -58,9 +59,10 @@ templates:
     reference: Given information and question, generate answer.
   e20171e3-8965-4878-9014-0b72c84e9fec: !Template
     id: e20171e3-8965-4878-9014-0b72c84e9fec
-    jinja: "Generate titles (separated by semi-colons) for each of the paragraph below:\n\
-      {% for sents in context.sentences %}\n  - {{sents | join(\"\")}}\n{% endfor\
-      \ %}\n||| \n{{context.title | join(\"; \")}}"
+    jinja: "Generate titles (separated by semi-colons) for each of the paragraphs\
+      \ below:\n{% for sents in context.sentences %}\n  - {{sents | join(\"\")}}\n\
+      {% endfor %}\n||| \n{{context.title | join(\"; \")}}"
     name: 'Generate Title #1'
     reference: Given a list of paragraphs, generate a string of titles (separated
       by semi-colons) for each of them.
+    task_template: false
