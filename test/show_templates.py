@@ -55,7 +55,12 @@ for template_name in template_list:
         print("\tExample ", example)
         print("\t--------")
         output = template.apply(example)
-        if output == [""]:
+        flag=True
+        for idx, val in enumerate(output):
+            output[idx] = val.strip()
+            if output[idx] != "":
+                flag=False
+        if flag:
             print("\t Blank result")
             continue
 
