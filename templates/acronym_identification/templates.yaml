@@ -26,12 +26,11 @@ templates:
       \ and exp_string.value!='' %}\n  {% if exp_string.value.split()[0][0]|lower\
       \ in abbr_string.value|lower and exp_string.value.split()[-1][0]|lower in abbr_string.value|lower\
       \ %}\n    {# Update both the dictionaries #}\n    {% set _dummy = abbr_exp_dict.value.update({abbr_string.value:exp_string.value})\
-      \ %}\n  {% elif abbr_exp_dict.value.items()|length==0 and exp_abbr_dict.value.items()|length==0\
-      \ %}\n    {% set _dummy = abbr_exp_dict.value.update({abbr_string.value:exp_string.value})\
-      \ %}\n  {% endif %}\n{% else %}\n  {% if abbr_string.value!=''%}\n    {% if\
-      \ abbr_string.value not in abbr_exp_dict.value.keys() %}\n      {% set _dummy\
-      \ = abbr_exp_dict.value.update({abbr_string.value:''}) %}\n    {% endif %}\n\
-      \  {% endif %}\n{% endif %}\n{% set random_abbr = abbr_exp_dict.value.keys()|list|choice\
+      \ %}\n  {% elif abbr_exp_dict.value.items()|length==0 %}\n    {% set _dummy\
+      \ = abbr_exp_dict.value.update({abbr_string.value:exp_string.value}) %}\n  {%\
+      \ endif %}\n{% else %}\n  {% if abbr_string.value!=''%}\n    {% if abbr_string.value\
+      \ not in abbr_exp_dict.value.keys() %}\n      {% set _dummy = abbr_exp_dict.value.update({abbr_string.value:''})\
+      \ %}\n    {% endif %}\n  {% endif %}\n{% endif %}\n{% set random_abbr = abbr_exp_dict.value.keys()|list|choice\
       \ %}\nGiven the following tokens, find the expansion of {{random_abbr}}:\n \n\
       {{tokens|join(' ')}}\n|||\n{% if random_abbr in abbr_exp_dict.value.keys() and\
       \ abbr_exp_dict.value[random_abbr]!='' %}\n{{abbr_exp_dict.value[random_abbr]}}\n\
@@ -144,16 +143,15 @@ templates:
       {% endfor %}\n{# Both non-empty, and first characters match #}\n{% if abbr_string.value!=''\
       \ and exp_string.value!='' %}\n  {% if exp_string.value.split()[0][0]|lower\
       \ in abbr_string.value|lower and exp_string.value.split()[-1][0]|lower in abbr_string.value|lower\
-      \ %}\n    {# Update both the dictionaries #}\n    {% set _dummy = exp_abbr_dict.value.update({exp_string.value:abbr_string.value})\
-      \ %}\n  {% elif abbr_exp_dict.value.items()|length==0 and exp_abbr_dict.value.items()|length==0\
-      \ %}\n    {% set _dummy = exp_abbr_dict.value.update({exp_string.value:abbr_string.value})\
-      \ %}\n  {% endif %}\n{% else %}\n  {% if exp_string.value!='' %}\n    {% if\
-      \ exp_string.value not in exp_abbr_dict.value.keys() %}\n      {% set _dummy\
-      \ = exp_abbr_dict.value.update({exp_string.value:''}) %}\n    {% endif %}\n\
-      \  {% endif %}\n{% endif %}\n{% if exp_abbr_dict.value.items()|length!=0 %}\n\
-      {% set random_exp = exp_abbr_dict.value.keys()|list|choice %}\nGiven the following\
-      \ tokens, find the abbreviation for {{random_exp}}:\n \n{{tokens|join(' ')}}\n\
-      |||\n{% if random_exp in exp_abbr_dict.value.keys() and exp_abbr_dict.value[random_exp]!=''\
+      \ %}\n    {# Update the dictionary #}\n    {% set _dummy = exp_abbr_dict.value.update({exp_string.value:abbr_string.value})\
+      \ %}\n  {% elif exp_abbr_dict.value.items()|length==0 %}\n    {% set _dummy\
+      \ = exp_abbr_dict.value.update({exp_string.value:abbr_string.value}) %}\n  {%\
+      \ endif %}\n{% else %}\n  {% if exp_string.value!='' %}\n    {% if exp_string.value\
+      \ not in exp_abbr_dict.value.keys() %}\n      {% set _dummy = exp_abbr_dict.value.update({exp_string.value:''})\
+      \ %}\n    {% endif %}\n  {% endif %}\n{% endif %}\n{% if exp_abbr_dict.value.items()|length!=0\
+      \ %}\n{% set random_exp = exp_abbr_dict.value.keys()|list|choice %}\nGiven the\
+      \ following tokens, find the abbreviation for {{random_exp}}:\n \n{{tokens|join('\
+      \ ')}}\n|||\n{% if random_exp in exp_abbr_dict.value.keys() and exp_abbr_dict.value[random_exp]!=''\
       \ %}\n{{exp_abbr_dict.value[random_exp]}}\n{% else %}\nUnclear\n{% endif %}\n\
       {% else %}\n|||\n{% endif %}"
     name: find_abbreviation
