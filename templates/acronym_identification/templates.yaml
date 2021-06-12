@@ -2,21 +2,21 @@ dataset: acronym_identification
 templates:
   64f438f2-9968-459f-82d2-24bad632b358: !Template
     id: 64f438f2-9968-459f-82d2-24bad632b358
-    jinja: "{% set abbr_exp_dict = namespace(value = {}) %}\n{% set abbr_string=namespace(value='')\
-      \ %}\n{% set exp_string=namespace(value='')%}\n \n{% for label_idx in range(labels|length)\
-      \ %}\n  {% if labels[label_idx] == 0 %}{# Long Beginning #}\n    {% set exp_string.value\
-      \ = tokens[label_idx] %}{# Create new long string #}\n  {% elif labels[label_idx]\
-      \ == 1 %}{# Short Beginning #}\n    {% if abbr_string.value!='' and abbr_string.value\
-      \ not in abbr_exp_dict.value.keys()%}{# Some string already present #}\n   \
-      \   {% set _dummy = abbr_exp_dict.value.update({abbr_string.value:''}) %}{#\
-      \ Discard this string as a new short string is coming #}\n    {% endif %}\n\
-      \    {% set abbr_string.value = tokens[label_idx] %}{# Create new short string\
-      \ #}\n  {% elif labels[label_idx] == 2 %}{# Long Intermediate #}\n    {% set\
-      \ exp_string.value = exp_string.value+' '+tokens[label_idx] %}{# Update existing\
-      \ string #}\n  {% elif labels[label_idx] == 3 %}{# Short Intermediate #}\n \
-      \   {% set abbr_string.value = abbr_string.value+tokens[label_idx] %}{# Update\
-      \ existing string #}\n  {% else %}{# Other #}\n    {# Both non-empty, and first\
-      \ characters match #}\n    {% if abbr_string.value!='' and exp_string.value!=''\
+    jinja: "{% set random_abbr = '' %}\n{% set abbr_exp_dict = namespace(value = {})\
+      \ %}\n{% set abbr_string=namespace(value='') %}\n{% set exp_string=namespace(value='')%}\n\
+      \ \n{% for label_idx in range(labels|length) %}\n  {% if labels[label_idx] ==\
+      \ 0 %}{# Long Beginning #}\n    {% set exp_string.value = tokens[label_idx]\
+      \ %}{# Create new long string #}\n  {% elif labels[label_idx] == 1 %}{# Short\
+      \ Beginning #}\n    {% if abbr_string.value!='' and abbr_string.value not in\
+      \ abbr_exp_dict.value.keys()%}{# Some string already present #}\n      {% set\
+      \ _dummy = abbr_exp_dict.value.update({abbr_string.value:''}) %}{# Discard this\
+      \ string as a new short string is coming #}\n    {% endif %}\n    {% set abbr_string.value\
+      \ = tokens[label_idx] %}{# Create new short string #}\n  {% elif labels[label_idx]\
+      \ == 2 %}{# Long Intermediate #}\n    {% set exp_string.value = exp_string.value+'\
+      \ '+tokens[label_idx] %}{# Update existing string #}\n  {% elif labels[label_idx]\
+      \ == 3 %}{# Short Intermediate #}\n    {% set abbr_string.value = abbr_string.value+tokens[label_idx]\
+      \ %}{# Update existing string #}\n  {% else %}{# Other #}\n    {# Both non-empty,\
+      \ and first characters match #}\n    {% if abbr_string.value!='' and exp_string.value!=''\
       \ and exp_string.value.split()[0][0]|lower in abbr_string.value|lower and exp_string.value.split()[-1][0]|lower\
       \ in abbr_string.value|lower%}\n      {# Update both the dictionaries #}\n \
       \     {% set _dummy = abbr_exp_dict.value.update({abbr_string.value:exp_string.value})\
@@ -121,13 +121,14 @@ templates:
     task_template: false
   eed32ee4-ebc3-499f-ba61-e91461f56ccb: !Template
     id: eed32ee4-ebc3-499f-ba61-e91461f56ccb
-    jinja: "{% set exp_abbr_dict = namespace(value = {}) %}\n{% set abbr_string=namespace(value='')\
-      \ %}\n{% set exp_string=namespace(value='')%}\n \n{% for label_idx in range(labels|length)\
-      \ %}\n  {% if labels[label_idx] == 0 %}{# Long Beginning #}\n    {% if exp_string.value!=''\
-      \ and exp_string.value not in exp_abbr_dict.value.keys() %}{# Some string already\
-      \ present #}\n       {% set _dummy = exp_abbr_dict.value.update({exp_string.value:''})\
-      \ %}{# Discard this string as a new long string is coming #} \n    {% endif\
-      \ %}\n    {% set exp_string.value = tokens[label_idx] %}{# Create new long string\
+    jinja: "{% set random_exp = '' %}\n{% set exp_abbr_dict = namespace(value = {})\
+      \ %}\n{% set abbr_string=namespace(value='') %}\n{% set exp_string=namespace(value='')%}\n\
+      \ \n{% for label_idx in range(labels|length) %}\n  {% if labels[label_idx] ==\
+      \ 0 %}{# Long Beginning #}\n    {% if exp_string.value!='' and exp_string.value\
+      \ not in exp_abbr_dict.value.keys() %}{# Some string already present #}\n  \
+      \     {% set _dummy = exp_abbr_dict.value.update({exp_string.value:''}) %}{#\
+      \ Discard this string as a new long string is coming #} \n    {% endif %}\n\
+      \    {% set exp_string.value = tokens[label_idx] %}{# Create new long string\
       \ #}\n  {% elif labels[label_idx] == 1 %}{# Short Beginning #}\n    {% set abbr_string.value\
       \ = tokens[label_idx] %}{# Create new short string #}\n  {% elif labels[label_idx]\
       \ == 2 %}{# Long Intermediate #}\n    {% set exp_string.value = exp_string.value+'\
