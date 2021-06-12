@@ -1,0 +1,58 @@
+dataset: covid_qa_castorini
+templates:
+  481dcd72-1674-4962-b711-0dbf146ae836: !Template
+    id: 481dcd72-1674-4962-b711-0dbf146ae836
+    jinja: 'Generate a possible question that could be answered with the following
+      papers (only titles have been provided):
+
+
+      {{answers["title"]|join(", ")}} |||
+
+      {{question_query}}'
+    name: papers_to_qn
+    reference: ''
+  56915f43-ebd6-44dc-9aac-6098ec2d1b32: !Template
+    id: 56915f43-ebd6-44dc-9aac-6098ec2d1b32
+    jinja: 'Provide the keyword form of the following query:
+
+
+      {{question_query}} |||
+
+      {{keyword_query}}'
+    name: keyword_form
+    reference: ''
+  665bfa4a-b83f-4431-acda-29855c89916b: !Template
+    id: 665bfa4a-b83f-4431-acda-29855c89916b
+    jinja: 'Generate a possible question to the following answers:
+
+
+      {{answers["exact_answer"]|join(", ")}} |||
+
+      {{question_query}}'
+    name: answers_to_qn
+    reference: ''
+  8136390d-bfbf-4c4f-987e-500bc41fa8fb: !Template
+    id: 8136390d-bfbf-4c4f-987e-500bc41fa8fb
+    jinja: 'Find all the answers to "{{question_query}}" |||
+
+      {{answers["exact_answer"]|join(", ")}}'
+    name: all_answers
+    reference: ''
+  8c237139-76c6-4cda-945a-36cea7f04abc: !Template
+    id: 8c237139-76c6-4cda-945a-36cea7f04abc
+    jinja: 'Assign the following question to the appropriate category:
+
+
+      {{question_query}} |||
+
+      {{category_name}}'
+    name: classify_question
+    reference: ''
+  f0e5743e-10af-4358-8a96-c742eef77730: !Template
+    id: f0e5743e-10af-4358-8a96-c742eef77730
+    jinja: 'Find all the papers (mention their titles) that could contain the answer
+      to "{{question_query}}" |||
+
+      {{answers["title"]|join(", ")}}'
+    name: all_papers
+    reference: ''
