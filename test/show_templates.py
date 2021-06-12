@@ -1,9 +1,8 @@
 import argparse
 import textwrap
 
-from utils import get_dataset
-
-from templates import TemplateCollection
+from promptsource.templates import TemplateCollection
+from promptsource.utils import get_dataset
 
 
 parser = argparse.ArgumentParser(description="Process some integers.")
@@ -28,6 +27,17 @@ template_list = dataset_templates.all_template_names
 
 width = 80
 print("DATASET ", args.dataset_path)
+
+# First show all the templates.
+for template_name in template_list:
+    template = dataset_templates[template_name]
+    print("TEMPLATE")
+    print("NAME:", template_name)
+    print("Is Task Template: ", template.get_task_template())
+    print(template.jinja)
+    print()
+
+# Show examples of the templates.
 for template_name in template_list:
     template = dataset_templates[template_name]
     print()

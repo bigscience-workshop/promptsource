@@ -105,6 +105,7 @@ curly braces and quoted. For example:
 ```jinja2
 The choices are {{"a"}}, {{"b"}}, and {{"c"}}.
 ```
+You can leave binary options like yes/no, true/false, etc. unprotected.
 
 Finally, remember that a template must produce two strings: a prompt and an output.
 To separate these two pieces, use three vertical bars `|||`.
@@ -132,12 +133,14 @@ combined to form different (input, output) pairs i.e. different "tasks". Don't h
 introduce some diversity by prompting a given dataset into multiple tasks and provide some
 description in the "Template Reference" text box. An example is given
 in the already prompted `movie_rationales`.
+* **Task Template Checkbox** While there are many different ways to prompt the tasks, only some of them correspond to the original intention of the dataset. For instance, for a summary dataset you can generate a summary or hallucinate an article. However, only the first was the true original task for the dataset. Use the *Task template* check box to indicate true task prompts. (We realize there are some corner cases, for instance, if there was no original task, you should leave this blank. If there are multiple original tasks you can check it for each of them. If you are confused for your dataset, consult with us in slack.) 
 * **Filtering templates.** If a template is applied to an example and produces an
-empty string, that template/example pair will be skipped. You can therefore create
-templates that only apply to a subset of the examples by wrapping them in Jinja
-if statements. For example, in the `TREC` dataset, there are fine-grained
-categories that are only applicable to certain coarse-grained categories. We can
-capture this with the following template:
+empty string, that template/example pair will be skipped. (Either the entire output
+is whitespace or the text on either side of the separator `|||` is whitespace.
+You can therefore create templates that only apply to a subset of the examples by
+wrapping them in Jinja if statements. For example, in the `TREC` dataset, there
+are fine-grained categories that are only applicable to certain coarse-grained categories.
+We can capture this with the following template:
 ```jinja2
 {% if label_coarse == 0 %}
 Is this question asking for a {{"definition"}}, a {{"description"}}, a {{"manner of action"}}, or a {{"reason"}}?
@@ -169,7 +172,7 @@ So for SNLI it will look like:
 ```jinja2
 {{premise}}
 Is it the case that {{hypothesis}}?
-{{ "Yes", "No", "Maybe" }} ||| {{ ["Yes", "No", "Maybe"][label] }}
+{{ "Yes" }}, {{ "No" }}, {{ "Maybe" }} ||| {{ ["Yes", "No", "Maybe"][label] }}
 ```
 
 2) Task description followed by the input. So for SNLI it will look like:
@@ -178,6 +181,63 @@ Determine the relation between the following two sentences. The relations are en
 {{premise}}
 {{hypothesis}} ||| {{label}}
 ```
+
+## More Examples
+
+Here are a few interesting examples of templates with explanations.
+
+Here's one for `hellaswag`:
+```jinja2
+First, {{ ctx_a.lower() }} Then, {{ ctx_b.lower() }}...
+
+Complete the above description with a chosen ending:
+
+Ending 1: {{ endings[0] }}
+
+Ending 2: {{ endings[1] }}
+
+Ending 3: {{ endings[2] }}
+
+Ending 4: {{ endings[3] }}
+
+||| {{ {"0": "Ending 1", "1": "Ending 2", "2": "Ending 3", "3": "Ending 4"}[label] }}
+```
+Notice how it uses functions to consistently capitalize the information and provides lots
+of context (referring explicitly to "description" and "chosen ending.")
+
+Here's one for `head_qa`:
+```jinja2
+Given this list of statements about {{category}}: {{ answers | map(attribute="atext")
+| map("lower") | map("trim", ".") | join(", ") }}.
+Which one is the most appropriate answer/completion for the paragraph that follows?
+{{qtext}}
+|||
+{% for answer in answers if answer["aid"]==ra -%}
+{{answer["atext"]}}
+{%- endfor %}
+```
+Like above, it uses functions to present the choices in a readable way. Also, it
+uses a for loop with conditions to handle the more intricate dataset schema. 
+
+Here's one for `paws`:
+```jinja2
+{% if label == 0 or label == 1 %} 
+Sentence 1: {{sentence1}}
+Sentence 2: {{sentence2}}
+Question: Does Sentence 1 paraphrase Sentence 2? Yes or No?
+{% endif %}
+||| 
+{% if label == 0 %} 
+No
+{% elif label == 1 %}
+Yes
+{% endif %}
+
+```
+This template has to do a few things, even though it's a yes no question. First,
+the label might be unknown, so the pieces are wrapped in if statements.
+Second, notice that the choices `Yes or No` are not escaped. Yes/no, true/false
+are choices that do not need to be escaped (unlike categories).
 
 ## Uploading Templates
 
@@ -198,7 +258,7 @@ directory in the repo will be modified. To upload it, follow these steps:
 ```
 
 - Joining list
-```jinja
+```jinja=
 {{ spans_list | join(", ") }}
 ```
 
