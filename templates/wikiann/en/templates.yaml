@@ -1,0 +1,77 @@
+dataset: wikiann
+subset: en
+templates:
+  0cf98e5d-d3c8-4e46-a71c-efe6cc2d285f: !Template
+    id: 0cf98e5d-d3c8-4e46-a71c-efe6cc2d285f
+    jinja: "{% set _ner_label_dict = ({\n0:\"O\",\n1:\"B-PER\",\n2:\"I-PER\",\n3:\"\
+      B-ORG\",\n4:\"I-ORG\",\n5:\"B-LOC\",\n6:\"I-LOC\"\n}) %}\n{% set _label_dict=_ner_label_dict\
+      \ %}\n{% set _tags = ner_tags %}\n{% set _label_list = [] %}\n{% set flag =\
+      \ 0 %}\n{% for k, v in _label_dict.items() %}\n    {% do _label_list.append(v)\
+      \ %}\n{% endfor %} \n{% do _label_list|shuffle %}\nGenerate named entities from\
+      \ the following sentence. The labels are \n{% for v in _label_list -%}\n   \
+      \ {{ v }}\n    {{- \", \" if not loop.last else \"\" -}}\n{% endfor -%} \n{{\"\
+      \\n\"}}\n{% for i in tokens -%}\n    {{- \" \" if not loop.last else \"\" -}}\n\
+      \    {{ i }}\n{% endfor %} \n|||\n{% for tok, label in zip(tokens, _tags) -%}\n\
+      \    {{tok}}:{{ _label_dict[label] }}\n{% endfor -%} "
+    name: flat_question_with_label
+    reference: Natural question with label
+    task_template: true
+  82b94f1d-a15b-4d81-9a1b-7e2718e091d2: !Template
+    id: 82b94f1d-a15b-4d81-9a1b-7e2718e091d2
+    jinja: "{% set _ner_label_dict = ({\n0:\"O\",\n1:\"B-PER\",\n2:\"I-PER\",\n3:\"\
+      B-ORG\",\n4:\"I-ORG\",\n5:\"B-LOC\",\n6:\"I-LOC\"\n}) %}\n{% set _label_dict=_ner_label_dict\
+      \ %}\n{% set _tags = ner_tags %}\n{% set _random_label_dict = ({}) %}\n{% for\
+      \ k, v in _label_dict.items() %}\n    {% set _rand_num=range(0, 100) | random\
+      \ %}\n    {% if _rand_num > 50 %}\n        {% do _random_label_dict.update({k:v})\
+      \ %}\n    {% endif %}\n{% endfor %}\n{% if 0 not in _random_label_dict %}\n\
+      \    {% do _random_label_dict.update({0:\"O\"}) %}\n{% endif %}\n{% set _label_list\
+      \ = [] %}\n{% set flag = 0 %}\n{% for k, v in _random_label_dict.items() %}\n\
+      \    {% do _label_list.append(v) %}\n{% endfor %} \n{% do _label_list|shuffle\
+      \ %}\nGenerate named entities from the following sentence. The labels are \n\
+      {% for v in _label_list -%}\n    {{ v }}\n    {{- \", \" if not loop.last else\
+      \ \"\" -}}\n{% endfor -%} \n{{\"\\n\"}}\n{% for i in tokens -%}\n    {{- \"\
+      \ \" if not loop.last else \"\" -}}\n    {{ i }}\n{% endfor %} \n|||\n{% for\
+      \ tok, label in zip(tokens, _tags) -%}\n    {% if label not in _random_label_dict\
+      \ -%}\n        {{tok}}:O\n    {% else -%} \n        {{tok}}:{{ _random_label_dict[label]\
+      \ }}\n    {% endif -%}\n{% endfor -%} "
+    name: flat_question_with_label_random
+    reference: Natural question with randomly selected label
+    task_template: true
+  840623fd-dd60-4af0-9c19-b576ef6920fe: !Template
+    id: 840623fd-dd60-4af0-9c19-b576ef6920fe
+    jinja: "{% set _ner_label_dict = ({\n0:\"O\",\n1:\"B-PER\",\n2:\"I-PER\",\n3:\"\
+      B-ORG\",\n4:\"I-ORG\",\n5:\"B-LOC\",\n6:\"I-LOC\"\n}) %}\n{% set _label_dict=\
+      \ ({})%}\n{% for k, v in _ner_label_dict.items() %}\n    {% if v == \"O\" %}\n\
+      \         {% do _label_dict.update({k:v}) %}\n    {% else %}\n        {% do\
+      \ _label_dict.update({k:v.split(\"-\")[1]}) %}\n    {% endif %}\n{% endfor %}\
+      \ \n{% set _tags = ner_tags %}\n{% set _label_list = [] %}\n{% set flag = 0\
+      \ %}\n{% for k, v in _label_dict.items() %}\n    {% if v not in _label_list\
+      \ %}\n        {% do _label_list.append(v) %}\n    {% endif %}\n{% endfor %}\
+      \ \n{% do _label_list|shuffle %}\nGenerate named entities from the following\
+      \ sentence. The labels are \n{% for v in _label_list -%}\n    {{ v }}\n    {{-\
+      \ \", \" if not loop.last else \"\" -}}\n{% endfor -%} \n{{\"\\n\"}}\n{% for\
+      \ i in tokens -%}\n    {{- \" \" if not loop.last else \"\" -}}\n    {{ i }}\n\
+      {% endfor %} \n|||\n{% for tok, label in zip(tokens, _tags) -%}\n    {{tok}}:{{\
+      \ _label_dict[label] }}\n{% endfor -%} "
+    name: flat_question_with_label_norm
+    reference: Natural question with label normalization
+    task_template: true
+  a0464c7e-052d-478d-8562-8a40be64c71a: !Template
+    id: a0464c7e-052d-478d-8562-8a40be64c71a
+    jinja: "{% set _ner_label_dict = ({\n0:\"O\",\n1:\"B-person\",\n2:\"I-person\"\
+      ,\n3:\"B-organization\",\n4:\"I-organization\",\n5:\"B-location\",\n6:\"I-location\"\
+      \n}) %}\n{% set _label_dict= ({})%}\n{% for k, v in _ner_label_dict.items()\
+      \ %}\n    {% if v == \"O\" %}\n         {% do _label_dict.update({k:v}) %}\n\
+      \    {% else %}\n        {% do _label_dict.update({k:v.split(\"-\")[1]}) %}\n\
+      \    {% endif %}\n{% endfor %} \n{% set _tags = ner_tags %}\n{% set _label_list\
+      \ = [] %}\n{% set flag = 0 %}\n{% for k, v in _label_dict.items() %}\n    {%\
+      \ if v not in _label_list %}\n        {% do _label_list.append(v) %}\n    {%\
+      \ endif %}\n{% endfor %} \n{% do _label_list|shuffle %}\nGenerate named entities\
+      \ from the following sentence. The labels are \n{% for v in _label_list -%}\n\
+      \    {{ v }}\n    {{- \", \" if not loop.last else \"\" -}}\n{% endfor -%} \n\
+      {{\"\\n\"}}\n{% for i in tokens -%}\n    {{- \" \" if not loop.last else \"\"\
+      \ -}}\n    {{ i }}\n{% endfor %} \n|||\n{% for tok, label in zip(tokens, _tags)\
+      \ -%}\n    {{tok}}:{{ _label_dict[label] }}\n{% endfor -%} "
+    name: flat_question_with_full_label_norm
+    reference: Natural question with full label
+    task_template: true
