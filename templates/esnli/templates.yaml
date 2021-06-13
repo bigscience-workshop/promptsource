@@ -1,0 +1,120 @@
+dataset: esnli
+templates:
+  16206cff-dd01-408e-b0b4-daabb750b38b: !Template
+    id: 16206cff-dd01-408e-b0b4-daabb750b38b
+    jinja: 'Explain why the relation between the following two sentences can be described
+      as {{ ["an entailment", "neutral", "a contradiction"][label] }}.
+
+
+      Sentence 1: {{premise}}
+
+
+      Sentence 2: {{hypothesis}}
+
+      |||
+
+      {{explanation_1}}'
+    name: '  explain_3'
+    reference: ''
+  3d077f02-bba0-4019-bacd-bf3e7119b1f7: !Template
+    id: 3d077f02-bba0-4019-bacd-bf3e7119b1f7
+    jinja: "{% if label == 0 %} \nWhy does the first sentence entail the second?\n\
+      {% elif label == 1 %}\nWhy do the two sentences neither entail nor contradict\
+      \ each other?\n{% else %}\nWhy do these two sentences contradict each other?\n\
+      {% endif%}\n\nFirst sentence: \n{{premise}} \n\nSecond sentence:\n{{hypothesis}}\n\
+      |||\n{{explanation_1}}"
+    name: '  explain_4'
+    reference: ''
+  3e84960e-99db-42bf-9370-50858a92318c: !Template
+    id: 3e84960e-99db-42bf-9370-50858a92318c
+    jinja: "Given than:\n{{ premise }}\n{% if label == 0 %} \nWhy is it always true\
+      \ that:\n{% elif label == 1 %}\nWhy it cannot be concluded that:\n{% else %}\n\
+      Why is it necessarily false that:\n{% endif%}\n{{ hypothesis }}\n|||\n{{ explanation_1\
+      \ }}"
+    name: explain_1
+    reference: ''
+  643d3444-99f8-4a02-8d76-12a9b719edea: !Template
+    id: 643d3444-99f8-4a02-8d76-12a9b719edea
+    jinja: 'First sentence: {{ premise }}
+
+
+      Second sentence: {{ hypothesis }}
+
+
+      Determine whether the first sentence {{ "entails" }}, {{ "contradicts" }} or
+      is {{ "neutral" }} with regard to the second.
+
+      |||
+
+      {{ ["entails", "neutral", "contradicts"][label] }}'
+    name: class_2_reverse
+    reference: ''
+  70728515-9e3e-4b04-b57c-ee1b30716547: !Template
+    id: 70728515-9e3e-4b04-b57c-ee1b30716547
+    jinja: 'Premise: {{ premise }}
+
+
+      Hypothesis: {{ hypothesis }}.
+
+
+      Name the relation between the premise and the hypothesis above. Select the correct
+      option: {{ "entailment" }}, {{ "contradiction" }} or {{ "neutral" }}.
+
+      |||
+
+      {{ ["entailment", "neutral", "contradiction"][label] }}'
+    name: class_1_reverse
+    reference: ''
+  89b174c7-f4d6-442c-8ac2-10c51595770e: !Template
+    id: 89b174c7-f4d6-442c-8ac2-10c51595770e
+    jinja: 'Determine whether the first sentence {{ "entails" }}, {{ "contradicts"
+      }} or is {{ "neutral" }} with regard to the second.
+
+
+      First sentence: {{ premise }}
+
+
+      Second sentence: {{ hypothesis }}
+
+      |||
+
+      {{ ["entails", "neutral", "contradicts"][label] }}'
+    name: class_2
+    reference: ''
+  c102663b-3472-42b5-b633-71f7abd6a457: !Template
+    id: c102663b-3472-42b5-b633-71f7abd6a457
+    jinja: 'Describe the relation between the following two sentences. The choices
+      are {{ "entailment" }}, {{ "contradiction" }} and {{ "neutral" }}.
+
+
+      First sentence: {{premise}}
+
+
+      Second sentence: {{hypothesis}}
+
+      |||
+
+      {{ ["entailment", "neutral", "contradiction"][label] }}'
+    name: class_1
+    reference: ''
+  c6cce628-8e69-418b-8676-deae7a782e7f: !Template
+    id: c6cce628-8e69-418b-8676-deae7a782e7f
+    jinja: "Does this statement: \n\n{{ premise }} \n\nimply that: \n\n{{ hypothesis\
+      \ }}?\n|||\n{{ [\"Yes\", \"No\"][0 if label==0 else 1] }}"
+    name: entail_1
+    reference: ''
+  ef034633-d4d9-47b8-9152-b025b1d61e5b: !Template
+    id: ef034633-d4d9-47b8-9152-b025b1d61e5b
+    jinja: "First statement: \n{{ premise }}\n\nSecond statement: \n{{ hypothesis\
+      \ }}\n\nDo the statements above contradict each other?\n|||\n{{ [\"Yes\", \"\
+      No\"][0 if label==2 else 1] }}"
+    name: '  contradict_1'
+    reference: ''
+  f64d6196-370b-4501-acb5-e11a5ebf0c5e: !Template
+    id: f64d6196-370b-4501-acb5-e11a5ebf0c5e
+    jinja: "If we know that:\n{{premise}}\n{% if label == 0 %} \nWhy is it always\
+      \ the case that:\n{% elif label == 1 %}\nWhy it is not necessarily the case\
+      \ that:\n{% else %}\nWhy is it not true that:\n{% endif%}\n{{hypothesis}}\n\
+      |||\n{{explanation_1}}"
+    name: '  explain_2'
+    reference: ''
