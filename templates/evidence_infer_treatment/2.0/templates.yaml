@@ -3,50 +3,25 @@ subset: '2.0'
 templates:
   1b538c15-d7b7-4139-8755-fb7d28c19a4d: !Template
     id: 1b538c15-d7b7-4139-8755-fb7d28c19a4d
-    jinja: 'After reading the following text:
-
-
-      {{Text}}
-
-
-      The relevant annotations:
-
-
-      {% set annotation_length = Prompts.Annotations | length %}
-
-
-      {% set specific_sub_annotation = range(0, annotation_length) | random %}
-
-
-      {% set sub_annotation_length = Prompts.Annotations[specific_sub_annotation].Annotations
-      | length %}
-
-
-      {% set sub_sub_annotation = range(0, sub_annotation_length) | random %}
-
-
-      {{Prompts.Annotations[specific_sub_annotation].Annotations[sub_sub_annotation]}}
-
-
-      Now on the basis of annotation and the text the outcome is:
-
-
-      |||
-
-
-
-      {{Prompts.Outcome[specific_sub_annotation]}}'
-    name: template_4
-    reference: ''
-    task_template: false
-  7ce46648-2bcc-4e67-95f5-c2a0d0612f9b: !Template
-    id: 7ce46648-2bcc-4e67-95f5-c2a0d0612f9b
-    jinja: "After reading the following text:\n\n{{Text}}\n\nThe relevant annotations:\n\
+    jinja: "{{Text[:1200]}} \n\n{{Text[-300:]}}\n\nThe text above contains important\
+      \ details for answering the following questions:\n\nThe relevant annotations:\n\
       \n{% set annotation_length = Prompts.Annotations | length %}\n\n{% set specific_sub_annotation\
       \ = range(0, annotation_length) | random %}\n\n{% set sub_annotation_length\
       \ = Prompts.Annotations[specific_sub_annotation].Annotations | length %}\n\n\
       {% set sub_sub_annotation = range(0, sub_annotation_length) | random %}\n\n\
       {{Prompts.Annotations[specific_sub_annotation].Annotations[sub_sub_annotation]}}\n\
+      \nNow on the basis of annotation and the text the outcome is:\n\n|||\n\n\n{{Prompts.Outcome[specific_sub_annotation]}}"
+    name: template_4
+    reference: ''
+    task_template: false
+  7ce46648-2bcc-4e67-95f5-c2a0d0612f9b: !Template
+    id: 7ce46648-2bcc-4e67-95f5-c2a0d0612f9b
+    jinja: "After reading the following text:\n\n{{Text[:1200]}} \n\n{{Text[-300:]}}\n\
+      \nThe relevant annotations:\n\n{% set annotation_length = Prompts.Annotations\
+      \ | length %}\n\n{% set specific_sub_annotation = range(0, annotation_length)\
+      \ | random %}\n\n{% set sub_annotation_length = Prompts.Annotations[specific_sub_annotation].Annotations\
+      \ | length %}\n\n{% set sub_sub_annotation = range(0, sub_annotation_length)\
+      \ | random %}\n\n{{Prompts.Annotations[specific_sub_annotation].Annotations[sub_sub_annotation]}}\n\
       \nNow if the comparator is:\n\n{{Prompts.Comparator[specific_sub_annotation]}}.\n\
       \nand the intervention is:\n\n{{Prompts.Intervention[specific_sub_annotation]}}.\n\
       \n The outcome is: \n\n|||\n\n{{Prompts.Outcome[specific_sub_annotation]}}"
@@ -55,205 +30,59 @@ templates:
     task_template: false
   7d618260-32fb-405d-ab79-cec67f589de7: !Template
     id: 7d618260-32fb-405d-ab79-cec67f589de7
-    jinja: 'Read the following annotations:
-
-
-      {% set annotation_length = Prompts.Annotations | length %}
-
-
-      {% set specific_sub_annotation = range(0, annotation_length) | random %}
-
-
-      {% set sub_annotation_length = Prompts.Annotations[specific_sub_annotation].Annotations
-      | length %}
-
-
-      {% set sub_sub_annotation = range(0, sub_annotation_length) | random %}
-
-
-      {{Text}}
-
-
-      Now the comparator is:
-
-
-      {{Prompts.Comparator[specific_sub_annotation]}}.
-
-
-      The intervention is:
-
-
-      {{Prompts.Intervention[specific_sub_annotation]}}.
-
-
-      The outcome:
-
-
-      {{Prompts.Outcome[specific_sub_annotation]}}
-
-
-      is either {{"significantly increased"}}, {{"significantly decreased"}} or {{"no
-      significant difference"}}. Which is it?
-
-
-      |||
-
-
-
-      {{Prompts.Annotations[specific_sub_annotation].Label[sub_sub_annotation]}}'
+    jinja: "Read the following text:\n\n{% set annotation_length = Prompts.Annotations\
+      \ | length %}\n\n{% set specific_sub_annotation = range(0, annotation_length)\
+      \ | random %}\n\n{% set sub_annotation_length = Prompts.Annotations[specific_sub_annotation].Annotations\
+      \ | length %}\n\n{% set sub_sub_annotation = range(0, sub_annotation_length)\
+      \ | random %}\n\n{{Text[:1200]}} \n\n{{Text[-300:]}}\n\nNow the comparator is:\n\
+      \n{{Prompts.Comparator[specific_sub_annotation]}}.\n\nThe intervention is:\n\
+      \n{{Prompts.Intervention[specific_sub_annotation]}}.\n\nThe outcome:\n\n{{Prompts.Outcome[specific_sub_annotation]}}\n\
+      \nis either {{\"significantly increased\"}}, {{\"significantly decreased\"}}\
+      \ or {{\"no significant difference\"}}. Which is it?\n\n|||\n\n\n{{Prompts.Annotations[specific_sub_annotation].Label[sub_sub_annotation]}}"
     name: template_3
     reference: ''
     task_template: true
   c999469a-20e0-4c10-a707-3c057d5c0245: !Template
     id: c999469a-20e0-4c10-a707-3c057d5c0245
-    jinja: 'The following text has the important information:
-
-
-      {{Text}}
-
-
-      The relevant annotations are:
-
-
-      {% set annotation_length = Prompts.Annotations | length %}
-
-
-      {% set specific_sub_annotation = range(0, annotation_length) | random %}
-
-
-      {% set sub_annotation_length = Prompts.Annotations[specific_sub_annotation].Annotations
-      | length %}
-
-
-      {% set sub_sub_annotation = range(0, sub_annotation_length) | random %}
-
-
-      {{Prompts.Annotations[specific_sub_annotation].Annotations[sub_sub_annotation]}}
-
-
-      Now if the comparator is:
-
-
-      {{Prompts.Comparator[specific_sub_annotation]}}.
-
-
-      The intervention will be: 
-
-
-      |||
-
-
-
-      {{Prompts.Intervention[specific_sub_annotation]}}.
-
-      '
+    jinja: "The following text snippets contain important information:\n\n{{Text[:1200]}}\
+      \ \n\n{{Text[-300:]}}\n\nThe relevant annotations are:\n\n{% set annotation_length\
+      \ = Prompts.Annotations | length %}\n\n{% set specific_sub_annotation = range(0,\
+      \ annotation_length) | random %}\n\n{% set sub_annotation_length = Prompts.Annotations[specific_sub_annotation].Annotations\
+      \ | length %}\n\n{% set sub_sub_annotation = range(0, sub_annotation_length)\
+      \ | random %}\n\n{{Prompts.Annotations[specific_sub_annotation].Annotations[sub_sub_annotation]}}\n\
+      \nNow if the comparator is:\n\n{{Prompts.Comparator[specific_sub_annotation]}}.\n\
+      \nThe intervention will be:\n\n|||\n\n\n{{Prompts.Intervention[specific_sub_annotation]}}.\n"
     name: template_1
     reference: ''
     task_template: false
   da67a99f-0472-4658-a410-afe260749d90: !Template
     id: da67a99f-0472-4658-a410-afe260749d90
-    jinja: 'After reading the following text:
-
-
-      {{Text}}
-
-
-      The relevant annotations:
-
-
-      {% set annotation_length = Prompts.Annotations | length %}
-
-
-      {% set specific_sub_annotation = range(0, annotation_length) | random %}
-
-
-      {% set sub_annotation_length = Prompts.Annotations[specific_sub_annotation].Annotations
-      | length %}
-
-
-      {% set sub_sub_annotation = range(0, sub_annotation_length) | random %}
-
-
-      {{Prompts.Annotations[specific_sub_annotation].Annotations[sub_sub_annotation]}}
-
-
-      The comparator is:
-
-
-      {{Prompts.Comparator[specific_sub_annotation]}}.
-
-
-      The intervention is:
-
-
-      {{Prompts.Intervention[specific_sub_annotation]}}.
-
-
-      The outcome:
-
-
-      {{Prompts.Outcome[specific_sub_annotation]}}
-
-
-      is either {{"significantly increased"}}, {{"significantly decreased"}} or {{"no
-      significant difference"}}. Which is it?
-
-
-      |||
-
-
-
-      {{Prompts.Annotations[specific_sub_annotation].Label[sub_sub_annotation]}}'
+    jinja: "The information required to understand the outcome is below:\n\n{{Text[:1200]}}\
+      \ \n\n{{Text[-300:]}}\n\nThe relevant annotations:\n\n{% set annotation_length\
+      \ = Prompts.Annotations | length %}\n\n{% set specific_sub_annotation = range(0,\
+      \ annotation_length) | random %}\n\n{% set sub_annotation_length = Prompts.Annotations[specific_sub_annotation].Annotations\
+      \ | length %}\n\n{% set sub_sub_annotation = range(0, sub_annotation_length)\
+      \ | random %}\n\n{{Prompts.Annotations[specific_sub_annotation].Annotations[sub_sub_annotation]}}\n\
+      \nThe comparator is:\n\n{{Prompts.Comparator[specific_sub_annotation]}}.\n\n\
+      The intervention is:\n\n{{Prompts.Intervention[specific_sub_annotation]}}.\n\
+      \nThe outcome:\n\n{{Prompts.Outcome[specific_sub_annotation]}}\n\nis either\
+      \ {{\"significantly increased\"}}, {{\"significantly decreased\"}} or {{\"no\
+      \ significant difference\"}}. Which is it?\n\n|||\n\n\n{{Prompts.Annotations[specific_sub_annotation].Label[sub_sub_annotation]}}"
     name: template_with_all_info
     reference: Template with the task definition
     task_template: true
   fbf5600f-5e70-4c15-9608-f53cec32825f: !Template
     id: fbf5600f-5e70-4c15-9608-f53cec32825f
-    jinja: 'After reading the following text:
-
-
-      {{Text}}
-
-
-      The relevant annotations:
-
-
-      {% set annotation_length = Prompts.Annotations | length %}
-
-
-      {% set specific_sub_annotation = range(0, annotation_length) | random %}
-
-
-      {% set sub_annotation_length = Prompts.Annotations[specific_sub_annotation].Annotations
-      | length %}
-
-
-      {% set sub_sub_annotation = range(0, sub_annotation_length) | random %}
-
-
-      {{Prompts.Annotations[specific_sub_annotation].Annotations[sub_sub_annotation]}}
-
-
-      The intervention is:
-
-
-      {{Prompts.Intervention[specific_sub_annotation]}}.
-
-
-      The outcome:
-
-
-      {{Prompts.Outcome[specific_sub_annotation]}}
-
-
-      The comparator is:
-
-
-
-      |||
-
-
-      {{Prompts.Comparator[specific_sub_annotation]}}.'
+    jinja: "The first text snippet that is important to understand is:\n\n{{Text[:1200]}}\
+      \ \n\nthe second text snippet is:\n\n{{Text[-300:]}}\n\nThe relevant annotations:\n\
+      \n{% set annotation_length = Prompts.Annotations | length %}\n\n{% set specific_sub_annotation\
+      \ = range(0, annotation_length) | random %}\n\n{% set sub_annotation_length\
+      \ = Prompts.Annotations[specific_sub_annotation].Annotations | length %}\n\n\
+      {% set sub_sub_annotation = range(0, sub_annotation_length) | random %}\n\n\
+      {{Prompts.Annotations[specific_sub_annotation].Annotations[sub_sub_annotation]}}\n\
+      \nThe intervention is:\n\n{{Prompts.Intervention[specific_sub_annotation]}}.\n\
+      \nThe outcome:\n\n{{Prompts.Outcome[specific_sub_annotation]}}\n\nThe comparator\
+      \ is:\n\n\n|||\n\n{{Prompts.Comparator[specific_sub_annotation]}}."
     name: template_5
     reference: ''
     task_template: false
