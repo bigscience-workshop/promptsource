@@ -270,6 +270,13 @@ do_something
 do_something_else
 {% endif %}
 ```
+- Using `zip()` to zip multiple lists
+```jinja
+{% for a, b in zip(list_A, list_B) %}
+do_something_with_a_and_b
+{% endfor %} 
+```
+
 
 Jinja includes lots of complex features but for most instances you likely only
 need to use the methods above. If there's something you're not sure how to do,
