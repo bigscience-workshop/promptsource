@@ -6,9 +6,9 @@ templates:
     jinja: "{{Text[:1200]}} \n\n{{Text[-300:]}}\n\nThe text above contains important\
       \ details for answering the following questions:\n\nThe relevant annotations:\n\
       \n{% set annotation_length = Prompts.Annotations | length %}\n\n{% set specific_sub_annotation\
-      \ = range(0, annotation_length) | random %}\n\n{% set sub_annotation_length\
+      \ = range(0, annotation_length) | choice %}\n\n{% set sub_annotation_length\
       \ = Prompts.Annotations[specific_sub_annotation].Annotations | length %}\n\n\
-      {% set sub_sub_annotation = range(0, sub_annotation_length) | random %}\n\n\
+      {% set sub_sub_annotation = range(0, sub_annotation_length) | choice %}\n\n\
       {{Prompts.Annotations[specific_sub_annotation].Annotations[sub_sub_annotation]}}\n\
       \nNow on the basis of annotation and the text the outcome is:\n\n|||\n\n\n{{Prompts.Outcome[specific_sub_annotation]}}"
     name: template_4
@@ -19,9 +19,9 @@ templates:
     jinja: "After reading the following text:\n\n{{Text[:1200]}} \n\n{{Text[-300:]}}\n\
       \nThe relevant annotations:\n\n{% set annotation_length = Prompts.Annotations\
       \ | length %}\n\n{% set specific_sub_annotation = range(0, annotation_length)\
-      \ | random %}\n\n{% set sub_annotation_length = Prompts.Annotations[specific_sub_annotation].Annotations\
+      \ | choice %}\n\n{% set sub_annotation_length = Prompts.Annotations[specific_sub_annotation].Annotations\
       \ | length %}\n\n{% set sub_sub_annotation = range(0, sub_annotation_length)\
-      \ | random %}\n\n{{Prompts.Annotations[specific_sub_annotation].Annotations[sub_sub_annotation]}}\n\
+      \ | choice %}\n\n{{Prompts.Annotations[specific_sub_annotation].Annotations[sub_sub_annotation]}}\n\
       \nNow if the comparator is:\n\n{{Prompts.Comparator[specific_sub_annotation]}}.\n\
       \nand the intervention is:\n\n{{Prompts.Intervention[specific_sub_annotation]}}.\n\
       \n The outcome is: \n\n|||\n\n{{Prompts.Outcome[specific_sub_annotation]}}"
@@ -32,9 +32,9 @@ templates:
     id: 7d618260-32fb-405d-ab79-cec67f589de7
     jinja: "Read the following text:\n\n{% set annotation_length = Prompts.Annotations\
       \ | length %}\n\n{% set specific_sub_annotation = range(0, annotation_length)\
-      \ | random %}\n\n{% set sub_annotation_length = Prompts.Annotations[specific_sub_annotation].Annotations\
+      \ | choice %}\n\n{% set sub_annotation_length = Prompts.Annotations[specific_sub_annotation].Annotations\
       \ | length %}\n\n{% set sub_sub_annotation = range(0, sub_annotation_length)\
-      \ | random %}\n\n{{Text[:1200]}} \n\n{{Text[-300:]}}\n\nNow the comparator is:\n\
+      \ | choice %}\n\n{{Text[:1200]}} \n\n{{Text[-300:]}}\n\nNow the comparator is:\n\
       \n{{Prompts.Comparator[specific_sub_annotation]}}.\n\nThe intervention is:\n\
       \n{{Prompts.Intervention[specific_sub_annotation]}}.\n\nThe outcome:\n\n{{Prompts.Outcome[specific_sub_annotation]}}\n\
       \nis either {{\"significantly increased\"}}, {{\"significantly decreased\"}}\
@@ -47,9 +47,9 @@ templates:
     jinja: "The following text snippets contain important information:\n\n{{Text[:1200]}}\
       \ \n\n{{Text[-300:]}}\n\nThe relevant annotations are:\n\n{% set annotation_length\
       \ = Prompts.Annotations | length %}\n\n{% set specific_sub_annotation = range(0,\
-      \ annotation_length) | random %}\n\n{% set sub_annotation_length = Prompts.Annotations[specific_sub_annotation].Annotations\
+      \ annotation_length) | choice %}\n\n{% set sub_annotation_length = Prompts.Annotations[specific_sub_annotation].Annotations\
       \ | length %}\n\n{% set sub_sub_annotation = range(0, sub_annotation_length)\
-      \ | random %}\n\n{{Prompts.Annotations[specific_sub_annotation].Annotations[sub_sub_annotation]}}\n\
+      \ | choice %}\n\n{{Prompts.Annotations[specific_sub_annotation].Annotations[sub_sub_annotation]}}\n\
       \nNow if the comparator is:\n\n{{Prompts.Comparator[specific_sub_annotation]}}.\n\
       \nThe intervention will be:\n\n|||\n\n\n{{Prompts.Intervention[specific_sub_annotation]}}.\n"
     name: template_1
@@ -60,9 +60,9 @@ templates:
     jinja: "The information required to understand the outcome is below:\n\n{{Text[:1200]}}\
       \ \n\n{{Text[-300:]}}\n\nThe relevant annotations:\n\n{% set annotation_length\
       \ = Prompts.Annotations | length %}\n\n{% set specific_sub_annotation = range(0,\
-      \ annotation_length) | random %}\n\n{% set sub_annotation_length = Prompts.Annotations[specific_sub_annotation].Annotations\
+      \ annotation_length) | choice %}\n\n{% set sub_annotation_length = Prompts.Annotations[specific_sub_annotation].Annotations\
       \ | length %}\n\n{% set sub_sub_annotation = range(0, sub_annotation_length)\
-      \ | random %}\n\n{{Prompts.Annotations[specific_sub_annotation].Annotations[sub_sub_annotation]}}\n\
+      \ | choice %}\n\n{{Prompts.Annotations[specific_sub_annotation].Annotations[sub_sub_annotation]}}\n\
       \nThe comparator is:\n\n{{Prompts.Comparator[specific_sub_annotation]}}.\n\n\
       The intervention is:\n\n{{Prompts.Intervention[specific_sub_annotation]}}.\n\
       \nThe outcome:\n\n{{Prompts.Outcome[specific_sub_annotation]}}\n\nis either\
@@ -76,9 +76,9 @@ templates:
     jinja: "The first text snippet that is important to understand is:\n\n{{Text[:1200]}}\
       \ \n\nthe second text snippet is:\n\n{{Text[-300:]}}\n\nThe relevant annotations:\n\
       \n{% set annotation_length = Prompts.Annotations | length %}\n\n{% set specific_sub_annotation\
-      \ = range(0, annotation_length) | random %}\n\n{% set sub_annotation_length\
+      \ = range(0, annotation_length) | choice %}\n\n{% set sub_annotation_length\
       \ = Prompts.Annotations[specific_sub_annotation].Annotations | length %}\n\n\
-      {% set sub_sub_annotation = range(0, sub_annotation_length) | random %}\n\n\
+      {% set sub_sub_annotation = range(0, sub_annotation_length) | choice %}\n\n\
       {{Prompts.Annotations[specific_sub_annotation].Annotations[sub_sub_annotation]}}\n\
       \nThe intervention is:\n\n{{Prompts.Intervention[specific_sub_annotation]}}.\n\
       \nThe outcome:\n\n{{Prompts.Outcome[specific_sub_annotation]}}\n\nThe comparator\
