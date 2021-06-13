@@ -1,0 +1,201 @@
+dataset: nq_open
+templates:
+  014c221a-ed54-4a1d-bc67-2ded6ea8c528: !Template
+    id: 014c221a-ed54-4a1d-bc67-2ded6ea8c528
+    jinja: 'I''ve always wondered: {{question}}
+
+      {{"\n"}}
+
+      Can you answer from wikipedia? You can try multiple times.
+
+      |||
+
+      {% for v in answer -%}
+
+      Answer: {{v}}
+
+      {% endfor -%}'
+    name: context_self_description_wikipedia_multiple_answer
+    reference: Ask question by self description from wikipedia
+    task_template: true
+  14acf45f-a958-4fff-a8fc-60a1f241059a: !Template
+    id: 14acf45f-a958-4fff-a8fc-60a1f241059a
+    jinja: 'Can you tell me the answer of the following question from wikipedia? You
+      can guess multiple answers.
+
+      {{"\n"}}
+
+      Question: {{question}}
+
+      |||
+
+      {% for v in answer -%}
+
+      Answer: {{v}}
+
+      {% endfor -%}'
+    name: wikipedia_question_multiple_answer
+    reference: Mention the KB with multiple answer
+    task_template: true
+  1a4b6c15-de55-407e-8f45-53e55207c59d: !Template
+    id: 1a4b6c15-de55-407e-8f45-53e55207c59d
+    jinja: 'Answer the following question. Answers will be separated by "<SEP\>".
+
+      {{"\n"}}
+
+      {{question}}
+
+      |||
+
+      {%- for v in answer -%}
+
+      {{v}}
+
+      {{- " <SEP\> " if not loop.last else "" -}}
+
+      {%- endfor -%}'
+    name: question_with_instruction_multiple_valid_answer
+    reference: 'Generate multiple valid answer from question with an instruction. '
+    task_template: true
+  2725b229-1217-43ed-98b0-32cf5c4293b3: !Template
+    id: 2725b229-1217-43ed-98b0-32cf5c4293b3
+    jinja: 'According to wikipedia, {{question}}
+
+      |||
+
+      {{answer|choice}}'
+    name: wikipedia_contextual_question
+    reference: Ask question using wikipedia keyword
+    task_template: true
+  4b6ed7ac-8bea-47e1-9856-2ef953e24042: !Template
+    id: 4b6ed7ac-8bea-47e1-9856-2ef953e24042
+    jinja: 'I''ve always wondered: {{question}}
+
+      {{"\n"}}
+
+      Can answer from wikipedia?
+
+      |||
+
+      {{answer|choice}} '
+    name: context_self_description_wikipedia_2
+    reference: Ask question by self description from wikipedia
+    task_template: true
+  5946db1a-a068-4a31-a06f-74a7d976cb6d: !Template
+    id: 5946db1a-a068-4a31-a06f-74a7d976cb6d
+    jinja: 'Guess a question from the topic "{{answer|choice}}"
+
+      |||
+
+      {{question}}'
+    name: guess_question
+    reference: Guess a question. It will show if model can evaluate entity in question.
+    task_template: false
+  7a195317-6a1f-424b-9469-cdeee827524b: !Template
+    id: 7a195317-6a1f-424b-9469-cdeee827524b
+    jinja: 'I''ve always wondered: {{question}}
+
+      {{"\n"}}
+
+      Can you search wikipedia and answer?
+
+      |||
+
+      {{answer|choice}} '
+    name: context_self_description_wikipedia
+    reference: Ask question by self description from wikipedia
+    task_template: true
+  91d9f950-a25a-4557-a16f-952d74629584: !Template
+    id: 91d9f950-a25a-4557-a16f-952d74629584
+    jinja: 'Answer the following question.
+
+      {{"\n"}}
+
+      {{question}}
+
+      |||
+
+      {{answer|choice}}'
+    name: question_with_instruction
+    reference: Question followed by an instruction
+    task_template: true
+  986dfa5a-dca4-4fe4-b895-6ce05bf49cb9: !Template
+    id: 986dfa5a-dca4-4fe4-b895-6ce05bf49cb9
+    jinja: '{{question}}
+
+      {{"\n"}}
+
+      Generate possible answers for the question. Answers will be separated by "<SEP\>".
+
+
+      |||
+
+
+      {%- for v in answer -%}
+
+      {{v}}
+
+      {{- " <SEP\> " if not loop.last else "" -}}
+
+      {%- endfor -%}'
+    name: question_multiple_valid_answer
+    reference: 'Generate multiple valid answer from question. '
+    task_template: true
+  9f2b31e8-cbf4-4c2d-8666-b31ba740e01d: !Template
+    id: 9f2b31e8-cbf4-4c2d-8666-b31ba740e01d
+    jinja: 'According to wikipedia, {{question}}
+
+      {{"\n"}}
+
+      You can try to answer multiple times.
+
+      |||
+
+      {% for v in answer -%}
+
+      Answer: {{v}}
+
+      {% endfor -%}'
+    name: wikipedia_contextual_question_multiple_answer
+    reference: Ask question using wikipedia keyword. Multiple answer.
+    task_template: true
+  bfec3d73-c024-492f-8878-64fdb6639a29: !Template
+    id: bfec3d73-c024-492f-8878-64fdb6639a29
+    jinja: 'I''ve always wondered: {{question}}
+
+      |||
+
+      {{answer|choice}} '
+    name: context_self_description
+    reference: Ask a question by self self description
+    task_template: true
+  c29c7072-0535-4e38-ba0c-b7ac0acdacf8: !Template
+    id: c29c7072-0535-4e38-ba0c-b7ac0acdacf8
+    jinja: 'Question : {{question}}
+
+      {{"\n"}}
+
+      Answer :
+
+
+      |||
+
+
+      {{answer | choice}}'
+    name: question_answer
+    reference: 'Plain Question  '
+    task_template: true
+  d1f261a5-689f-45dc-9e79-fb11eaacd845: !Template
+    id: d1f261a5-689f-45dc-9e79-fb11eaacd845
+    jinja: 'Can you tell me the answer of the following question from wikipedia?
+
+      {{"\n"}}
+
+      Question : {{question}}
+
+      |||
+
+      {{answer|choice}}'
+    name: wikipedia_question
+    reference: Mention the source of the KB
+    task_template: true

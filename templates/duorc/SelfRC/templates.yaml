@@ -13,7 +13,7 @@ templates:
 
       {% else %}
 
-      {{answers[0]}}
+      {{answers|choice}}
 
       {% endif %}"
     name: question_answering
@@ -31,7 +31,7 @@ templates:
     id: e2d42f3f-d835-4127-a93e-2e8e257590eb
     jinja:
       "{% if no_answer %}\n Build a story around this: {{ question }}\n{% else\
-      \ %}\nBuild a story around this: {{ question }} {{answers[0]}}\n{% endif %}\n\
+      \ %}\nBuild a story around this: {{ question }} {{answers|choice}}\n{% endif %}\n\
       |||\n{{ plot }}"
     name: build_story_around_qa
     reference: Given the question-answer pair, generate a relevant plot.
@@ -39,7 +39,7 @@ templates:
     id: e453150d-ae6c-44e0-b6e3-cde724256ba7
     jinja:
       "{% if no_answer %}\nGenerate a question for the following plot: {{plot}}\n\
-      {% else %}\nGenerate a question which has the following answer: \n{{answers[0]}}\
+      {% else %}\nGenerate a question which has the following answer: \n{{answers|choice}}\
       \ \nfor the following plot: \n{{plot}}\n{% endif %}\n|||\n{{question}}"
     name: generate_question_by_answer
     reference:
