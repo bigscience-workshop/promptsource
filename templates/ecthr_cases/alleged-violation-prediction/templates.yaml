@@ -1,0 +1,90 @@
+dataset: ecthr_cases
+subset: alleged-violation-prediction
+templates:
+  32404ed1-2276-401f-bb93-2937d9919585: !Template
+    id: 32404ed1-2276-401f-bb93-2937d9919585
+    jinja: '{{facts | join("\n")}}
+
+
+      These facts show potential violation of EHCR articles could have been violated.
+      The number of violated articles is
+
+      |||
+
+      {{{1:"one",2:"two",3:"three",4:"several"}[[4,labels | length] | min]}}'
+    name: implicit_advice_number
+    reference: implicitly ask for number of violated articles (rather than quantity)
+    task_template: false
+  3e5ba238-98ad-4d25-b84f-f226158ef8d6: !Template
+    id: 3e5ba238-98ad-4d25-b84f-f226158ef8d6
+    jinja: "The following facts relate to a claim brought before the European Court\
+      \ of Human Rights (ECtHR). \n{{facts | join(\"\\n\")}}\n\nQuestion: How many\
+      \ substantive articles in the ECHR could have been breached on these facts?\
+      \ If more than three substantive articles are breached, answer \"several\".\n\
+      Answer:\n|||\n{{{1:\"one\",2:\"two\",3:\"three\",4:\"several\"}[[4,labels |\
+      \ length] | min]}}"
+    name: ecthr_alleged_articles_declaration_at_end
+    reference: Explicitly ask question at end
+    task_template: false
+  7a56f5cc-20b5-4543-bb20-9c616d3f36dc: !Template
+    id: 7a56f5cc-20b5-4543-bb20-9c616d3f36dc
+    jinja: 'Question: Have one, two, three, or several articles of the ECHR been violated
+      on these facts?
+
+      {{facts | join("\n")}}
+
+
+      Answer:
+
+      |||
+
+      {{{1:"one",2:"two",3:"three",4:"several"}[[4,labels | length] | min]}}'
+    name: ecthr_alleged_articles_question_at_start
+    reference: Explicitly ask question at start of prompt
+    task_template: false
+  88825bbb-8cee-4be5-93e2-99be816e8469: !Template
+    id: 88825bbb-8cee-4be5-93e2-99be816e8469
+    jinja: '{{facts | join("\n")}}
+
+
+      These facts show potential violation of EHCR articles could have been violated.
+      The quantity of violated articles is
+
+      |||
+
+      {{{1:"one",2:"two",3:"three",4:"several"}[[4,labels | length] | min]}}'
+    name: implicit declaration
+    reference: implicitly ask for quantity
+    task_template: false
+  96fb3903-c1e4-4752-8b05-5e8c1c12370a: !Template
+    id: 96fb3903-c1e4-4752-8b05-5e8c1c12370a
+    jinja: '{{facts | join("\n")}}
+
+
+      In ruling on this case I have needed to carefully consider the submissions of
+      the parties. The plaintiffs allege breaches of the EHCR - the number of sections
+      allegedly breached is
+
+      |||
+
+      {{{1:"one",2:"two",3:"three",4:"more than three"}[[4,labels | length] | min]}}.'
+    name: implicit_judgment_paragraph
+    reference: implicitly asking for quantity as part of a judgment
+    task_template: false
+  b4fb5e6e-5e91-4f39-82ba-45dba7b71aad: !Template
+    id: b4fb5e6e-5e91-4f39-82ba-45dba7b71aad
+    jinja: '{{facts | join("\n")}}
+
+
+      Question: Is it true that the facts in this case indicate {{{1:"one",2:"two",3:"three",4:"more
+      than three"}[[4,labels | length] | min]}} sections of the EHCR were allegedly
+      violated? Answer "yes" or "no"
+
+      Answer:
+
+      |||
+
+      yes'
+    name: confirm number of violated articles
+    reference: ask for yes/no confirmation of the number of violated articles
+    task_template: false
