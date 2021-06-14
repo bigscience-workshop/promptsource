@@ -1,0 +1,70 @@
+dataset: xquad
+subset: xquad.en
+templates:
+  10efb2e0-390c-4bab-9dc7-d90db707b6ae: !Template
+    id: 10efb2e0-390c-4bab-9dc7-d90db707b6ae
+    jinja: '{{context}}
+
+
+      Generate a question from the above passage : ||| {{question}}'
+    name: temp-4
+    reference: ''
+    task_template: false
+  120fffe0-b752-43f8-bf50-ecf009703ef0: !Template
+    id: 120fffe0-b752-43f8-bf50-ecf009703ef0
+    jinja: '{{context}}
+
+
+      Q: {{question}}
+
+
+      Referring to the passage above, the correct answer to the given question is
+      ||| {{answers["text"][0]}}'
+    name: temp-5
+    reference: ''
+    task_template: true
+  32a9896f-34d5-4bde-8843-6d01d4621016: !Template
+    id: 32a9896f-34d5-4bde-8843-6d01d4621016
+    jinja: "{{context}}\n\nWith reference to the above context, {{question}} ||| \n\
+      \n{{answers[\"text\"][0]}}"
+    name: basic- answer the question
+    reference: ''
+    task_template: true
+  4bae0661-a3e5-448a-bfa2-69b096b01283: !Template
+    id: 4bae0661-a3e5-448a-bfa2-69b096b01283
+    jinja: '{{context}}
+
+
+      From the above passage a reasonable question with "{{answers["text"][0]}}" as
+      the answer would be: ||| {{question}}'
+    name: jeopardy
+    reference: jeopardy style- wiki_qa
+    task_template: false
+  90b53380-5c3b-4884-8cd1-9b4316da7993: !Template
+    id: 90b53380-5c3b-4884-8cd1-9b4316da7993
+    jinja: 'Refer to the passage below and answer the following question:
+
+
+      Passage: {{context}}
+
+
+      Question: {{question}}
+
+      |||
+
+      {{answers["text"][0]}}'
+    name: temp-2
+    reference: ''
+    task_template: true
+  9cff064e-97e0-4026-94bc-3f7987856ec7: !Template
+    id: 9cff064e-97e0-4026-94bc-3f7987856ec7
+    jinja: '{{context}}
+
+
+      Q: {{question}}
+
+
+      A: ||| {{answers["text"][0]}}'
+    name: temp-3
+    reference: ''
+    task_template: true
