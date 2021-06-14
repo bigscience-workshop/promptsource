@@ -1,0 +1,51 @@
+dataset: docred
+templates:
+  02af700c-e9e9-4a84-b75c-5fb29a5b7993: !Template
+    id: 02af700c-e9e9-4a84-b75c-5fb29a5b7993
+    jinja: "Read the following text and answer the questions.\n\nText:\n{% for sent\
+      \ in sents -%}\n{{ sent | join(\" \") }}\n{% endfor %} \n\nQuestion:\n\nFrom\
+      \ above text, find people, locations, organizations, time, numbers, and miscellaneous.\n\
+      |||\nPeople:\n{% for ners in vertexSet -%}\n{% for ner in ners if ner['type']\
+      \ == 'PER' -%}\n{{ner['name']}}{{\", \"}}\n{%- endfor %}\n{%- endfor %}\n\n\
+      Locations:\n{% for ners in vertexSet -%}\n{% for ner in ners if ner['type']\
+      \ == 'LOC' -%}\n{{ner['name']}}{{\", \"}}\n{%- endfor %}\n{%- endfor %}\n\n\
+      Organizations:\n{% for ners in vertexSet -%}\n{% for ner in ners if ner['type']\
+      \ == 'ORG' -%}\n{{ner['name']}}{{\", \"}}\n{%- endfor %}\n{%- endfor %}\n\n\
+      Time:\n{% for ners in vertexSet -%}\n{% for ner in ners if ner['type'] == 'TIME'\
+      \ -%}\n{{ner['name']}}{{\", \"}}\n{%- endfor %}\n{%- endfor %}\n\nNumbers:\n\
+      {% for ners in vertexSet -%}\n{% for ner in ners if ner['type'] == 'NUM' -%}\n\
+      {{ner['name']}}{{\", \"}}\n{%- endfor %}\n{%- endfor %}\n\nMiscellaneous:\n\
+      {% for ners in vertexSet -%}\n{% for ner in ners if ner['type'] == 'MISC' -%}\n\
+      {{ner['name']}}{{\", \"}}\n{%- endfor %}\n{%- endfor %}"
+    name: type-to-entity
+    reference: ''
+    task_template: false
+  3ab9cfc9-3ba3-41dd-959c-60182def11af: !Template
+    id: 3ab9cfc9-3ba3-41dd-959c-60182def11af
+    jinja: "Read the following text and answer the questions.\n\nText:\n{% for sent\
+      \ in sents -%}\n{{ sent | join(\" \") }}\n{% endfor %} \n\nQuestion:\n\nAssign\
+      \ an entity type to the following entities. The choices are PER (Person), LOC\
+      \ (Location), ORG (Organization), TIME (Time), NUM (Number), and MISC (Miscellaneous).\n\
+      \nExample: \n{% for ners in vertexSet[:1] %}\n{% for ner in ners %}\n{{ner['name']}}:\
+      \ {{ner['type']}}\n{% endfor %}\n{% endfor %}\n\nNow do the same with below:\n\
+      \n{% for ners in vertexSet[1:] %}\n{% for ner in ners %}\n{{ner['name']}}:\n\
+      {% endfor %}\n{% endfor %}\n|||\n{% for ners in vertexSet[1:] %}\n{% for ner\
+      \ in ners %}\n{{ner['name']}}: {{ner['type']}}\n{% endfor %}\n{% endfor %}"
+    name: ner-type
+    reference: ''
+    task_template: true
+  9effc9d0-bf50-4dbb-9813-02a021e8da33: !Template
+    id: 9effc9d0-bf50-4dbb-9813-02a021e8da33
+    jinja: "{% if labels['relation_text'] %}\n\nRead the following text and answer\
+      \ the questions.\n\nText:\n{% for sent in sents -%}\n{{ sent | join(\" \") }}\n\
+      {% endfor %} \n\nQuestion: Find the named entities above and their relationships.\n\
+      \nFor example,\n\n{% for  head, tail, relation in zip(labels['head'][:1], labels['tail'][:1],\
+      \ labels['relation_text'][:1]) %}\nhead: {{vertexSet[head][0]['name']}}, tail:\
+      \ {{vertexSet[tail][0]['name']}}, relation: {{relation}}\n{% endfor %}\n|||\n\
+      {% for  head, tail, relation in zip(labels['head'][1:], labels['tail'][1:],\
+      \ labels['relation_text'][1:]) %}\nhead: {{vertexSet[head][0]['name']}}, tail:\
+      \ {{vertexSet[tail][0]['name']}}, relation: {{relation}}\n{% endfor %}\n{% endif\
+      \ %}"
+    name: relation
+    reference: ''
+    task_template: true
