@@ -3,27 +3,31 @@ templates:
   28b2d2b9-e844-423b-a9e8-f87cc0fc5b9e: !Template
     id: 28b2d2b9-e844-423b-a9e8-f87cc0fc5b9e
     jinja: "Given the sentence below with tokens separated with the character || ,\
-      \ identify the tokens that are species or organisms of the NCBI Taxonomy. \n\
-      Indicate for each token in the sentence {{\"\\\"NCBI Taxonomy token\\\"\"}}\
-      \ if it is an NCBI Taxonomy token, else {{\"\\\"None\\\"\"}} if it is not an\
-      \ NCBI Taxonomy token. Please separate each token with the character || as in\
-      \ the original sentence.\n\nSentence: {{ tokens | join(\" || \")}}\n\nTokens:\n\
-      |||\n{% set new_list = [] %}\n{% for ner_tag in ner_tags %}\n{% if ner_tag >\
-      \ 0 %}\n{{ new_list.append(\"NCBI Taxonomy token\")|default(\"\", True) }}\n\
-      {% elif ner_tag <= 0%}\n{{ new_list.append(\"None\")|default(\"\", True) }}\n\
-      {% endif %}\n{% endfor %}\n{{ new_list | join(\" || \") }}"
+      \ identify the tokens that are species or organisms of the NCBI Taxonomy (acronyms,\
+      \ common names, abbreviations and scientific names of the species in the NCBI\
+      \ Taxonomy. E.g., Escherichia coli, E. coli). \nIndicate for each token in the\
+      \ sentence {{\"\\\"NCBI Taxonomy token\\\"\"}} if it is an NCBI Taxonomy token,\
+      \ else {{\"\\\"None\\\"\"}} if it is not an NCBI Taxonomy token. Please separate\
+      \ each token with the character || as in the original sentence.\n\nSentence:\
+      \ {{ tokens | join(\" || \")}}\n\nTokens:\n|||\n{% set new_list = [] %}\n{%\
+      \ for ner_tag in ner_tags %}\n{% if ner_tag > 0 %}\n{{ new_list.append(\"NCBI\
+      \ Taxonomy token\")|default(\"\", True) }}\n{% elif ner_tag <= 0%}\n{{ new_list.append(\"\
+      None\")|default(\"\", True) }}\n{% endif %}\n{% endfor %}\n{{ new_list | join(\"\
+      \ || \") }}"
     name: affirmative_bottom_list
     reference: ''
     task_template: true
   3eaaba97-b0b7-4c00-b3ff-a82e6462c21d: !Template
     id: 3eaaba97-b0b7-4c00-b3ff-a82e6462c21d
-    jinja: 'Please write the species of the NCBI Taxonomy mentioned in the text below.
-      If there is no species answer "None", if there are more species separate them
-      with a comma.
+    jinja: 'Please write the species of the NCBI Taxonomy mentioned in the text below
+      (acronyms, common names, abbreviations, and scientific names of the species
+      in the NCBI Taxonomy. E.g., Escherichia coli, E. coli). If there is no species
+      answer "None", if there are more species separate them with a comma.
 
 
       Text: {{ tokens | join(" ") | replace(" .", ".") | replace(" ,", ",") | replace("
-      ;", ";") | replace(" :", ":") | replace(" - ", "-") }}
+      ;", ";") | replace(" :", ":") | replace(" - ", "-") | replace("( ", "(") | replace("
+      )", ")")}}
 
       |||
 
@@ -55,20 +59,22 @@ templates:
       {% endfor %}
 
       {{diseases.list | join  | replace(" .", ".") | replace(" ,", ",") | replace("
-      ;", ";") | replace(" :", ":") | replace(" - ", "-") | trim(",") if (diseases.list
-      | length) > 0 else "None"}}'
+      ;", ";") | replace(" :", ":") | replace(" - ", "-") | replace("( ", "(") | replace("
+      )", ")") | trim(",") if (diseases.list | length) > 0 else "None"}}'
     name: affirmative_top_string
     reference: ''
     task_template: true
   456329f5-1fd5-4b02-ab35-3c3ec2b731f0: !Template
     id: 456329f5-1fd5-4b02-ab35-3c3ec2b731f0
     jinja: 'Text: {{ tokens | join(" ") | replace(" .", ".") | replace(" ,", ",")
-      | replace(" ;", ";") | replace(" :", ":") | replace(" - ", "-") }}
+      | replace(" ;", ";") | replace(" :", ":") | replace(" - ", "-") | replace("(
+      ", "(") | replace(" )", ")")}}
 
 
       Given the text above, please write the species of the NCBI Taxonomy mentioned
-      in it. If there is no species answer "None", if there are more species separate
-      them with a comma.
+      in it (acronyms, common names, abbreviations, and scientific names of the species
+      in the NCBI Taxonomy. E.g., Escherichia coli, E. coli). If there is no species
+      answer "None", if there are more species separate them with a comma.
 
       |||
 
@@ -100,20 +106,26 @@ templates:
       {% endfor %}
 
       {{diseases.list | join  | replace(" .", ".") | replace(" ,", ",") | replace("
-      ;", ";") | replace(" :", ":") | replace(" - ", "-") | trim(",") if (diseases.list
-      | length) > 0 else "None"}}'
+      ;", ";") | replace(" :", ":") | replace(" - ", "-") | replace("( ", "(") | replace("
+      )", ")") | trim(",") if (diseases.list | length) > 0 else "None"}}'
     name: affirmative_bottom_string
     reference: ''
     task_template: true
   52218e73-f4fe-4181-8af3-d60ec0e0ffd1: !Template
     id: 52218e73-f4fe-4181-8af3-d60ec0e0ffd1
     jinja: 'Text: {{ tokens | join(" ") | replace(" .", ".") | replace(" ,", ",")
-      | replace(" ;", ";") | replace(" :", ":") | replace(" - ", "-") }}
+      | replace(" ;", ";") | replace(" :", ":") | replace(" - ", "-") | replace("(
+      ", "(") | replace(" )", ")")}}
 
 
       Given the text above, can you write all the species of the NCBI Taxonomy mentioned
-      in it? If there is no species answer "None", if there are more species separate
-      them with a comma.
+      in it?
+
+      An NCBI Taxonomy token can be an acronym, common name, abbreviation, or scientific
+      name of a species in the NCBI Taxonomy (E.g., Escherichia coli, E. coli).
+
+      If there is no species answer "None", if there are more species separate them
+      with a comma.
 
       |||
 
@@ -145,8 +157,8 @@ templates:
       {% endfor %}
 
       {{diseases.list | join  | replace(" .", ".") | replace(" ,", ",") | replace("
-      ;", ";") | replace(" :", ":") | replace(" - ", "-") | trim(",") if (diseases.list
-      | length) > 0 else "None"}}'
+      ;", ";") | replace(" :", ":") | replace(" - ", "-") | replace("( ", "(") | replace("
+      )", ")") | trim(",") if (diseases.list | length) > 0 else "None"}}'
     name: interrogative_bottom_string
     reference: ''
     task_template: true
@@ -154,6 +166,9 @@ templates:
     id: b6de15a6-61d0-49cc-a31c-0529d54a3ae2
     jinja: 'Given the sentence below with tokens separated with the character || ,
       can you identify the tokens that are species or organisms of the NCBI Taxonomy?
+
+      An NCBI Taxonomy token can be an acronym, common name, abbreviation, or scientific
+      name of a species in the NCBI Taxonomy (E.g., Escherichia coli, E. coli).
 
       Please indicate for each token in the sentence {{"\"NCBI Taxonomy token\""}}
       if it is an NCBI Taxonomy token, else {{"\"None\""}} if it is not an NCBI Taxonomy
@@ -188,26 +203,34 @@ templates:
     id: ce8619cb-ee0a-47b1-93d3-acd32d8ffa6f
     jinja: "Sentence: {{ tokens | join(\" || \")}}\n\nGiven the sentence above with\
       \ tokens separated with the character || , identify the tokens that are species\
-      \ or organisms of the NCBI Taxonomy. \nIndicate for each token in the sentence\
-      \ {{\"\\\"NCBI Taxonomy token\\\"\"}} if it is an NCBI Taxonomy token, else\
-      \ {{\"\\\"None\\\"\"}} if it is not an NCBI Taxonomy token. Please separate\
-      \ each token with the character || as in the original sentence.\n\n|||\n{% set\
-      \ new_list = [] %}\n{% for ner_tag in ner_tags %}\n{% if ner_tag > 0 %}\n{{\
-      \ new_list.append(\"NCBI Taxonomy token\")|default(\"\", True) }}\n{% elif ner_tag\
-      \ <= 0%}\n{{ new_list.append(\"None\")|default(\"\", True) }}\n{% endif %}\n\
-      {% endfor %}\n{{ new_list | join(\" || \") }}"
+      \ or organisms of the NCBI Taxonomy (acronyms, common names, abbreviations,\
+      \ and scientific names of the species in the NCBI Taxonomy. E.g., Escherichia\
+      \ coli, E. coli). \nIndicate for each token in the sentence {{\"\\\"NCBI Taxonomy\
+      \ token\\\"\"}} if it is an NCBI Taxonomy token, else {{\"\\\"None\\\"\"}} if\
+      \ it is not an NCBI Taxonomy token. Please separate each token with the character\
+      \ || as in the original sentence.\n\n|||\n{% set new_list = [] %}\n{% for ner_tag\
+      \ in ner_tags %}\n{% if ner_tag > 0 %}\n{{ new_list.append(\"NCBI Taxonomy token\"\
+      )|default(\"\", True) }}\n{% elif ner_tag <= 0%}\n{{ new_list.append(\"None\"\
+      )|default(\"\", True) }}\n{% endif %}\n{% endfor %}\n{{ new_list | join(\" ||\
+      \ \") }}"
     name: affirmative_top_list
     reference: ''
     task_template: true
   cfc9b46c-7268-4449-85c4-cc08c3d5aaa9: !Template
     id: cfc9b46c-7268-4449-85c4-cc08c3d5aaa9
     jinja: 'Given the text below, can you write all the species of the NCBI Taxonomy
-      mentioned in it? If there is no species answer "None", if there are more species
-      separate them with a comma.
+      mentioned in it?
+
+      An NCBI Taxonomy token can be an acronym, common name, abbreviation, or scientific
+      name of a species in the NCBI Taxonomy (E.g., Escherichia coli, E. coli).
+
+      If there is no species answer "None", if there are more species separate them
+      with a comma.
 
 
       Text: {{ tokens | join(" ") | replace(" .", ".") | replace(" ,", ",") | replace("
-      ;", ";") | replace(" :", ":") | replace(" - ", "-") }}
+      ;", ";") | replace(" :", ":") | replace(" - ", "-") | replace("( ", "(") | replace("
+      )", ")")}}
 
       |||
 
@@ -239,8 +262,8 @@ templates:
       {% endfor %}
 
       {{diseases.list | join  | replace(" .", ".") | replace(" ,", ",") | replace("
-      ;", ";") | replace(" :", ":") | replace(" - ", "-") | trim(",") if (diseases.list
-      | length) > 0 else "None"}}'
+      ;", ";") | replace(" :", ":") | replace(" - ", "-") | replace("( ", "(") | replace("
+      )", ")") | trim(",") if (diseases.list | length) > 0 else "None"}}'
     name: interrogative_top_string
     reference: ''
     task_template: true
@@ -251,6 +274,9 @@ templates:
 
       Given the sentence above with tokens separated with the character || , can you
       identify the tokens that are species or organisms of the NCBI Taxonomy?
+
+      An NCBI Taxonomy token can be an acronym, common name, abbreviation, or scientific
+      name of a species in the NCBI Taxonomy (E.g., Escherichia coli, E. coli).
 
 
       Please indicate for each token in the sentence {{"\"NCBI Taxonomy token\""}}
