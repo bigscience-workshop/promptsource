@@ -1,0 +1,128 @@
+dataset: tab_fact
+subset: tab_fact
+templates:
+  137a6f5d-fdcd-4849-ba3c-7ae572285ef9: !Template
+    id: 137a6f5d-fdcd-4849-ba3c-7ae572285ef9
+    jinja: '{% if label %}
+
+      Passage: "{{statement}}"
+
+
+      Table: "{{table_text}}"
+
+
+      Give a suitable caption for the table. Use the statement as a supporting doc.
+      |||
+
+      {{table_caption}}
+
+      {% endif %}'
+    name: tab_fact_7
+    reference: Generate Table Caption
+    task_template: false
+  1f0606bd-0453-427f-8cc5-ab996aff680e: !Template
+    id: 1f0606bd-0453-427f-8cc5-ab996aff680e
+    jinja: 'table ==> passage?
+
+
+      table:
+
+      "{{table_caption}}"
+
+
+      {{table_text}}
+
+
+      statement: "{{statement}}" |||
+
+
+      {{["No","Yes"][label]}}'
+    name: tab_fact_4
+    reference: 'Input: Table Caption, Table; Label: Yes/No (mathematical "implication"
+      symbol)'
+    task_template: true
+  33e3dbc2-3b1b-4891-8c78-2b575dd3ec35: !Template
+    id: 33e3dbc2-3b1b-4891-8c78-2b575dd3ec35
+    jinja: "Parse the following table:\n\nTable Caption: \"{{table_caption}}\"\n\n\
+      Table:\n\n{{table_text}}\n\nNote: {{\"#\"}} is the delimiter between columns;\
+      \ {{\"newline\"}} is the delimiter between rows.\n\nFrom the above table, the\
+      \ statement \"{{statement}}\" can either be entailed or refuted. Which one is\
+      \ it? |||  \n{{[\"refuted\", \"entailed\"][label]}}"
+    name: tab_fact_1
+    reference: 'Input: Table Caption, Table; Label: Refuted/Entailed -- Affirmative
+      Form'
+    task_template: true
+  5bf642b0-4d75-40b7-9c0a-80b38a170d0f: !Template
+    id: 5bf642b0-4d75-40b7-9c0a-80b38a170d0f
+    jinja: '{% if label %}
+
+      Express any (part or subset of the table) / (inference obtained from the table)
+      in plain English:
+
+
+      "{{table_caption}}"
+
+
+      "{{table_text}}" |||
+
+      {{statement}}
+
+      {% endif %}'
+    name: tab_fact_6
+    reference: Generate Natural Text from the table
+    task_template: false
+  6e4d3fe8-1d31-4685-8ef6-419ab8554741: !Template
+    id: 6e4d3fe8-1d31-4685-8ef6-419ab8554741
+    jinja: 'Is "{{statement}}" corroborated by "{{table_caption}}", {{table_text}}"?
+      |||
+
+      {{["No", "Yes"][label]}}
+
+      '
+    name: tab_fact_5
+    reference: 'Input: Table Caption, Table; Label: Yes/No -- Interrogative Form (corroboration)'
+    task_template: true
+  becf68bd-726d-40c1-afb1-80afd461126c: !Template
+    id: becf68bd-726d-40c1-afb1-80afd461126c
+    jinja: 'I can''t make heads or tails of the given data. Can you help me with this?
+
+      I have the following paragraph: "{{statement}}". Is there any evidence of this
+      passage in the weird data below?
+
+
+      Topic: "{{table_caption}}"
+
+
+      {{table_text}}
+
+
+      |||
+
+      {{["No", "Yes"][label]}}'
+    name: tab_fact_3
+    reference: 'Input: Table Caption, Table; Label: Yes/No -- Interrogative Form'
+    task_template: true
+  faa6c21a-f52a-4eb9-a9e8-0931ea253229: !Template
+    id: faa6c21a-f52a-4eb9-a9e8-0931ea253229
+    jinja: 'Parse the following table:
+
+
+      Table Caption: "{{table_caption}}"
+
+
+      Table:
+
+
+      {{table_text}}
+
+
+      Note: "#" is the delimiter between columns; newline is the delimiter between
+      rows.
+
+
+      From the above table, the state,  given two options (refuted/entailed), the
+      statement "{{statement}}" can definitely be not |||  {{["refuted", "entailed"][1-label]}}'
+    name: tab_fact_2
+    reference: 'Input: Table Caption, Table; Label: Refuted/Entailed (Negation) --
+      Affirmative Form'
+    task_template: true
