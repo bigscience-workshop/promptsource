@@ -22,7 +22,7 @@ templates:
       \ \"english\" %}\n{% if  _position == \"above\" %}\n{{context}}\n{{\"\\n\"}}\n\
       {% endif %}\nCan you {{_blank1|choice}} the {{_blank2|choice}} of the {{_position}}\
       \ passage.\n{% if  _position == \"following\" %}\n{{\"\\n\"}}\n{{context}}\n\
-      {% endif %}\n|||\n{{title}} \n{% endif %}"
+      {% endif %}\n|||\n{{title}}\n{% endif %}"
     name: title_generation
     reference: Generate title from a passage
     task_template: false
@@ -34,7 +34,7 @@ templates:
       {% if lang == \"english\" %}\n{% if  _position == \"above\" %}\n{{context}}\n\
       {{\"\\n\"}}\n{% endif %}\nCan you {{_blank1|choice}} a question from the {{_position}}\
       \ {{_blank2|choice}}?\n{% if  _position == \"following\" %}\n{{\"\\n\"}}\n{{context}}\n\
-      {% endif %}\n|||\n{{question}} \n{% endif %}"
+      {% endif %}\n|||\n{{question}}\n{% endif %}"
     name: end_to_end_question_generation
     reference: generate end-to-end question from a passage.
     task_template: false
@@ -60,7 +60,7 @@ templates:
       \ the answer to the question, \"{{question}}\" I found the {{_position}} {{_blank}}\
       \ on Wikipedia and I think it has the answer. Can you tell me the answer?\n\
       {% if  _position == \"following\" %}\n{{\"\\n\"}}\n{{context}}\n{% endif %}\n\
-      |||\n{{answers.text[0]}} \n{% endif %}"
+      |||\n{{answers.text[0]}}\n{% endif %}"
     name: simple_question_reading_comp_wikipedia_1
     reference: Ask question with Context
     task_template: true
@@ -73,7 +73,7 @@ templates:
       {{\"\\n\"}}\n{% endif %}\nCan you {{_blank1|choice}} a question from the {{_position}}\
       \ {{_blank2_text}} on \"{{answers.text[0]}}\" topic? The {{_blank2_text}} is\
       \ about \"{{title}}\".\n{% if  _position == \"following\" %}\n{{\"\\n\"}}\n\
-      {{context}}\n{% endif %}\n|||\n{{question}} \n{% endif %}"
+      {{context}}\n{% endif %}\n|||\n{{question}}\n{% endif %}"
     name: question_generation_with_answer_span_with_title
     reference: generate question from a passage conditioned by answer and title
     task_template: false
@@ -84,7 +84,7 @@ templates:
       \ = id.split('-')[0] %}\n{% if lang == \"english\" %}\n{% if  _position == \"\
       above\" %}\n{{context}}\n{{\"\\n\"}}\n{% endif %}\nGiven the {{_position}} {{_blank}},\
       \ answer the question: {{question}}.\n{% if  _position == \"following\" %}\n\
-      {{\"\\n\"}}\n{{context}}\n{% endif %}\n|||\n{{answers.text[0]}} \n{% endif %}"
+      {{\"\\n\"}}\n{{context}}\n{% endif %}\n|||\n{{answers.text[0]}}\n{% endif %}"
     name: simple_question_reading_comp_2
     reference: Ask question with Context
     task_template: true
@@ -94,7 +94,7 @@ templates:
       \ = id.split('-')[0] %}\n{% if lang == \"english\" %}\n{% if  _position == \"\
       above\" %}\n{{question}}\n{{\"\\n\"}}\n{% endif %}\nAnswer the {{_position}}\
       \ question from wikipedia.\n{% if  _position == \"following\" %}\n{{\"\\n\"\
-      }}\n{{question}}\n{% endif %}\n|||\n{{answers.text[0]}} \n{% endif %}"
+      }}\n{{question}}\n{% endif %}\n|||\n{{answers.text[0]}}\n{% endif %}"
     name: simple_question_odqa_wikipedia
     reference: simple_question_with_kb
     task_template: false
@@ -107,7 +107,7 @@ templates:
       \  _position == \"above\" %}\n{{context}}\n{{\"\\n\"}}\n{% endif %}\nCan you\
       \ {{_blank1|choice}} a question from the {{_position}} {{_blank2_text}}? The\
       \ {{_blank2_text}} is about \"{{title}}\".\n{% if  _position == \"following\"\
-      \ %}\n{{\"\\n\"}}\n{{context}}\n{% endif %}\n|||\n{{question}} \n{% endif %}"
+      \ %}\n{{\"\\n\"}}\n{{context}}\n{% endif %}\n|||\n{{question}}\n{% endif %}"
     name: end_to_end_question_generation_with_title
     reference: generate end-to-end question from a passage with a title
     task_template: false
@@ -117,7 +117,7 @@ templates:
       \ = id.split('-')[0] %}\n{% if lang == \"english\" %}\n{% if  _position == \"\
       above\" %}\n{{question}}\n{{\"\\n\"}}\n{% endif %}\nAnswer the {{_position}}\
       \ question.\n{% if  _position == \"following\" %}\n{{\"\\n\"}}\n{{question}}\n\
-      {% endif %}\n|||\n{{answers.text[0]}} \n{% endif %}"
+      {% endif %}\n|||\n{{answers.text[0]}}\n{% endif %}"
     name: simple_question_odqa
     reference: Ask question without Context
     task_template: false
@@ -129,7 +129,7 @@ templates:
       above\" %}\n{{context}}\n{{\"\\n\"}}\n{% endif %}\nI've always wondered: {{question}}\n\
       I searched Wikipedia and I found the {{_position}} {{_blank}}. What's the answer?\n\
       {% if  _position == \"following\" %}\n{{\"\\n\"}}\n{{context}}\n{% endif %}\n\
-      |||\n{{answers.text[0]}} \n{% endif %}"
+      |||\n{{answers.text[0]}}\n{% endif %}"
     name: simple_question_reading_comp_wikipedia_2
     reference: Ask question with Context
     task_template: true
