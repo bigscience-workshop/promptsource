@@ -1,0 +1,152 @@
+dataset: conv_ai
+templates:
+  1664cdd9-54e8-4679-821b-8013e9df197e: !Template
+    id: 1664cdd9-54e8-4679-821b-8013e9df197e
+    jinja: '{{context}}
+
+
+      {% for utterance in thread %}
+
+      - {{ utterance["userId"] }}: {{ utterance["text"] }}
+
+      {% endfor %}
+
+
+      Alice''s utterances in the previous conversation show that she was not interested
+      in the context, yes or no?
+
+      |||
+
+      {% for eval in evaluation %}
+
+      {% if "Alice" == eval["userId"] %}
+
+      {% if 3 > eval["engagement"] %}yes{% else %}no{% endif %}
+
+      {% endif %}
+
+      {% endfor %}'
+    name: engagement_alice_1
+    reference: ''
+    task_template: false
+  2d3ca9f5-60f0-459d-932f-ab30e1e79b22: !Template
+    id: 2d3ca9f5-60f0-459d-932f-ab30e1e79b22
+    jinja: '"{{context}}""
+
+
+      Would you say Bob engagement is real, given the previous context, in this conversation:
+
+      {% for utterance in thread %}
+
+      - {{ utterance["userId"] }}: {{ utterance["text"] }}
+
+      {% endfor %}
+
+      |||
+
+      {% for eval in evaluation %}
+
+      {% if "Bob" == eval["userId"] %}
+
+      {% if 3 < eval["engagement"] %}yes{% else %}no{% endif %}
+
+      {% endif %}
+
+      {% endfor %}'
+    name: engagement_bob_1
+    reference: ''
+    task_template: false
+  4390549a-3bdf-43ad-9e69-6bc380f33f01: !Template
+    id: 4390549a-3bdf-43ad-9e69-6bc380f33f01
+    jinja: '{{context}}
+
+
+      Given the previous context, who do you think is more engaged in this conversation
+      (Alice, Bob, or both):
+
+      {% for utterance in thread %}
+
+      - {{ utterance["userId"] }}: {{ utterance["text"] }}
+
+      {% endfor %}
+
+      |||
+
+      {% set alice = (evaluation|selectattr("userId", "equalto", "Alice")|first)["engagement"]
+      %}
+
+      {% set bob = (evaluation|selectattr("userId", "equalto", "Bob")|first)["engagement"]
+      %}
+
+
+      {% if alice == bob %}both{% elif alice < bob %}Bob{% else %}Alice{% endif %}'
+    name: engagement_0
+    reference: ''
+    task_template: false
+  955dd9f5-0fe5-46c3-a217-995bd876f26f: !Template
+    id: 955dd9f5-0fe5-46c3-a217-995bd876f26f
+    jinja: '{{context}}
+
+
+      Given the preceding context, would you say Bob engagement is real, from his
+      utterances in a conversation:
+
+      {% for utterance in thread %}
+
+      {% if "Bob" == utterance["userId"] %}
+
+      - "{{ utterance["text"] }}",
+
+      {% endif %}{% endfor %}
+
+      |||
+
+      {% for eval in evaluation %}
+
+      {% if "Bob" == eval["userId"] %}
+
+      {% if 3 < eval["engagement"] %}yes{% else %}no{% endif %}
+
+      {% endif %}
+
+      {% endfor %}'
+    name: engagement_bob_0
+    reference: ''
+    task_template: false
+  c0840f89-e444-49ab-bab0-08f71ec89093: !Template
+    id: c0840f89-e444-49ab-bab0-08f71ec89093
+    jinja: "context:\n\n{{context}}\n\nconversation:\n\n{% for utterance in thread\
+      \ %}\n- {{ utterance[\"userId\"] }}: {{ utterance[\"text\"] }}\n{% endfor %}\n\
+      \nWas Alice really into this conversation? \n|||\n{% for eval in evaluation\
+      \ %}\n{% if \"Alice\" == eval[\"userId\"] %}\n{% if 3 < eval[\"engagement\"\
+      ] %}yes{% else %}no{% endif %}\n{% endif %}\n{% endfor %}"
+    name: engagement_alice_0
+    reference: ''
+    task_template: false
+  db94d56f-3fc8-4b6a-b3d3-2ac37e8110ff: !Template
+    id: db94d56f-3fc8-4b6a-b3d3-2ac37e8110ff
+    jinja: '{{context}}
+
+
+      Who would you say is more engaged here: Alice or Bob (or both are), given the
+      previous context?
+
+      {% for utterance in thread %}
+
+      {{ utterance["userId"] }}: {{ utterance["text"] }}
+
+      {% endfor %}
+
+      |||
+
+      {% set alice = (evaluation|selectattr("userId", "equalto", "Alice")|first)["engagement"]
+      %}
+
+      {% set bob = (evaluation|selectattr("userId", "equalto", "Bob")|first)["engagement"]
+      %}
+
+
+      {% if alice == bob %}both{% elif alice < bob %}Bob{% else %}Alice{% endif %}'
+    name: engagement_1
+    reference: ''
+    task_template: false
