@@ -16,9 +16,11 @@ templates:
     task_template: false
   397b1fb9-0cf1-455b-aaf2-efdb750014c5: !Template
     id: 397b1fb9-0cf1-455b-aaf2-efdb750014c5
-    jinja: 'The question "{{questions.text.0}}" is ||| {{ ["", "not"] [is_duplicate]
-      }} the same as "{{questions.text.1}}". '
-    name: quora_localization_1
+    jinja: '{% if is_duplicate == true%} Paraphrase the the following question: {%
+      if questions.text.0|length < questions.text.1|length %}  {{questions.text.0}}
+      |||  {{questions.text.1}} {% else %}  {{questions.text.1}} ||| {{questions.text.0}}
+      {% endif %}{% endif %}'
+    name: quora_rephrase_1
     reference: ''
     task_template: false
   6de61945-992b-4191-9b3a-930e266769c9: !Template
@@ -41,12 +43,5 @@ templates:
       I feel like they have asked the same question. Am I correct? ||| {{["No, they
       are original questions","Yes, the posts are the same"][is_duplicate]}}
     name: quora_basic_4
-    reference: ''
-    task_template: false
-  bf87b920-64fd-4756-a185-c21c18084ef7: !Template
-    id: bf87b920-64fd-4756-a185-c21c18084ef7
-    jinja: Is the following question "{{questions.text.0}}" the same as "{{questions.text.1}}"?
-      ||| {{ ["false", "true"] [is_duplicate] }}
-    name: quora_basic_1
     reference: ''
     task_template: false
