@@ -6,8 +6,8 @@ templates:
     jinja: '{{facts | join("\n")}}
 
 
-      These facts show potential violation of EHCR articles could have been violated.
-      The number of violated articles is
+      These facts show potential violation of European Convention on Human Rights
+      articles. The number of violated articles is
 
       |||
 
@@ -42,28 +42,14 @@ templates:
     name: ecthr_alleged_articles_question_at_start
     reference: Explicitly ask question at start of prompt
     task_template: false
-  88825bbb-8cee-4be5-93e2-99be816e8469: !Template
-    id: 88825bbb-8cee-4be5-93e2-99be816e8469
-    jinja: '{{facts | join("\n")}}
-
-
-      These facts show potential violation of EHCR articles could have been violated.
-      The quantity of violated articles is
-
-      |||
-
-      {{{1:"one",2:"two",3:"three",4:"several"}[[4,labels | length] | min]}}'
-    name: implicit declaration
-    reference: implicitly ask for quantity
-    task_template: false
   96fb3903-c1e4-4752-8b05-5e8c1c12370a: !Template
     id: 96fb3903-c1e4-4752-8b05-5e8c1c12370a
     jinja: '{{facts | join("\n")}}
 
 
       In ruling on this case I have needed to carefully consider the submissions of
-      the parties. The plaintiffs allege breaches of the EHCR - the number of sections
-      allegedly breached is
+      the parties. The plaintiffs allege breaches of the European Court of Human Rights
+      - the number of sections allegedly breached is
 
       |||
 
@@ -76,15 +62,48 @@ templates:
     jinja: '{{facts | join("\n")}}
 
 
-      Question: Is it true that the facts in this case indicate {{{1:"one",2:"two",3:"three",4:"more
-      than three"}[[4,labels | length] | min]}} sections of the EHCR were allegedly
-      violated? Answer "yes" or "no"
+      Question: Is it true that the facts in this case indicate more than two sections
+      of the European Court of Human Rights were allegedly violated? Answer "yes"
+      or "no"
 
       Answer:
 
       |||
 
-      yes'
+      {{{1:"no",2:"no",3:"yes",4:"yes"}[[4,labels | length] | min]}} '
     name: confirm number of violated articles
     reference: ask for yes/no confirmation of the number of violated articles
+    task_template: false
+  e3e9046e-c631-4cf3-b1d3-98c08d88e62e: !Template
+    id: e3e9046e-c631-4cf3-b1d3-98c08d88e62e
+    jinja: 'The following is an extract of facts from a judgment handed down by the
+      European Court of Human Rights.
+
+
+      {{facts | join("\n")}}
+
+
+      {% if silver_rationales | length > 0 %}
+
+      Additionally, the court cited the following facts elsewhere in the decision
+
+      {% for loc in silver_rationales %}
+
+      {{facts[loc]}}
+
+      {% endfor %}
+
+      {% endif %}
+
+
+      Question: Have one, two, three, or several articles of the ECHR been violated
+      on these facts?
+
+      Answer:
+
+      |||
+
+      {{{1:"one",2:"two",3:"three",4:"several"}[[4,labels | length] | min]}}'
+    name: silver_rationales
+    reference: ''
     task_template: false
