@@ -2,54 +2,23 @@ dataset: medical_questions_pairs
 templates:
   18c92f97-0655-4f67-aca1-69f8e4fbb11e: !Template
     id: 18c92f97-0655-4f67-aca1-69f8e4fbb11e
-    jinja: 'In the context of healthcare questionnaires, it is often necessary to
-      find out if two questions are paraphrases of one another. Given the following
-      question:
-
-
-      {% if label == 0 or label == 1 %}
-
-
-      Question 1: {{question_1}}
-
-
-      What inference can be made about the next question?
-
-
-      Question 2: {{question_2}}
-
-
-      {% endif %}
-
-
-      |||
-
-
-      {% if label == 0 %}
-
-
-      This question is not a paraphrase of the previous question.
-
-
-      {% elif label == 1 %}
-
-
-      This question is a paraphrase of the previous question.
-
-
-      {% endif %}'
+    jinja: "In the context of healthcare questionnaires, it is often necessary to\
+      \ find out if two questions are paraphrases of one another. Given the following\
+      \ question:\n\nQuestion 1: {{question_1}}\n\nWhat inference can be made about\
+      \ the next question?\n\nQuestion 2: {{question_2}}\n\nThis question is \n\n\
+      |||\n\n{{[\"not a paraphrase of the previous question.\", \"a paraphrase of\
+      \ the previous question.\"][label]}}"
     name: basic_v5
     reference: ''
-    task_template: false
+    task_template: true
   316f2ff7-45f8-4997-9c5f-dfe5fb7f9808: !Template
     id: 316f2ff7-45f8-4997-9c5f-dfe5fb7f9808
-    jinja: "{% if label == 0 or label == 1 %}\n\nQuestion 1: {{question_1}}\n\nand\n\
-      \nQuestion 2: {{question_2}}\n\n{% endif %}\n\nIs it True or False that the\
-      \ two questions above are paraphrases of each other?\n\n|||\n\n {{[\"False\"\
-      , \"True\"][label]}} "
+    jinja: "Question 1: {{question_1}}\n\nand\n\nQuestion 2: {{question_2}}\n\nIs\
+      \ it True or False that the two questions above are paraphrases of each other?\n\
+      \n|||\n\n {{[\"False\", \"True\"][label]}} "
     name: basic_v6
     reference: ''
-    task_template: false
+    task_template: true
   535ed335-de9d-41df-a026-28487c832bfa: !Template
     id: 535ed335-de9d-41df-a026-28487c832bfa
     jinja: 'Question: In the context of healthcare do the following questions mean
@@ -69,61 +38,44 @@ templates:
     name: basic_v2
     reference: template about question pattern
     task_template: true
+  681dc0d2-a771-41ae-aa00-d1f59ab01197: !Template
+    id: 681dc0d2-a771-41ae-aa00-d1f59ab01197
+    jinja: "Question 1: {{question_1}}\n\nQuestion 2: {{question_2}}\n\nPick one of\
+      \ the following options:\nQuestions are {{\"not duplicates\"}} or {{\"duplicates\"\
+      }}:\n\n|||\n\n {{ [\"not duplicates\", \"duplicates\"][label] }}"
+    name: basic_v8
+    reference: ''
+    task_template: true
   7be2b267-8d5c-466b-9fd4-1fbbae442938: !Template
     id: 7be2b267-8d5c-466b-9fd4-1fbbae442938
-    jinja: '{% if label == 0 or label == 1 %}
-
-
-      Question 1: {{question_1}}
-
-
-      Question 2: {{question_2}}
-
-
-      Question: Is Question 1 asking the same question as Question 2? Yes or No?
-
-
-      {% endif %}
-
-
-      |||
-
-
-      {% if label == 0 %}
-
-      No
-
-      {% elif label == 1 %}
-
-      Yes
-
-      {% endif %}'
+    jinja: "Question 1: {{question_1}}\n\nQuestion 2: {{question_2}}\n\nQuestion:\
+      \ Is Question 1 asking the same question as Question 2? Yes or No?\n\n\n|||\n\
+      \n {{ [\"no\", \"yes\"][label] }}"
     name: basic_v1
     reference: context of healthcare
     task_template: true
   854ebbe0-8968-4967-a346-4e4d6f98cf73: !Template
     id: 854ebbe0-8968-4967-a346-4e4d6f98cf73
-    jinja: "{% if label == 0 or label == 1 %}\n\nQuestion 1: {{question_1}}\n\n{%\
-      \ endif %}\n\nOne possible {{[\"incorrect\", \"correct\"][label]}} way of paraphrasing\
-      \ the same question is : \n\n|||\n\nQuestion 2: {{question_2}}"
+    jinja: "Question 1: {{question_1}}\n\nOne possible way of paraphrasing the same\
+      \ question is : \n\nQuestion 2: {{question_2}}\n\nTrue or False?\n\n|||\n\n\
+      \ {{ [\"False\", \"True\"][label] }}"
     name: basic_v4
     reference: ''
-    task_template: false
+    task_template: true
   b388913a-9b0d-43a1-8bf9-83319ebf38b2: !Template
     id: b388913a-9b0d-43a1-8bf9-83319ebf38b2
-    jinja: "{% if label == 0 or label == 1 %}\n\nQuestion 1: {{question_1}}\n\nand\n\
-      \nQuestion 2: {{question_2}}\n\n{% endif %}\n\nAfter reading the two questions\
-      \ above:\n\n|||\n\n{% if label == 0 %} \nA clinician will not agree that they\
-      \ are paraphrases of each other.\n{% elif label == 1 %}\nA clinician will agree\
-      \ that they are paraphrases of each other.\n{% endif %}"
+    jinja: "Question 1: {{question_1}}\n\nand\n\nQuestion 2: {{question_2}}\n\nAfter\
+      \ reading the two questions above:\n\nA clinician will\n\n|||\n\n{% if label\
+      \ == 0 %} \n not agree that they are paraphrases of each other.\n{% elif label\
+      \ == 1 %}\n agree that they are paraphrases of each other.\n{% endif %}"
     name: basic_v7
     reference: Using knowledge of dataset creation
-    task_template: false
+    task_template: true
   c8df74ce-0ae7-4e70-9322-aaf9921ae3b1: !Template
     id: c8df74ce-0ae7-4e70-9322-aaf9921ae3b1
-    jinja: "The two questions are either similar dissimilar questions in the medical\
-      \ context. Which is it?\n\n{{question_1}} \n\nand\n\n{{question_2}}\n\n\nThe\
-      \ two questions are \n|||\n\n{{[\"dissimilar\", \"similar\"][label]}}"
+    jinja: "The two questions are either {{\"similar\"}} or {{\"dissimilar\"}} questions\
+      \ in the medical context. Which is it?\n\n{{question_1}} \n\nand\n\n{{question_2}}\n\
+      \n\nThe two questions are \n|||\n\n{{[\"dissimilar\", \"similar\"][label]}}"
     name: basic_v3
     reference: ''
     task_template: true
