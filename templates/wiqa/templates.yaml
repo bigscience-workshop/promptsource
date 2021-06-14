@@ -34,7 +34,7 @@ templates:
       {% endif %}
 
 
-      {% for k in range(process_list | length) %}
+      {% for k in range((process_list | length) - 1) %}
 
       - {{question_para_step[k]}}
 
@@ -51,6 +51,56 @@ templates:
 
       '
     name: remove_last_step
+    reference: ''
+    task_template: false
+  4191b162-9220-46e5-a2f0-0a763eef55a0: !Template
+    id: 4191b162-9220-46e5-a2f0-0a763eef55a0
+    jinja: 'Find the missing first step of the following process:
+
+
+      {% for k in range(1, question_para_step | length) %}
+
+      - {{question_para_step[k]}}
+
+      {% endfor %}
+
+
+      |||
+
+
+      {{ question_para_step | first }}'
+    name: remove_first_step_bis
+    reference: ''
+    task_template: false
+  52d69c02-5ff3-4fe7-bcaf-a6b995a15020: !Template
+    id: 52d69c02-5ff3-4fe7-bcaf-a6b995a15020
+    jinja: '{% if question_para_step[-1] == "" %}
+
+      {% set process_list = question_para_step[:-2] %}
+
+      {% else %}
+
+      {% set process_list = question_para_step %}
+
+      {% endif %}
+
+
+      What is the final step of the following process:
+
+      {% for k in range((process_list | length) -1 ) %}
+
+      - {{question_para_step[k]}}
+
+      {% endfor %}
+
+
+      |||
+
+
+      {{ process_list | last }}
+
+      '
+    name: remove_last_step_bis
     reference: ''
     task_template: false
   5dfee2c2-9742-4003-8ab6-dfe0ce5a745b: !Template
