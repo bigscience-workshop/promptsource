@@ -14,6 +14,9 @@ TEMPLATES_FOLDER_PATH = "./templates/"
 
 env = Environment(loader=BaseLoader)
 
+# Allow the python function zip()
+env.globals.update(zip=zip)
+
 
 def highlight(input):
     return "<span style='color: #F08080'>" + input + "</span>"
