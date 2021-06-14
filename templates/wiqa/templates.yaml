@@ -23,16 +23,10 @@ templates:
     task_template: false
   360cd99a-2f83-469a-a505-d80808159dd2: !Template
     id: 360cd99a-2f83-469a-a505-d80808159dd2
-    jinja: '{% if question_para_step[-1] == "" %}
+    jinja: '
 
-      {% set process_list = question_para_step[:-2] %}
-
-      {% else %}
-
-      {% set process_list = question_para_step %}
-
-      {% endif %}
-
+      {% set process_list = question_para_step[:-1] if question_para_step[-1] == ""
+      else question_para_step %}
 
       {% for k in range((process_list | length) - 1) %}
 
@@ -74,16 +68,8 @@ templates:
     task_template: false
   52d69c02-5ff3-4fe7-bcaf-a6b995a15020: !Template
     id: 52d69c02-5ff3-4fe7-bcaf-a6b995a15020
-    jinja: '{% if question_para_step[-1] == "" %}
-
-      {% set process_list = question_para_step[:-2] %}
-
-      {% else %}
-
-      {% set process_list = question_para_step %}
-
-      {% endif %}
-
+    jinja: ' {% set process_list = question_para_step[:-1] if question_para_step[-1]
+      == "" else question_para_step %}
 
       What is the final step of the following process:
 
