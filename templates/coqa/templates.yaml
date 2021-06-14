@@ -1,0 +1,92 @@
+dataset: coqa
+templates:
+  530616d3-1cc8-4faa-a855-4b21e0da9ec9: !Template
+    id: 530616d3-1cc8-4faa-a855-4b21e0da9ec9
+    jinja: "{{story}}\n\nQ: {{questions[0]}} \n\nA: ||| {{answers[\"input_text\"][0]}}"
+    name: basic
+    reference: ''
+    task_template: false
+  7c0e2256-961c-48e9-bc08-6c270cc68b4a: !Template
+    id: 7c0e2256-961c-48e9-bc08-6c270cc68b4a
+    jinja: '{{story}}
+
+      {% set final = range(questions|length)|choice %}
+
+      {% for i in range(final) %}
+
+      Q: {{questions[i]}}
+
+
+      A:{{answers["input_text"][i]}}
+
+      {%endfor %}
+
+
+      Q: {{questions[final]}}
+
+
+      A:|||
+
+      {{answers["input_text"][final]}}
+
+      '
+    name: temp_2
+    reference: ''
+    task_template: true
+  a22e8bf1-f5af-43eb-b38c-002462261da2: !Template
+    id: a22e8bf1-f5af-43eb-b38c-002462261da2
+    jinja: '{{story}}
+
+      {%set final = range(questions|length)|choice %}
+
+
+      From the above passage, can you form a set of {{final}} question-answer pairs?
+      |||
+
+
+      {% for i in range(final) %}
+
+      Q: {{questions[i]}}
+
+
+      A: {{answers["input_text"][i]}}
+
+
+      {% endfor %}'
+    name: temp_6
+    reference: ''
+    task_template: false
+  b6ac6b18-1c58-4903-b775-d95d7fe3e9bf: !Template
+    id: b6ac6b18-1c58-4903-b775-d95d7fe3e9bf
+    jinja: ''
+    name: temp_5
+    reference: ''
+    task_template: false
+  cb53f12f-e781-4a92-bbb0-fbef19bd2d29: !Template
+    id: cb53f12f-e781-4a92-bbb0-fbef19bd2d29
+    jinja: '{{story}}
+
+
+      In the above passage, find the part which answers the given question:
+
+
+      Q: {{questions[0]}}
+
+
+      |||
+
+
+      {{story[answers["answer_start"][0] : answers["answer_end"][0] ]}}'
+    name: temp_4
+    reference: ''
+    task_template: false
+  dc05f09a-0b2b-4448-9226-45dcc4cf52e6: !Template
+    id: dc05f09a-0b2b-4448-9226-45dcc4cf52e6
+    jinja: "{% set final = range(questions|length)|choice %}\n\n{% for i in range(questions|length)\
+      \ %}\nQ: {{questions[i] }}\n\nA:  {% if i !=final %}\n{{answers[\"input_text\"\
+      ][i]}}\n{%endif%}\n{%endfor%}\n\nGiven the above conversation, give a suitable\
+      \ response to the missing answer\n\nHint: {{story[answers[\"answer_start\"][final]\
+      \ : answers[\"answer_end\"][final]]}}\n||| \n{{answers[\"input_text\"][final]}}"
+    name: temp_3
+    reference: ''
+    task_template: false
