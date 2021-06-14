@@ -1,0 +1,109 @@
+dataset: narrativeqa
+templates:
+  3b53c95c-022b-4a51-946a-6c88b962892a: !Template
+    id: 3b53c95c-022b-4a51-946a-6c88b962892a
+    jinja: 'Synopsis: {{ document.summary.text }}
+
+
+      Answer the question.
+
+
+      {{ question.text }}
+
+
+      Full text: {{ document.text }} |||
+
+      {% set i= range(0, answers|length) | random %}
+
+      {{ answers[i].text }}'
+    name: Template_05
+    reference: Text + Summary
+    task_template: false
+  62df1726-be83-4403-9483-732da1174cf7: !Template
+    id: 62df1726-be83-4403-9483-732da1174cf7
+    jinja: '{{ document.text }}
+
+
+      Using the above text, answer the following question.
+
+
+      {{ question.text }} |||
+
+      {% set i= range(0, answers|length) | random %}
+
+      {{ answers[i].text }}'
+    name: Template_01
+    reference: Text only
+    task_template: true
+  87cb2e86-0764-412a-ba2d-fe3172997a25: !Template
+    id: 87cb2e86-0764-412a-ba2d-fe3172997a25
+    jinja: '{{ document.text }}
+
+
+      Summarize the given document. |||
+
+      {{ document.summary.text }}'
+    name: Template_06
+    reference: Text summarization
+    task_template: false
+  adfa9f6d-5268-472f-b435-c4558f199961: !Template
+    id: adfa9f6d-5268-472f-b435-c4558f199961
+    jinja: "Full text: {{ document.text }}\n\nQuestion: {{ question.text }} \n\nCan\
+      \ you extract the answer to the above question from the full text?\n|||\n{%\
+      \ set i= range(0, answers|length) | random %}\n{{ answers[i].text }}"
+    name: Template_03
+    reference: Text only
+    task_template: true
+  c1170dbc-8b83-4797-aa32-ccafcfddad9e: !Template
+    id: c1170dbc-8b83-4797-aa32-ccafcfddad9e
+    jinja: 'Answer the question using the information given in the synopsis below.
+
+
+      {{ document.summary.text }}
+
+
+      Question: {{ question.text }} |||
+
+      {% set i= range(0, answers|length) | random %}
+
+      {{ answers[i].text }}'
+    name: Template_02
+    reference: Summary only
+    task_template: true
+  ce20a6d2-df6b-4279-bde9-6543ef23ecff: !Template
+    id: ce20a6d2-df6b-4279-bde9-6543ef23ecff
+    jinja: 'Below is the summary of a document.
+
+
+      {{ document.summary.text }}
+
+
+      Is the answer to the following query present in the summary?
+
+
+      {{ question.text }} |||
+
+      {% set i= range(0, answers|length) | random %}
+
+      {{ answers[i].text }}'
+    name: Template_04
+    reference: Summary only
+    task_template: true
+  e750f922-2e1b-45c8-98de-3ada1fbde16b: !Template
+    id: e750f922-2e1b-45c8-98de-3ada1fbde16b
+    jinja: '{{ document.text }}
+
+
+      Can you briefly recapitulate the above document? |||
+
+      {{ document.summary.text }}'
+    name: Template_08
+    reference: Text Summarization
+    task_template: false
+  f6bedb53-fc87-47f3-94b2-07adb0de2e42: !Template
+    id: f6bedb53-fc87-47f3-94b2-07adb0de2e42
+    jinja: "State the main points mentioned in the below text.\n\n{{ document.text\
+      \ }}\n |||\n{{ document.summary.text }}"
+    name: Template_07
+    reference: Text Summarization
+    task_template: false
