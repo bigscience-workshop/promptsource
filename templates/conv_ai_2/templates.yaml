@@ -2,67 +2,166 @@ dataset: conv_ai_2
 templates:
   04f7a3d8-c40f-45d1-b9ae-5bd23ff11628: !Template
     id: 04f7a3d8-c40f-45d1-b9ae-5bd23ff11628
-    jinja: "{% if (0 < (dialog | selectattr(\"sender_class\", \"equalto\", \"Bot\"\
-      ) | list | length))\n  and (0 < (dialog | selectattr(\"sender_class\", \"equalto\"\
-      , \"Human\") | list | length)) %}\nWould a person self-describing with such\
-      \ statements:\n{% for bp in user_profile %}\n- \"{{ bp | join('') }}\",\n{%\
-      \ endfor %}\nsay things like:\n{% set class = [\"Human\", \"Bot\"] | random\
-      \ %}\n{% for utterance in dialog %}\n{% if class == utterance[\"sender_class\"\
-      ] %}\n- \"{{ utterance[\"text\"] }}\",\n{% endif %}{% endfor %}\nin a conversation?|||\n\
-      {% if \"Human\" == class %}yes{% else %}no{% endif %}\n{% endif %}"
+    jinja: '{% if (0 < (dialog | selectattr("sender_class", "equalto", "Bot") | list | length))
+        and (0 < (dialog | selectattr("sender_class", "equalto", "Human") | list | length)) %}
+
+      Would a person self-describing with such statements:
+
+      {% for bp in user_profile %}
+
+      - "{{ bp | join('''') }}",
+
+      {% endfor %}
+
+      say things like:
+
+      {% set class = ["Human", "Bot"] | random %}
+
+      {% for utterance in dialog %}
+
+      {% if class == utterance["sender_class"] %}
+
+      - "{{ utterance["text"] }}",
+
+      {% endif %}{% endfor %}
+
+      in a conversation?|||
+
+      {% if "Human" == class %}yes{% else %}no{% endif %}
+
+      {% endif %}'
     name: match_profile_1
     reference: ''
     task_template: false
   2dfa7a0c-46d5-4842-be2f-ae62fa80d581: !Template
     id: 2dfa7a0c-46d5-4842-be2f-ae62fa80d581
-    jinja: "{% if (0 < (dialog | selectattr(\"sender_class\", \"equalto\", \"Bot\"\
-      ) | list | length))\n  and (0 < (dialog | selectattr(\"sender_class\", \"equalto\"\
-      , \"Human\") | list | length)) %}\nI wonder if somebody describing herself,\
-      \ or himself, using these statements:\n{% for bp in user_profile %}\n- \"{{\
-      \ bp | join('') }}\",\n{% endfor %}\ncould utter things like:\n{% set class\
-      \ = [\"Human\", \"Bot\"] | random %}\n{% for utterance in dialog %}\n{% if class\
-      \ == utterance[\"sender_class\"] %}\n- \"{{ utterance[\"text\"] }}\",\n{% endif\
-      \ %}{% endfor %}\nin a conversation...\nWhat's your guess: yes or no?|||\n{%\
-      \ if \"Human\" == class %}yes{% else %}no{% endif %}\n{% endif %}"
+    jinja: '{% if (0 < (dialog | selectattr("sender_class", "equalto", "Bot") | list | length))
+        and (0 < (dialog | selectattr("sender_class", "equalto", "Human") | list | length)) %}
+        
+      I wonder if somebody describing herself, or himself, using these statements:
+
+      {% for bp in user_profile %}
+
+      - "{{ bp | join('''') }}",
+
+      {% endfor %}
+
+      could utter things like:
+
+      {% set class = ["Human", "Bot"] | random %}
+
+      {% for utterance in dialog %}
+
+      {% if class == utterance["sender_class"] %}
+
+      - "{{ utterance["text"] }}",
+
+      {% endif %}{% endfor %}
+
+      in a conversation...
+
+      What''s your guess: yes or no?|||
+
+      {% if "Human" == class %}yes{% else %}no{% endif %}
+      
+      {% endif %}'
     name: match_profile_2
     reference: ''
     task_template: false
   6ff0a746-5cf0-4a73-9dd9-8e08ddf0768a: !Template
     id: 6ff0a746-5cf0-4a73-9dd9-8e08ddf0768a
-    jinja: "{% if (0 < (dialog | selectattr(\"sender_class\", \"equalto\", \"Bot\"\
-      ) | list | length))\n  and (0 < (dialog | selectattr(\"sender_class\", \"equalto\"\
-      , \"Human\") | list | length)) %}\nSomebody using the following self-describing\
-      \ statements:\n{% for bp in user_profile %}\n- {{ bp | join('') }}\n{% endfor\
-      \ %}\nmight possibly say things like:\n{% set class = [\"Human\", \"Bot\"] |\
-      \ random %}\n{% for utterance in dialog %}\n{% if class == utterance[\"sender_class\"\
-      ] %}\n- {{ utterance[\"text\"] }}\n{% endif %}{% endfor %}\nDo you agree?|||\n\
-      {% if \"Human\" == class %}yes{% else %}no{% endif %}\n{% endif %}"
+    jinja: '{% if (0 < (dialog | selectattr("sender_class", "equalto", "Bot") | list | length))
+        and (0 < (dialog | selectattr("sender_class", "equalto", "Human") | list | length)) %}
+        
+      Somebody using the following self-describing statements:
+
+      {% for bp in user_profile %}
+
+      - {{ bp | join('''') }}
+
+      {% endfor %}
+
+      might possibly say things like:
+
+      {% set class = ["Human", "Bot"] | random %}
+
+      {% for utterance in dialog %}
+
+      {% if class == utterance["sender_class"] %}
+
+      - {{ utterance["text"] }}
+
+      {% endif %}{% endfor %}
+
+      Do you agree?|||
+
+      {% if "Human" == class %}yes{% else %}no{% endif %}
+      
+      {% endif %}'
     name: match_profile_4
     reference: ''
     task_template: false
   cb296bf2-5189-48af-9517-a1f802509eb1: !Template
     id: cb296bf2-5189-48af-9517-a1f802509eb1
-    jinja: "{% if (0 < (dialog | selectattr(\"sender_class\", \"equalto\", \"Bot\"\
-      ) | list | length))\n  and (0 < (dialog | selectattr(\"sender_class\", \"equalto\"\
-      , \"Human\") | list | length)) %}\n{% for bp in user_profile %}\n- \"{{ bp |\
-      \ join('') }}\"\n{% endfor %}\nThis profile matches a person saying things like:\n\
-      {% set class = [\"Human\", \"Bot\"] | random %}\n{% for utterance in dialog\
-      \ %}\n{% if class == utterance[\"sender_class\"] %}\n- \"{{ utterance[\"text\"\
-      ] }}\"\n{% endif %}{% endfor %}\nyes of no?|||\n{% if \"Human\" == class %}yes{%\
-      \ else %}no{% endif %}\n{% endif %}"
+    jinja: '{% if (0 < (dialog | selectattr("sender_class", "equalto", "Bot") | list | length))
+        and (0 < (dialog | selectattr("sender_class", "equalto", "Human") | list | length)) %}
+        
+      {% for bp in user_profile %}
+
+      - "{{ bp | join('''') }}"
+
+      {% endfor %}
+
+      This profile matches a person saying things like:
+
+      {% set class = ["Human", "Bot"] | random %}
+
+      {% for utterance in dialog %}
+
+      {% if class == utterance["sender_class"] %}
+
+      - "{{ utterance["text"] }}"
+
+      {% endif %}{% endfor %}
+
+      yes of no?|||
+
+      {% if "Human" == class %}yes{% else %}no{% endif %}
+      
+      {% endif %}'
     name: match_profile_3
     reference: ''
     task_template: false
   eea6d2da-1c4c-460c-a1f9-f64cfd8c21c7: !Template
     id: eea6d2da-1c4c-460c-a1f9-f64cfd8c21c7
-    jinja: "{% if (0 < (dialog | selectattr(\"sender_class\", \"equalto\", \"Bot\"\
-      ) | list | length))\n  and (0 < (dialog | selectattr(\"sender_class\", \"equalto\"\
-      , \"Human\") | list | length)) %}\nGiven the following profile:\n{% for bp in\
-      \ user_profile %}\n- \"{{ bp | join('') }}\"\n{% endfor %}\nwould these utterances\
-      \ be expected:\n{% set class = [\"Human\", \"Bot\"] | random %}\n{% for utterance\
-      \ in dialog %}\n{% if class == utterance[\"sender_class\"] %}\n- \"{{ utterance[\"\
-      text\"] }}\"\n{% endif %}{% endfor %}\nfrom a person in a conversation?|||\n\
-      {% if \"Human\" == class %}yes{% else %}no{% endif %}\n{% endif %}"
+    jinja: '{% if (0 < (dialog | selectattr("sender_class", "equalto", "Bot") | list | length))
+        and (0 < (dialog | selectattr("sender_class", "equalto", "Human") | list | length)) %}
+        
+      Given the following profile:
+
+      {% for bp in user_profile %}
+
+      - "{{ bp | join('''') }}"
+
+      {% endfor %}
+
+      would these utterances be expected:
+
+      {% set class = ["Human", "Bot"] | random %}
+
+      {% for utterance in dialog %}
+
+      {% if class == utterance["sender_class"] %}
+
+      - "{{ utterance["text"] }}"
+
+      {% endif %}{% endfor %}
+
+      from a person in a conversation?|||
+
+      {% if "Human" == class %}yes{% else %}no{% endif %}
+      
+      {% endif %}'
     name: match_profile_0
     reference: ''
     task_template: false
