@@ -1,0 +1,217 @@
+dataset: e2e_nlg_cleaned
+templates:
+  14db0e7a-f7d1-4bd0-bfb3-f611be608c4a: !Template
+    id: 14db0e7a-f7d1-4bd0-bfb3-f611be608c4a
+    jinja: '{% set vars = {''key'':"eatType", ''value'':""} %}
+
+      {% for feature in meaning_representation.split("]") if vars[''key'']  in feature
+      %}
+
+      {% set temp = vars.update({''value'':feature.replace(",","").replace(vars[''key'']+"[",
+      '''')}) %}
+
+      {%- endfor %}
+
+      {% if vars["value"]|length > 0 %}
+
+      {{human_reference}} What type of dinery is the passage talking about?  ||| {{vars[''value'']}}
+
+      {% endif %}
+
+
+      '
+    name: eat_type_1
+    reference: ''
+    task_template: false
+  18f74817-9f8c-4fd5-bc00-6e0016a40dcc: !Template
+    id: 18f74817-9f8c-4fd5-bc00-6e0016a40dcc
+    jinja: '{% set vars = {''key'':"food", ''value'':""} %}
+
+      {% for feature in meaning_representation.split("]") if vars[''key'']  in feature
+      %}
+
+      {% set temp = vars.update({''value'':feature.replace(",","").replace(vars[''key'']+"[",
+      '''')}) %}
+
+      {%- endfor %}
+
+      {% if vars["value"]|length > 0 %}
+
+      {{human_reference}} From the passage given above, what type of food do you think
+      is served at this dinery?  ||| {{vars[''value'']}}
+
+      {% endif %}
+
+
+      '
+    name: food_1
+    reference: ''
+    task_template: false
+  3281dd94-173d-4f30-8693-1a4657939bb0: !Template
+    id: 3281dd94-173d-4f30-8693-1a4657939bb0
+    jinja: '{{human_reference}} According to the given passage: what is the diner''s
+      name, type of diner, type of food served, price range of the diner, customer''s
+      rating for the diner, the area or location of the diner, whether the diner is
+      family friendly and which landmark is near this diner. |||
+
+      {% for feature in meaning_representation.split("]") %}
+
+      {% set key = feature.split("[")[0].replace(",","") %}
+
+      {% set value = feature.replace(",","").replace(key+"[", '''') %}
+
+      {% if value != "" %}
+
+      {{key}} : {{value}}
+
+      {% endif %}
+
+      {%- endfor %}
+
+      '
+    name: multi_answer_1
+    reference: ''
+    task_template: true
+  418c7942-06e8-48a7-b5f4-9f15bb874edf: !Template
+    id: 418c7942-06e8-48a7-b5f4-9f15bb874edf
+    jinja: '{% set vars = {''key'':"area", ''value'':""} %}
+
+      {% for feature in meaning_representation.split("]") if vars[''key'']  in feature
+      %}
+
+      {% set temp = vars.update({''value'':feature.replace(",","").replace(vars[''key'']+"[",
+      '''')}) %}
+
+      {%- endfor %}
+
+      {% if vars["value"]|length > 0 %}
+
+      {{human_reference}} From the passage given above, where is the location of the
+      diner?  ||| {{vars[''value'']}}
+
+      {% endif %}
+
+
+      '
+    name: area_1
+    reference: ''
+    task_template: false
+  51666217-46cf-4950-bf63-108ed16e074c: !Template
+    id: 51666217-46cf-4950-bf63-108ed16e074c
+    jinja: '{% set vars = {''key'':"familyFriendly", ''value'':""} %}
+
+      {% for feature in meaning_representation.split("]") if vars[''key'']  in feature
+      %}
+
+      {% set temp = vars.update({''value'':feature.replace(",","").replace(vars[''key'']+"[",
+      '''')}) %}
+
+      {%- endfor %}
+
+      {% if vars["value"]|length > 0 %}
+
+      {{human_reference}} Is the dinery from the passage family friendly?  ||| {{vars[''value'']}}
+
+      {% endif %}
+
+
+      '
+    name: family_1
+    reference: ''
+    task_template: false
+  6e5f3eff-fab1-4c33-a296-5ac662754e87: !Template
+    id: 6e5f3eff-fab1-4c33-a296-5ac662754e87
+    jinja: '{% set vars = {''key'':"near", ''value'':""} %}
+
+      {% for feature in meaning_representation.split("]") if vars[''key'']  in feature
+      %}
+
+      {% set temp = vars.update({''value'':feature.replace(",","").replace(vars[''key'']+"[",
+      '''')}) %}
+
+      {%- endfor %}
+
+      {% if vars["value"]|length > 0 %}
+
+      {{human_reference}} Name the landmark that is close to this dinery according
+      to the passage.  ||| {{vars[''value'']}}
+
+      {% endif %}
+
+
+      '
+    name: near_1
+    reference: ''
+    task_template: false
+  83992c17-745f-4940-b626-b01a85ba66c1: !Template
+    id: 83992c17-745f-4940-b626-b01a85ba66c1
+    jinja: '{% set vars = {''key'':"name", ''value'':""} %}
+
+      {% for feature in meaning_representation.split("]") if vars[''key'']  in feature
+      %}
+
+      {% set temp = vars.update({''value'':feature.replace(",","").replace(vars[''key'']+"[",
+      '''')}) %}
+
+      {%- endfor %}
+
+      {% if vars["value"]|length > 0 %}
+
+      {{human_reference}} From the passage given above, what is the name of the dinery?  |||
+      {{vars[''value'']}}
+
+      {% endif %}
+
+
+      '
+    name: name_1
+    reference: ''
+    task_template: false
+  b67da63d-f220-4b9f-ae82-b4addf0c7573: !Template
+    id: b67da63d-f220-4b9f-ae82-b4addf0c7573
+    jinja: '{% set vars = {''key'':"customer rating", ''value'':""} %}
+
+      {% for feature in meaning_representation.split("]") if vars[''key'']  in feature
+      %}
+
+      {% set temp = vars.update({''value'':feature.replace(",","").replace(vars[''key'']+"[",
+      '''')}) %}
+
+      {%- endfor %}
+
+      {% if vars["value"]|length > 0 %}
+
+      {{human_reference}} According to this passage, what is the rating given to this
+      dinery?  ||| {{vars[''value'']}}
+
+      {% endif %}
+
+
+      '
+    name: rating_1
+    reference: ''
+    task_template: false
+  f9089a30-1c6c-4a43-a5eb-586b1dcd72f2: !Template
+    id: f9089a30-1c6c-4a43-a5eb-586b1dcd72f2
+    jinja: '{% set vars = {''key'':"priceRange", ''value'':""} %}
+
+      {% for feature in meaning_representation.split("]") if vars[''key'']  in feature
+      %}
+
+      {% set temp = vars.update({''value'':feature.replace(",","").replace(vars[''key'']+"[",
+      '''')}) %}
+
+      {%- endfor %}
+
+      {% if vars["value"]|length > 0 %}
+
+      {{human_reference}} According to the passage, how much would one have to pay
+      to eat here?  ||| {{vars[''value'']}}
+
+      {% endif %}
+
+
+      '
+    name: price_range_1
+    reference: ''
+    task_template: false
