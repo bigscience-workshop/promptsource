@@ -1,0 +1,215 @@
+dataset: squad_v2
+templates:
+  17b83a3f-f748-42e6-9cdf-b2951dd8299d: !Template
+    id: 17b83a3f-f748-42e6-9cdf-b2951dd8299d
+    jinja: '{% set seq = [
+
+      ''Answer the question depending on the context.'',
+
+      ''What is the answer?'',
+
+      ] %}
+
+
+      {{ seq | random }}
+
+      Context: {{context}};
+
+      Question: {{question}};
+
+      Answer: |||
+
+      {% if answers.text == [] %}
+
+      Answer not in context
+
+      {% else %}
+
+      {{answers.text[0]}}
+
+      {% endif %}'
+    name: Questions with Context
+    reference: Given context and question, give answer
+  189dcc58-fd13-4771-ad03-7879a61c7ab7: !Template
+    id: 189dcc58-fd13-4771-ad03-7879a61c7ab7
+    jinja: '{% if answers.text != [] %}
+
+      Determine the question to the answer with the given context.
+
+      Context: {{context}};
+
+      Answer: {{answers.text[0]}};
+
+      Question: |||
+
+      {{question}}
+
+      {% endif %}
+
+      '
+    name: Jeopardy with Context
+    reference: Given context and an answer, guess the question.
+  20064b80-e4d0-41b7-9135-92c0077d5044: !Template
+    id: 20064b80-e4d0-41b7-9135-92c0077d5044
+    jinja: '{% set seq = [
+
+      ''What is this about? '',
+
+      ''What is paragraph about? '',
+
+      ''Get topic from: '',
+
+      ''Get topic from '',
+
+      ''From passage get topic'',
+
+      ''From passage get topic. '',
+
+      ''I want to know the topic. '',
+
+      ''Topic from passage: '',
+
+      ''Topic from paragraph: '',
+
+      ] %}
+
+      {{ seq | random }}
+
+      {{context}} |||
+
+      {{title | replace("_", " ")}}'
+    name: Topic Prediction - Context with randomized prompt options
+    reference: Asks to predict the topic given the context with additional input as
+      if a person is asking another person.
+  338cc143-361e-4796-b035-31fb2201c49f: !Template
+    id: 338cc143-361e-4796-b035-31fb2201c49f
+    jinja: '{% set seq = [
+
+      ''This is about '',
+
+      ''What is this about? '',
+
+      ''The paragraph is about '',
+
+      ''What is paragraph about? '',
+
+      ''Get topic: '',
+
+      ''From passage, the topic is'',
+
+      ''I want to know the topic. '',
+
+      ''Topic from passage: '',
+
+      ''Topic from paragraph: '',
+
+      ] %}
+
+      {{context}}
+
+      {{ seq | random }}|||
+
+      {{title | replace("_", " ")}}'
+    name: Topic Prediction - Context with randomized prompt options placed in the
+      end
+    reference: The prompt is placed at the end of Context
+  7a44cd99-7420-4456-aaaa-34e2c81d1679: !Template
+    id: 7a44cd99-7420-4456-aaaa-34e2c81d1679
+    jinja: '{% if answers.text != [] %}
+
+      Determine the question to the answer.
+
+      Answer: {{answers.text[0]}};
+
+      Question: |||
+
+      {{question}}
+
+      {% endif %}
+
+      '
+    name: Jeopardy without Context
+    reference: Given an answer, output a viable question. Context is omitted.
+  8bea1123-fd8d-4bac-96bf-b8a289ee74b3: !Template
+    id: 8bea1123-fd8d-4bac-96bf-b8a289ee74b3
+    jinja: '{% set seq = [
+
+      ''Can you tell me '',
+
+      ''Please tell me '',
+
+      ''Tell me '',
+
+      ''From passage, '',
+
+      ''I want to know '',
+
+      ''I want to ask '',
+
+      ''What is the answer to: '',
+
+      ''Find answer to: '',
+
+      ''Answer: '',
+
+      '''',
+
+      ] %}
+
+      {{context}} {{ seq | random }}{{question}}|||
+
+      {% if answers.text == [] %}
+
+      Answer not in context
+
+      {% else %}
+
+      {{answers.text[0]}}
+
+      {% endif %}'
+    name: Questions with Context - Without Prompt Keywords
+    reference: Given context and question, give answer. No keywords to delineate context
+      and question is given.
+  d768c181-1c9b-40c3-aa01-fc78c3b29875: !Template
+    id: d768c181-1c9b-40c3-aa01-fc78c3b29875
+    jinja: '{% if answers.text != [] %}
+
+      {{question}}|||
+
+      {{answers.text[0]}}
+
+      {% endif %}'
+    name: Trivia
+    reference: Given input and directly outputs answer.
+  e51c23b9-5b10-4db3-a0d1-ba546830173d: !Template
+    id: e51c23b9-5b10-4db3-a0d1-ba546830173d
+    jinja: '{% set seq = [
+
+      ''Determine the topic of the question-answer pair. '',
+
+      ''Find the topic. '',
+
+      ''What is the topic from this? '',
+
+      ] %}
+
+      {% if answers.text != [] %}
+
+      {{ seq | random }}
+
+      Question: {{question}};  Answer: {{answers.text[0]}}; Topic: |||
+
+      {{title}}
+
+      {% endif %}'
+    name: Topic Prediction - Question and Answer Pair
+    reference: Given a Question-Answer pair, generate the topic.
+  fdcf132e-6c70-4188-999e-93601ee8e089: !Template
+    id: fdcf132e-6c70-4188-999e-93601ee8e089
+    jinja: 'What is the follow passage about?
+
+      {{context}} |||
+
+      {{title | replace("_", " ")}}'
+    name: Topic Prediction - Context
+    reference: Predict the topic from the passage
