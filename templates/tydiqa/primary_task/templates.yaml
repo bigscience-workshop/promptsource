@@ -6,7 +6,7 @@ templates:
     jinja: "{% set _position = [0, 1] |random %} \n{% if language == \"english\" %}\
       \ \n    {% if annotations.yes_no_answer[0] == \"YES\" or annotations.yes_no_answer[0]\
       \ == \"NO\" %} \n        {% if  _position == 0 %} \n            Question: {{question_text}}\
-      \ {{\"\\n\"}} \n        {% endif %} \n        Answer the question as YES, NO.\
+      \ {{\"\\n\"}} \n        {% endif %} \n        Answer the question with YES or NO.\
       \ \n        {% if  _position == 1 %} \n            {{\"\\n\"}}Question: {{question_text}}\
       \ \n        {% endif %} \n||| \n{{annotations.yes_no_answer[0]}} \n    {% endif\
       \ %} \n{% endif %}"
@@ -51,7 +51,7 @@ templates:
     jinja: "{% set _position = [\"above\", \"following\"] |choice %} \n{% if language\
       \ == \"english\" %} \n    {% if  _position == \"above\" %} \n        Question:\
       \ {{question_text}} {{\"\\n\"}} \n    {% endif %} \n    Answer the question\
-      \ as YES, NO. If it is not possible then answer NONE. \n    {% if  _position\
+      \ with YES or NO. If it is not possible then answer NONE. \n    {% if  _position\
       \ == \"following\" %} \n        {{\"\\n\"}}Question: {{question_text}} \n  \
       \  {% endif %} \n||| \n{{annotations.yes_no_answer[0]}}\n{% endif %}"
     name: binary_question_without_context_3
