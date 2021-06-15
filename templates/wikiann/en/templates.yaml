@@ -25,15 +25,15 @@ templates:
       \ %}\n    {% if _rand_num > 50 %}\n        {% do _random_label_dict.update({k:v})\
       \ %}\n    {% endif %}\n{% endfor %}\n{% if 0 not in _random_label_dict %}\n\
       \    {% do _random_label_dict.update({0:\"O\"}) %}\n{% endif %}\n{% set _label_list\
-      \ = [] %}\n{% set flag = 0 %}\n{% for k, v in _random_label_dict.items() %}\n\
-      \    {% do _label_list.append(v) %}\n{% endfor %} \n{% do _label_list|shuffle\
-      \ %}\nGenerate named entities from the following sentence. The labels are \n\
-      {% for v in _label_list -%}\n    {{ v }}\n    {{- \", \" if not loop.last else\
-      \ \"\" -}}\n{% endfor -%} \n{{\"\\n\"}}\n{% for i in tokens -%}\n    {{- \"\
-      \ \" if not loop.last else \"\" -}}\n    {{ i }}\n{% endfor %} \n|||\n{% for\
-      \ tok, label in zip(tokens, _tags) -%}\n    {% if label not in _random_label_dict\
-      \ -%}\n        {{tok}}:O\n    {% else -%} \n        {{tok}}:{{ _random_label_dict[label]\
-      \ }}\n    {% endif -%}\n{% endfor -%} "
+      \ = [] %}\n{% for k, v in _random_label_dict.items() %}\n    {% do _label_list.append(v)\
+      \ %}\n{% endfor %} \n{% do _label_list|shuffle %}\nGenerate named entities from\
+      \ the following sentence. The labels are \n{% for v in _label_list -%}\n   \
+      \ {{ v }}\n    {{- \", \" if not loop.last else \"\" -}}\n{% endfor -%} \n{{\"\
+      \\n\"}}\n{% for i in tokens -%}\n    {{- \" \" if not loop.last else \"\" -}}\n\
+      \    {{ i }}\n{% endfor %} \n|||\n{% for tok, label in zip(tokens, _tags) -%}\n\
+      \    {% if label not in _random_label_dict -%}\n        {{tok}}:O\n    {% else\
+      \ -%} \n        {{tok}}:{{ _random_label_dict[label] }}\n    {% endif -%}\n\
+      {% endfor -%} "
     name: flat_question_with_label_random
     reference: Natural question with randomly selected label
     task_template: true
