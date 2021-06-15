@@ -1,0 +1,68 @@
+dataset: gutenberg_time
+templates:
+  06dce7dd-ae32-4acb-a1c8-6a01303b577b: !Template
+    id: 06dce7dd-ae32-4acb-a1c8-6a01303b577b
+    jinja: "Given the following text. What time reference is reported in the text?\n\
+      \n{{tok_context}}\n\nThe time reference reported is \n|||\n{{time_phrase}}"
+    name: asking_the_time_reference_before
+    reference: Asking the time reference before the text
+    task_template: false
+  1e880fc4-6df7-4cab-8658-82cae44135cf: !Template
+    id: 1e880fc4-6df7-4cab-8658-82cae44135cf
+    jinja: "{{tok_context}}\n\nGiven the previous text. What time reference is reported\
+      \ in the text?\n\nThe time reference reported is \n|||\n{{time_phrase}}"
+    name: asking_the_time_refence_after
+    reference: ''
+    task_template: false
+  27e6ef41-5f29-485a-9fa8-7b71feb956c8: !Template
+    id: 27e6ef41-5f29-485a-9fa8-7b71feb956c8
+    jinja: '{{tok_context}}
+
+
+      Given the previous text. What time reference is reported in the text? What time
+      does it indicate?
+
+
+      |||
+
+
+      The time reference reported is "{{time_phrase}}".
+
+      It indicates {{hour_reference}}.'
+    name: asking_the_time_reference_and_actual_time_after
+    reference: Asking time reference and actual time after the text
+    task_template: false
+  4efa58a3-a38b-4bcd-8597-687a7b7f56f8: !Template
+    id: 4efa58a3-a38b-4bcd-8597-687a7b7f56f8
+    jinja: "Given the following text. What hour (between 0 and 23) does the phrase\
+      \ \"{{time_phrase}}\" indicate?\n\n{{tok_context}}\n\nIt indicates \n|||\n{{hour_reference}}"
+    name: asking_the_time_phrase_explicit_before
+    reference: Ask for the time reported in the text, explicitly mentioning the phrase,
+      asking the question before the text
+    task_template: true
+  75cbe764-02f9-4183-9be4-b7bba3d3b1f6: !Template
+    id: 75cbe764-02f9-4183-9be4-b7bba3d3b1f6
+    jinja: "{{tok_context}}\n\nGiven the previous text. What hour (between 0 and 23)\
+      \ does the phrase \"{{time_phrase}}\" indicate?\n\nIt indicates \n|||\n{{hour_reference}}"
+    name: asking_the_time_phrase_explicit_after
+    reference: Ask for the time reported in the text, explicitly mentioning the phrase,
+      asking the question after the text
+    task_template: true
+  9004b87b-2731-4951-976a-9269e28be7be: !Template
+    id: 9004b87b-2731-4951-976a-9269e28be7be
+    jinja: 'Given the following text. What time reference is reported in the text?
+      What time does it indicate?
+
+
+      {{tok_context}}
+
+
+      |||
+
+
+      The time reference reported is "{{time_phrase}}".
+
+      It indicates {{hour_reference}}.'
+    name: asking_the_time_reference_and_actual_time_before
+    reference: ' Asking time reference and actual time before the text'
+    task_template: false
