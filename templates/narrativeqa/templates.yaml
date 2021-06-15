@@ -13,9 +13,7 @@ templates:
 
       Full text: {{ document.text }} |||
 
-      {% set i= range(0, answers|length) | random %}
-
-      {{ answers[i].text }}'
+      {{answers | map(attribute="text") | list | choice }}'
     name: Template_05
     reference: Text + Summary
     task_template: false
@@ -29,9 +27,7 @@ templates:
 
       {{ question.text }} |||
 
-      {% set i= range(0, answers|length) | random %}
-
-      {{ answers[i].text }}'
+      {{answers | map(attribute="text") | list | choice }}'
     name: Template_01
     reference: Text only
     task_template: true
@@ -49,8 +45,8 @@ templates:
   adfa9f6d-5268-472f-b435-c4558f199961: !Template
     id: adfa9f6d-5268-472f-b435-c4558f199961
     jinja: "Full text: {{ document.text }}\n\nQuestion: {{ question.text }} \n\nCan\
-      \ you extract the answer to the above question from the full text?\n|||\n{%\
-      \ set i= range(0, answers|length) | random %}\n{{ answers[i].text }}"
+      \ you extract the answer to the above question from the full text?\n|||\n{{answers\
+      \ | map(attribute=\"text\") | list | choice }}"
     name: Template_03
     reference: Text only
     task_template: true
@@ -64,9 +60,7 @@ templates:
 
       Question: {{ question.text }} |||
 
-      {% set i= range(0, answers|length) | random %}
-
-      {{ answers[i].text }}'
+      {{answers | map(attribute="text") | list | choice }}'
     name: Template_02
     reference: Summary only
     task_template: true
@@ -78,14 +72,12 @@ templates:
       {{ document.summary.text }}
 
 
-      Is the answer to the following query present in the summary?
+      What is the answer to the following query?
 
 
       {{ question.text }} |||
 
-      {% set i= range(0, answers|length) | random %}
-
-      {{ answers[i].text }}'
+      {{answers | map(attribute="text") | list | choice }}'
     name: Template_04
     reference: Summary only
     task_template: true
