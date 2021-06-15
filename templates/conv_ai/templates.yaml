@@ -2,7 +2,8 @@ dataset: conv_ai
 templates:
   1664cdd9-54e8-4679-821b-8013e9df197e: !Template
     id: 1664cdd9-54e8-4679-821b-8013e9df197e
-    jinja: '{{context}}
+    jinja: '{% if 0 < (thread | selectattr("userId", "equalto", "Alice") | list | length) %}
+      {{context}}
 
 
       {% for utterance in thread %}
@@ -25,13 +26,16 @@ templates:
 
       {% endif %}
 
-      {% endfor %}'
+      {% endfor %}
+      
+      {% endif %}'
     name: engagement_alice_1
     reference: ''
     task_template: false
   2d3ca9f5-60f0-459d-932f-ab30e1e79b22: !Template
     id: 2d3ca9f5-60f0-459d-932f-ab30e1e79b22
-    jinja: '"{{context}}""
+    jinja: '{% if 0 < (thread | selectattr("userId", "equalto", "Bob") | list | length) %}
+      "{{context}}"
 
 
       Would you say Bob engagement is real, given the previous context, in this conversation:
@@ -52,13 +56,18 @@ templates:
 
       {% endif %}
 
-      {% endfor %}'
+      {% endfor %}
+      
+      {% endif %}'
     name: engagement_bob_1
     reference: ''
     task_template: false
   4390549a-3bdf-43ad-9e69-6bc380f33f01: !Template
     id: 4390549a-3bdf-43ad-9e69-6bc380f33f01
-    jinja: '{{context}}
+    jinja: '{% set alice = (evaluation|selectattr("userId", "equalto", "Alice")|first)["engagement"] %}
+      {% set bob = (evaluation|selectattr("userId", "equalto", "Bob")|first)["engagement"] %}
+      {% if (0 < (thread | selectattr("userId", "equalto", "Bob") | list | length)) and (0 < (thread | selectattr("userId", "equalto", "Alice") | list | length)) %}
+      {{context}}
 
 
       Given the previous context, who do you think is more engaged in this conversation
@@ -72,23 +81,18 @@ templates:
 
       |||
 
-      {% set alice = (evaluation|selectattr("userId", "equalto", "Alice")|first)["engagement"]
-      %}
-
-      {% set bob = (evaluation|selectattr("userId", "equalto", "Bob")|first)["engagement"]
-      %}
-
-
-      {% if alice == bob %}both{% elif alice < bob %}Bob{% else %}Alice{% endif %}'
+      {% if alice == bob %}both{% elif alice < bob %}Bob{% else %}Alice{% endif %}
+      
+      {% endif %}'
     name: engagement_0
     reference: ''
     task_template: false
   955dd9f5-0fe5-46c3-a217-995bd876f26f: !Template
     id: 955dd9f5-0fe5-46c3-a217-995bd876f26f
-    jinja: '{{context}}
+    jinja: '{% if 0 < (thread | selectattr("userId", "equalto", "Bob") | list | length) %}{{context}}
 
 
-      Given the preceding context, would you say Bob engagement is real, from his
+      Given the preceding context, would you say Bob''s engagement is real, from his
       utterances in a conversation:
 
       {% for utterance in thread %}
@@ -109,23 +113,51 @@ templates:
 
       {% endif %}
 
-      {% endfor %}'
+      {% endfor %}
+      
+      {% endif %}'
     name: engagement_bob_0
     reference: ''
     task_template: false
   c0840f89-e444-49ab-bab0-08f71ec89093: !Template
     id: c0840f89-e444-49ab-bab0-08f71ec89093
-    jinja: "context:\n\n{{context}}\n\nconversation:\n\n{% for utterance in thread\
-      \ %}\n- {{ utterance[\"userId\"] }}: {{ utterance[\"text\"] }}\n{% endfor %}\n\
-      \nWas Alice really into this conversation? \n|||\n{% for eval in evaluation\
-      \ %}\n{% if \"Alice\" == eval[\"userId\"] %}\n{% if 3 < eval[\"engagement\"\
-      ] %}yes{% else %}no{% endif %}\n{% endif %}\n{% endfor %}"
+    jinja: '{% if 0 < (thread | selectattr("userId", "equalto", "Alice") | list | length) %}
+      context:
+
+
+      {{context}}
+
+
+      conversation:
+      
+      {% for utterance in thread %}
+
+      - {{ utterance["userId"] }}: {{ utterance["text"] }}
+
+      {% endfor %}
+
+      Was Alice really into this conversation?|||
+
+      {% for eval in evaluation %}
+
+        {% if "Alice" == eval["userId"] %}
+
+          {% if 3 < eval["engagement"] %}yes{% else %}no{% endif %}
+
+        {% endif %}
+
+      {% endfor %}
+
+      {% endif %}'
     name: engagement_alice_0
     reference: ''
     task_template: false
   db94d56f-3fc8-4b6a-b3d3-2ac37e8110ff: !Template
     id: db94d56f-3fc8-4b6a-b3d3-2ac37e8110ff
-    jinja: '{{context}}
+    jinja: '{% set alice = (evaluation|selectattr("userId", "equalto", "Alice")|first)["engagement"] %}
+      {% set bob = (evaluation|selectattr("userId", "equalto", "Bob")|first)["engagement"] %}
+      {% if (0 < (thread | selectattr("userId", "equalto", "Bob") | list | length)) and (0 < (thread | selectattr("userId", "equalto", "Alice") | list | length)) %}
+      {{context}}
 
 
       Who would you say is more engaged here: Alice or Bob (or both are), given the
@@ -139,14 +171,9 @@ templates:
 
       |||
 
-      {% set alice = (evaluation|selectattr("userId", "equalto", "Alice")|first)["engagement"]
-      %}
+      {% if alice == bob %}both{% elif alice < bob %}Bob{% else %}Alice{% endif %}
 
-      {% set bob = (evaluation|selectattr("userId", "equalto", "Bob")|first)["engagement"]
-      %}
-
-
-      {% if alice == bob %}both{% elif alice < bob %}Bob{% else %}Alice{% endif %}'
+      {% endif %}'
     name: engagement_1
     reference: ''
     task_template: false
