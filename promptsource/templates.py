@@ -1,4 +1,5 @@
 import os
+import random
 import uuid
 from collections import defaultdict
 from shutil import rmtree
@@ -12,6 +13,21 @@ from jinja2 import BaseLoader, Environment
 TEMPLATES_FOLDER_PATH = "./templates/"
 
 env = Environment(loader=BaseLoader)
+
+# Allow the python function zip()
+env.globals.update(zip=zip)
+
+
+def highlight(input):
+    return "<span style='color: #F08080'>" + input + "</span>"
+
+
+def choice(choices):
+    return random.choice(choices)
+
+
+env.filters["highlight"] = highlight
+env.filters["choice"] = choice
 
 
 class TemplateCollection:
@@ -190,7 +206,9 @@ class DatasetTemplates:
             # We just update the file
             self.write_to_file()
 
-    def update_template(self, current_template_name: str, new_template_name: str, jinja: str, reference: str) -> None:
+    def update_template(
+        self, current_template_name: str, new_template_name: str, jinja: str, reference: str, task_template: bool
+    ) -> None:
         """
         Updates a pre-existing template and writes changes
 
@@ -203,6 +221,7 @@ class DatasetTemplates:
         self.templates[template_id].name = new_template_name
         self.templates[template_id].jinja = jinja
         self.templates[template_id].reference = reference
+        self.templates[template_id].task_template = task_template
 
         self.write_to_file()
 
@@ -235,7 +254,7 @@ class Template(yaml.YAMLObject):
 
     yaml_tag = "!Template"
 
-    def __init__(self, name, jinja, reference):
+    def __init__(self, name, jinja, reference, task_template=False):
         """
         Creates a prompt template.
 
@@ -251,11 +270,14 @@ class Template(yaml.YAMLObject):
         :param jinja: template expressed in Jinja
         :param reference: string metadata describing author or paper reference
                           for template
+        :param task_template: bool whether this template corresponds 1-1 with the dataset task
+
         """
         self.id = str(uuid.uuid4())
         self.name = name
         self.jinja = jinja
         self.reference = reference
+        self.task_template = task_template
 
     def get_id(self):
         """
@@ -281,12 +303,28 @@ class Template(yaml.YAMLObject):
         """
         return self.reference
 
-    def apply(self, example):
+    def get_task_template(self):
+        """
+        Returns whether this template corresponds 1-1 with the dataset task
+
+        :return: bool
+        """
+
+        if hasattr(self, "task_template"):
+            return self.task_template
+        else:
+            return False
+
+    def apply(self, example, highlight_variables=False):
         """
         Creates a prompt by applying this template to an example
 
         :param example: the dataset example to create a prompt for
+        :param highlight_variables: highlight the added variables
         :return: tuple of 2 strings, for prompt and output
         """
-        rtemplate = env.from_string(self.jinja)
+        jinja = self.jinja
+        if highlight_variables:
+            jinja = jinja.replace("}}", " | highlight }}")
+        rtemplate = env.from_string(jinja)
         return rtemplate.render(**example).split("|||")
