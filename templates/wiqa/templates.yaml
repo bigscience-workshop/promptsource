@@ -2,11 +2,7 @@ dataset: wiqa
 templates:
   1bc8d95b-0a50-49f4-a46b-bd752929926d: !Template
     id: 1bc8d95b-0a50-49f4-a46b-bd752929926d
-    jinja: '{% for k in range(1, question_para_step | length) %}
-
-      - {{question_para_step[k]}}
-
-      {% endfor %}
+    jinja: '-  {{ question_para_step[1:] | join("\n- ") }}
 
 
       Find the first step of the process
@@ -28,11 +24,7 @@ templates:
       {% set process_list = question_para_step[:-1] if question_para_step[-1] == ""
       else question_para_step %}
 
-      {% for k in range((process_list | length) - 1) %}
-
-      - {{question_para_step[k]}}
-
-      {% endfor %}
+      -  {{ process_list[:-1] | join("\n- ") }}
 
 
       Find the last step of the process
@@ -52,11 +44,7 @@ templates:
     jinja: 'Find the missing first step of the following process:
 
 
-      {% for k in range(1, question_para_step | length) %}
-
-      - {{question_para_step[k]}}
-
-      {% endfor %}
+      -  {{ question_para_step[1:] | join("\n- ") }}
 
 
       |||
@@ -73,11 +61,7 @@ templates:
 
       What is the final step of the following process:
 
-      {% for k in range((process_list | length) -1 ) %}
-
-      - {{question_para_step[k]}}
-
-      {% endfor %}
+      -  {{ process_list[:-1] | join("\n- ") }}
 
 
       |||
@@ -101,7 +85,7 @@ templates:
       {{question_stem}}
 
 
-      How is the supposed perturbation influence the second effect mentioned. Answer
+      How does the supposed perturbation influence the second effect mentioned. Answer
       by {{"more, less or no effect"}}
 
 
@@ -131,6 +115,8 @@ templates:
 
       - {{"not impacting any step of the process"}}
 
+
+      ?
 
       |||
 
