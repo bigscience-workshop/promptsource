@@ -11,6 +11,10 @@ templates:
       Table: "{{table_text}}"
 
 
+      Note: {{"#"}} is the delimiter between columns; {{"newline"}} is the delimiter
+      between rows.
+
+
       Give a suitable caption for the table. Use the statement as a supporting doc.
       |||
 
@@ -33,6 +37,10 @@ templates:
       {{table_text}}
 
 
+      Note: {{"#"}} is the delimiter between columns; {{"newline"}} is the delimiter
+      between rows.
+
+
       statement: "{{statement}}" |||
 
 
@@ -46,39 +54,26 @@ templates:
     jinja: "Parse the following table:\n\nTable Caption: \"{{table_caption}}\"\n\n\
       Table:\n\n{{table_text}}\n\nNote: {{\"#\"}} is the delimiter between columns;\
       \ {{\"newline\"}} is the delimiter between rows.\n\nFrom the above table, the\
-      \ statement \"{{statement}}\" can either be entailed or refuted. Which one is\
-      \ it? |||  \n{{[\"refuted\", \"entailed\"][label]}}"
+      \ statement \"{{statement}}\" can either be {{\"entailed\"}} or {{\"refuted\"\
+      }}. Which one is it? |||  \n{{[\"refuted\", \"entailed\"][label]}}"
     name: tab_fact_1
     reference: 'Input: Table Caption, Table; Label: Refuted/Entailed -- Affirmative
       Form'
     task_template: true
   5bf642b0-4d75-40b7-9c0a-80b38a170d0f: !Template
     id: 5bf642b0-4d75-40b7-9c0a-80b38a170d0f
-    jinja: '{% if label %}
-
-      Express any (part or subset of the table) / (inference obtained from the table)
-      in plain English:
-
-
-      "{{table_caption}}"
-
-
-      "{{table_text}}" |||
-
-      {{statement}}
-
-      {% endif %}'
+    jinja: "{% if label %}\nExpress any (part or subset of the table) / (inference\
+      \ obtained from the table) in plain English:\n\n\"{{table_caption}}\"\n\n\"\
+      {{table_text}}\" \n\nNote: {{\"#\"}} is the delimiter between columns; {{\"\
+      newline\"}} is the delimiter between rows.\n|||\n{{statement}}\n{% endif %}"
     name: tab_fact_6
     reference: Generate Natural Text from the table
     task_template: false
   6e4d3fe8-1d31-4685-8ef6-419ab8554741: !Template
     id: 6e4d3fe8-1d31-4685-8ef6-419ab8554741
-    jinja: 'Is "{{statement}}" corroborated by "{{table_caption}}", {{table_text}}"?
-      |||
-
-      {{["No", "Yes"][label]}}
-
-      '
+    jinja: "Is \"{{statement}}\" corroborated by \"{{table_caption}}\", {{table_text}}\"\
+      ? \n\nNote: {{\"#\"}} is the delimiter between columns; {{\"newline\"}} is the\
+      \ delimiter between rows.\n|||\n{{[\"No\", \"Yes\"][label]}}\n"
     name: tab_fact_5
     reference: 'Input: Table Caption, Table; Label: Yes/No -- Interrogative Form (corroboration)'
     task_template: true
@@ -95,6 +90,9 @@ templates:
 
       {{table_text}}
 
+
+      Note: {{"#"}} is the delimiter between columns; {{"newline"}} is the delimiter
+      between rows.
 
       |||
 
@@ -120,8 +118,8 @@ templates:
       rows.
 
 
-      From the above table, the state,  given two options (refuted/entailed), the
-      statement "{{statement}}" can definitely be not |||  {{["refuted", "entailed"][1-label]}}'
+      From the above table, the state,  given two options ({{"refuted"}}/{{"entailed"}}),
+      the statement "{{statement}}" can definitely be not |||  {{["refuted", "entailed"][1-label]}}'
     name: tab_fact_2
     reference: 'Input: Table Caption, Table; Label: Refuted/Entailed (Negation) --
       Affirmative Form'
