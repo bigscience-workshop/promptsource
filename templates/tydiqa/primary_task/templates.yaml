@@ -1,0 +1,79 @@
+dataset: tydiqa
+subset: primary_task
+templates:
+  4b21e3be-fba4-49b7-beb1-a61de26eb0ac: !Template
+    id: 4b21e3be-fba4-49b7-beb1-a61de26eb0ac
+    jinja: "{% set _position = [0, 1] |random %} \n{% if language == \"english\" %}\
+      \ \n    {% if annotations.yes_no_answer[0] == \"YES\" or annotations.yes_no_answer[0]\
+      \ == \"NO\" %} \n        {% if  _position == 0 %} \n            Question: {{question_text}}\
+      \ {{\"\\n\"}} \n        {% endif %} \n        Answer the question with YES or\
+      \ NO. \n        {% if  _position == 1 %} \n            {{\"\\n\"}}Question:\
+      \ {{question_text}} \n        {% endif %} \n||| \n{{annotations.yes_no_answer[0]}}\
+      \ \n    {% endif %} \n{% endif %}"
+    name: binary_question_without_context_2
+    reference: Answer Yes/No question
+    task_template: true
+  6835dd64-96bd-4bf8-9ba5-645d6a7b8472: !Template
+    id: 6835dd64-96bd-4bf8-9ba5-645d6a7b8472
+    jinja: "{% if language == \"english\" %}\n{{question_text}}{{\"\\n\"}}\nIs this\
+      \ a \"Yes/No\" question?\n|||\n{% if annotations. yes_no_answer[0] == \"YES\"\
+      \ or annotations. yes_no_answer[0] == \"NO\" %}\n    {{\"Yes\"}}\n{% else %}\n\
+      \    {{\"No\"}}\n{% endif %}\n{% endif %}"
+    name: yes_no_question
+    reference: Ask if this is a yes no question
+    task_template: true
+  6c2e002a-a582-44cc-971e-3919585072d7: !Template
+    id: 6c2e002a-a582-44cc-971e-3919585072d7
+    jinja: "{% set _position = [\"above\", \"following\"] |random %} \n{% if language\
+      \ == \"english\" %} \n    {% if annotations.yes_no_answer[0] == \"YES\" or annotations.yes_no_answer[0]\
+      \ == \"NO\" %} \n        {% if  _position == \"above\" %} \n            Question:\
+      \ {{question_text}} {{\"\\n\"}} \n        {% endif %} \n        Answer the question\
+      \ from Wikipedia. \n        {% if  _position == \"following\" %} \n        \
+      \    {{\"\\n\"}} Question: {{question_text}} \n        {% endif %} \n||| \n\
+      {{annotations.yes_no_answer[0]}} \n    {% endif %} \n{% endif %}"
+    name: binary_question_without_context_wikipedia
+    reference: Ask a yes/no question mentioning KB.
+    task_template: true
+  9c42e3fd-d46e-4149-bb60-4b3118104d95: !Template
+    id: 9c42e3fd-d46e-4149-bb60-4b3118104d95
+    jinja: "{% if language == \"english\" %}\
+      \ \n    {% if annotations.yes_no_answer[0] == \"YES\" or annotations.yes_no_answer[0]\
+      \ == \"NO\" %} \n        After reading the following text snippet from Wikipedia,\
+      \ please answer the question: {{question_text}} \n        {{\"\\n\"}}{{document_plaintext}}\n\
+      ||| \n{{annotations.yes_no_answer[0]}}\n    {% endif %}\n{% endif %}"
+    name: binary_question_with_document_text_1
+    reference: Reading Comprehension
+    task_template: true
+  b4f7c441-41b1-4665-93f9-f2e875aed92a: !Template
+    id: b4f7c441-41b1-4665-93f9-f2e875aed92a
+    jinja: "{% set _position = [0, 1] |random %} \n{% if language == \"english\" %}\
+      \ \n    {% if annotations.yes_no_answer[0] == \"YES\" or annotations.yes_no_answer[0]\
+      \ == \"NO\" %} \n        {% if  _position == 0 %}\n            Question: {{question_text}}{{\"\
+      \\n\"}}\n        {% endif %} \n        Answer the question.\n        {% if \
+      \ _position == 1 %}\n            {{\"\\n\"}}Question: {{question_text}} \n \
+      \       {% endif %} \n||| \n{{annotations.yes_no_answer[0]}}\n    {% endif %}\n\
+      {% endif %}"
+    name: binary_question_without_context_1
+    reference: Ask Yes/No question
+    task_template: true
+  b8af581b-d993-4e53-8d80-96f515eb6ee0: !Template
+    id: b8af581b-d993-4e53-8d80-96f515eb6ee0
+    jinja: "{% set _position = [\"above\", \"following\"] |random %} \n{% if language\
+      \ == \"english\" %} \n    {% if  _position == \"above\" %} \n        Question:\
+      \ {{question_text}} {{\"\\n\"}} \n    {% endif %} \n    Answer the question\
+      \ with YES or NO. If it is not possible then answer NONE. \n    {% if  _position\
+      \ == \"following\" %} \n        {{\"\\n\"}}Question: {{question_text}} \n  \
+      \  {% endif %} \n||| \n{{annotations.yes_no_answer[0]}}\n{% endif %}"
+    name: binary_question_without_context_3
+    reference: Answer Yes/No/None Question.
+    task_template: true
+  e593017f-9bcf-4442-944d-fcdf2edcb4f7: !Template
+    id: e593017f-9bcf-4442-944d-fcdf2edcb4f7
+    jinja: "{% if language == \"english\" %}\
+      \ \n    {% if annotations.yes_no_answer[0] == \"YES\" or annotations.yes_no_answer[0]\
+      \ == \"NO\" %} \n        Based on the following text snippet, {{question_text}}\
+      \ \n        {{\"\\n\"}}{{document_plaintext}}\n||| \n{{annotations.yes_no_answer[0]}}\n\
+      \    {% endif %}\n{% endif %}"
+    name: binary_question_with_document_text_2
+    reference: Binary question without mentioning KB
+    task_template: true
