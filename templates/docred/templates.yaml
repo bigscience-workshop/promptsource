@@ -5,27 +5,29 @@ templates:
     jinja: "Read the following text and answer the questions.\n\nText:\n{% for sent\
       \ in sents -%}\n{{ sent | join(\" \") }}\n{%- endfor %} \n\nQuestion:\nFrom\
       \ the above text, find people, locations, organizations, time, numbers, and\
-      \ miscellaneous.\n|||\n{{\"People: \"}}\n{%- set people = [] -%} \n{%- for ners\
-      \ in vertexSet -%}\n{%- for ner in ners if ner['type'] == 'PER' -%}\n{{people.append(ner['name'])\
-      \ | default(\"\", True)}}\n{%- endfor -%}\n{%- endfor -%}\n{{ people | unique\
-      \ | join(\",\")}}{{\".\"}}\n\n{{\"Locations: \"}}\n{%- set locations = [] -%}\
-      \ \n{%- for ners in vertexSet -%}\n{%- for ner in ners if ner['type'] == 'LOC'\
-      \ -%}\n{{locations.append(ner['name']) | default(\"\", True)}}\n{%- endfor -%}\n\
-      {%- endfor -%}\n{{ locations | unique | join(\",\")}}{{\".\"}}\n\n{{\"Organizations:\
-      \ \"}}\n{%- set orgs = [] -%} \n{%- for ners in vertexSet -%}\n{%- for ner in\
-      \ ners if ner['type'] == 'ORG' -%}\n{{orgs.append(ner['name']) | default(\"\"\
-      , True)}}\n{%- endfor -%}\n{%- endfor -%}\n{{ orgs | unique | join(\",\")}}{{\"\
-      .\"}}\n\n{{\"Time: \"}}\n{%- set time = [] -%} \n{%- for ners in vertexSet -%}\n\
-      {%- for ner in ners if ner['type'] == 'TIME' -%}\n{{time.append(ner['name'])\
-      \ | default(\"\", True)}}\n{%- endfor -%}\n{%- endfor -%}\n{{ time | unique\
-      \ | join(\",\")}}{{\".\"}}\n\n{{\"Numbers: \"}}\n{%- set numbers = [] -%} \n\
-      {%- for ners in vertexSet -%}\n{%- for ner in ners if ner['type'] == 'NUM' -%}\n\
-      {{numbers.append(ner['name']) | default(\"\", True)}}\n{%- endfor -%}\n{%- endfor\
-      \ -%}\n{{ numbers | unique | join(\",\")}}{{\".\"}}\n\n{{\"Miscellaneous: \"\
-      }}\n{%- set miscs = [] -%} \n{%- for ners in vertexSet -%}\n{%- for ner in ners\
+      \ miscellaneous.\n|||\n{%- set people = [] -%} \n{%- for ners in vertexSet -%}\n\
+      {%- for ner in ners if ner['type'] == 'PER' -%}\n{{people.append(ner['name'])\
+      \ | default(\"\", True)}}\n{%- endfor -%}\n{%- endfor -%}\n{% if people %}\n\
+      {{\"People: \"}}{{ people | unique | join(\", \")}}{{\".\"}}\n{% endif %}\n\n\
+      {%- set locations = [] -%} \n{%- for ners in vertexSet -%}\n{%- for ner in ners\
+      \ if ner['type'] == 'LOC' -%}\n{{locations.append(ner['name']) | default(\"\"\
+      , True)}}\n{%- endfor -%}\n{%- endfor -%}\n{% if locations %}\n{{\"Locations:\
+      \ \"}}{{ locations | unique | join(\", \")}}{{\".\"}}\n{% endif %}\n\n{%- set\
+      \ orgs = [] -%} \n{%- for ners in vertexSet -%}\n{%- for ner in ners if ner['type']\
+      \ == 'ORG' -%}\n{{orgs.append(ner['name']) | default(\"\", True)}}\n{%- endfor\
+      \ -%}\n{%- endfor -%}\n{% if orgs %}\n{{\"Organizations: \"}}{{ orgs | unique\
+      \ | join(\", \")}}{{\".\"}}\n{% endif %}\n\n{%- set time = [] -%} \n{%- for\
+      \ ners in vertexSet -%}\n{%- for ner in ners if ner['type'] == 'TIME' -%}\n\
+      {{time.append(ner['name']) | default(\"\", True)}}\n{%- endfor -%}\n{%- endfor\
+      \ -%}\n{% if time %}\n{{\"Time: \"}}{{ time | unique | join(\", \")}}{{\".\"\
+      }}\n{% endif %}\n\n{%- set numbers = [] -%} \n{%- for ners in vertexSet -%}\n\
+      {%- for ner in ners if ner['type'] == 'NUM' -%}\n{{numbers.append(ner['name'])\
+      \ | default(\"\", True)}}\n{%- endfor -%}\n{%- endfor -%}\n{% if numbers %}\n\
+      {{\"Numbers: \"}}{{ numbers | unique | join(\", \")}}{{\".\"}}\n{% endif %}\n\
+      \n{%- set miscs = [] -%} \n{%- for ners in vertexSet -%}\n{%- for ner in ners\
       \ if ner['type'] == 'MISC' -%}\n{{miscs.append(ner['name']) | default(\"\",\
-      \ True)}}\n{%- endfor -%}\n{%- endfor -%}\n{{ miscs | unique | join(\",\")}}{{\"\
-      .\"}}"
+      \ True)}}\n{%- endfor -%}\n{%- endfor -%}\n{% if miscs %}\n{{\"Miscellaneous:\
+      \ \"}}{{ miscs | unique | join(\", \")}}{{\".\"}}\n{% endif %}"
     name: type-to-entity
     reference: ''
     task_template: false
@@ -56,8 +58,8 @@ templates:
       \ TIME (Time), NUM (Number), and MISC (Miscellaneous).\n\n{% for  head, tail,\
       \ relation in zip(labels['head'], labels['tail'], labels['relation_text']) %}\n\
       head: {{vertexSet[head][0]['name']}}, tail: {{vertexSet[tail][0]['name']}},\
-      \ relation: {{relation}}\n{% endfor %}\n|||\nText:\n{% for sent in sents -%}\n\
-      {{ sent | join(\" \") }}\n{%- endfor -%} \n{% endif %}"
+      \ relation: {{relation}}\n{% endfor %}\n|||\n{% for sent in sents -%}\n{{ sent\
+      \ | join(\" \") }}\n{%- endfor -%} \n{% endif %}"
     name: relation-to-text
     reference: ''
     task_template: false
