@@ -4,7 +4,7 @@ templates:
     id: 02af700c-e9e9-4a84-b75c-5fb29a5b7993
     jinja: "Read the following text and answer the questions.\n\nText:\n{% for sent\
       \ in sents -%}\n{{ sent | join(\" \") }}\n{%- endfor %} \n\nQuestion:\nFrom\
-      \ the above text, find people, locations, organizations, time, numbers, and\
+      \ the above text, find people, locations, organizations, times, numbers, and\
       \ miscellaneous.\n|||\n{%- set people = [] -%} \n{%- for ners in vertexSet -%}\n\
       {%- for ner in ners if ner['type'] == 'PER' -%}\n{{people.append(ner['name'])\
       \ | default(\"\", True)}}\n{%- endfor -%}\n{%- endfor -%}\n{% if people %}\n\
@@ -16,10 +16,10 @@ templates:
       \ orgs = [] -%} \n{%- for ners in vertexSet -%}\n{%- for ner in ners if ner['type']\
       \ == 'ORG' -%}\n{{orgs.append(ner['name']) | default(\"\", True)}}\n{%- endfor\
       \ -%}\n{%- endfor -%}\n{% if orgs %}\n{{\"Organizations: \"}}{{ orgs | unique\
-      \ | join(\", \")}}{{\".\"}}\n{% endif %}\n\n{%- set time = [] -%} \n{%- for\
+      \ | join(\", \")}}{{\".\"}}\n{% endif %}\n\n{%- set times = [] -%} \n{%- for\
       \ ners in vertexSet -%}\n{%- for ner in ners if ner['type'] == 'TIME' -%}\n\
-      {{time.append(ner['name']) | default(\"\", True)}}\n{%- endfor -%}\n{%- endfor\
-      \ -%}\n{% if time %}\n{{\"Time: \"}}{{ time | unique | join(\", \")}}{{\".\"\
+      {{times.append(ner['name']) | default(\"\", True)}}\n{%- endfor -%}\n{%- endfor\
+      \ -%}\n{% if times %}\n{{\"Times: \"}}{{ times | unique | join(\", \")}}{{\".\"\
       }}\n{% endif %}\n\n{%- set numbers = [] -%} \n{%- for ners in vertexSet -%}\n\
       {%- for ner in ners if ner['type'] == 'NUM' -%}\n{{numbers.append(ner['name'])\
       \ | default(\"\", True)}}\n{%- endfor -%}\n{%- endfor -%}\n{% if numbers %}\n\
@@ -51,6 +51,28 @@ templates:
     name: ner-type
     reference: ''
     task_template: true
+  412b482e-185b-48da-8aef-4a93a42e779d: !Template
+    id: 412b482e-185b-48da-8aef-4a93a42e779d
+    jinja: "{%- set locations = [] -%} \n{%- for ners in vertexSet -%}\n{%- for ner\
+      \ in ners if ner['type'] == 'LOC' -%}\n{{locations.append(ner['name']) | default(\"\
+      \", True)}}\n{%- endfor -%}\n{%- endfor -%}\n{% if locations %}\nFind all of\
+      \ the locations in the text below. \n\n{% for sent in sents -%}\n{{ sent | join(\"\
+      \ \") }}\n{%- endfor -%} \n|||\n{{ locations| unique | join(\", \")}}{{\".\"\
+      }}\n{% endif %}"
+    name: find-all-locations
+    reference: ''
+    task_template: false
+  5361a8ba-8ced-4417-be21-ba13fa319e9f: !Template
+    id: 5361a8ba-8ced-4417-be21-ba13fa319e9f
+    jinja: "{%- set organizations = [] -%} \n{%- for ners in vertexSet -%}\n{%- for\
+      \ ner in ners if ner['type'] == 'ORG' -%}\n{{organizations.append(ner['name'])\
+      \ | default(\"\", True)}}\n{%- endfor -%}\n{%- endfor -%}\n{% if organizations\
+      \ %}\nFind all of the organizations in the text below.\n\n{% for sent in sents\
+      \ -%}\n{{ sent | join(\" \") }}\n{%- endfor -%} \n|||\n{{ organizations| unique\
+      \ | join(\", \")}}{{\".\"}}\n{% endif %}"
+    name: find-all-organizations
+    reference: ''
+    task_template: false
   6efa4d1a-3368-4b12-9e30-588b53801077: !Template
     id: 6efa4d1a-3368-4b12-9e30-588b53801077
     jinja: "{% if labels['relation_text'] %}\nGiven the following entities and relations,\
@@ -76,6 +98,28 @@ templates:
     name: ner-to-text
     reference: ''
     task_template: false
+  7f6bb96c-3661-4369-8d75-6eca07f15e6d: !Template
+    id: 7f6bb96c-3661-4369-8d75-6eca07f15e6d
+    jinja: "{%- set times = [] -%} \n{%- for ners in vertexSet -%}\n{%- for ner in\
+      \ ners if ner['type'] == 'TIME' -%}\n{{times.append(ner['name']) | default(\"\
+      \", True)}}\n{%- endfor -%}\n{%- endfor -%}\n{% if times %}\nFind all of the\
+      \ times in the text below. \n\n{% for sent in sents -%}\n{{ sent | join(\" \"\
+      ) }}\n{%- endfor -%} \n|||\n{{ times| unique | join(\", \")}}{{\".\"}}\n{% endif\
+      \ %}"
+    name: find-all-times
+    reference: ''
+    task_template: false
+  9ca601e9-bf97-4fba-90c9-ca502247d034: !Template
+    id: 9ca601e9-bf97-4fba-90c9-ca502247d034
+    jinja: "{%- set people = [] -%} \n{%- for ners in vertexSet -%}\n{%- for ner in\
+      \ ners if ner['type'] == 'PER' -%}\n{{people.append(ner['name']) | default(\"\
+      \", True)}}\n{%- endfor -%}\n{%- endfor -%}\n{% if people %}\nFind all of the\
+      \ people in the text below. \n\n{% for sent in sents -%}\n{{ sent | join(\"\
+      \ \") }}\n{%- endfor -%} \n|||\n{{ people| unique | join(\", \")}}{{\".\"}}\n\
+      {% endif %}"
+    name: find-all-people
+    reference: ''
+    task_template: false
   9effc9d0-bf50-4dbb-9813-02a021e8da33: !Template
     id: 9effc9d0-bf50-4dbb-9813-02a021e8da33
     jinja: "{% if labels['relation_text'] %}\n\nRead the following text and answer\
@@ -91,3 +135,14 @@ templates:
     name: relation
     reference: ''
     task_template: true
+  a31dc527-a5b9-4411-a600-ea2bbe22a9d3: !Template
+    id: a31dc527-a5b9-4411-a600-ea2bbe22a9d3
+    jinja: "{%- set numbers = [] -%} \n{%- for ners in vertexSet -%}\n{%- for ner\
+      \ in ners if ner['type'] == 'NUM' -%}\n{{numbers.append(ner['name']) | default(\"\
+      \", True)}}\n{%- endfor -%}\n{%- endfor -%}\n{% if numbers %}\nFind all of the\
+      \ numbers in the text below. Please do not include years.\n\n{% for sent in\
+      \ sents -%}\n{{ sent | join(\" \") }}\n{%- endfor -%} \n|||\n{{ numbers| unique\
+      \ | join(\", \")}}{{\".\"}}\n{% endif %}"
+    name: find-all-numbers
+    reference: ''
+    task_template: false
