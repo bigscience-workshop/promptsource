@@ -25,19 +25,28 @@ templates:
 
       {% endfor %}
 
-      {% set final_price = nonzero_price[-1] %}
+      {% if nonzero_price | length == 0 %}{% set final_price = -1 %}
 
-      {% if ((final_price - agent_info["Target"][0]) | abs) >= ((final_price - agent_info["Target"][1])
+      {% else %}{% set final_price = nonzero_price[-1] %}{% endif %}
+
+      {% if final_price == -1 %}
+
+      incomplete
+
+      {% elif ((final_price - agent_info["Target"][0]) | abs) == ((final_price - agent_info["Target"][1])
       | abs) %}
 
       good
 
-      {% endif %}
-
-      {% if ((final_price - agent_info["Target"][0]) | abs) < ((final_price - agent_info["Target"][1])
+      {% elif ((final_price - agent_info["Target"][0]) | abs) < ((final_price - agent_info["Target"][1])
       | abs) %}
 
       bad
+
+      {% elif ((final_price - agent_info["Target"][0]) | abs) > ((final_price - agent_info["Target"][1])
+      | abs) %}
+
+      good
 
       {% endif %}'
     name: good deal for seller no list price implicit
@@ -52,7 +61,7 @@ templates:
       {{utterance | join("\n\n")}}
 
 
-      Was this a good deal for the seller? answer "yes" or "no"
+      Was this a good deal for the seller? answer "yes", "no", or "unknown".
 
       |||
 
@@ -68,19 +77,28 @@ templates:
 
       {% endfor %}
 
-      {% set final_price = nonzero_price[-1] %}
+      {% if nonzero_price | length == 0 %}{% set final_price = -1 %}
 
-      {% if ((final_price - agent_info["Target"][0]) | abs) >= ((final_price - agent_info["Target"][1])
+      {% else %}{% set final_price = nonzero_price[-1] %}{% endif %}
+
+      {% if final_price == -1 %}
+
+      unknown
+
+      {% elif ((final_price - agent_info["Target"][0]) | abs) == ((final_price - agent_info["Target"][1])
       | abs) %}
 
       yes
 
-      {% endif %}
-
-      {% if ((final_price - agent_info["Target"][0]) | abs) < ((final_price - agent_info["Target"][1]
-      | abs)) %}
+      {% elif ((final_price - agent_info["Target"][0]) | abs) < ((final_price - agent_info["Target"][1])
+      | abs) %}
 
       no
+
+      {% elif ((final_price - agent_info["Target"][0]) | abs) > ((final_price - agent_info["Target"][1])
+      | abs) %}
+
+      yes
 
       {% endif %}'
     name: good deal for seller no list price
@@ -113,7 +131,7 @@ templates:
       {{utterance | join("\n\n")}}
 
 
-      Was this a good deal for the seller? Answer "yes" or "no".
+      Was this a good deal for the seller? Answer "yes" or "no", or "unknown".
 
       |||
 
@@ -129,19 +147,28 @@ templates:
 
       {% endfor %}
 
-      {% set final_price = nonzero_price[-1] %}
+      {% if nonzero_price | length == 0 %}{% set final_price = -1 %}
 
-      {% if ((final_price - agent_info["Target"][0]) | abs) >= ((final_price - agent_info["Target"][1])
+      {% else %}{% set final_price = nonzero_price[-1] %}{% endif %}
+
+      {% if final_price == -1 %}
+
+      unknown
+
+      {% elif ((final_price - agent_info["Target"][0]) | abs) == ((final_price - agent_info["Target"][1])
       | abs) %}
 
       yes
 
-      {% endif %}
-
-      {% if ((final_price - agent_info["Target"][0]) | abs) < ((final_price - agent_info["Target"][1])
+      {% elif ((final_price - agent_info["Target"][0]) | abs) < ((final_price - agent_info["Target"][1])
       | abs) %}
 
       no
+
+      {% elif ((final_price - agent_info["Target"][0]) | abs) > ((final_price - agent_info["Target"][1])
+      | abs) %}
+
+      yes
 
       {% endif %}'
     name: good deal for seller
@@ -166,6 +193,9 @@ templates:
 
       c) neither - it is a fair compromise
 
+      d) unknown
+
+
       Answer:
 
       |||
@@ -182,23 +212,25 @@ templates:
 
       {% endfor %}
 
-      {% set final_price = nonzero_price[-1] %}
+      {% if nonzero_price | length == 0 %}{% set final_price = -1 %}
 
-      {% if ((final_price - agent_info["Target"][0]) | abs) == ((final_price - agent_info["Target"][1])
+      {% else %}{% set final_price = nonzero_price[-1] %}{% endif %}
+
+      {% if final_price == -1 %}
+
+      d) unknown
+
+      {% elif ((final_price - agent_info["Target"][0]) | abs) == ((final_price - agent_info["Target"][1])
       | abs) %}
 
       c) neither - it is a fair compromise
 
-      {% endif %}
-
-      {% if ((final_price - agent_info["Target"][0]) | abs) < ((final_price - agent_info["Target"][1])
+      {% elif ((final_price - agent_info["Target"][0]) | abs) < ((final_price - agent_info["Target"][1])
       | abs) %}
 
       a) the buyer
 
-      {% endif %}
-
-      {% if ((final_price - agent_info["Target"][0]) | abs) > ((final_price - agent_info["Target"][1])
+      {% elif ((final_price - agent_info["Target"][0]) | abs) > ((final_price - agent_info["Target"][1])
       | abs) %}
 
       b) the seller
@@ -212,27 +244,27 @@ templates:
     jinja: 'The following conversation is a negotiation on craigslist. The first speaker
       is the buyer, and the second speaker is the seller.
 
-      {{utterance[:2] | join("\n\n")}}
+      {% set nonempty_utterance = [] %}
 
-      {% if dialogue_acts[''intent''][2]!=''unknown'' and dialogue_acts[''intent''][2]!=""
-      %}
+      {% for line in utterance %}
 
-      Question:What could be the next line in the negotiation, if the intent is to
-      {{dialogue_acts[''intent''][2]}}?
+      {% if line != "" %}{{ nonempty_utterance.append(line) or ""}}
 
       {% endif %}
 
-      {% if dialogue_acts[''intent''][2]==''unknown'' or dialogue_acts[''intent''][2]==""  %}
+      {% endfor %}
 
-      Question:What could be the next line in the negotiation?
 
-      {% endif %}
+      {{nonempty_utterance[:-1] | join(''\n'')}}
+
+
+      Question: What could be the next line in the negotiation?
 
       Answer:
 
       |||
 
-      {{utterance[2]}}'
-    name: generate intent
-    reference: Generates the next line of negotiation given the intent
+      {{nonempty_utterance[-1]}}'
+    name: generate line
+    reference: Generates the next line of negotiation
     task_template: true
