@@ -3,8 +3,9 @@ subset: dialogues
 templates:
   4b64c6e9-0aa0-431f-85b5-8367daa4773a: !Template
     id: 4b64c6e9-0aa0-431f-85b5-8367daa4773a
-    jinja: "What does this conversation between a chatbot and a client talk about\
-      \ ? \n{{turns |  join(\"\\n- \")}}\n|||\n{{domain.replace('_', ' ') | lower\
+    jinja: "What does this conversation between a Chatbot and a client talk about\
+      \ ? \n{% for utterance in turns %}\n{{[\"Client\", \"Chatbot\"][loop.index %\
+      \ 2]}}: {{utterance}}\n{% endfor %}\n|||\n{{domain.replace('_', ' ') | lower\
       \ }}"
     name: predict_domain_2
     reference: ''
@@ -45,7 +46,8 @@ templates:
   77a9e854-08ef-4f2d-86f9-ed077f18b39d: !Template
     id: 77a9e854-08ef-4f2d-86f9-ed077f18b39d
     jinja: "This conversation is between an AI assistant and a human. What is the\
-      \ human inquiring about ? \n{{turns |  join(\"\\n- \")}}\n|||\n{{domain.replace('_',\
+      \ human inquiring about ? \n{% for utterance in turns %}\n{{[\"Human\", \" AI\
+      \ assistant\"][loop.index % 2]}}: {{utterance}}\n{% endfor %}\n|||\n{{domain.replace('_',\
       \ ' ') | lower }}"
     name: predict_domain_3
     reference: ''
@@ -53,8 +55,9 @@ templates:
   9150f1e0-8b9e-4f24-bc58-1cbb230cb8d9: !Template
     id: 9150f1e0-8b9e-4f24-bc58-1cbb230cb8d9
     jinja: "This conversation is between an AI assistant and a human. what does it\
-      \ talk about ? \n{{turns | join(\"\\n- \")}}\n|||\n{{domain.replace('_', ' ')\
-      \ | lower }}"
+      \ talk about ? \n{% for utterance in turns %}\n{{[\"Human\", \" AI assistant\"\
+      ][loop.index % 2]}}: {{utterance}}\n{% endfor %}\n|||\n{{domain.replace('_',\
+      \ ' ') | lower }}"
     name: predict_domain_1
     reference: ''
     task_template: false
