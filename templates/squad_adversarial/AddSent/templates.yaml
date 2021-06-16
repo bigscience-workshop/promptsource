@@ -1,6 +1,75 @@
 dataset: squad_adversarial
 subset: AddSent
 templates:
+  0b69eb58-0ad7-45b4-baf2-f3abac775fe2: !Template
+    id: 0b69eb58-0ad7-45b4-baf2-f3abac775fe2
+    jinja: 'Generate a title for the following short passage:
+
+
+      {{context}} |||
+
+      {{title|replace("_"," ")}}
+
+      '
+    name: title
+    reference: ''
+    task_template: false
+  258731f1-2101-4178-b30f-571336fbef78: !Template
+    id: 258731f1-2101-4178-b30f-571336fbef78
+    jinja: 'For the following passage-question pair, list all possible wrong answers
+      (pitfalls) test-takers may choose:
+
+
+      {{context}}
+
+      {{question}} |||
+
+      {{answers["text"]|join(", ")}}'
+    name: possible_pitfalls
+    reference: ''
+    task_template: true
+  5cce68fe-de8c-40ed-b1f5-d70ce78859df: !Template
+    id: 5cce68fe-de8c-40ed-b1f5-d70ce78859df
+    jinja: 'Generate a possible question for the following short passage:
+
+
+      {{context}} |||
+
+      {{question}}'
+    name: possible_qn
+    reference: ''
+    task_template: false
+  7ff63436-6cff-4963-b208-2002151daad7: !Template
+    id: 7ff63436-6cff-4963-b208-2002151daad7
+    jinja: 'List all possible non-answers that have a lot of words in common with
+      the following context-question pair:
+
+
+      {{context}}
+
+      {{question}} |||
+
+      {{answers["text"]|join('', '')}}
+
+      '
+    name: incorrect_answers
+    reference: ''
+    task_template: true
+  f3187941-53ef-4285-b5bd-deaf1ef81001: !Template
+    id: f3187941-53ef-4285-b5bd-deaf1ef81001
+    jinja: 'Use the following non-answers to generate a possible short passage-question
+      pair:
+
+      {{answers["text"]|join('', '')}} |||
+
+      {{context}}
+
+      {{question}}
+
+      '
+    name: answers_question
+    reference: ''
+    task_template: false
   129b0f6f-3c65-4e7c-97c2-ef30cf92f417: !Template
     id: 129b0f6f-3c65-4e7c-97c2-ef30cf92f417
     jinja: "Question: {{question}}\n\nAnswer: \n|||\n{{answers['text'] | most_frequent\
