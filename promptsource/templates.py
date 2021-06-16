@@ -27,6 +27,7 @@ def choice(choices):
 
 
 def most_frequent(items):
+    """Returns the set of items which appear most frequently in the input"""
     if not items:
         return
     item_counts = Counter(items).most_common()
