@@ -4,7 +4,7 @@ templates:
     id: 02af700c-e9e9-4a84-b75c-5fb29a5b7993
     jinja: "Read the following text and answer the questions.\n\nText:\n{% for sent\
       \ in sents -%}\n{{ sent | join(\" \") }}\n{%- endfor %} \n\nQuestion:\nFrom\
-      \ the above text, find people, locations, organizations, time, numbers, and\
+      \ the above text, find people, locations, organizations, times, numbers, and\
       \ miscellaneous.\n|||\n{%- set people = [] -%} \n{%- for ners in vertexSet -%}\n\
       {%- for ner in ners if ner['type'] == 'PER' -%}\n{{people.append(ner['name'])\
       \ | default(\"\", True)}}\n{%- endfor -%}\n{%- endfor -%}\n{% if people %}\n\
@@ -16,10 +16,10 @@ templates:
       \ orgs = [] -%} \n{%- for ners in vertexSet -%}\n{%- for ner in ners if ner['type']\
       \ == 'ORG' -%}\n{{orgs.append(ner['name']) | default(\"\", True)}}\n{%- endfor\
       \ -%}\n{%- endfor -%}\n{% if orgs %}\n{{\"Organizations: \"}}{{ orgs | unique\
-      \ | join(\", \")}}{{\".\"}}\n{% endif %}\n\n{%- set time = [] -%} \n{%- for\
+      \ | join(\", \")}}{{\".\"}}\n{% endif %}\n\n{%- set times = [] -%} \n{%- for\
       \ ners in vertexSet -%}\n{%- for ner in ners if ner['type'] == 'TIME' -%}\n\
-      {{time.append(ner['name']) | default(\"\", True)}}\n{%- endfor -%}\n{%- endfor\
-      \ -%}\n{% if time %}\n{{\"Time: \"}}{{ time | unique | join(\", \")}}{{\".\"\
+      {{times.append(ner['name']) | default(\"\", True)}}\n{%- endfor -%}\n{%- endfor\
+      \ -%}\n{% if times %}\n{{\"Times: \"}}{{ times | unique | join(\", \")}}{{\".\"\
       }}\n{% endif %}\n\n{%- set numbers = [] -%} \n{%- for ners in vertexSet -%}\n\
       {%- for ner in ners if ner['type'] == 'NUM' -%}\n{{numbers.append(ner['name'])\
       \ | default(\"\", True)}}\n{%- endfor -%}\n{%- endfor -%}\n{% if numbers %}\n\
@@ -100,26 +100,13 @@ templates:
     task_template: false
   7f6bb96c-3661-4369-8d75-6eca07f15e6d: !Template
     id: 7f6bb96c-3661-4369-8d75-6eca07f15e6d
-    jinja: "{%- set time = [] -%} \n{%- for ners in vertexSet -%}\n{%- for ner in\
-      \ ners if ner['type'] == 'TIME' -%}\n{{time.append(ner['name']) | default(\"\
-      \", True)}}\n{%- endfor -%}\n{%- endfor -%}\n{% if time %}\nFind all of the\
-      \ time in the text below. \n\n{% for sent in sents -%}\n{{ sent | join(\" \"\
-      ) }}\n{%- endfor -%} \n|||\n{{ time| unique | join(\", \")}}{{\".\"}}\n{% endif\
+    jinja: "{%- set times = [] -%} \n{%- for ners in vertexSet -%}\n{%- for ner in\
+      \ ners if ner['type'] == 'TIME' -%}\n{{times.append(ner['name']) | default(\"\
+      \", True)}}\n{%- endfor -%}\n{%- endfor -%}\n{% if times %}\nFind all of the\
+      \ times in the text below. \n\n{% for sent in sents -%}\n{{ sent | join(\" \"\
+      ) }}\n{%- endfor -%} \n|||\n{{ times| unique | join(\", \")}}{{\".\"}}\n{% endif\
       \ %}"
-    name: find-all-time
-    reference: ''
-    task_template: false
-  901e34b8-70c9-4434-944e-03e38286a1c8: !Template
-    id: 901e34b8-70c9-4434-944e-03e38286a1c8
-    jinja: "{%- set misc = [] -%} \n{%- for ners in vertexSet -%}\n{%- for ner in\
-      \ ners if ner['type'] == 'MISC' -%}\n{{misc.append(ner['name']) | default(\"\
-      \", True)}}\n{%- endfor -%}\n{%- endfor -%}\n{% if misc %}\nFind all of the\
-      \ miscellaneous entities (e.g. products, events, laws, languages, etc.) in the\
-      \ text below. Miscellaneous entities should not include people, organizations,\
-      \ locations, time, and numbers.\n\n{% for sent in sents -%}\n{{ sent | join(\"\
-      \ \") }}\n{%- endfor -%} \n|||\n{{ misc| unique | join(\", \")}}{{\".\"}}\n\
-      {% endif %}"
-    name: find-all-miscellaneous
+    name: find-all-times
     reference: ''
     task_template: false
   9ca601e9-bf97-4fba-90c9-ca502247d034: !Template
@@ -153,9 +140,9 @@ templates:
     jinja: "{%- set numbers = [] -%} \n{%- for ners in vertexSet -%}\n{%- for ner\
       \ in ners if ner['type'] == 'NUM' -%}\n{{numbers.append(ner['name']) | default(\"\
       \", True)}}\n{%- endfor -%}\n{%- endfor -%}\n{% if numbers %}\nFind all of the\
-      \ numbers in the text below. \n\n{% for sent in sents -%}\n{{ sent | join(\"\
-      \ \") }}\n{%- endfor -%} \n|||\n{{ numbers| unique | join(\", \")}}{{\".\"}}\n\
-      {% endif %}"
+      \ numbers in the text below. Please do not include years.\n\n{% for sent in\
+      \ sents -%}\n{{ sent | join(\" \") }}\n{%- endfor -%} \n|||\n{{ numbers| unique\
+      \ | join(\", \")}}{{\".\"}}\n{% endif %}"
     name: find-all-numbers
     reference: ''
     task_template: false
