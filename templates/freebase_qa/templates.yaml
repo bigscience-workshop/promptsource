@@ -1,0 +1,49 @@
+dataset: freebase_qa
+templates:
+  02b12d5c-a481-494d-84ea-a210eefa66d2: !Template
+    id: 02b12d5c-a481-494d-84ea-a210eefa66d2
+    jinja: "{% set question_context = Parses.TopicEntityName | choice %}\n{% set inference_context\
+      \ = Parses.InferentialChain | choice %}\nThe topic of this question is: {{question_context.split(\"\
+      \ \") | map(\"capitalize\") | join(\" \")}}.\n\nTo solve this question, use\
+      \ the following chain of relations between the topic and answer: {{inference_context}}\n\
+      \nUsing this, answer the following question:\n\n{{RawQuestion}}\n||| \n{% set\
+      \ answer = Parses.Answers | choice %}\n{{answer.AnswersName[0][0].split(\" \"\
+      ) | map(\"capitalize\") | join(\" \") }}"
+    name: qa_context_2
+    reference: qa prompt with topic and inference chain provided
+    task_template: false
+  1d583b71-7ef1-49df-b252-e8e1d6910129: !Template
+    id: 1d583b71-7ef1-49df-b252-e8e1d6910129
+    jinja: "What chain of relations between topic entity and answer could be used\
+      \ to solve the following question: \n\n{{RawQuestion}}\n||| \n{{ Parses.InferentialChain\
+      \ | choice }}\n"
+    name: inference_chain_prompt
+    reference: predicting the inference chain given just the question
+    task_template: false
+  1fd7e73c-92ac-4e33-be33-80775cbb14df: !Template
+    id: 1fd7e73c-92ac-4e33-be33-80775cbb14df
+    jinja: "Answer the following question:\n\n{{RawQuestion}}\n||| \n{% set answer\
+      \ = Parses.Answers | choice %}\n{{answer.AnswersName[0][0].split(\" \") | map(\"\
+      capitalize\") | join(\" \") }}"
+    name: qa_template_basic
+    reference: basic question/answer format
+    task_template: true
+  30ff02f4-3673-4ea6-a3e0-0df0cf19b021: !Template
+    id: 30ff02f4-3673-4ea6-a3e0-0df0cf19b021
+    jinja: "{% set context = Parses.TopicEntityName | choice %}\nThe topic of this\
+      \ question is: {{context.split(\" \") | map(\"capitalize\") | join(\" \")}}.\n\
+      \nWith that context, answer the following question:\n\n{{RawQuestion}}\n|||\
+      \ \n{% set answer = Parses.Answers | choice %}\n{{answer.AnswersName[0][0].split(\"\
+      \ \") | map(\"capitalize\") | join(\" \") }}"
+    name: qa_context_1
+    reference: qa question with simple entity context
+    task_template: true
+  dbf762f0-2daa-4cc4-af67-ba72aa2c1991: !Template
+    id: dbf762f0-2daa-4cc4-af67-ba72aa2c1991
+    jinja: "{% set answer = Parses.Answers | choice %}\nWhat chain of relations connects\
+      \ the question: \n\n\"{{RawQuestion}}\" \n\nto its answer: \"{{answer.AnswersName[0][0].split(\"\
+      \ \") | map(\"capitalize\") | join(\" \") }}\"?\n||| \n{{ Parses.InferentialChain\
+      \ | choice }}"
+    name: inference_chain_prompt_context
+    reference: determine the inference chain between question and answer
+    task_template: false
