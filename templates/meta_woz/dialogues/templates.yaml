@@ -12,7 +12,7 @@ templates:
     id: 56151136-82a4-455b-98ed-aea6ee1c273d
     jinja: '{% set count = namespace(value=0) %}
 
-      {% for i in range(range(turns|length) | random() - 1) %}
+      {% for i in range(range(2, turns|length) | random() - 1) %}
 
       {{["AI Assistant", "Client"][i% 2]}}: {{turns[i]}}
 
@@ -35,9 +35,9 @@ templates:
     id: 5e90f705-9d63-4917-acc9-3baabc6ee5e9
     jinja: "{% set rand_index= namespace(value=range(turns|length)|random()) %}\n\
       {% for utterance in turns %}\n{% if loop.index0 == rand_index.value %}\n{{[\"\
-      Chatbot\", \"Human\"][loop.index0 % 2]}}: \n{% else %}\n{{[\"Chatbot\", \"Human\"\
-      ][loop.index0 % 2]}}: {{utterance}}\n{% endif %}\n{% endfor %}\n|||\n{{turns[rand_index.value]\
-      \ }}"
+      Chatbot\", \"Human\"][loop.index0 % 2]}}: (blank)\n{% else %}\n{{[\"Chatbot\"\
+      , \"Human\"][loop.index0 % 2]}}: {{utterance}}\n{% endif %}\n{% endfor %}\n\
+      Fill in the blank \n|||\n{{turns[rand_index.value] }}"
     name: 'predict_missing '
     reference: ''
     task_template: false
@@ -59,17 +59,25 @@ templates:
     task_template: false
   98b0697f-3144-40b6-b6ae-5d57c3f08db3: !Template
     id: 98b0697f-3144-40b6-b6ae-5d57c3f08db3
-    jinja: "Chatbot: {{turns[0]}}\nHuman: {{turns[1]}}\nChatbot: \n|||\n{{turns[2]}}"
+    jinja: "Chatbot: {{turns[0]}}\n\nHuman: {{turns[1]}}\n\nChatbot: \n|||\n{{turns[2]}}"
     name: predict_next_stmt_1
     reference: ''
     task_template: true
   a02a980d-630f-4845-8b4d-b0eb072110e9: !Template
     id: a02a980d-630f-4845-8b4d-b0eb072110e9
-    jinja: "{% if turns|length % 2 == 1 %}\n{% for i in range((turns|length) // 2)\
-      \ %}\nBot: {{turns[2*i]}}\nUser: {{turns[2*i+1]}}\n{% endfor %}\nBot: \n|||\n\
-      {{turns | last }}\n{% else %}\n{% for i in range((turns|length) // 2 - 1 ) %}\n\
-      Bot: {{turns[2*i]}}\nUser: {{turns[2*i+1]}}\n{% endfor %}\nBot: {{ turns[turns|length\
-      \ - 2]}}\nUser: \n|||\n{{turns | last }}\n{% endif %}\n"
+    jinja: '{% for utterance in turns[:-1] %}
+
+      {{["User", "Bot"][loop.index % 2]}}: {{utterance}}
+
+      {% endfor %}
+
+      {{["User", "Bot"][ turns | length % 2]}}:
+
+      |||
+
+      {{turns[-1]}}
+
+      '
     name: predict_last_stmt_3
     reference: ''
     task_template: false
