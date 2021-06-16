@@ -1,0 +1,64 @@
+dataset: qed
+templates:
+  292db39d-b9e9-4113-b59d-6c5b93133563: !Template
+    id: 292db39d-b9e9-4113-b59d-6c5b93133563
+    jinja: 'Give a suitable title to the following passage:
+
+
+      {{paragraph_text}} |||
+
+
+      {{title_text}}'
+    name: title_prediction
+    reference: ''
+    task_template: false
+  3578c1ee-8872-406f-be9f-b7e174aed92c: !Template
+    id: 3578c1ee-8872-406f-be9f-b7e174aed92c
+    jinja: "Question: {{question}} \n\nAnswer: |||\n\n{{original_nq_answers[0][\"\
+      string\"]}}"
+    name: original_nq_answers
+    reference: ''
+    task_template: false
+  383d06fe-d562-4883-8d29-b727d4c3877b: !Template
+    id: 383d06fe-d562-4883-8d29-b727d4c3877b
+    jinja: "{% if annotation['selected_sentence']['string']!=\"\" %}\nQuestion: {{question}}\n\
+      \nHint: {{paragraph_text}}  \n\nAnswer: |||\n\n{{annotation['selected_sentence']['string']}}\n\
+      {% endif %}\n"
+    name: basic
+    reference: ''
+    task_template: true
+  4cc7af61-ee7a-491f-b232-8ef3dc7d1415: !Template
+    id: 4cc7af61-ee7a-491f-b232-8ef3dc7d1415
+    jinja: '{{paragraph_text}}
+
+
+      Does the above passage contain the answer to the following question:
+
+
+      {{question}} |||
+
+      {{["No", "Yes"][annotation["explaination_type"]!="none"]}}'
+    name: is_answer_exist
+    reference: ''
+    task_template: false
+  5a1e57c7-39b2-486e-9112-d4311aee6bdc: !Template
+    id: 5a1e57c7-39b2-486e-9112-d4311aee6bdc
+    jinja: 'I found the following Wikipedia article:
+
+
+      "{{paragraph_text}}"
+
+
+      Can you predict its title? |||
+
+      {{title_text}}'
+    name: topic_prompt
+    reference: ''
+    task_template: false
+  7d3746b5-52e6-4ce1-b441-007f271f477b: !Template
+    id: 7d3746b5-52e6-4ce1-b441-007f271f477b
+    jinja: "I need to prepare for my upcoming test. Can you read the below passage\
+      \ and ask me a reasonable question? \n\n{{paragraph_text}} ||| \n\n{{question}}"
+    name: question_forming
+    reference: ''
+    task_template: false
