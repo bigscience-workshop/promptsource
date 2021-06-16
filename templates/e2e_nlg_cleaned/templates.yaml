@@ -1,5 +1,28 @@
 dataset: e2e_nlg_cleaned
 templates:
+  0f54b6e2-42c0-45ec-8ea2-2e6204388f76: !Template
+    id: 0f54b6e2-42c0-45ec-8ea2-2e6204388f76
+    jinja: 'Combine all of the following data into a concise and grammatically correct
+      sentence:
+
+      {% for feature in meaning_representation.split("]") %}
+
+      {% set key = feature.split("[")[0].replace(",","") %}
+
+      {% set value = feature.replace(",","").replace(key+"[", '''''''') %}
+
+      {% if value != "" %}
+
+      {{key}} : {{value}}
+
+      {% endif %}
+
+      {%- endfor %}
+
+      ||| {{human_reference}}'
+    name: e2e_basic_3
+    reference: ''
+    task_template: true
   14db0e7a-f7d1-4bd0-bfb3-f611be608c4a: !Template
     id: 14db0e7a-f7d1-4bd0-bfb3-f611be608c4a
     jinja: '{% set vars = {''key'':"eatType", ''value'':""} %}
@@ -47,18 +70,15 @@ templates:
     name: food_1
     reference: ''
     task_template: false
-  3281dd94-173d-4f30-8693-1a4657939bb0: !Template
-    id: 3281dd94-173d-4f30-8693-1a4657939bb0
-    jinja: '{{human_reference}} According to the given passage: what is the diner''s
-      name, type of diner, type of food served, price range of the diner, customer''s
-      rating for the diner, the area or location of the diner, whether the diner is
-      family friendly and which landmark is near this diner. |||
+  1acabbc3-c9b9-4624-a684-29faeccff46f: !Template
+    id: 1acabbc3-c9b9-4624-a684-29faeccff46f
+    jinja: 'Given the following data about a dinery:
 
       {% for feature in meaning_representation.split("]") %}
 
       {% set key = feature.split("[")[0].replace(",","") %}
 
-      {% set value = feature.replace(",","").replace(key+"[", '''') %}
+      {% set value = feature.replace(",","").replace(key+"[", '''''''') %}
 
       {% if value != "" %}
 
@@ -68,8 +88,8 @@ templates:
 
       {%- endfor %}
 
-      '
-    name: multi_answer_1
+      Generate a sentence about this dinery. ||| {{human_reference}}'
+    name: e2e_basic_2
     reference: ''
     task_template: true
   418c7942-06e8-48a7-b5f4-9f15bb874edf: !Template
@@ -143,6 +163,15 @@ templates:
     name: near_1
     reference: ''
     task_template: false
+  711bcf63-be82-4937-bdef-0c379d20bb74: !Template
+    id: 711bcf63-be82-4937-bdef-0c379d20bb74
+    jinja: 'How would we create a sentence out of the following data: {{meaning_representation}}
+      ?
+
+      ||| {{human_reference}}'
+    name: e2e_basic_4
+    reference: ''
+    task_template: true
   83992c17-745f-4940-b626-b01a85ba66c1: !Template
     id: 83992c17-745f-4940-b626-b01a85ba66c1
     jinja: '{% set vars = {''key'':"name", ''value'':""} %}
@@ -191,6 +220,13 @@ templates:
     name: rating_1
     reference: ''
     task_template: false
+  bdecbb5a-d3e8-46f3-9ea8-22025bc59e3b: !Template
+    id: bdecbb5a-d3e8-46f3-9ea8-22025bc59e3b
+    jinja: 'Given the following data: {{meaning_representation}} Generate a sentence
+      about this dinery. ||| {{human_reference}}'
+    name: e2e_basic_1
+    reference: ''
+    task_template: true
   f9089a30-1c6c-4a43-a5eb-586b1dcd72f2: !Template
     id: f9089a30-1c6c-4a43-a5eb-586b1dcd72f2
     jinja: '{% set vars = {''key'':"priceRange", ''value'':""} %}
