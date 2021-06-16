@@ -143,13 +143,22 @@ else:
             state.working_priority_ds = None
             priority_max_templates = None
 
-    dataset_list = list_datasets(template_collection, priority_filter, priority_max_templates, state,)
+    dataset_list = list_datasets(
+        template_collection,
+        priority_filter,
+        priority_max_templates,
+        state,
+    )
 
     #
     # Select a dataset - starts with ag_news
     #
     dataset_key = st.sidebar.selectbox(
-        "Dataset", dataset_list, key="dataset_select", index=12, help="Select the dataset to work on.",  # AG_NEWS
+        "Dataset",
+        dataset_list,
+        key="dataset_select",
+        index=12,  # AG_NEWS
+        help="Select the dataset to work on.",
     )
 
     if mode == "Sourcing":
