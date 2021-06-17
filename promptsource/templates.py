@@ -1,7 +1,7 @@
 import os
 import random
 import uuid
-from collections import defaultdict, Counter
+from collections import Counter, defaultdict
 from shutil import rmtree
 from typing import Dict, List, Optional, Tuple
 
