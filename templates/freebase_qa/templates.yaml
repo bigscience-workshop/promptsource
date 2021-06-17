@@ -16,7 +16,8 @@ templates:
     id: 1d583b71-7ef1-49df-b252-e8e1d6910129
     jinja: "What chain of relations between topic entity and answer could be used\
       \ to solve the following question: \n\n{{RawQuestion}}\n||| \n{{ Parses.InferentialChain\
-      \ | choice }}\n"
+      \ | choice |  replace(\"_\", \" \") | replace(\".\", \", \") | replace(\", ,\"\
+      , \",\") }}\n"
     name: inference_chain_prompt
     reference: predicting the inference chain given just the question
     task_template: false
@@ -43,7 +44,8 @@ templates:
     jinja: "{% set answer = Parses.Answers | choice %}\nWhat chain of relations connects\
       \ the question: \n\n\"{{RawQuestion}}\" \n\nto its answer: \"{{answer.AnswersName[0][0].split(\"\
       \ \") | map(\"capitalize\") | join(\" \") }}\"?\n||| \n{{ Parses.InferentialChain\
-      \ | choice }}"
+      \ | choice |  replace(\"_\", \" \") | replace(\".\", \", \") | replace(\", ,\"\
+      , \",\") }}\n"
     name: inference_chain_prompt_context
     reference: determine the inference chain between question and answer
     task_template: false
