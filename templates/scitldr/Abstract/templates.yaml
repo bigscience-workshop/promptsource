@@ -1,0 +1,41 @@
+dataset: scitldr
+subset: Abstract
+templates:
+  01fb91ab-2c95-436e-9363-3dfcdb6c5ba6: !Template
+    id: 01fb91ab-2c95-436e-9363-3dfcdb6c5ba6
+    jinja: "Generate a summary for the text: \n{{source | join(\" \")}}\n|||\n{{target[0]}}"
+    name: basic - task description like
+    reference: Assume there is only one choice
+    task_template: true
+  08b9e913-a305-46e2-aa43-f1126d76cf55: !Template
+    id: 08b9e913-a305-46e2-aa43-f1126d76cf55
+    jinja: "Elaborate on the given summary: \n{{target |choice}}\n\nStart with following\
+      \ sentence: {{source[0]}}\n|||\n{{source | join(\" \")}}"
+    name: reverse generation
+    reference: This template asks the model to hallucinate the abstract.
+    task_template: false
+  16faf5c0-a0c5-488a-89dd-2989622b01dc: !Template
+    id: 16faf5c0-a0c5-488a-89dd-2989622b01dc
+    jinja: "Compress the abstract to one or two sentences. Make sure it captures the\
+      \ main point of the abstract. \nAbstract: {{source | join(\" \")}}\nSummary:\
+      \ \n|||\n{{target[0]}}\n\n"
+    name: Instructions for summary
+    reference: Providing instructions on what a summary should look like
+    task_template: true
+  ab46a8f2-1e57-4ac9-b4ae-422c70689450: !Template
+    id: ab46a8f2-1e57-4ac9-b4ae-422c70689450
+    jinja: '{{source| join(" ")}}
+
+      TL;DR: ||| {{target[0]}}
+
+      '
+    name: GPT 2 style
+    reference: GPT 2 style template
+    task_template: true
+  bac2ebcf-a54d-49a0-ac37-e7ad3f4878cb: !Template
+    id: bac2ebcf-a54d-49a0-ac37-e7ad3f4878cb
+    jinja: "{{source | join(\" \")}}\nPlease summarize the above paragraph. \n|||\n\
+      {{target|choice}}"
+    name: basic with choice
+    reference: basic task like description with choice filter
+    task_template: true

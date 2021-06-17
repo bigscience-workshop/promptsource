@@ -1,0 +1,102 @@
+dataset: turk
+templates:
+  58d1370e-3fc0-4b96-9e74-950b7c3edfd9: !Template
+    id: 58d1370e-3fc0-4b96-9e74-950b7c3edfd9
+    jinja: 'Simplify the below sentence.
+
+
+      {{original}}
+
+      |||
+
+      {{simplifications | choice}}'
+    name: simplification
+    reference: ''
+    task_template: true
+  da3fb228-7383-497f-936c-9bcbcd0d057b: !Template
+    id: da3fb228-7383-497f-936c-9bcbcd0d057b
+    jinja: 'Read the below two texts and answer the question.
+
+      {% if range(0,2) | choice %}
+
+      Text A: {{original}}
+
+
+      Text B: {{simplifications | choice }}
+
+
+      One of the texts above is more verbose than the other. Which one is the verbose
+      one?
+
+      |||
+
+      Text A
+
+      {% else %}
+
+      Text A: {{simplifications | choice }}
+
+
+      Text B: {{original}}
+
+
+      One of the texts above is more verbose than the other. Which one is the verbose
+      one?
+
+      |||
+
+      Text B
+
+      {% endif %} '
+    name: choose-verbose
+    reference: ''
+    task_template: false
+  dc853532-e948-443b-bae1-3ebb968bc7c5: !Template
+    id: dc853532-e948-443b-bae1-3ebb968bc7c5
+    jinja: 'Make the following sentence more verbose.
+
+
+      {{simplifications | choice}}
+
+      |||
+
+      {{original}}'
+    name: make-verbose
+    reference: ''
+    task_template: false
+  ec70cd03-8282-4e45-957f-927c60254ad4: !Template
+    id: ec70cd03-8282-4e45-957f-927c60254ad4
+    jinja: '{% if range(0,2) | choice %}
+
+      Text A: {{original}}
+
+
+      Text B: {{simplifications | choice }}
+
+
+      One of the texts above is a simplification of the other. Which one is the simplified
+      one?
+
+      |||
+
+      Text B
+
+      {% else %}
+
+      Text A: {{simplifications | choice }}
+
+
+      Text B: {{original}}
+
+
+      One of the texts above is a simplification of the other. Which one is the simplified
+      one?
+
+      |||
+
+      Text A
+
+      {% endif %} '
+    name: choose-simplification
+    reference: ''
+    task_template: false
