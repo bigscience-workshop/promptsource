@@ -146,7 +146,8 @@ if mode == "Helicopter view":
     results_df.sort_values(["Number of templates"], inplace=True, ascending=False)
     results_df.reset_index(drop=True, inplace=True)
 
-    st.write(f"## Number of *training instances*: `{results_df['Train size'].sum()}`")
+    nb_training_instances = results_df["Train size"].sum()
+    st.write(f"## Number of *training instances*: `{nb_training_instances}`")
 
     plot_df = results_df[["Dataset name", "Subset name", "Train size", "Number of templates"]].copy()
     plot_df["Name"] = plot_df["Dataset name"] + " - " + plot_df["Subset name"]
@@ -161,6 +162,17 @@ if mode == "Helicopter view":
     )
     fig.update_xaxes(visible=False, showticklabels=False)
     st.plotly_chart(fig, use_container_width=True)
+    st.write(
+        f"- Top 3 training subsets account for `{100*plot_df[:3]['Train size'].sum()/nb_training_instances:.2f}%` of the training instances."
+    )
+    biggest_training_subset = plot_df.iloc[0]
+    st.write(
+        f"- Biggest training subset is *{biggest_training_subset['Name']}* with `{biggest_training_subset['Train size']}` instances"
+    )
+    smallest_training_subset = plot_df[plot_df["Train size"] > 0].iloc[-1]
+    st.write(
+        f"- Smallest training subset is *{smallest_training_subset['Name']}* with `{smallest_training_subset['Train size']}` instances"
+    )
 
     st.markdown("***")
     st.write("Details per dataset")
