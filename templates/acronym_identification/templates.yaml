@@ -33,8 +33,8 @@ templates:
       \ not in abbr_exp_dict.value.keys() %}\n      {% set _dummy = abbr_exp_dict.value.update({abbr_string.value:''})\
       \ %}\n    {% endif %}\n  {% endif %}\n{% endif %}\n{% set random_abbr = abbr_exp_dict.value.keys()|list|choice\
       \ %}\nGiven the following tokens, find the expansion of {{random_abbr}}. Return\
-      \ \"Unclear\" if the expansion can't be found.\n \n{{tokens|join(' ')}}\n|||\n\
-      {% if random_abbr in abbr_exp_dict.value.keys() and abbr_exp_dict.value[random_abbr]!=''\
+      \ {{\"Unclear\"}} if the expansion can't be found.\n \n{{tokens|join(' ')}}\n\
+      |||\n{% if random_abbr in abbr_exp_dict.value.keys() and abbr_exp_dict.value[random_abbr]!=''\
       \ %}\n{{abbr_exp_dict.value[random_abbr]}}\n{% else %}\nUnclear\n{% endif %}"
     name: find_expansion
     reference: Given the tokens, find the expansion of an abbreviation in the tokens.
@@ -55,7 +55,7 @@ templates:
   8832e5f7-7c45-46da-b85f-71fcb444f264: !Template
     id: 8832e5f7-7c45-46da-b85f-71fcb444f264
     jinja: 'List all the expansions of the acronyms present in the following comma-separated
-      tokens. Return "No expansions found" if the expansions can''t be found.
+      tokens. Return {{"No expansions found"}} if the expansions can''t be found.
 
       {{tokens|join('', '')}}
 
@@ -149,9 +149,10 @@ templates:
       \ endif %}\n{% else %}\n  {% if abbr_string.value!=''%}\n    {% if abbr_string.value\
       \ not in abbr_exp_dict.value.keys() %}\n      {% set _dummy = abbr_exp_dict.value.update({abbr_string.value:''})\
       \ %}\n    {% endif %}\n  {% endif %}\n{% endif %}\n \nGiven the following tokens,\
-      \ find the abbreviations and their expansions. Return \"Unclear\" if the expansion\
-      \ can't be found.\n \n{{tokens|join(' ')}}\n|||\n{% for item, value in abbr_exp_dict.value.items()\
-      \ %}\n{{item}} : {% if value!='' %}{{value}}{% else %}Unclear{% endif %}\n{%endfor%}"
+      \ find the abbreviations and their expansions. Return {{\"Unclear\"}} if the\
+      \ expansion can't be found.\n \n{{tokens|join(' ')}}\n|||\n{% for item, value\
+      \ in abbr_exp_dict.value.items() %}\n{{item}} : {% if value!='' %}{{value}}{%\
+      \ else %}Unclear{% endif %}\n{%endfor%}"
     name: find_mapping
     reference: Given the tokens, find the abbreviation mapping.
     task_template: false
@@ -187,8 +188,8 @@ templates:
       \ not in exp_abbr_dict.value.keys() %}\n      {% set _dummy = exp_abbr_dict.value.update({exp_string.value:''})\
       \ %}\n    {% endif %}\n  {% endif %}\n{% endif %}\n{% if exp_abbr_dict.value.items()|length!=0\
       \ %}\n{% set random_exp = exp_abbr_dict.value.keys()|list|choice %}\nGiven the\
-      \ following tokens, find the abbreviation for {{random_exp}}. Return \"Unclear\"\
-      \ if the abbreviation can't be found.\n \n{{tokens|join(' ')}}\n{% endif %}\n\
+      \ following tokens, find the abbreviation for {{random_exp}}. Return {{\"Unclear\"\
+      }} if the abbreviation can't be found.\n \n{{tokens|join(' ')}}\n{% endif %}\n\
       |||\n{% if random_exp in exp_abbr_dict.value.keys() and exp_abbr_dict.value[random_exp]!=''\
       \ %}\n{{exp_abbr_dict.value[random_exp]}}\n{% else %}\nUnclear\n{% endif %}"
     name: find_abbreviation
