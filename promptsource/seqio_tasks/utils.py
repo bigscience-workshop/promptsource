@@ -1,6 +1,7 @@
 import datasets
 import tensorflow as tf
 import re
+import promptsource.utils
 
 
 def feature_to_spec(feature, length=False):
@@ -38,6 +39,7 @@ def hf_dataset_to_tf_dataset(dataset):
 def apply_template(dataset, template):
 
     def map_fn(ex):
+        ex = promptsource.utils.removeHyphen(ex)
         inputs_and_targets = template.apply(ex)
         # When template results in an empty example, template.apply returns [""]
         if len(inputs_and_targets) == 1:
