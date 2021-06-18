@@ -157,40 +157,36 @@ templates:
     task_template: false
   eed32ee4-ebc3-499f-ba61-e91461f56ccb: !Template
     id: eed32ee4-ebc3-499f-ba61-e91461f56ccb
-    jinja: "{% set random_exp = '' %}\n{% set _dummy = none %}\n{% set exp_abbr_dict\
-      \ = namespace(value = {}) %}\n{% set abbr_string=namespace(value='') %}\n{%\
-      \ set exp_string=namespace(value='')%}\n \n{% for label_idx in range(labels|length)\
-      \ %}\n  {% if labels[label_idx] == 0 %}{# Long Beginning #}\n    {% if exp_string.value!=''\
-      \ and exp_string.value not in exp_abbr_dict.value.keys() %}{# Some string already\
-      \ present #}\n       {% set _dummy = exp_abbr_dict.value.update({exp_string.value:''})\
-      \ %}{# Discard this string as a new long string is coming #} \n    {% endif\
-      \ %}\n    {% set exp_string.value = tokens[label_idx] %}{# Create new long string\
-      \ #}\n  {% elif labels[label_idx] == 1 %}{# Short Beginning #}\n    {% set abbr_string.value\
-      \ = tokens[label_idx] %}{# Create new short string #}\n  {% elif labels[label_idx]\
-      \ == 2 %}{# Long Intermediate #}\n    {% set exp_string.value = exp_string.value+'\
-      \ '+tokens[label_idx] %}{# Update existing string #}\n  {% elif labels[label_idx]\
-      \ == 3 %}{# Short Intermediate #}\n    {% set abbr_string.value = abbr_string.value+tokens[label_idx]\
-      \ %}{# Update existing string #}\n  {% else %}{# Other #}\n    {# Both non-empty,\
-      \ and first characters match #}\n    {% if abbr_string.value!='' and exp_string.value!=''\
-      \ and exp_string.value.split()[0][0]|lower in abbr_string.value|lower and exp_string.value.split()[-1][0]|lower\
-      \ in abbr_string.value|lower%}\n      {# Update both the dictionaries #}\n \
-      \     {% set _dummy = exp_abbr_dict.value.update({exp_string.value:abbr_string.value})\
-      \ %}\n      {# Empty both the strings #}\n      {% set abbr_string.value= ''\
-      \ %}\n      {% set exp_string.value= '' %}\n    {% endif %}\n  {% endif %}\n\
-      {% endfor %}\n{# Both non-empty, and first characters match #}\n{% if abbr_string.value!=''\
-      \ and exp_string.value!='' %}\n  {% if exp_string.value.split()[0][0]|lower\
+    jinja: "{% set random_exp = '' %}{% set _dummy = none %}{% set exp_abbr_dict =\
+      \ namespace(value = {}) %}{% set abbr_string=namespace(value='') %}{% set exp_string=namespace(value='')%}{%\
+      \ for label_idx in range(labels|length) %}{% if labels[label_idx] == 0 %}{#\
+      \ Long Beginning #}{% if exp_string.value!='' and exp_string.value not in exp_abbr_dict.value.keys()\
+      \ %}{# Some string already present #}{% set _dummy = exp_abbr_dict.value.update({exp_string.value:''})\
+      \ %}{# Discard this string as a new long string is coming #} {% endif %}{% set\
+      \ exp_string.value = tokens[label_idx] %}{# Create new long string #}{% elif\
+      \ labels[label_idx] == 1 %}{# Short Beginning #}{% set abbr_string.value = tokens[label_idx]\
+      \ %}{# Create new short string #}{% elif labels[label_idx] == 2 %}{# Long Intermediate\
+      \ #}{% set exp_string.value = exp_string.value+' '+tokens[label_idx] %}{# Update\
+      \ existing string #}{% elif labels[label_idx] == 3 %}{# Short Intermediate #}{%\
+      \ set abbr_string.value = abbr_string.value+tokens[label_idx] %}{# Update existing\
+      \ string #}{% else %}{# Other #}{# Both non-empty, and first characters match\
+      \ #}{% if abbr_string.value!='' and exp_string.value!='' and exp_string.value.split()[0][0]|lower\
+      \ in abbr_string.value|lower and exp_string.value.split()[-1][0]|lower in abbr_string.value|lower%}{#\
+      \ Update both the dictionaries #}{% set _dummy = exp_abbr_dict.value.update({exp_string.value:abbr_string.value})\
+      \ %}{# Empty both the strings #}{% set abbr_string.value= '' %}{% set exp_string.value=\
+      \ '' %}{% endif %}{% endif %}{% endfor %}{# Both non-empty, and first characters\
+      \ match #}{% if abbr_string.value!='' and exp_string.value!='' %}{% if exp_string.value.split()[0][0]|lower\
       \ in abbr_string.value|lower and exp_string.value.split()[-1][0]|lower in abbr_string.value|lower\
-      \ %}\n    {# Update the dictionary #}\n    {% set _dummy = exp_abbr_dict.value.update({exp_string.value:abbr_string.value})\
-      \ %}\n  {% elif exp_abbr_dict.value.items()|length==0 %}\n    {% set _dummy\
-      \ = exp_abbr_dict.value.update({exp_string.value:abbr_string.value}) %}\n  {%\
-      \ endif %}\n{% else %}\n  {% if exp_string.value!='' %}\n    {% if exp_string.value\
-      \ not in exp_abbr_dict.value.keys() %}\n      {% set _dummy = exp_abbr_dict.value.update({exp_string.value:''})\
-      \ %}\n    {% endif %}\n  {% endif %}\n{% endif %}\n{% if exp_abbr_dict.value.items()|length!=0\
-      \ %}\n{% set random_exp = exp_abbr_dict.value.keys()|list|choice %}\nGiven the\
-      \ following tokens, find the abbreviation for {{random_exp}}. Return \"Unclear\"\
-      \ if the abbreviation can't be found.\n \n{{tokens|join(' ')}}\n{% endif %}\n\
-      |||\n{% if random_exp in exp_abbr_dict.value.keys() and exp_abbr_dict.value[random_exp]!=''\
-      \ %}\n{{exp_abbr_dict.value[random_exp]}}\n{% else %}\nUnclear\n{% endif %}"
+      \ %}{# Update the dictionary #}{% set _dummy = exp_abbr_dict.value.update({exp_string.value:abbr_string.value})\
+      \ %}{% elif exp_abbr_dict.value.items()|length==0 %}{% set _dummy = exp_abbr_dict.value.update({exp_string.value:abbr_string.value})\
+      \ %}{% endif %}{% else %}{% if exp_string.value!='' %}{% if exp_string.value\
+      \ not in exp_abbr_dict.value.keys() %}{% set _dummy = exp_abbr_dict.value.update({exp_string.value:''})\
+      \ %}{% endif %}{% endif %}{% endif %}{% if exp_abbr_dict.value.items()|length!=0\
+      \ %}{% set random_exp = exp_abbr_dict.value.keys()|list|choice %}Given the following\
+      \ tokens, find the abbreviation for: {{random_exp}}. Return \"Unclear\" if the\
+      \ abbreviation can't be found.\n \n{{tokens|join(' ')}}|||{% if random_exp in\
+      \ exp_abbr_dict.value.keys() and exp_abbr_dict.value[random_exp]!='' %}{{exp_abbr_dict.value[random_exp]}}{%\
+      \ else %}Unclear{% endif %}{% endif %}"
     name: find_abbreviation
     reference: Given the tokens, find the abbreviation for an expansion.
     task_template: false
