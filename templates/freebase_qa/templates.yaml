@@ -3,21 +3,30 @@ templates:
   02b12d5c-a481-494d-84ea-a210eefa66d2: !Template
     id: 02b12d5c-a481-494d-84ea-a210eefa66d2
     jinja: "{% set question_context = Parses.TopicEntityName | choice %}\n{% set inference_context\
-      \ = Parses.InferentialChain | choice %}\nThe topic of this question is: {{question_context.split(\"\
-      \ \") | map(\"capitalize\") | join(\" \")}}.\n\nTo solve this question, use\
-      \ the following chain of relations between the topic and answer: {{inference_context}}\n\
-      \nUsing this, answer the following question:\n\n{{RawQuestion}}\n||| \n{% set\
-      \ answer = Parses.Answers | choice %}\n{{answer.AnswersName[0][0].split(\" \"\
-      ) | map(\"capitalize\") | join(\" \") }}"
+      \ = Parses.InferentialChain | first %}\n\nThe topic of this question is: {{question_context.split(\"\
+      \ \") | map(\"capitalize\") | join(\" \")}}.\n\nThe answer to this question\
+      \ should be in the following category: {{ inference_context.split(\".\") | last\
+      \ | capitalize | replace(\"_\", \" \")}}\n\nUsing this, answer the following\
+      \ question:\n\n{{RawQuestion}}\n||| \n{% set answer = Parses.Answers | choice\
+      \ %}\n{{answer.AnswersName[0][0].split(\" \") | map(\"capitalize\") | join(\"\
+      \ \") }}"
     name: qa_context_2
     reference: qa prompt with topic and inference chain provided
     task_template: false
   1d583b71-7ef1-49df-b252-e8e1d6910129: !Template
     id: 1d583b71-7ef1-49df-b252-e8e1d6910129
-    jinja: "What chain of relations between topic entity and answer could be used\
-      \ to solve the following question: \n\n{{RawQuestion}}\n||| \n{{ Parses.InferentialChain\
-      \ | choice |  replace(\"_\", \" \") | replace(\".\", \", \") | replace(\", ,\"\
-      , \",\") }}\n"
+    jinja: 'What category best describes the answer to the following question?
+
+
+      Question: {{RawQuestion}}
+
+      |||
+
+      {% set answer = Parses.InferentialChain | first %}
+
+      {{ answer.split(".") | last | capitalize | replace("_", " ")}}
+
+      '
     name: inference_chain_prompt
     reference: predicting the inference chain given just the question
     task_template: false
@@ -41,11 +50,11 @@ templates:
     task_template: true
   dbf762f0-2daa-4cc4-af67-ba72aa2c1991: !Template
     id: dbf762f0-2daa-4cc4-af67-ba72aa2c1991
-    jinja: "{% set answer = Parses.Answers | choice %}\nWhat chain of relations connects\
-      \ the question: \n\n\"{{RawQuestion}}\" \n\nto its answer: \"{{answer.AnswersName[0][0].split(\"\
-      \ \") | map(\"capitalize\") | join(\" \") }}\"?\n||| \n{{ Parses.InferentialChain\
-      \ | choice |  replace(\"_\", \" \") | replace(\".\", \", \") | replace(\", ,\"\
-      , \",\") }}\n"
+    jinja: "{% set answer = Parses.Answers | choice %}\nFor the following question:\n\
+      \n\"{{RawQuestion}}\" \n\nWhat word or phrase best describes its answer, \"\"\
+      {{answer.AnswersName[0][0].split(\" \") | map(\"capitalize\") | join(\" \")\
+      \ }}\"? \n||| \n{% set a = Parses.InferentialChain | first %}\n{{ a.split(\"\
+      .\") | last | capitalize | replace(\"_\", \" \")}}\n"
     name: inference_chain_prompt_context
     reference: determine the inference chain between question and answer
     task_template: false
