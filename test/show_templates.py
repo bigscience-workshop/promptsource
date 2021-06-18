@@ -27,6 +27,17 @@ template_list = dataset_templates.all_template_names
 
 width = 80
 print("DATASET ", args.dataset_path)
+
+# First show all the templates.
+for template_name in template_list:
+    template = dataset_templates[template_name]
+    print("TEMPLATE")
+    print("NAME:", template_name)
+    print("Is Task Template: ", template.get_task_template())
+    print(template.jinja)
+    print()
+
+# Show examples of the templates.
 for template_name in template_list:
     template = dataset_templates[template_name]
     print()
@@ -44,7 +55,7 @@ for template_name in template_list:
         print("\tExample ", example)
         print("\t--------")
         output = template.apply(example)
-        if output == [""]:
+        if output[0].strip() == "" or (len(output) > 1 and output[1].strip() == ""):
             print("\t Blank result")
             continue
 
