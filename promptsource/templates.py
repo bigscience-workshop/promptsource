@@ -1,7 +1,7 @@
 import os
 import random
 import uuid
-from collections import defaultdict
+from collections import Counter, defaultdict
 from shutil import rmtree
 from typing import Dict, List, Optional, Tuple
 
@@ -26,8 +26,19 @@ def choice(choices):
     return random.choice(choices)
 
 
+def most_frequent(items):
+    """Returns the set of items which appear most frequently in the input"""
+    if not items:
+        return
+    item_counts = Counter(items).most_common()
+    max_freq = item_counts[0][1]
+    most_frequent_items = [c[0] for c in item_counts if c[1] == max_freq]
+    return most_frequent_items
+
+
 env.filters["highlight"] = highlight
 env.filters["choice"] = choice
+env.filters["most_frequent"] = most_frequent
 
 
 class TemplateCollection:
