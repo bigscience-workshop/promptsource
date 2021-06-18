@@ -11,7 +11,7 @@ templates:
 
       |||
 
-      {{{1:"one",2:"two",3:"three",4:"several"}[[4,labels | length] | min]}}'
+      {{{1:"one",2:"two",3:"three",4:"four or more"}[[4,labels | length] | min]}}'
     name: implicit_advice_number
     reference: implicitly ask for number of violated articles (rather than quantity)
     task_template: false
@@ -19,17 +19,17 @@ templates:
     id: 3e5ba238-98ad-4d25-b84f-f226158ef8d6
     jinja: "The following facts relate to a claim brought before the European Court\
       \ of Human Rights (ECtHR). \n{{facts | join(\"\\n\")}}\n\nQuestion: How many\
-      \ substantive articles in the European Convention on Human Rights  could have been breached on these facts?\
-      \ If more than three substantive articles are breached, answer \"several\".\n\
-      Answer:\n|||\n{{{1:\"one\",2:\"two\",3:\"three\",4:\"several\"}[[4,labels |\
-      \ length] | min]}}"
+      \ substantive articles in the European Convention on Human Rights could have\
+      \ been breached on these facts? If more than three substantive articles are\
+      \ breached, answer \"{{'several'}}\".\nAnswer:\n|||\n{{{1:\"one\",2:\"two\"\
+      ,3:\"three\",4:\"several\"}[[4,labels | length] | min]}}"
     name: ecthr_alleged_articles_declaration_at_end
     reference: Explicitly ask question at end
     task_template: false
   7a56f5cc-20b5-4543-bb20-9c616d3f36dc: !Template
     id: 7a56f5cc-20b5-4543-bb20-9c616d3f36dc
-    jinja: 'Question: Have one, two, three, or several articles of the ECHR been violated
-      on these facts?
+    jinja: 'Question: Have {{"one"}}, {{"two"}}, {{"three"}}, or {{"several"}} articles
+      of the ECHR been violated on these facts?
 
       {{facts | join("\n")}}
 
@@ -80,14 +80,14 @@ templates:
       European Court of Human Rights.
 
 
-      {{facts[:3] | join("\n")}}
+      {{facts[:10] | join("\n")}}
 
 
       {% if silver_rationales | length > 0 %}
 
       Additionally, the court cited the following facts elsewhere in the decision
 
-      {% for loc in silver_rationales[:3] %}
+      {% for loc in silver_rationales[:10] %}
 
       {{facts[loc]}}
 
@@ -96,8 +96,8 @@ templates:
       {% endif %}
 
 
-      Question: Have one, two, three, or several articles of the ECHR been violated
-      on these facts?
+      Question: Have {{"one"}}, {{"two"}}, {{"three"}}, or {{"several"}} articles
+      of the ECHR been violated on these facts?
 
       Answer:
 
