@@ -38,10 +38,18 @@ def hf_dataset_to_tf_dataset(dataset):
 def apply_template(dataset, template):
 
     def map_fn(ex):
-        inputs, targets = template.apply(ex)
-        return {"inputs": inputs, "targets": targets}
+        inputs_and_targets = template.apply(ex)
+        # When template results in an empty example, template.apply returns [""]
+        if len(inputs_and_targets) == 1:
+            return {"inputs": "", "targets": ""}
+        elif len(inputs_and_targets) == 2:
+            inputs, targets = inputs_and_targets
+            return {"inputs": inputs, "targets": targets}
 
-    return dataset.map(map_fn)
+    def filter_fn(ex):
+        return (len(ex["inputs"]) > 0 and len(ex["targets"]) > 0)
+
+    return dataset.map(map_fn).filter(filter_fn)
 
 
 def get_dataset_splits(dataset_name, subset_name=None):
