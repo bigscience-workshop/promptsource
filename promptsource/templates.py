@@ -1,4 +1,5 @@
 import os
+import pkg_resources
 import random
 import uuid
 from collections import Counter, defaultdict
@@ -10,7 +11,7 @@ from jinja2 import BaseLoader, Environment
 
 
 # Local path to the folder containing the templates
-TEMPLATES_FOLDER_PATH = "./templates/"
+TEMPLATES_FOLDER_PATH = pkg_resources.resource_filename(__name__, "templates")
 
 env = Environment(loader=BaseLoader)
 
