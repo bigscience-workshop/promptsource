@@ -1,11 +1,11 @@
 import os
-import pkg_resources
 import random
 import uuid
 from collections import Counter, defaultdict
 from shutil import rmtree
 from typing import Dict, List, Optional, Tuple
 
+import pkg_resources
 import yaml
 from jinja2 import BaseLoader, Environment
 
