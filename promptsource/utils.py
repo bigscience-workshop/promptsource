@@ -34,7 +34,7 @@ def get_dataset_builder(path, conf=None):
     module_path = datasets.load.prepare_module(path, dataset=True)
     builder_cls = datasets.load.import_main_class(module_path[0], dataset=True)
     if conf:
-        builder_instance = builder_cls(name=conf, cache_dir=None)
+        builder_instance = builder_cls(name=conf, cache_dir=None, hash=module_path[1])
     else:
         builder_instance = builder_cls(cache_dir=None)
     return builder_instance
