@@ -12,7 +12,7 @@ from jinja2 import BaseLoader, Environment
 # Local path to the folder containing the templates
 TEMPLATES_FOLDER_PATH = "./templates/"
 
-env = Environment(loader=BaseLoader, extensions=["jinja2.ext.do"])
+env = Environment(loader=BaseLoader)
 
 # Allow the python function zip()
 env.globals.update(zip=zip)
@@ -26,10 +26,6 @@ def choice(choices):
     return random.choice(choices)
 
 
-
-def shuffle(input):
-    return random.shuffle(input)
-
 def most_frequent(items):
     """Returns the set of items which appear most frequently in the input"""
     if not items:
@@ -42,7 +38,6 @@ def most_frequent(items):
 
 env.filters["highlight"] = highlight
 env.filters["choice"] = choice
-env.filters["shuffle"] = shuffle
 env.filters["most_frequent"] = most_frequent
 
 
