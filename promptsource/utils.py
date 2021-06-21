@@ -36,7 +36,7 @@ def get_dataset_builder(path, conf=None):
     if conf:
         builder_instance = builder_cls(name=conf, cache_dir=None, hash=module_path[1])
     else:
-        builder_instance = builder_cls(cache_dir=None)
+        builder_instance = builder_cls(cache_dir=None, hash=module_path[1])
     return builder_instance
 
 
