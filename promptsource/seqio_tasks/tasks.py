@@ -42,7 +42,9 @@ for dataset_name, subset_name in all_templates.keys:
                 }
             ),
             preprocessors=[
-                seqio.preprocessors.tokenize, seqio.preprocessors.append_eos
+                seqio.preprocessors.tokenize,
+                seqio.preprocessors.append_eos,
+                seqio.CacheDatasetPlaceholder(required=False),
             ],
             output_features={
                 "inputs": seqio.Feature(
