@@ -1,0 +1,39 @@
+dataset: super_glue
+subset: boolq
+templates:
+  492f0f88-4370-46cd-839b-1de37a55aeda: !Template
+    id: 492f0f88-4370-46cd-839b-1de37a55aeda
+    jinja: "{{ passage }} \nquestion: {{ question }}\nanswer: ||| {{ [\"False\", \"\
+      True\"][label] }} "
+    name: GPT-3 Style
+    reference: Same as Figure G29, p. 58 of the GPT-3 paper
+    task_template: true
+  6cb6a026-c070-470a-b75d-bb8fdf424e35: !Template
+    id: 6cb6a026-c070-470a-b75d-bb8fdf424e35
+    jinja: "{{ passage }} \n\nHaving read that, I wonder {{ question }}? ||| {{ [\"\
+      No\", \"Yes\"][label] }} "
+    name: "I wonder\u2026"
+    reference: ''
+    task_template: true
+  7d21d974-0624-4d4f-9e8c-644e2d009cb5: !Template
+    id: 7d21d974-0624-4d4f-9e8c-644e2d009cb5
+    jinja: "{{ passage }} \n\nHaving read that, could you tell me {{ question }}?\
+      \ ||| {{ [\"No\", \"Yes\"][label] }} "
+    name: "could you tell me\u2026"
+    reference: ''
+    task_template: true
+  9a1bf459-8047-437c-9def-f21e960429cc: !Template
+    id: 9a1bf459-8047-437c-9def-f21e960429cc
+    jinja: "Based on the following passage, {{ passage }} \n{{ question }}? ||| {{\
+      \ [\"No\", \"Yes\"][label] }} "
+    name: based on the following passage
+    reference: "Adapted from Perez et al. 2021 and Schick & Sch\xFCtz 2021."
+    task_template: true
+  b2b3cb60-d6e3-491c-a09a-8201e13e417e: !Template
+    id: b2b3cb60-d6e3-491c-a09a-8201e13e417e
+    jinja: '{{ passage }}
+
+      Based on the previous passage, {{ question }}? ||| {{ ["No", "Yes"][label] }} '
+    name: based on the previous passage
+    reference: "Adapted from Perez et al. 2021 and Schick & Sch\xFCtz 2021."
+    task_template: true

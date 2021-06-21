@@ -1,0 +1,39 @@
+dataset: stsb_multi_mt
+subset: en
+templates:
+  6c0bdf61-9baa-415a-bf03-fdb8789d1740: !Template
+    id: 6c0bdf61-9baa-415a-bf03-fdb8789d1740
+    jinja: How similar are "{{sentence1}}" and "{{sentence2}}"? Give a score between
+      {{"0.0"}} and {{"5.0"}}. ||| {{((5*similarity_score)|round)/5}}
+    name: Similarity_scoring_3
+    reference: ''
+    task_template: true
+  6df357b5-f8ea-49d2-b304-3541acb5271a: !Template
+    id: 6df357b5-f8ea-49d2-b304-3541acb5271a
+    jinja: Do you think "{{sentence1}}" and "{{sentence2}}" express the same thing?
+      ||| {{["no","yes"][0 if similarity_score < 2.5 else 1]}}
+    name: Similarity_scoring_binary_1
+    reference: sst2
+    task_template: false
+  775af665-d8a5-46b2-bfcf-2a21abc7e99c: !Template
+    id: 775af665-d8a5-46b2-bfcf-2a21abc7e99c
+    jinja: Do "{{sentence1}}" and "{{sentence2}}" seem similar to you ? ||| {{["no","yes"][0
+      if similarity_score < 2.5 else 1]}}
+    name: Similarity_scoring_binary_2
+    reference: ''
+    task_template: false
+  9cab340c-32ce-465d-be89-049e4a63af11: !Template
+    id: 9cab340c-32ce-465d-be89-049e4a63af11
+    jinja: On a scale from {{"1.0"}} to {{"5.0"}}, how similar are "{{sentence1}}"
+      and "{{sentence2}}"? ||| {{((5*similarity_score)|round)/5}}
+    name: Similarity_scoring_1
+    reference: ''
+    task_template: true
+  e0551bee-61f0-4c1e-9c3f-18c8b54439f8: !Template
+    id: e0551bee-61f0-4c1e-9c3f-18c8b54439f8
+    jinja: "Rate the similarity of these two sentences: ({{\"1.0\"}} being the lowest\
+      \ and {{\"5.0\"}} the highest)\n\"{{sentence1}}\" and \"{{sentence2}}\" \n|||\n\
+      {{((5*similarity_score)|round)/5}}"
+    name: Similarity_scoring_2
+    reference: ''
+    task_template: true
