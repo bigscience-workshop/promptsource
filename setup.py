@@ -22,4 +22,5 @@ setup(
     packages=find_packages(),
     license="Apache Software License 2.0",
     long_description=readme,
+    package_data={"": ["templates/*/*.yaml", "templates/*/*/*.yaml"]}
 )
