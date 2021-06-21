@@ -14,8 +14,8 @@ if "templates.yaml" not in args.dataset_path:
 
 path = args.dataset_path.split("/")
 
-dataset_name = path[1]
-subset_name = path[2] if len(path) == 4 else ""
+dataset_name = path[2]
+subset_name = path[3] if len(path) == 5 else ""
 template_collection = TemplateCollection()
 
 dataset, _ = get_dataset(dataset_name, subset_name)
