@@ -51,7 +51,7 @@ def apply_template(dataset, template):
     def filter_fn(ex):
         return (len(ex["inputs"]) > 0 and len(ex["targets"]) > 0)
 
-    return dataset.map(map_fn).filter(filter_fn)
+    return dataset.map(map_fn, remove_columns=dataset.column_names).filter(filter_fn)
 
 
 def get_dataset_splits(dataset_name, subset_name=None):
