@@ -339,4 +339,10 @@ class Template(yaml.YAMLObject):
         if highlight_variables:
             jinja = jinja.replace("}}", " | highlight }}")
         rtemplate = env.from_string(jinja)
-        return rtemplate.render(**example).split("|||")
+        pipe_protector = "3ed2dface8203c4c9dfb1a5dc58e41e0"
+        protected_example = {
+            key: value.replace("|||", pipe_protector) if isinstance(value, str) else value
+            for key, value in example.items()
+        }
+        rendered_example = rtemplate.render(**protected_example)
+        return [part.replace(pipe_protector, "|||") for part in rendered_example.split("|||")]
