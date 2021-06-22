@@ -6,10 +6,21 @@ import t5
 import functools
 from . import utils
 
+# Tasks that don't work currently...
+BLACKLIST = [
+    ("species_800", None),
+    ("drop", None),
+    ("discofuse", "discofuse-sport"),
+    ("discofuse", "discofuse-wikipedia"),
+    ("adversarial_qa", "adversarialQA"),
+]
 
 all_templates = promptsource.templates.TemplateCollection()
 
 for dataset_name, subset_name in all_templates.keys:
+
+    if (dataset_name, subset_name) in BLACKLIST:
+        continue
 
     dataset_splits = utils.get_dataset_splits(dataset_name, subset_name)
     templates = all_templates.get_dataset(dataset_name, subset_name)
