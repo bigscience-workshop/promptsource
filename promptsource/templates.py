@@ -10,6 +10,10 @@ import yaml
 from jinja2 import BaseLoader, Environment
 
 
+# Truncation of jinja template variables
+# 1710 = 300 words x 4.7 avg characters per word + 300 spaces
+TEXT_VAR_LENGTH = 2048
+
 # Local path to the folder containing the templates
 TEMPLATES_FOLDER_PATH = pkg_resources.resource_filename(__name__, "templates")
 
@@ -327,7 +331,7 @@ class Template(yaml.YAMLObject):
         else:
             return False
 
-    def apply(self, example, highlight_variables=False):
+    def apply(self, example, truncate=True, highlight_variables=False):
         """
         Creates a prompt by applying this template to an example
 
@@ -336,6 +340,9 @@ class Template(yaml.YAMLObject):
         :return: tuple of 2 strings, for prompt and output
         """
         jinja = self.jinja
+        if truncate:
+            trunc_command = f" | truncate({TEXT_VAR_LENGTH}) }}}}"  # Escaping curly braces requires doubling them
+            jinja = jinja.replace("}}", trunc_command)
         if highlight_variables:
             jinja = jinja.replace("}}", " | highlight }}")
         rtemplate = env.from_string(jinja)
