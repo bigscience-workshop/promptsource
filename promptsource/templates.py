@@ -341,7 +341,7 @@ class Template(yaml.YAMLObject):
         """
         jinja = self.jinja
         if truncate:
-            trunc_command = f" | truncate({TEXT_VAR_LENGTH}) }}}}"  # Escaping curly braces require to double them
+            trunc_command = f" | truncate({TEXT_VAR_LENGTH}) }}}}"  # Escaping curly braces requires to double them
             jinja = jinja.replace("}}", trunc_command)
         if highlight_variables:
             jinja = jinja.replace("}}", " | highlight }}")
