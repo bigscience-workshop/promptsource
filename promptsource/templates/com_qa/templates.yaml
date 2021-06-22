@@ -1,0 +1,48 @@
+dataset: com_qa
+templates:
+  071a1c0e-d70f-4d22-ac99-fc097bde739f: !Template
+    id: 071a1c0e-d70f-4d22-ac99-fc097bde739f
+    jinja: "{% if answers|length >=1 and not answers[0].startswith('http')  %}\nGiven\
+      \ the questions\n\n{% for i in range(0,questions|length) %}\n  {{questions[i]}}\n\
+      {% endfor %} \n\nGenerate possible answers which does not contains url\n{% for\
+      \ i in range(0,answers|length) %}\n {% if not answers[i].startswith('http')\
+      \ %} \n  {{answers[i]}}\n  {% endif %}\n{% endfor %} \n{%- endif %}"
+    name: generate answer with no url
+    reference: ''
+    task_template: false
+  097d7737-9ea9-403e-ba26-c1b9018e38ba: !Template
+    id: 097d7737-9ea9-403e-ba26-c1b9018e38ba
+    jinja: "{% if answers|length >=1 %}\nGiven the questions\n\n{% for i in range(0,questions|length)\
+      \ %}\n  {{questions[i]}}\n{% endfor %} \n\nGenerate possible answers|||\n{%\
+      \ for i in range(0,answers|length) %}\n  {{answers[i]}}\n{% endfor %} \n{%-\
+      \ endif %}"
+    name: task template
+    reference: ''
+    task_template: true
+  3a01c4c8-6a8c-4687-b68b-f18479261b42: !Template
+    id: 3a01c4c8-6a8c-4687-b68b-f18479261b42
+    jinja: "{% if answers|length >=1 and answers[0].startswith('http')  %}\nGiven\
+      \ the questions\n\n{% for i in range(0,questions|length) %}\n  {{questions[i]}}\n\
+      {% endfor %} \n\nGenerate possible answers which contains url|||\n{% for i in\
+      \ range(0,answers|length) %}\n {% if answers[i].startswith('http') %} \n  {{answers[i]}}\n\
+      \  {% endif %}\n{% endfor %} \n{%- endif %}"
+    name: generate answer as url
+    reference: ''
+    task_template: false
+  7a8a4c77-d615-43aa-a0d0-dd93e1ead7dd: !Template
+    id: 7a8a4c77-d615-43aa-a0d0-dd93e1ead7dd
+    jinja: "{% if questions|length >=2 and answers|length >=1 %}\nGiven the following\
+      \ Question Answer pair\n\nQuestion: {{questions[0]+'\\n'}},\nAnswer: {{answers[0]+'\\\
+      n'}}\n\nGenerate other possible questions|||\n{% for i in range(1,questions|length)\
+      \ %}\n  {{questions[i]}}\n{% endfor %} \n\n{%- endif %}"
+    name: generate questions from QA pair
+    reference: ''
+    task_template: false
+  f9fef4b8-11ae-474d-a5e2-641a8072418b: !Template
+    id: f9fef4b8-11ae-474d-a5e2-641a8072418b
+    jinja: "{% if questions|length >= 2 %}\nGenerate one or more similar questions\
+      \ of the following: {{questions[0]}} |||\n {% for i in range(1,questions|length)\
+      \ %}\n  {{questions[i]}}\n {% endfor %} \n{% endif %}"
+    name: template_1
+    reference: ''
+    task_template: false
