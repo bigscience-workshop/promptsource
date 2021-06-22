@@ -345,7 +345,4 @@ class Template(yaml.YAMLObject):
             for key, value in example.items()
         }
         rendered_example = rtemplate.render(**protected_example)
-        return [
-            part.replace(pipe_protector, "|||")
-            for part in rendered_example.split("|||")
-        ]
+        return [part.replace(pipe_protector, "|||") for part in rendered_example.split("|||")]
