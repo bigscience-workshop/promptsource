@@ -17,6 +17,17 @@ BLACKLIST = [
     ("discofuse", "discofuse-sport"),
     ("discofuse", "discofuse-wikipedia"),
     ("adversarial_qa", "adversarialQA"),
+    ("tweet_eval", "emotion"),
+    ("tweet_eval", "emoji"),
+    ("tweet_eval", "hate"),
+    ("tweet_eval", "offensive"),
+    ("tweet_eval", "stance_atheism"),
+    ("tweet_eval", "stance_abortion"),
+    ("tweet_eval", "stance_feminist"),
+    ("tweet_eval", "stance_climate"),
+    ("tweet_eval", "sentiment"),
+    ("tweet_eval", "stance_hillary"),
+    ("tweet_eval", "irony"),
 ]
 
 all_templates = promptsource.templates.TemplateCollection()
