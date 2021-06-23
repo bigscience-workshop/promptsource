@@ -3,55 +3,60 @@ subset: '1.1'
 templates:
   1b538c15-d7b7-4139-8755-fb7d28c19a4d: !Template
     id: 1b538c15-d7b7-4139-8755-fb7d28c19a4d
-    jinja: "{{Text[:1200]}} \n\n{{Text[-300:]}}\n\nThe text above contains important\
-      \ details for answering the following questions:\n\nThe relevant annotations:\n\
-      \n{% set annotation_length = Prompts.Annotations | length %}\n\n{% set specific_sub_annotation\
+    jinja: "{% set annotation_length = Prompts.Annotations | length %}\n\n{% set specific_sub_annotation\
       \ = range(0, annotation_length) | choice %}\n\n{% set sub_annotation_length\
       \ = Prompts.Annotations[specific_sub_annotation].Annotations | length %}\n\n\
-      {% set sub_sub_annotation = range(0, sub_annotation_length) | choice %}\n\n\
-      {{Prompts.Annotations[specific_sub_annotation].Annotations[sub_sub_annotation]}}\n\
-      \nNow on the basis of annotation and the text the outcome is:\n\n|||\n\n\n{{Prompts.Outcome[specific_sub_annotation]}}"
+      {% if sub_annotation_length %}\n\n{{Text[:1200]}} \n\n{{Text[-300:]}}\n\nThe\
+      \ text above contains important details for answering the following questions:\n\
+      \nThe relevant annotations:\n\n{% set sub_sub_annotation = range(0, sub_annotation_length)\
+      \ | choice %}\n\n{{Prompts.Annotations[specific_sub_annotation].Annotations[sub_sub_annotation]}}\n\
+      \nNow on the basis of annotation and the text the outcome is:\n\n|||\n\n\n{{Prompts.Outcome[specific_sub_annotation]}}\n\
+      \n{% endif %}"
     name: template_4
     reference: ''
     task_template: false
   7ce46648-2bcc-4e67-95f5-c2a0d0612f9b: !Template
     id: 7ce46648-2bcc-4e67-95f5-c2a0d0612f9b
-    jinja: "After reading the following text:\n\n{{Text[:1200]}} \n\n{{Text[-300:]}}\n\
-      \nThe relevant annotations:\n\n{% set annotation_length = Prompts.Annotations\
-      \ | length %}\n\n{% set specific_sub_annotation = range(0, annotation_length)\
-      \ | choice %}\n\n{% set sub_annotation_length = Prompts.Annotations[specific_sub_annotation].Annotations\
-      \ | length %}\n\n{% set sub_sub_annotation = range(0, sub_annotation_length)\
-      \ | choice %}\n\n{{Prompts.Annotations[specific_sub_annotation].Annotations[sub_sub_annotation]}}\n\
+    jinja: "{% set annotation_length = Prompts.Annotations | length %}\n\n{% set specific_sub_annotation\
+      \ = range(0, annotation_length) | choice %}\n\n{% set sub_annotation_length\
+      \ = Prompts.Annotations[specific_sub_annotation].Annotations | length %}\n\n\
+      {% if sub_annotation_length %}\n\nAfter reading the following text:\n\n{{Text[:1200]}}\
+      \ \n\n{{Text[-300:]}}\n\nThe relevant annotations:\n\n{% set sub_sub_annotation\
+      \ = range(0, sub_annotation_length) | choice %}\n\n{{Prompts.Annotations[specific_sub_annotation].Annotations[sub_sub_annotation]}}\n\
       \nNow if the comparator is:\n\n{{Prompts.Comparator[specific_sub_annotation]}}.\n\
       \nand the intervention is:\n\n{{Prompts.Intervention[specific_sub_annotation]}}.\n\
-      \n The outcome is: \n\n|||\n\n{{Prompts.Outcome[specific_sub_annotation]}}"
+      \n The outcome is: \n\n|||\n\n{{Prompts.Outcome[specific_sub_annotation]}}\n\
+      \n{% endif %}"
     name: template_2
     reference: ''
     task_template: false
   7d618260-32fb-405d-ab79-cec67f589de7: !Template
     id: 7d618260-32fb-405d-ab79-cec67f589de7
-    jinja: "Read the following text:\n\n{% set annotation_length = Prompts.Annotations\
-      \ | length %}\n\n{% set specific_sub_annotation = range(0, annotation_length)\
-      \ | choice %}\n\n{% set sub_annotation_length = Prompts.Annotations[specific_sub_annotation].Annotations\
-      \ | length %}\n\n{% set sub_sub_annotation = range(0, sub_annotation_length)\
-      \ | choice %}\n\n{{Text[:1200]}} \n\n{{Text[-300:]}}\n\nNow the comparator is:\n\
-      \n{{Prompts.Comparator[specific_sub_annotation]}}.\n\nThe intervention is:\n\
-      \n{{Prompts.Intervention[specific_sub_annotation]}}.\n\nThe outcome:\n\n{{Prompts.Outcome[specific_sub_annotation]}}\n\
-      \nis either {{\"significantly increased\"}}, {{\"significantly decreased\"}}\
-      \ or {{\"no significant difference\"}}. Which is it?\n\n|||\n\n\n{{Prompts.Annotations[specific_sub_annotation].Label[sub_sub_annotation]}}"
+    jinja: "{% set annotation_length = Prompts.Annotations | length %}\n\n{% set specific_sub_annotation\
+      \ = range(0, annotation_length) | choice %}\n\n{% set sub_annotation_length\
+      \ = Prompts.Annotations[specific_sub_annotation].Annotations | length %}\n\n\
+      {% if sub_annotation_length %}\n\nRead the following text:\n\n{% set sub_sub_annotation\
+      \ = range(0, sub_annotation_length) | choice %}\n\n{{Text[:1200]}} \n\n{{Text[-300:]}}\n\
+      \nNow the comparator is:\n\n{{Prompts.Comparator[specific_sub_annotation]}}.\n\
+      \nThe intervention is:\n\n{{Prompts.Intervention[specific_sub_annotation]}}.\n\
+      \nThe outcome:\n\n{{Prompts.Outcome[specific_sub_annotation]}}\n\nis either\
+      \ {{\"significantly increased\"}}, {{\"significantly decreased\"}} or {{\"no\
+      \ significant difference\"}}. Which is it?\n\n|||\n\n\n{{Prompts.Annotations[specific_sub_annotation].Label[sub_sub_annotation]}}\n\
+      \n{% endif %}"
     name: template_3
     reference: ''
     task_template: true
   c999469a-20e0-4c10-a707-3c057d5c0245: !Template
     id: c999469a-20e0-4c10-a707-3c057d5c0245
-    jinja: "The following text snippets contain important information:\n\n{{Text[:1200]}}\
-      \ \n\n{{Text[-300:]}}\n\nThe relevant annotations are:\n\n{% set annotation_length\
-      \ = Prompts.Annotations | length %}\n\n{% set specific_sub_annotation = range(0,\
-      \ annotation_length) | choice %}\n\n{% set sub_annotation_length = Prompts.Annotations[specific_sub_annotation].Annotations\
-      \ | length %}\n\n{% set sub_sub_annotation = range(0, sub_annotation_length)\
-      \ | choice %}\n\n{{Prompts.Annotations[specific_sub_annotation].Annotations[sub_sub_annotation]}}\n\
+    jinja: "{% set annotation_length = Prompts.Annotations | length %}\n\n{% set specific_sub_annotation\
+      \ = range(0, annotation_length) | choice %}\n\n{% set sub_annotation_length\
+      \ = Prompts.Annotations[specific_sub_annotation].Annotations | length %}\n\n\
+      {% if sub_annotation_length %}\n\n{% set sub_sub_annotation = range(0, sub_annotation_length)\
+      \ | choice %}\n\nThe following text snippets contain important information:\n\
+      \n{{Text[:1200]}} \n\n{{Text[-300:]}}\n\nThe relevant annotations are:\n\n{{Prompts.Annotations[specific_sub_annotation].Annotations[sub_sub_annotation]}}\n\
       \nNow if the comparator is:\n\n{{Prompts.Comparator[specific_sub_annotation]}}.\n\
-      \nThe intervention will be:\n\n|||\n\n\n{{Prompts.Intervention[specific_sub_annotation]}}.\n"
+      \nThe intervention will be:\n\n|||\n\n\n{{Prompts.Intervention[specific_sub_annotation]}}.\n\
+      {% endif %}"
     name: template_1
     reference: ''
     task_template: false
@@ -73,16 +78,17 @@ templates:
     task_template: true
   fbf5600f-5e70-4c15-9608-f53cec32825f: !Template
     id: fbf5600f-5e70-4c15-9608-f53cec32825f
-    jinja: "The first text snippet that is important to understand is:\n\n{{Text[:1200]}}\
-      \ \n\nthe second text snippet is:\n\n{{Text[-300:]}}\n\nThe relevant annotations:\n\
-      \n{% set annotation_length = Prompts.Annotations | length %}\n\n{% set specific_sub_annotation\
+    jinja: "{% set annotation_length = Prompts.Annotations | length %}\n\n{% set specific_sub_annotation\
       \ = range(0, annotation_length) | choice %}\n\n{% set sub_annotation_length\
       \ = Prompts.Annotations[specific_sub_annotation].Annotations | length %}\n\n\
-      {% set sub_sub_annotation = range(0, sub_annotation_length) | choice %}\n\n\
-      {{Prompts.Annotations[specific_sub_annotation].Annotations[sub_sub_annotation]}}\n\
+      {% if sub_annotation_length %}\n\nThe first text snippet that is important to\
+      \ understand is:\n\n{{Text[:1200]}} \n\nthe second text snippet is:\n\n{{Text[-300:]}}\n\
+      \nThe relevant annotations:\n\n{% set sub_sub_annotation = range(0, sub_annotation_length)\
+      \ | choice %}\n\n{{Prompts.Annotations[specific_sub_annotation].Annotations[sub_sub_annotation]}}\n\
       \nThe intervention is:\n\n{{Prompts.Intervention[specific_sub_annotation]}}.\n\
       \nThe outcome:\n\n{{Prompts.Outcome[specific_sub_annotation]}}\n\nThe comparator\
-      \ is:\n\n\n|||\n\n{{Prompts.Comparator[specific_sub_annotation]}}."
+      \ is:\n\n\n|||\n\n{{Prompts.Comparator[specific_sub_annotation]}}.\n\n{% endif\
+      \ %}"
     name: template_5
     reference: ''
     task_template: false
