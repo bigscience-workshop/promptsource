@@ -1,18 +1,26 @@
 import os
 import random
 import uuid
-from collections import defaultdict
+from collections import Counter, defaultdict
 from shutil import rmtree
 from typing import Dict, List, Optional, Tuple
 
+import pkg_resources
 import yaml
 from jinja2 import BaseLoader, Environment
 
 
+# Truncation of jinja template variables
+# 1710 = 300 words x 4.7 avg characters per word + 300 spaces
+TEXT_VAR_LENGTH = 2048
+
 # Local path to the folder containing the templates
-TEMPLATES_FOLDER_PATH = "./templates/"
+TEMPLATES_FOLDER_PATH = pkg_resources.resource_filename(__name__, "templates")
 
 env = Environment(loader=BaseLoader)
+
+# Allow the python function zip()
+env.globals.update(zip=zip)
 
 
 def highlight(input):
@@ -23,8 +31,19 @@ def choice(choices):
     return random.choice(choices)
 
 
+def most_frequent(items):
+    """Returns the set of items which appear most frequently in the input"""
+    if not items:
+        return
+    item_counts = Counter(items).most_common()
+    max_freq = item_counts[0][1]
+    most_frequent_items = [c[0] for c in item_counts if c[1] == max_freq]
+    return most_frequent_items
+
+
 env.filters["highlight"] = highlight
 env.filters["choice"] = choice
+env.filters["most_frequent"] = most_frequent
 
 
 class TemplateCollection:
@@ -312,7 +331,7 @@ class Template(yaml.YAMLObject):
         else:
             return False
 
-    def apply(self, example, highlight_variables=False):
+    def apply(self, example, truncate=True, highlight_variables=False):
         """
         Creates a prompt by applying this template to an example
 
@@ -321,7 +340,18 @@ class Template(yaml.YAMLObject):
         :return: tuple of 2 strings, for prompt and output
         """
         jinja = self.jinja
+        if truncate:
+            trunc_command = (
+                f" | string | truncate({TEXT_VAR_LENGTH}) }}}}"  # Escaping curly braces requires doubling them
+            )
+            jinja = jinja.replace("}}", trunc_command)
         if highlight_variables:
             jinja = jinja.replace("}}", " | highlight }}")
         rtemplate = env.from_string(jinja)
-        return rtemplate.render(**example).split("|||")
+        pipe_protector = "3ed2dface8203c4c9dfb1a5dc58e41e0"
+        protected_example = {
+            key: value.replace("|||", pipe_protector) if isinstance(value, str) else value
+            for key, value in example.items()
+        }
+        rendered_example = rtemplate.render(**protected_example)
+        return [part.replace(pipe_protector, "|||") for part in rendered_example.split("|||")]

@@ -1,0 +1,51 @@
+dataset: super_glue
+subset: wic
+templates:
+  14e73f39-a0d1-44c2-b9a4-4e48f9f1608e: !Template
+    id: 14e73f39-a0d1-44c2-b9a4-4e48f9f1608e
+    jinja: "Does the word \"{{word}}\" have the same meaning in these two sentences?\
+      \ Yes, No?\n{{sentence1}}\n{{sentence2}}\n||| \n{% if label == 0 %} \nNo\n{%\
+      \ elif label == 1 %}\nYes\n{% endif %}"
+    name: question-context-meaning-with-label
+    reference: Generalized question-context format with label
+    task_template: true
+  3503ead5-4fa5-4f77-95dc-f0c2ed3eecdc: !Template
+    id: 3503ead5-4fa5-4f77-95dc-f0c2ed3eecdc
+    jinja: "Does the word \"{{word}}\" have the same meaning in these two sentences?\n\
+      {{sentence1}}\n{{sentence2}}\n||| \n{% if label == 0 %} \nNo\n{% elif label\
+      \ == 1 %}\nYes\n{% endif %}"
+    name: question-context-meaning
+    reference: Generalized question-context format
+    task_template: true
+  c3a0a5d8-cfe9-4a7f-8a3c-3c526e0ad0c6: !Template
+    id: c3a0a5d8-cfe9-4a7f-8a3c-3c526e0ad0c6
+    jinja: "{{sentence1}}\n{{sentence2}}\nQuestion: Is the word '{{word}}' used in\
+      \ the same way in the two sentences above?\n||| \n{% if label == 0 %} \nNo\n\
+      {% elif label == 1 %}\nYes\n{% endif %}"
+    name: GPT-3-prompt
+    reference: Following table G32. https://arxiv.org/pdf/2005.14165.pdf
+    task_template: true
+  cfbc1637-10b8-4f20-a31c-55292f3cebd0: !Template
+    id: cfbc1637-10b8-4f20-a31c-55292f3cebd0
+    jinja: "Determine if the word '{{word}}' is used in the same way in the two sentences\
+      \ below. \n{{sentence1}}\n{{sentence2}}\n||| \n{% if label == 0 %} \nNo\n{%\
+      \ elif label == 1 %}\nYes\n{% endif %}"
+    name: question-context
+    reference: Generalized question-context format
+    task_template: true
+  d9e1db2a-ab0b-4621-bb41-01d5788d3873: !Template
+    id: d9e1db2a-ab0b-4621-bb41-01d5788d3873
+    jinja: "{{sentence1}}\n{{sentence2}}\nQuestion: Is the word '{{word}}' used in\
+      \ the same way in the two sentences above? Yes, No?\n||| \n{% if label == 0\
+      \ %} \nNo\n{% elif label == 1 %}\nYes\n{% endif %}"
+    name: GPT-3-prompt-with-label
+    reference: Following table G32. https://arxiv.org/pdf/2005.14165.pdf add additional
+      label
+    task_template: true
+  f934a96d-fe4d-4075-aa47-5595b9a604c7: !Template
+    id: f934a96d-fe4d-4075-aa47-5595b9a604c7
+    jinja: "{{sentence1}}\n{{sentence2}}\nSimilar sense of {{word}}?\n||| \n{% if\
+      \ label == 0 %} \nNo\n{% elif label == 1 %}\nYes\n{% endif %}"
+    name: similar-sense
+    reference: Following https://arxiv.org/abs/2105.11447, https://github.com/ethanjperez/true_few_shot/tree/main/templates.super_glue
+    task_template: true

@@ -1,15 +1,17 @@
 import textwrap
+from multiprocessing import Manager, Pool
 
 import pandas as pd
+import plotly.express as px
 import streamlit as st
+from datasets import get_dataset_infos
 from jinja2 import TemplateSyntaxError
 from pygments import highlight
 from pygments.formatters import HtmlFormatter
 from pygments.lexers import DjangoLexer
 from session import _get_state
-from utils import get_dataset, get_dataset_confs, list_datasets, removeHyphen, renameDatasetColumn, render_features
-
 from templates import Template, TemplateCollection
+from utils import get_dataset, get_dataset_confs, list_datasets, removeHyphen, renameDatasetColumn, render_features
 
 
 #
@@ -92,19 +94,47 @@ if mode == "Helicopter view":
     st.write(f"## Number of *prompted datasets*: `{nb_prompted_datasets}`")
     nb_prompts = sum(counts.values())
     st.write(f"## Number of *prompts*: `{nb_prompts}`")
-    st.markdown("***")
 
     #
     # Metrics per dataset/subset
     #
-    st.write("Details per dataset")
+    # Download dataset infos (multiprocessing download)
+    manager = Manager()
+    all_infos = manager.dict()
+    all_datasets = list(set([t[0] for t in template_collection.keys]))
+
+    def get_infos(d_name):
+        all_infos[d_name] = get_dataset_infos(d_name)
+
+    pool = Pool(processes=len(all_datasets))
+    pool.map(get_infos, all_datasets)
+    pool.close()
+    pool.join()
+
     results = []
     for (dataset_name, subset_name) in template_collection.keys:
+        # Collect split sizes (train, validation and test)
+        if dataset_name not in all_infos:
+            infos = get_dataset_infos(dataset_name)
+            all_infos[dataset_name] = infos
+        else:
+            infos = all_infos[dataset_name]
+        if subset_name is None:
+            subset_infos = infos[list(infos.keys())[0]]
+        else:
+            subset_infos = infos[subset_name]
+
+        split_sizes = {k: v.num_examples for k, v in subset_infos.splits.items()}
+
+        # Collect template counts, task template counts and names
         dataset_templates = template_collection.get_dataset(dataset_name, subset_name)
         results.append(
             {
                 "Dataset name": dataset_name,
                 "Subset name": "" if subset_name is None else subset_name,
+                "Train size": split_sizes["train"] if "train" in split_sizes else 0,
+                "Validation size": split_sizes["validation"] if "validation" in split_sizes else 0,
+                "Test size": split_sizes["test"] if "test" in split_sizes else 0,
                 "Number of templates": len(dataset_templates),
                 "Number of task templates": sum([t.get_task_template() for t in dataset_templates.templates.values()]),
                 "Template names": [t.name for t in dataset_templates.templates.values()],
@@ -114,6 +144,37 @@ if mode == "Helicopter view":
     results_df = pd.DataFrame(results)
     results_df.sort_values(["Number of templates"], inplace=True, ascending=False)
     results_df.reset_index(drop=True, inplace=True)
+
+    nb_training_instances = results_df["Train size"].sum()
+    st.write(f"## Number of *training instances*: `{nb_training_instances}`")
+
+    plot_df = results_df[["Dataset name", "Subset name", "Train size", "Number of templates"]].copy()
+    plot_df["Name"] = plot_df["Dataset name"] + " - " + plot_df["Subset name"]
+    plot_df.sort_values(["Train size"], inplace=True, ascending=False)
+    fig = px.bar(
+        plot_df,
+        x="Name",
+        y="Train size",
+        hover_data=["Dataset name", "Subset name", "Number of templates"],
+        log_y=True,
+        title="Number of training instances per data(sub)set - y-axis is in logscale",
+    )
+    fig.update_xaxes(visible=False, showticklabels=False)
+    st.plotly_chart(fig, use_container_width=True)
+    st.write(
+        f"- Top 3 training subsets account for `{100*plot_df[:3]['Train size'].sum()/nb_training_instances:.2f}%` of the training instances."
+    )
+    biggest_training_subset = plot_df.iloc[0]
+    st.write(
+        f"- Biggest training subset is *{biggest_training_subset['Name']}* with `{biggest_training_subset['Train size']}` instances"
+    )
+    smallest_training_subset = plot_df[plot_df["Train size"] > 0].iloc[-1]
+    st.write(
+        f"- Smallest training subset is *{smallest_training_subset['Name']}* with `{smallest_training_subset['Train size']}` instances"
+    )
+
+    st.markdown("***")
+    st.write("Details per dataset")
     st.table(results_df)
 
 else:

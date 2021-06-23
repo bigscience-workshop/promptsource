@@ -1,0 +1,159 @@
+dataset: adversarial_qa
+subset: adversarialQA
+templates:
+  00755780-f3c0-44b4-b159-8f3873cdb16c: !Template
+    id: 00755780-f3c0-44b4-b159-8f3873cdb16c
+    jinja: 'I want to test the ability of students to read a passage and answer questions
+      about it. Could you please come up with a good question for the passage "{{context}}"?
+      |||
+
+      {{question}}'
+    name: adversarial_qa_4
+    reference: 'Input: Context, Output: Question (generate a question)'
+    task_template: false
+  0e13b79c-850f-45e4-b0b5-f0dc352337c9: !Template
+    id: 0e13b79c-850f-45e4-b0b5-f0dc352337c9
+    jinja: "I know that the answer to \"{{question}}\" is in \"{{context}}\" somewhere.\
+      \ Can you return the offsets of the answer? \n\nNote: Follow 0-indexing and\
+      \ [inclusive, exclusive) format for range.\n|||\n{{(answers.answer_start[0],\
+      \ answers.answer_start[0]+answers.text[0]|length)}}"
+    name: adversarial_qa_7
+    reference: 'Input: QC, Output: Offsets'
+    task_template: true
+  20e9b5b3-c826-4f14-832c-96392b55e7ae: !Template
+    id: 20e9b5b3-c826-4f14-832c-96392b55e7ae
+    jinja: 'Q: "{{question}}"
+
+
+      C: "{{context}}"
+
+
+      I know the answer to Q is in C. I don''t want the complete answer. I just want
+      the index of the character from where the answer starts (as a hint). |||
+
+      {{answers.answer_start[0]}}
+
+      '
+    name: adversarial_qa_8
+    reference: 'Input: QC, Output: beginning offset of A'
+    task_template: true
+  3b2459cc-6600-443c-abf8-8f60c34cd998: !Template
+    id: 3b2459cc-6600-443c-abf8-8f60c34cd998
+    jinja: 'I know that the answer to the question "{{question}}" is in "{{context}}".
+      Can you tell me what it is? |||
+
+
+      {{answers.text[0]}}'
+    name: adversarial_qa_2
+    reference: 'Input: QC, Output: A (rephrase)'
+    task_template: true
+  4aed7f08-2285-4e9c-80f6-4c52dd1e760c: !Template
+    id: 4aed7f08-2285-4e9c-80f6-4c52dd1e760c
+    jinja: 'I want to make a question paper for students. I''ve crawled paragraphs
+      from Wikipedia and now want to test their reading comprehension prowess. I am
+      lazy; can you output a question-answer pair for the paragraph "{{context}}"?
+      |||
+
+      Question: "{{question}}"
+
+
+      Answer:  "{{answers.text[0]}}"'
+    name: adversarial_qa_5
+    reference: 'Input: Context, Output: QA (set a question paper)'
+    task_template: false
+  5bdb1815-5c6f-49a3-ad1d-367344420701: !Template
+    id: 5bdb1815-5c6f-49a3-ad1d-367344420701
+    jinja: 'Question: "{{question}}"
+
+
+      Context: "{{context}}"
+
+
+      Answer:
+
+      |||
+
+      {{answers.text[0]}}
+
+
+      '
+    name: adversarial_qa_3
+    reference: 'Input: QC, Output: Answer (short form)'
+    task_template: true
+  61cc7fe2-1a85-482a-8be7-a89f3e3ffba1: !Template
+    id: 61cc7fe2-1a85-482a-8be7-a89f3e3ffba1
+    jinja: '"{{answers.text[0]}}" is in "{{context}}". But the paragraph is very long
+      and manual counting will take ages. Can you return the starting and ending indices?
+      |||
+
+      {{(answers.answer_start[0], answers.answer_start[0] + answers.text[0]|length)}}'
+    name: adversarial_qa_9
+    reference: 'Input: CA, Output: offsets'
+    task_template: false
+  71962fe2-7784-4b8f-9c6c-32d0a2f0b3e2: !Template
+    id: 71962fe2-7784-4b8f-9c6c-32d0a2f0b3e2
+    jinja: 'My professor gave us an assignment today. I don''t like cheating, but
+      the exercise is easy for humans and frankly, a waste of time for me. Could you
+      do it for me? We have a passage ("{{context}}") and have to answer a question
+      ("{{question}}"). What''s the answer? |||
+
+      {{answers.text[0]}}'
+    name: adversarial_qa_6
+    reference: 'Input: QC, Output: A (formulate as an assignment)'
+    task_template: true
+  a64d5a15-68e2-4d1c-b30a-ca8250c860f9: !Template
+    id: a64d5a15-68e2-4d1c-b30a-ca8250c860f9
+    jinja: 'Given the following passage
+
+
+      "{{context}}",
+
+
+      answer the following question. Note that the answer is present within the text.
+
+
+      "{{question}}" |||
+
+      {{answers.text[0]}}'
+    name: adversarial_qa_1
+    reference: 'Input: QC, Output: Answer'
+    task_template: true
+  cd3c5ecc-2929-4eff-aef3-a4f810633e01: !Template
+    id: cd3c5ecc-2929-4eff-aef3-a4f810633e01
+    jinja: 'Documentation:
+
+
+      find_answer(text_1, text_2): Finds the answer to question text_1 in context
+      text_2
+
+
+      find_index(text_1, text_2): Finds the starting index of text_1 in text_2
+
+
+      Code:
+
+
+      context = """{{context}}"""
+
+
+      question = """{{question}}"""
+
+
+      {{"answer"}} = find_answer({{"question"}}, {{"context"}})
+
+
+      {{"answer_idx"}} = find_index({{"answer"}}, {{"context"}})
+
+
+      print({{"answer"}})
+
+
+      print({{"answer_idx"}}) |||
+
+      {{answers.text[0]}}
+
+
+      {{answers.answer_start[0]}}'
+    name: adversarial_qa_10
+    reference: 'Input: Question, Context Output: Answer+Index (Python format)'
+    task_template: true
