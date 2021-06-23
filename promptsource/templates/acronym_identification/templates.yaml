@@ -2,8 +2,7 @@ dataset: acronym_identification
 templates:
   64f438f2-9968-459f-82d2-24bad632b358: !Template
     id: 64f438f2-9968-459f-82d2-24bad632b358
-    jinja:
-      "{% set random_abbr = '' %}\n{% set _dummy = none %}\n{% set abbr_exp_dict\
+    jinja: "{% set random_abbr = '' %}\n{% set _dummy = none %}\n{% set abbr_exp_dict\
       \ = namespace(value = {}) %}\n{% set abbr_string=namespace(value='') %}\n{%\
       \ set exp_string=namespace(value='')%}\n \n{% for label_idx in range(labels|length)\
       \ %}\n  {% if labels[label_idx] == 0 %}{# Long Beginning #}\n    {% set exp_string.value\
@@ -32,18 +31,19 @@ templates:
       \ = abbr_exp_dict.value.update({abbr_string.value:exp_string.value}) %}\n  {%\
       \ endif %}\n{% else %}\n  {% if abbr_string.value!=''%}\n    {% if abbr_string.value\
       \ not in abbr_exp_dict.value.keys() %}\n      {% set _dummy = abbr_exp_dict.value.update({abbr_string.value:''})\
-      \ %}\n    {% endif %}\n  {% endif %}\n{% endif %}\n{% set random_abbr = abbr_exp_dict.value.keys()|list|choice\
-      \ %}\nGiven the following tokens, find the expansion of {{random_abbr}}. Return\
-      \ {{\"Unclear\"}} if the expansion can't be found.\n \n{{tokens|join(' ')}}\n\
-      |||\n{% if random_abbr in abbr_exp_dict.value.keys() and abbr_exp_dict.value[random_abbr]!=''\
-      \ %}\n{{abbr_exp_dict.value[random_abbr]}}\n{% else %}\nUnclear\n{% endif %}"
+      \ %}\n    {% endif %}\n  {% endif %}\n{% endif %}\n{% if abbr_exp_dict %}\n\
+      {% set random_abbr = abbr_exp_dict.value.keys()|list|choice %}\nGiven the following\
+      \ tokens, find the expansion of {{random_abbr}}. Return {{\"Unclear\"}} if the\
+      \ expansion can't be found.\n \n{{tokens|join(' ')}}\n|||\n{% if random_abbr\
+      \ in abbr_exp_dict.value.keys() and abbr_exp_dict.value[random_abbr]!='' %}\n\
+      {{abbr_exp_dict.value[random_abbr]}}\n{% else %}\nUnclear\n{% endif %}\n{% endif\
+      \ %}"
     name: find_expansion
     reference: Given the tokens, find the expansion of an abbreviation in the tokens.
     task_template: false
   81babc83-18cd-4eed-a343-8ede56b21df5: !Template
     id: 81babc83-18cd-4eed-a343-8ede56b21df5
-    jinja:
-      "Given the BIO encoding as follows:  \"{{\"B-short\"}}\" and \"{{\"I-short\"\
+    jinja: "Given the BIO encoding as follows:  \"{{\"B-short\"}}\" and \"{{\"I-short\"\
       }}\" represent the beginning and intermediate tokens for abbreviations.\"{{\"\
       B-long\"}}\" and \"{{\"I-long\"}}\" represent the beginning and intermediate\
       \ tokens for expansions of the abbreviations. All other tokens are represented\
@@ -56,8 +56,7 @@ templates:
     task_template: true
   8832e5f7-7c45-46da-b85f-71fcb444f264: !Template
     id: 8832e5f7-7c45-46da-b85f-71fcb444f264
-    jinja:
-      'List all the expansions of the acronyms present in the following comma-separated
+    jinja: 'List all the expansions of the acronyms present in the following comma-separated
       tokens. Return {{"No expansions found"}} if the expansions can''t be found.
 
       {{tokens|join('', '')}}
@@ -108,8 +107,7 @@ templates:
     task_template: false
   cae58242-cde9-472d-ae9e-56fc7e79c0d1: !Template
     id: cae58242-cde9-472d-ae9e-56fc7e79c0d1
-    jinja:
-      "List all the acryonyms in the following comma-separated tokens: \n\n{{tokens|join(',\
+    jinja: "List all the acryonyms in the following comma-separated tokens: \n\n{{tokens|join(',\
       \ ')}}\n|||\n{% set abbr_string=namespace(value='') %}\n{% set answer_list=namespace(value=[])\
       \ %}\n{% for label_idx in range(labels|length) %}\n{% if labels[label_idx] ==\
       \ 1 %}\n{% set abbr_string.value = tokens[label_idx] %}\n{% elif abbr_string.value!=''\
@@ -124,8 +122,7 @@ templates:
     task_template: false
   e4e42433-0e37-4aa5-bbce-7f336ecac6a3: !Template
     id: e4e42433-0e37-4aa5-bbce-7f336ecac6a3
-    jinja:
-      "{% set _dummy = none %}\n{% set abbr_exp_dict = namespace(value = {})\
+    jinja: "{% set _dummy = none %}\n{% set abbr_exp_dict = namespace(value = {})\
       \ %}\n{% set abbr_string=namespace(value='') %}\n{% set exp_string=namespace(value='')%}\n\
       \ \n{% for label_idx in range(labels|length) %}\n  {% if labels[label_idx] ==\
       \ 0 %}{# Long Beginning #}\n    {% set exp_string.value = tokens[label_idx]\
@@ -163,8 +160,7 @@ templates:
     task_template: false
   eed32ee4-ebc3-499f-ba61-e91461f56ccb: !Template
     id: eed32ee4-ebc3-499f-ba61-e91461f56ccb
-    jinja:
-      "{% set random_exp = '' %}{% set _dummy = none %}{% set exp_abbr_dict =\
+    jinja: "{% set random_exp = '' %}{% set _dummy = none %}{% set exp_abbr_dict =\
       \ namespace(value = {}) %}{% set abbr_string=namespace(value='') %}{% set exp_string=namespace(value='')%}{%\
       \ for label_idx in range(labels|length) %}{% if labels[label_idx] == 0 %}{#\
       \ Long Beginning #}{% if exp_string.value!='' and exp_string.value not in exp_abbr_dict.value.keys()\
