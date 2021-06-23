@@ -1,0 +1,40 @@
+dataset: super_glue
+subset: wsc.fixed
+templates:
+  212fb8b1-8436-4f64-8f37-a9094fe029f4: !Template
+    id: 212fb8b1-8436-4f64-8f37-a9094fe029f4
+    jinja: '{{ text }} In the previous sentence, the pronoun "{{ span2_text.lower()
+      }}" refers to ||| {{ span1_text }}'
+    name: "In the previous sentence, the pronoun refers to\u2026"
+    reference: "Adapted from Perez et al. 2021 and Schick & Sch\xFCtz 2021."
+    task_template: true
+  7482d24f-cf45-4013-b82d-369489fc958b: !Template
+    id: 7482d24f-cf45-4013-b82d-369489fc958b
+    jinja: '{{ text }} Here, "{{ span2_text.lower() }}" stands for ||| {{ span1_text
+      }}'
+    name: "Here, p stands for\u2026"
+    reference: Not ideal because sometimes the queried pronoun is in the possessive
+      case.
+    task_template: true
+  7d377293-d043-4b6c-8ec1-d61eaf14ec67: !Template
+    id: 7d377293-d043-4b6c-8ec1-d61eaf14ec67
+    jinja: "Passage: {{ text }} \nQuestion: In the passage above, what does the pronoun\
+      \ \"{{ span2_text }}\" refer to? \nAnswer: ||| {{ span1_text }}"
+    name: "passage\u2026 what does the pronoun refer to?"
+    reference: Adapted from Figure G33, p. 59, Brown et al. 2020
+    task_template: true
+  aae24b54-c3a7-4f69-8b77-f6dc115988f8: !Template
+    id: aae24b54-c3a7-4f69-8b77-f6dc115988f8
+    jinja: "{{ text }} \nIn the passage above, the pronoun \"{{ span2_text }}\" refers\
+      \ to ||| {{ span1_text }}"
+    name: "in the passage above, the pronoun X refers to\u2026"
+    reference: "Adapted from Perez et al. 2021 and Schick & Sch\xFCtz 2021."
+    task_template: true
+  d88f3e21-42dc-49a5-924d-69b764a14816: !Template
+    id: d88f3e21-42dc-49a5-924d-69b764a14816
+    jinja: "{{ text }} \n{% if span2_text  == \"they\" or span2_text == \"them\" %}\n\
+      Question: Who are \"{{ span2_text.lower() }}\"?\n{% else %}\nQuestion: Who is\
+      \ \"{{ span2_text.lower() }}\"?\n{% endif %}\nAnswer: ||| {{ span1_text }}"
+    name: "Who is/are\u2026?"
+    reference: I double checked the only plural pronouns in WSC are "they" and "them".
+    task_template: true
