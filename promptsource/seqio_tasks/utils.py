@@ -41,12 +41,14 @@ def apply_template(dataset, template):
     def map_fn(ex):
         ex = promptsource.utils.removeHyphen(ex)
         inputs_and_targets = template.apply(ex)
-        # When template results in an empty example, template.apply returns [""]
-        if len(inputs_and_targets) == 1:
-            return {"inputs": "", "targets": ""}
-        elif len(inputs_and_targets) == 2:
+        if len(inputs_and_targets) == 2:
             inputs, targets = inputs_and_targets
             return {"inputs": inputs, "targets": targets}
+        # When template results in an empty example, template.apply returns [""]
+        # Also, if the template gets split wrong, len can be > 2
+        # We will filter these out later
+        else:
+            return {"inputs": "", "targets": ""}
 
     def filter_fn(ex):
         return (len(ex["inputs"]) > 0 and len(ex["targets"]) > 0)
