@@ -1,10 +1,14 @@
+import functools
+
 import datasets
-import tensorflow as tf
-import promptsource.templates
 import seqio
 import t5
-import functools
+import tensorflow as tf
+
+import promptsource.templates
+
 from . import utils
+
 
 # Tasks that don't work currently...
 BLACKLIST = [
