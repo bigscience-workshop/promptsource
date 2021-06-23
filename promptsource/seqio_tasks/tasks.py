@@ -48,9 +48,7 @@ for dataset_name, subset_name in all_templates.keys:
                     template=template,
                 ),
                 splits=list(dataset_splits.keys()),
-                num_input_examples={
-                    s: dataset_splits[s].num_examples for s in dataset_splits.keys()
-                }
+                num_input_examples={s: dataset_splits[s].num_examples for s in dataset_splits.keys()},
             ),
             preprocessors=[
                 seqio.preprocessors.tokenize,
@@ -59,13 +57,11 @@ for dataset_name, subset_name in all_templates.keys:
             ],
             output_features={
                 "inputs": seqio.Feature(
-                    seqio.SentencePieceVocabulary(t5.data.DEFAULT_SPM_PATH),
-                    add_eos=False, dtype=tf.int32
+                    seqio.SentencePieceVocabulary(t5.data.DEFAULT_SPM_PATH), add_eos=False, dtype=tf.int32
                 ),
                 "targets": seqio.Feature(
-                    seqio.SentencePieceVocabulary(t5.data.DEFAULT_SPM_PATH),
-                    add_eos=True, dtype=tf.int32
+                    seqio.SentencePieceVocabulary(t5.data.DEFAULT_SPM_PATH), add_eos=True, dtype=tf.int32
                 ),
             },
-            metric_fns=[t5.evaluation.metrics.sequence_accuracy]
+            metric_fns=[t5.evaluation.metrics.sequence_accuracy],
         )

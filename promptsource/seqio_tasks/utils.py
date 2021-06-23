@@ -6,14 +6,10 @@ import promptsource.utils
 
 def feature_to_spec(feature, length=False):
     if isinstance(feature, datasets.ClassLabel):
-        return tf.TensorSpec(
-            shape=() if not length else (None if length == -1 else length,),
-            dtype=tf.int64
-        )
+        return tf.TensorSpec(shape=() if not length else (None if length == -1 else length,), dtype=tf.int64)
     elif isinstance(feature, datasets.Value):
         return tf.TensorSpec(
-            shape=() if not length else (None if length == -1 else length,),
-            dtype=getattr(tf.dtypes, feature.dtype)
+            shape=() if not length else (None if length == -1 else length,), dtype=getattr(tf.dtypes, feature.dtype)
         )
     elif hasattr(feature, "dtype") and hasattr(feature, "shape"):
         return tf.TensorSpec(shape=feature.shape, dtype=feature.dtype)
@@ -29,15 +25,11 @@ def feature_to_spec(feature, length=False):
 
 def hf_dataset_to_tf_dataset(dataset):
     return tf.data.Dataset.from_generator(
-        dataset.__iter__,
-        output_signature={
-            k: feature_to_spec(v) for k, v in dataset.features.items()
-        }
+        dataset.__iter__, output_signature={k: feature_to_spec(v) for k, v in dataset.features.items()}
     )
 
 
 def apply_template(dataset, template):
-
     def map_fn(ex):
         ex = promptsource.utils.removeHyphen(ex)
         inputs_and_targets = template.apply(ex)
@@ -51,7 +43,7 @@ def apply_template(dataset, template):
             return {"inputs": "", "targets": ""}
 
     def filter_fn(ex):
-        return (len(ex["inputs"]) > 0 and len(ex["targets"]) > 0)
+        return len(ex["inputs"]) > 0 and len(ex["targets"]) > 0
 
     original_columns = dataset.column_names
     dataset = dataset.map(map_fn).filter(filter_fn)
@@ -71,8 +63,4 @@ def task_clean(text):
 
 
 def get_task_name(dataset_name, subset_name, template_name):
-    return task_clean(
-        dataset_name
-        + (f"_{subset_name}_" if subset_name is not None else "_")
-        + template_name
-    )
+    return task_clean(dataset_name + (f"_{subset_name}_" if subset_name is not None else "_") + template_name)
