@@ -40,7 +40,7 @@ templates:
       I know the answer to Q is in C. I don''t want the complete answer. I just want
       the index of the character from where the answer starts (as a hint). |||
 
-      {{answers.answer_start[0]}}'
+      {{answers.answer_start[0] | string}}'
     name: adversarial_qa_dbidaf_8
     reference: 'Input: QC, Output: beginning offset of A'
     task_template: true
@@ -60,10 +60,15 @@ templates:
     task_template: false
   bf991a90-6a80-4a47-9f52-01cca1af4b31: !Template
     id: bf991a90-6a80-4a47-9f52-01cca1af4b31
-    jinja: "I know that the answer to \"{{question}}\" is in \"{{context}}\" somewhere.\
-      \ Can you return the offsets of the answer? \n\nNote: Follow 0-indexing and\
-      \ [inclusive, exclusive) format for range.\n|||\n{{(answers.answer_start[0],\
-      \ answers.answer_start[0]+answers.text[0]|length)}}\n"
+    jinja: 'I know that the answer to "{{question}}" is in "{{context}}" somewhere.
+      Can you return the offsets of the answer?
+      Note: Follow 0-indexing and [inclusive, exclusive) format for range.
+      |||
+      {% if answers.text != [] %}
+      {{(answers.answer_start[0], answers.answer_start[0]+answers.text[0]|length)}}
+      {% else %}
+      Answer not found
+      {% endif %}'
     name: adversarial_qa_dbidaf_7
     reference: 'Input: QC, Output: Offsets'
     task_template: true
@@ -82,8 +87,11 @@ templates:
     jinja: '"{{answers.text[0]}}" is in "{{context}}". But the paragraph is very long
       and manual counting will take ages. Can you return the starting and ending indices?
       |||
-
-      {{(answers.answer_start[0], answers.answer_start[0] + answers.text[0]|length)}}'
+      {% if answers.text != [] %}
+      {{(answers.answer_start[0], answers.answer_start[0] + answers.text[0]|length)}}
+      {% else %}
+      Answer not found
+      {% endif %}'
     name: adversarial_qa_dbidaf_9
     reference: 'Input: CA, Output: beginning offset of A'
     task_template: false
@@ -132,7 +140,7 @@ templates:
       {{answers.text[0]}}
 
 
-      {{answers.answer_start[0]}}'
+      {{answers.answer_start[0] | string}}'
     name: adversarial_qa_dbidaf_10
     reference: 'Input: Question, Context Output: Answer+Index (Python format)'
     task_template: true
