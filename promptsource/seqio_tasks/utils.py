@@ -61,7 +61,7 @@ def get_dataset_splits(dataset_name, subset_name=None):
 
 def task_clean(text):
     # Clean the text according to allowed characters for a task name
-    return re.sub(r"[^\w\d\.\:_]+", "_", text)
+    return re.sub(r"[^\w\d\._]+", "_", text)
 
 
 def get_task_name(dataset_name, subset_name, template_name):
