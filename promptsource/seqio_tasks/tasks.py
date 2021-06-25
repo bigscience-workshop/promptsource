@@ -81,8 +81,8 @@ for dataset_name, subset_name in all_templates.keys:
             metric_fns=[t5.evaluation.metrics.sequence_accuracy],
         )
 
-# Tasks which often tokenize to > 1024 tokens currently
 TASK_BLACKLIST = [
+    # Tasks which often tokenize to > 1024 tokens currently
     "hotpot_qa_distractor_Generate_Explanations",
     "hotpot_qa_fullwiki_Generate_Explanations",
     "hotpot_qa_distractor_Generate_Answer_and_Explanations",
@@ -106,6 +106,8 @@ TASK_BLACKLIST = [
     "wiki_hop_masked_Indirect_Question_about_Birthplace_Citizenship_Place_of_Death",
     "narrativeqa_Template_05",
     "ecthr_cases_alleged_violation_prediction_silver_rationales",
+    # Tasks with broken cached files
+    "gigaword_summarize_"
 ]
 
 seqio.MixtureRegistry.add(
