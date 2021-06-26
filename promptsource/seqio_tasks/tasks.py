@@ -107,7 +107,7 @@ TASK_BLACKLIST = [
     "narrativeqa_Template_05",
     "ecthr_cases_alleged_violation_prediction_silver_rationales",
     # Tasks with broken cached files
-    "gigaword_summarize_"
+    "gigaword_summarize_",
 ]
 
 seqio.MixtureRegistry.add(
