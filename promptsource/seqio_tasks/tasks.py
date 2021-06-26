@@ -10,8 +10,8 @@ import promptsource.templates
 from . import utils
 
 
-# Tasks that don't work currently...
-BLACKLIST = [
+# Datasets that don't work currently...
+DATASET_BLACKLIST = [
     ("species_800", None),
     ("drop", None),
     ("discofuse", "discofuse-sport"),
@@ -34,7 +34,7 @@ all_templates = promptsource.templates.TemplateCollection()
 
 for dataset_name, subset_name in all_templates.keys:
 
-    if (dataset_name, subset_name) in BLACKLIST:
+    if (dataset_name, subset_name) in DATASET_BLACKLIST:
         continue
 
     dataset_splits = utils.get_dataset_splits(dataset_name, subset_name)
@@ -80,3 +80,38 @@ for dataset_name, subset_name in all_templates.keys:
             },
             metric_fns=[t5.evaluation.metrics.sequence_accuracy],
         )
+
+TASK_BLACKLIST = [
+    # Tasks which often tokenize to > 1024 tokens currently
+    "hotpot_qa_distractor_Generate_Explanations",
+    "hotpot_qa_fullwiki_Generate_Explanations",
+    "hotpot_qa_distractor_Generate_Answer_and_Explanations",
+    "hotpot_qa_fullwiki_Generate_Answer_and_Explanations",
+    "hotpot_qa_fullwiki_Generate_Answer",
+    "hotpot_qa_distractor_Generate_Answer",
+    "hotpot_qa_distractor_Generate_Title_2",
+    "hotpot_qa_fullwiki_Generate_Title_2",
+    "hotpot_qa_fullwiki_Generate_Title_1",
+    "hotpot_qa_distractor_Generate_Title_1",
+    "hotpot_qa_distractor_Generate_Question",
+    "hotpot_qa_fullwiki_Generate_Question",
+    "tab_fact_tab_fact_tab_fact_3",
+    "tab_fact_tab_fact_tab_fact_2",
+    "tab_fact_tab_fact_tab_fact_1",
+    "tab_fact_tab_fact_tab_fact_7",
+    "tab_fact_tab_fact_tab_fact_4",
+    "tab_fact_tab_fact_tab_fact_5",
+    "tab_fact_tab_fact_tab_fact_6",
+    "wiki_hop_masked_Choose_Best_Object_Candidate",
+    "wiki_hop_masked_Indirect_Question_about_Birthplace_Citizenship_Place_of_Death",
+    "narrativeqa_Template_05",
+    "ecthr_cases_alleged_violation_prediction_silver_rationales",
+    # Tasks with broken cached files
+    "gigaword_summarize_",
+]
+
+seqio.MixtureRegistry.add(
+    "all_tasks_combined_max_1m",
+    [task for task in seqio.TaskRegistry.names() if task not in TASK_BLACKLIST],
+    default_rate=functools.partial(seqio.mixing_rate_num_examples, maximum=1000000),
+)
