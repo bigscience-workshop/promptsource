@@ -71,12 +71,8 @@ for dataset_name, subset_name in all_templates.keys:
                 seqio.CacheDatasetPlaceholder(required=False),
             ],
             output_features={
-                "inputs": seqio.Feature(
-                    seqio.SentencePieceVocabulary(t5.data.DEFAULT_SPM_PATH), add_eos=False, dtype=tf.int32
-                ),
-                "targets": seqio.Feature(
-                    seqio.SentencePieceVocabulary(t5.data.DEFAULT_SPM_PATH), add_eos=True, dtype=tf.int32
-                ),
+                "inputs": seqio.Feature(t5.data.get_default_vocabulary(), add_eos=False, dtype=tf.int32),
+                "targets": seqio.Feature(t5.data.get_default_vocabulary(), add_eos=True, dtype=tf.int32),
             },
             metric_fns=[t5.evaluation.metrics.sequence_accuracy],
         )
