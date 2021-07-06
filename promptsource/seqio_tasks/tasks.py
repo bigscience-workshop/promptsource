@@ -111,3 +111,9 @@ seqio.MixtureRegistry.add(
     [task for task in seqio.TaskRegistry.names() if task not in TASK_BLACKLIST],
     default_rate=functools.partial(seqio.mixing_rate_num_examples, maximum=1000000),
 )
+
+seqio.MixtureRegistry.add(
+    "all_super_glue_tasks",
+    [task for task in seqio.TaskRegistry.names() if task.startswith("super_glue")],
+    default_rate=seqio.mixing_rate_num_examples,
+)
