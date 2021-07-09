@@ -696,8 +696,6 @@ CLEAN_TASKS = [
     "trec_fine_grained_NUM_context_first",
     "trec_fine_grained_open",
     "trec_fine_grained_open_context_first",
-    "trec_gao_et_al_1",
-    "trec_gao_et_al_2",
     "trec_trec1",
     "trec_trec2",
     "web_questions_count_answers",
