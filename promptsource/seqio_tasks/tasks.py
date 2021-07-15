@@ -64,7 +64,9 @@ for dataset_name, subset_name in all_templates.keys:
                     template=template,
                 ),
                 splits=list(dataset_splits.keys()),
-                num_input_examples={s: dataset_splits[s].num_examples for s in dataset_splits.keys()},
+                num_input_examples={
+                    s: dataset_splits[s].num_examples for s in dataset_splits.keys()
+                },
             ),
             preprocessors=[
                 seqio.preprocessors.tokenize,
@@ -72,8 +74,12 @@ for dataset_name, subset_name in all_templates.keys:
                 seqio.CacheDatasetPlaceholder(required=False),
             ],
             output_features={
-                "inputs": seqio.Feature(t5.data.get_default_vocabulary(), add_eos=False, dtype=tf.int32),
-                "targets": seqio.Feature(t5.data.get_default_vocabulary(), add_eos=True, dtype=tf.int32),
+                "inputs": seqio.Feature(
+                    t5.data.get_default_vocabulary(), add_eos=False, dtype=tf.int32
+                ),
+                "targets": seqio.Feature(
+                    t5.data.get_default_vocabulary(), add_eos=True, dtype=tf.int32
+                ),
             },
             metric_fns=[t5.evaluation.metrics.sequence_accuracy],
         )
@@ -120,25 +126,26 @@ seqio.MixtureRegistry.add(
 )
 
 # Tasks deemed as clean/useful
-with open('dataset_subset_template.csv') as in_file:
+with open("dataset_subset_template.csv") as in_file:
     reader = csv.DictReader(in_file)
     all_tasks = [row for row in reader]
 
 safe_creteria = [
-    'template_bug',
-    'negated_answers',
-    'counting',
-    'answer_span_indices',
-    'non_natural_language',
-    'generative_non_true_implausible',
+    "template_bug",
+    "negated_answers",
+    "counting",
+    "answer_span_indices",
+    "non_natural_language",
+    "generative_non_true_implausible",
 ]
 
 aggressive_creteria = [
-    'generative_non_true_task',
-    'nontrivial_choices_hidden',
-    'awkward_phrasing',
-    'ungrammatical',
+    "generative_non_true_task",
+    "nontrivial_choices_hidden",
+    "awkward_phrasing",
+    "ungrammatical",
 ] + safe_creteria
+
 
 def clean(prompt):
     for criterion in safe_creteria:  # or aggressive_creteria
@@ -146,8 +153,9 @@ def clean(prompt):
             return False
     return True
 
+
 tasks = list(filter(clean, all_tasks))
-CLEAN_TASKS = [t for t in tasks if not t['skip_train']]
+CLEAN_TASKS = [t for t in tasks if not t["skip_train"]]
 
 seqio.MixtureRegistry.add(
     "clean_tasks",
@@ -156,7 +164,7 @@ seqio.MixtureRegistry.add(
 )
 
 # Tasks to evaluate models trained on clean_tasks
-CLEAN_EVAL_TASKS = [t for t in tasks if t['do_eval']]
+CLEAN_EVAL_TASKS = [t for t in tasks if t["do_eval"]]
 
 seqio.MixtureRegistry.add(
     "clean_eval_tasks",
