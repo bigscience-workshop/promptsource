@@ -1,5 +1,5 @@
-import functools
 import csv
+import functools
 
 import datasets
 import seqio
