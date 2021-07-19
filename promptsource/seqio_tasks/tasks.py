@@ -499,7 +499,7 @@ CLEAN_TASKS = [
     "yelp_review_full_format_star",
     "yelp_review_full_on_a_scale",
     "yelp_review_full_so_i_would",
-    "yelp_review_full_this_plac",
+    "yelp_review_full_this_place",
 ]
 
 seqio.MixtureRegistry.add(
