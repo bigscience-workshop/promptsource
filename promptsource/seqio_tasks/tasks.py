@@ -151,21 +151,21 @@ def clean(prompt):
 
 
 filtered_tasks = list(filter(clean, all_tasks))
-CLEAN_TASKS = [t for t in filtered_tasks if not t["skip_train"]]
+CLEAN_TASKS = [t["dataset_subset_template"] for t in filtered_tasks if not t["skip_train"]]
 
 
 seqio.MixtureRegistry.add(
     "clean_tasks",
     [task for task in CLEAN_TASKS if task not in TASK_BLACKLIST],
-    default_rate=functools.partial(seqio.mixing_rate_num_examples, maximum=1000000),
+    default_rate=functools.partial(seqio.mixing_rate_num_examples, maximum=500_000),
 )
 
 # Tasks to evaluate models trained on clean_tasks
-CLEAN_EVAL_TASKS = [t for t in filtered_tasks if t["do_eval"]]
+CLEAN_EVAL_TASKS = [t["dataset_subset_template"] for t in filtered_tasks if t["do_eval"]]
 
 
 seqio.MixtureRegistry.add(
     "clean_eval_tasks",
     [task for task in CLEAN_EVAL_TASKS if task not in TASK_BLACKLIST],
-    default_rate=functools.partial(seqio.mixing_rate_num_examples, maximum=1000000),
+    default_rate=functools.partial(seqio.mixing_rate_num_examples, maximum=500_000),
 )
