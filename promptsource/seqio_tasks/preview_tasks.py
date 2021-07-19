@@ -1,9 +1,6 @@
 import csv
+from pprint import pprint
 
-
-with open("dataset_subset_template.csv") as in_file:
-    reader = csv.DictReader(in_file)
-    all_tasks = [row for row in reader]
 
 safe_creteria = [
     "template_bug",
@@ -29,11 +26,18 @@ def clean(prompt):
     return True
 
 
-clean_tasks = list(filter(clean, all_tasks))
+if __name__ == "__main__":
+    with open("dataset_subset_template.csv") as in_file:
+        reader = csv.DictReader(in_file)
+        all_tasks = [row for row in reader]
 
-train_tasks = [t for t in clean_tasks if not t["skip_train"]]
-eval_tasks = [t for t in clean_tasks if t["do_eval"]]
+    clean_tasks = list(filter(clean, all_tasks))
 
-for t in eval_tasks:
-    print(t["dataset_subset_template"])
-print(len(eval_tasks))
+    train_tasks = [t for t in clean_tasks if not t["skip_train"]]
+    eval_tasks = [t for t in clean_tasks if t["do_eval"]]
+
+    pprint([t["dataset_subset_template"] for t in train_tasks])
+    print(len(train_tasks))
+
+    pprint([t["dataset_subset_template"] for t in eval_tasks])
+    print(len(eval_tasks))
