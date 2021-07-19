@@ -1,8 +1,8 @@
 import csv
 import functools
-import pkg_resources
 
 import datasets
+import pkg_resources
 import seqio
 import t5
 import tensorflow as tf
@@ -121,8 +121,7 @@ seqio.MixtureRegistry.add(
 )
 
 # Tasks deemed as clean/useful
-annotated_csv_path = pkg_resources.resource_filename(
-    __name__, 'seqio_tasks/dataset_subset_template.csv')
+annotated_csv_path = pkg_resources.resource_filename(__name__, "dataset_subset_template.csv")
 with open(annotated_csv_path) as in_file:
     reader = csv.DictReader(in_file)
     all_tasks = [row for row in reader]
