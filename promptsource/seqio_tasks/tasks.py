@@ -37,6 +37,18 @@ DATASET_BLACKLIST = [
     ("tweet_eval", "irony"),
 ]
 
+
+def strip_whitespace(output_or_target, example=None, is_target=False):
+    """
+    Temporary hack. Cached tasks from promptsource all have a leading space
+    on the ground-truth targets.
+    """
+    if is_target:
+        return output_or_target.strip()
+    else:
+        return output_or_target
+
+
 all_templates = promptsource.templates.TemplateCollection()
 
 for dataset_name, subset_name in all_templates.keys:
@@ -88,6 +100,7 @@ for dataset_name, subset_name in all_templates.keys:
                 "targets": seqio.Feature(t5.data.get_default_vocabulary(), add_eos=True, dtype=tf.int32),
             },
             metric_fns=metrics,
+            postprocess_fn=strip_whitespace,
         )
 
 TASK_BLACKLIST = [

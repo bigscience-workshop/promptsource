@@ -82,7 +82,7 @@ def load_annotated_prompts() -> List[Dict]:
             # but could be used for other tasks as well where answer choices are given.
             if "metrics" not in task:
                 task["metrics"] = [rank_classification]
-            else:
+            elif rank_classification not in task["metrics"]:
                 task["metrics"].append(rank_classification)
 
         # should be already handled by NON_GLUE_METRICS
