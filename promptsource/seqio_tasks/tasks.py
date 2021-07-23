@@ -4,15 +4,14 @@ import datasets
 import seqio
 import t5
 import tensorflow as tf
-from load_annotated_prompts import load_annotated_prompts
 
 import promptsource.templates
 
-from . import utils
+from . import load_annotated_prompts, utils
 
 
 # Tasks deemed as clean/useful
-annotated_tasks = load_annotated_prompts()
+annotated_tasks = load_annotated_prompts.load_annotated_prompts()
 CLEAN_TASKS = [t["dataset_subset_template"] for t in annotated_tasks if not t["skip_train"]]
 CLEAN_EVAL_TASKS = [t["dataset_subset_template"] for t in annotated_tasks if t["do_eval"]]
 EVAL_METRICS = {t["dataset_subset_template"]: t["metrics"] for t in annotated_tasks if t["do_eval"]}
