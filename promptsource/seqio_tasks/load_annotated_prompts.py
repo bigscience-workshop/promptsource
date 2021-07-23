@@ -87,7 +87,7 @@ def load_annotated_prompts() -> List[Dict]:
 
         # should be already handled by NON_GLUE_METRICS
         # if task['generative_true_task'] or task['generative_non_true_task']:
-        #     task['metrics'] = rogue
+        #     task['metrics'] = rouge
 
     return clean_tasks
 
