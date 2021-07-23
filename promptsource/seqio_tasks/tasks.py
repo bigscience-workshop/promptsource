@@ -39,14 +39,8 @@ DATASET_BLACKLIST = [
 
 
 def strip_whitespace(output_or_target, example=None, is_target=False):
-    """
-    Temporary hack. Cached tasks from promptsource all have a leading space
-    on the ground-truth targets.
-    """
-    if is_target:
-        return output_or_target.strip()
-    else:
-        return output_or_target
+    """Cached tasks from promptsource all have a leading space on the ground-truth targets."""
+    return output_or_target.strip()
 
 
 all_templates = promptsource.templates.TemplateCollection()
