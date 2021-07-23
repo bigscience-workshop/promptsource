@@ -1,15 +1,21 @@
-import csv
 import functools
 
 import datasets
-import pkg_resources
 import seqio
 import t5
 import tensorflow as tf
+from load_annotated_prompts import load_annotated_prompts
 
 import promptsource.templates
 
 from . import utils
+
+
+# Tasks deemed as clean/useful
+annotated_tasks = load_annotated_prompts()
+CLEAN_TASKS = [t["dataset_subset_template"] for t in annotated_tasks if not t["skip_train"]]
+CLEAN_EVAL_TASKS = [t["dataset_subset_template"] for t in annotated_tasks if t["do_eval"]]
+EVAL_METRICS = {t["dataset_subset_template"]: t["metrics"] for t in annotated_tasks if t["do_eval"]}
 
 
 # Datasets that don't work currently...
@@ -54,8 +60,14 @@ for dataset_name, subset_name in all_templates.keys:
             dataset = utils.apply_template(dataset, template)
             return utils.hf_dataset_to_tf_dataset(dataset)
 
+        task_name = utils.get_task_name(dataset_name, subset_name, template_name)
+        if task_name in CLEAN_EVAL_TASKS:
+            metrics = EVAL_METRICS[task_name]
+        else:
+            metrics = [t5.evaluation.metrics.sequence_accuracy]
+
         seqio.TaskRegistry.add(
-            utils.get_task_name(dataset_name, subset_name, template_name),
+            task_name,
             seqio.FunctionDataSource(
                 functools.partial(
                     dataset_fn,
@@ -76,7 +88,7 @@ for dataset_name, subset_name in all_templates.keys:
                 "inputs": seqio.Feature(t5.data.get_default_vocabulary(), add_eos=False, dtype=tf.int32),
                 "targets": seqio.Feature(t5.data.get_default_vocabulary(), add_eos=True, dtype=tf.int32),
             },
-            metric_fns=[t5.evaluation.metrics.sequence_accuracy],
+            metric_fns=metrics,
         )
 
 TASK_BLACKLIST = [
@@ -120,48 +132,12 @@ seqio.MixtureRegistry.add(
     default_rate=seqio.mixing_rate_num_examples,
 )
 
-# Tasks deemed as clean/useful
-annotated_csv_path = pkg_resources.resource_filename(__name__, "dataset_subset_template.csv")
-with open(annotated_csv_path) as in_file:
-    reader = csv.DictReader(in_file)
-    all_tasks = [row for row in reader]
-
-safe_creteria = [
-    "template_bug",
-    "negated_answers",
-    "counting",
-    "answer_span_indices",
-    "non_natural_language",
-    "generative_non_true_implausible",
-]
-
-aggressive_creteria = [
-    "generative_non_true_task",
-    "nontrivial_choices_hidden",
-    "awkward_phrasing",
-    "ungrammatical",
-] + safe_creteria
-
-
-def clean(prompt):
-    for criterion in safe_creteria:  # or aggressive_creteria
-        if prompt.get(criterion):
-            return False
-    return True
-
-
-filtered_tasks = list(filter(clean, all_tasks))
-CLEAN_TASKS = [t["dataset_subset_template"] for t in filtered_tasks if not t["skip_train"]]
-
 
 seqio.MixtureRegistry.add(
     "clean_tasks",
     [task for task in CLEAN_TASKS if task not in TASK_BLACKLIST],
     default_rate=functools.partial(seqio.mixing_rate_num_examples, maximum=500_000),
 )
-
-# Tasks to evaluate models trained on clean_tasks
-CLEAN_EVAL_TASKS = [t["dataset_subset_template"] for t in filtered_tasks if t["do_eval"]]
 
 
 seqio.MixtureRegistry.add(
