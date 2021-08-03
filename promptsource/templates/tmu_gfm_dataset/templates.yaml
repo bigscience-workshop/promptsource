@@ -2,8 +2,8 @@ dataset: tmu_gfm_dataset
 templates:
   2b6a9c53-7cbc-4574-b5bd-448cf7960693: !Template
     id: 2b6a9c53-7cbc-4574-b5bd-448cf7960693
-    jinja: 'Supposedly Sentence B is more natural than Sentence A. How much better is it
-      on a scale from 1 to 4?
+    jinja: 'Supposedly Sentence B is more natural than Sentence A. How much better
+      is it on a scale from 1 to 4?
 
 
       Sentence A: {{source}}
@@ -13,14 +13,14 @@ templates:
 
       |||
 
-      {{ave_f}}'
+      {{ (((10*ave_f) | round )/10) }}'
     name: fluency
     reference: ''
     task_template: false
   2b712291-0629-4499-86cc-566ee7376271: !Template
     id: 2b712291-0629-4499-86cc-566ee7376271
-    jinja: 'Sentence B is grammatically better than Sentence A. How much better is it on
-      a scale from 0 to 4?
+    jinja: 'Sentence B is grammatically better than Sentence A. How much better is
+      it on a scale from 0 to 4?
 
 
       Sentence A: {{source}}
@@ -30,7 +30,7 @@ templates:
 
       |||
 
-      {{ave_g}}'
+      {{ (((10*ave_g) | round )/10) }}'
     name: grammar
     reference: ''
     task_template: false
@@ -61,7 +61,7 @@ templates:
 
       |||
 
-      {{ave_m}}'
+      {{ (((10*ave_m) | round )/10) }}'
     name: meaning
     reference: ''
     task_template: false
@@ -82,7 +82,8 @@ templates:
 
       |||
 
-      {{ave_g}}, {{ave_f}}, and {{ave_m}}.'
+      {{ (((10*ave_g) | round )/10) }}, {{ (((10*ave_f) | round )/10) }}, and {{ (((10*ave_m)
+      | round )/10) }}.'
     name: grammar-fluency-meaning
     reference: ''
     task_template: true
