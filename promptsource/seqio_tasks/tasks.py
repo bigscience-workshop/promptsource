@@ -1,4 +1,5 @@
 import functools
+import re
 
 import datasets
 import seqio
@@ -41,6 +42,27 @@ DATASET_BLACKLIST = [
 def strip_whitespace(output_or_target, example=None, is_target=False):
     """Cached tasks from promptsource all have a leading space on the ground-truth targets."""
     return output_or_target.strip()
+
+
+def maybe_get_class_id_postprocessor(template):
+    target = template.jinja.split("|||")[1]
+    label_list_re = r"^([^\{\}]*)\{\{\s*(\[\s*[\"|\'].*[\"|\']\s*\])\s*\[.*\]\s*\}\}([^\{\}]*)$"
+    label_string_match = re.search(label_list_re, target.strip())
+
+    if label_string_match:
+        before_label = label_string_match.group(1)
+        labels = eval(label_string_match.group(2))
+        after_label = label_string_match.group(3)
+        labels = [before_label + label + after_label for label in labels]
+
+        def postprocess_fn(output_or_target, example=None, is_target=False):
+            output_or_target = strip_whitespace(output_or_target)
+            return t5.data.postprocessors.string_label_to_class_id(output_or_target, label_classes=labels)
+
+        return postprocess_fn
+
+    else:
+        return strip_whitespace
 
 
 all_templates = promptsource.templates.TemplateCollection()
@@ -94,7 +116,7 @@ for dataset_name, subset_name in all_templates.keys:
                 "targets": seqio.Feature(t5.data.get_default_vocabulary(), add_eos=True, dtype=tf.int32),
             },
             metric_fns=metrics,
-            postprocess_fn=strip_whitespace,
+            postprocess_fn=maybe_get_class_id_postprocessor(template),
         )
 
 TASK_BLACKLIST = [
