@@ -67,8 +67,9 @@ def load_annotated_prompts() -> List[Dict]:
             task["metrics"] = get_glue_metric(subset)
         elif full_name.startswith("super_glue"):
             subset = full_name.split("_")[2]
-            if subset == "wsc.fixed":
-                task["metrics"] = [accuracy]  # TODO WSC needs specail pre/postprocesing
+            if subset in ("wsc.fixed", "multirc"):
+                # TODO: WSC and MultiRC need special pre/postprocesing
+                task["metrics"] = [accuracy]
                 continue
             task["metrics"] = get_super_glue_metric(subset)
 
