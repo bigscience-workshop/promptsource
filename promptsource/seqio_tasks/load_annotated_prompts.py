@@ -4,7 +4,7 @@ from typing import Dict, List
 
 import pkg_resources
 from t5.data.glue_utils import get_glue_metric, get_super_glue_metric
-from t5.evaluation.metrics import accuracy, mean_multiclass_f1, rank_classification, rouge
+from t5.evaluation.metrics import accuracy, mean_multiclass_f1, rouge
 
 
 SAFE_EXCLUDE_CRETERIA = [
@@ -77,14 +77,15 @@ def load_annotated_prompts() -> List[Dict]:
             if full_name.startswith(dataset_name):
                 task["metrics"] = NON_GLUE_METRICS[dataset_name]
 
-        if task["nontrivial_choices_hidden"]:
-            # Trick of plugging in answer options and rank LM probabilites as predictions.
-            # Required for all prompts with non_trivial_choices_hidden,
-            # but could be used for other tasks as well where answer choices are given.
-            if "metrics" not in task:
-                task["metrics"] = [rank_classification]
-            elif rank_classification not in task["metrics"]:
-                task["metrics"].append(rank_classification)
+        # Skip rank_classification for now until we actually support it
+        # if task["nontrivial_choices_hidden"]:
+        #     # Trick of plugging in answer options and rank LM probabilites as predictions.
+        #     # Required for all prompts with non_trivial_choices_hidden,
+        #     # but could be used for other tasks as well where answer choices are given.
+        #     if "metrics" not in task:
+        #         task["metrics"] = [rank_classification]
+        #     elif rank_classification not in task["metrics"]:
+        #         task["metrics"].append(rank_classification)
 
         # should be already handled by NON_GLUE_METRICS
         # if task['generative_true_task'] or task['generative_non_true_task']:
