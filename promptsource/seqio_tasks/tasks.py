@@ -37,7 +37,7 @@ DATASET_BLACKLIST = [
     ("tweet_eval", "stance_hillary"),
     ("tweet_eval", "irony"),
     # Need to special-case ANLI due to weird split conventions
-    ("anli", None)
+    ("anli", None),
 ]
 
 
