@@ -36,6 +36,8 @@ DATASET_BLACKLIST = [
     ("tweet_eval", "sentiment"),
     ("tweet_eval", "stance_hillary"),
     ("tweet_eval", "irony"),
+    # Need to special-case ANLI due to weird split conventions
+    ("anli", None),
 ]
 
 
@@ -65,6 +67,56 @@ def maybe_get_class_id_postprocessor(template):
         return strip_whitespace
 
 
+def dataset_fn(split, shuffle_files, seed, dataset_name, subset_name, template, split_mapping):
+    # HF datasets does not support file-level shuffling
+    del shuffle_files, seed
+    dataset = datasets.load_dataset(dataset_name, subset_name)
+    dataset = dataset[split_mapping[split]]
+    dataset = utils.apply_template(dataset, template)
+    return utils.hf_dataset_to_tf_dataset(dataset)
+
+
+def add_task(datset_name, subset_name, template_name, task_name=None, split_mapping=None):
+
+    template = all_templates.get_dataset(dataset_name, subset_name)[template_name]
+
+    task_name = task_name or utils.get_task_name(dataset_name, subset_name, template_name)
+    if task_name in CLEAN_EVAL_TASKS:
+        metrics = EVAL_METRICS[task_name]
+    else:
+        metrics = [t5.evaluation.metrics.sequence_accuracy]
+
+    dataset_splits = utils.get_dataset_splits(dataset_name, subset_name)
+    split_mapping = split_mapping or {k: k for k in dataset_splits.keys()}
+
+    seqio.TaskRegistry.add(
+        task_name,
+        seqio.FunctionDataSource(
+            functools.partial(
+                dataset_fn,
+                seed=None,
+                dataset_name=dataset_name,
+                subset_name=subset_name,
+                template=template,
+                split_mapping=split_mapping,
+            ),
+            splits=list(split_mapping.keys()),
+            num_input_examples={s: dataset_splits[split_mapping[s]].num_examples for s in split_mapping.keys()},
+        ),
+        preprocessors=[
+            seqio.preprocessors.tokenize,
+            seqio.preprocessors.append_eos,
+            seqio.CacheDatasetPlaceholder(required=False),
+        ],
+        output_features={
+            "inputs": seqio.Feature(t5.data.get_default_vocabulary(), add_eos=False, dtype=tf.int32),
+            "targets": seqio.Feature(t5.data.get_default_vocabulary(), add_eos=True, dtype=tf.int32),
+        },
+        metric_fns=metrics,
+        postprocess_fn=maybe_get_class_id_postprocessor(template),
+    )
+
+
 all_templates = promptsource.templates.TemplateCollection()
 
 for dataset_name, subset_name in all_templates.keys:
@@ -72,52 +124,22 @@ for dataset_name, subset_name in all_templates.keys:
     if (dataset_name, subset_name) in DATASET_BLACKLIST:
         continue
 
-    dataset_splits = utils.get_dataset_splits(dataset_name, subset_name)
-    templates = all_templates.get_dataset(dataset_name, subset_name)
+    for template_name in all_templates.get_dataset(dataset_name, subset_name).all_template_names:
+        add_task(dataset_name, subset_name, template_name)
 
-    for template_name in templates.all_template_names:
 
-        template = templates[template_name]
+# Special case for ANLI, which has weirdly-named splits and rounds that should be subsets
+dataset_name, subset_name = ("anli", None)
+for anli_round in ("r1", "r2", "r3"):
+    for template_name in all_templates.get_dataset(dataset_name, subset_name).all_template_names:
+        task_name = utils.get_task_name(dataset_name, subset_name, template_name) + f"_{anli_round}"
+        split_mapping = {
+            "train": f"train_{anli_round}",
+            "validation": f"dev_{anli_round}",
+            "test": f"test_{anli_round}",
+        }
+        add_task(dataset_name, subset_name, template_name, task_name, split_mapping)
 
-        def dataset_fn(split, shuffle_files, seed, dataset_name, subset_name, template):
-            # HF datasets does not support file-level shuffling
-            del shuffle_files, seed
-            dataset = datasets.load_dataset(dataset_name, subset_name)
-            dataset = dataset[split]
-            dataset = utils.apply_template(dataset, template)
-            return utils.hf_dataset_to_tf_dataset(dataset)
-
-        task_name = utils.get_task_name(dataset_name, subset_name, template_name)
-        if task_name in CLEAN_EVAL_TASKS:
-            metrics = EVAL_METRICS[task_name]
-        else:
-            metrics = [t5.evaluation.metrics.sequence_accuracy]
-
-        seqio.TaskRegistry.add(
-            task_name,
-            seqio.FunctionDataSource(
-                functools.partial(
-                    dataset_fn,
-                    seed=None,
-                    dataset_name=dataset_name,
-                    subset_name=subset_name,
-                    template=template,
-                ),
-                splits=list(dataset_splits.keys()),
-                num_input_examples={s: dataset_splits[s].num_examples for s in dataset_splits.keys()},
-            ),
-            preprocessors=[
-                seqio.preprocessors.tokenize,
-                seqio.preprocessors.append_eos,
-                seqio.CacheDatasetPlaceholder(required=False),
-            ],
-            output_features={
-                "inputs": seqio.Feature(t5.data.get_default_vocabulary(), add_eos=False, dtype=tf.int32),
-                "targets": seqio.Feature(t5.data.get_default_vocabulary(), add_eos=True, dtype=tf.int32),
-            },
-            metric_fns=metrics,
-            postprocess_fn=maybe_get_class_id_postprocessor(template),
-        )
 
 TASK_BLACKLIST = [
     # Tasks which often tokenize to > 1024 tokens currently
@@ -171,5 +193,11 @@ seqio.MixtureRegistry.add(
 seqio.MixtureRegistry.add(
     "clean_eval_tasks",
     [task for task in CLEAN_EVAL_TASKS if task not in TASK_BLACKLIST],
+    default_rate=functools.partial(seqio.mixing_rate_num_examples, maximum=500_000),
+)
+
+seqio.MixtureRegistry.add(
+    "anli_eval_tasks",
+    [task for task in CLEAN_EVAL_TASKS if task.startswith("anli")],
     default_rate=functools.partial(seqio.mixing_rate_num_examples, maximum=500_000),
 )
