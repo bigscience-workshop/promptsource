@@ -224,14 +224,17 @@ seqio.MixtureRegistry.add(
 seqio.MixtureRegistry.add(
     "clean_eval_tasks",
     [task for task in CLEAN_EVAL_TASKS if task not in TASK_BLACKLIST],
+    default_rate=functools.partial(seqio.mixing_rate_num_examples, maximum=500_000),
 )
 
 seqio.MixtureRegistry.add(
     "anli_eval_tasks",
     [task for task in CLEAN_EVAL_TASKS if task.startswith("anli")],
+    default_rate=functools.partial(seqio.mixing_rate_num_examples, maximum=500_000),
 )
 
 seqio.MixtureRegistry.add(
     "score_eval_tasks",
     [task for task in seqio.TaskRegistry.names() if task.endswidth("_score_eval")],
+    default_rate=functools.partial(seqio.mixing_rate_num_examples, maximum=500_000),
 )
