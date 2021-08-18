@@ -143,7 +143,7 @@ def add_task(datset_name, subset_name, template_name, task_name=None, split_mapp
             data_source,
             preprocessors=[rank_classification_preprocessor] + preprocessors,
             output_features=output_features,
-            metric_fns=[t5.evaluation.metrics.rank_classification],
+            metric_fns=[functools.partial(t5.evaluation.metrics.rank_classification, num_classes=len(labels))],
             postprocess_fn=t5.data.postprocessors.rank_classification,
         )
 
