@@ -235,6 +235,6 @@ seqio.MixtureRegistry.add(
 
 seqio.MixtureRegistry.add(
     "score_eval_tasks",
-    [task for task in seqio.TaskRegistry.names() if task.endswidth("_score_eval")],
+    [task for task in seqio.TaskRegistry.names() if task.endswith("_score_eval")],
     default_rate=functools.partial(seqio.mixing_rate_num_examples, maximum=500_000),
 )
