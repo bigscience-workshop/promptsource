@@ -135,7 +135,7 @@ def add_task(datset_name, subset_name, template_name, task_name=None, split_mapp
             t5.data.preprocessors.rank_classification,
             inputs_fn=lambda ex: tf.fill((len(labels),), ex["inputs"]),
             targets_fn=lambda ex: labels,
-            is_correct_fn=lambda ex: tf.equal(labels, ex["targets"]),
+            is_correct_fn=lambda ex: tf.equal(labels, tf.strings.strip(ex["targets"])),
             weight_fn=lambda ex: 1.0,
         )
         seqio.TaskRegistry.add(
