@@ -46,7 +46,7 @@ def strip_whitespace(output_or_target, example=None, is_target=False):
     return output_or_target.strip()
 
 
-def maybe_get_class_id_postprocessor(template):
+def get_label_strings(template):
     target = template.jinja.split("|||")[1]
     label_list_re = r"^([^\{\}]*)\{\{\s*(\[\s*[\"|\'].*[\"|\']\s*\])\s*\[.*\]\s*\}\}([^\{\}]*)$"
     label_string_match = re.search(label_list_re, target.strip())
@@ -56,6 +56,12 @@ def maybe_get_class_id_postprocessor(template):
         labels = eval(label_string_match.group(2))
         after_label = label_string_match.group(3)
         labels = [before_label + label + after_label for label in labels]
+        return labels
+
+
+def maybe_get_class_id_postprocessor(template):
+    labels = get_label_strings(template)
+    if labels is not None:
 
         def postprocess_fn(output_or_target, example=None, is_target=False):
             output_or_target = strip_whitespace(output_or_target)
@@ -67,7 +73,7 @@ def maybe_get_class_id_postprocessor(template):
         return strip_whitespace
 
 
-def dataset_fn(split, shuffle_files, seed, dataset_name, subset_name, template, split_mapping):
+def get_tf_dataset(split, shuffle_files, seed, dataset_name, subset_name, template, split_mapping):
     # HF datasets does not support file-level shuffling
     del shuffle_files, seed
     dataset = datasets.load_dataset(dataset_name, subset_name)
@@ -89,32 +95,57 @@ def add_task(datset_name, subset_name, template_name, task_name=None, split_mapp
     dataset_splits = utils.get_dataset_splits(dataset_name, subset_name)
     split_mapping = split_mapping or {k: k for k in dataset_splits.keys()}
 
+    dataset_fn = functools.partial(
+        get_tf_dataset,
+        seed=None,
+        dataset_name=dataset_name,
+        subset_name=subset_name,
+        template=template,
+        split_mapping=split_mapping,
+    )
+    data_source = seqio.FunctionDataSource(
+        dataset_fn,
+        splits=list(split_mapping.keys()),
+        num_input_examples={s: dataset_splits[split_mapping[s]].num_examples for s in split_mapping.keys()},
+    )
+    output_features = {
+        "inputs": seqio.Feature(t5.data.get_default_vocabulary(), add_eos=False, dtype=tf.int32),
+        "targets": seqio.Feature(t5.data.get_default_vocabulary(), add_eos=True, dtype=tf.int32),
+    }
+    preprocessors = [
+        seqio.preprocessors.tokenize,
+        seqio.preprocessors.append_eos,
+        seqio.CacheDatasetPlaceholder(required=False),
+    ]
+
+    # Add train and normal eval tasks
     seqio.TaskRegistry.add(
         task_name,
-        seqio.FunctionDataSource(
-            functools.partial(
-                dataset_fn,
-                seed=None,
-                dataset_name=dataset_name,
-                subset_name=subset_name,
-                template=template,
-                split_mapping=split_mapping,
-            ),
-            splits=list(split_mapping.keys()),
-            num_input_examples={s: dataset_splits[split_mapping[s]].num_examples for s in split_mapping.keys()},
-        ),
-        preprocessors=[
-            seqio.preprocessors.tokenize,
-            seqio.preprocessors.append_eos,
-            seqio.CacheDatasetPlaceholder(required=False),
-        ],
-        output_features={
-            "inputs": seqio.Feature(t5.data.get_default_vocabulary(), add_eos=False, dtype=tf.int32),
-            "targets": seqio.Feature(t5.data.get_default_vocabulary(), add_eos=True, dtype=tf.int32),
-        },
+        data_source,
+        preprocessors=preprocessors,
+        output_features=output_features,
         metric_fns=metrics,
         postprocess_fn=maybe_get_class_id_postprocessor(template),
     )
+
+    # Add rank classification eval task
+    labels = get_label_strings(template)
+    if labels:
+        rank_classification_preprocessor = functools.partial(
+            t5.data.preprocessors.rank_classification,
+            inputs_fn=lambda ex: tf.fill((len(labels),), ex["inputs"]),
+            targets_fn=lambda ex: labels,
+            is_correct_fn=lambda ex: tf.equal(labels, tf.strings.strip(ex["targets"])),
+            weight_fn=lambda ex: 1.0,
+        )
+        seqio.TaskRegistry.add(
+            task_name + "_score_eval",
+            data_source,
+            preprocessors=[rank_classification_preprocessor] + preprocessors,
+            output_features=output_features,
+            metric_fns=[functools.partial(t5.evaluation.metrics.rank_classification, num_classes=len(labels))],
+            postprocess_fn=t5.data.postprocessors.rank_classification,
+        )
 
 
 all_templates = promptsource.templates.TemplateCollection()
@@ -199,5 +230,23 @@ seqio.MixtureRegistry.add(
 seqio.MixtureRegistry.add(
     "anli_eval_tasks",
     [task for task in CLEAN_EVAL_TASKS if task.startswith("anli")],
+    default_rate=functools.partial(seqio.mixing_rate_num_examples, maximum=500_000),
+)
+
+seqio.MixtureRegistry.add(
+    "score_eval_tasks",
+    [task for task in seqio.TaskRegistry.names() if task.endswith("_score_eval")],
+    default_rate=functools.partial(seqio.mixing_rate_num_examples, maximum=500_000),
+)
+
+seqio.MixtureRegistry.add(
+    "clean_score_eval_tasks",
+    [
+        task
+        for task in seqio.TaskRegistry.names()
+        if task.endswith("_score_eval")
+        and task.split("_score_eval")[0] in CLEAN_EVAL_TASKS
+        and task.split("_score_eval")[0] not in TASK_BLACKLIST
+    ],
     default_rate=functools.partial(seqio.mixing_rate_num_examples, maximum=500_000),
 )
