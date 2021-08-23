@@ -169,8 +169,6 @@ class DatasetTemplates:
     def read_from_file(self) -> Dict:
         """
         Reads a file containing a prompt collection.
-
-        :param file: file-like object producing strings
         """
 
         if not os.path.exists(self.yaml_path):
@@ -181,8 +179,6 @@ class DatasetTemplates:
     def write_to_file(self) -> None:
         """
         Writes to a file with the current prompt collection.
-
-        :param file: file-like object supporting string inputs
         """
         # Sync the mapping
         self.sync_mapping()
