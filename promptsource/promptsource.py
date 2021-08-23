@@ -468,8 +468,8 @@ else:
                         state.answer_choices = st.text_input(
                             "Answer Choices",
                             value=", ".join(template.answer_choices) if template.answer_choices is not None else "",
-                            help="A comma-separated list of possible outputs (or leave blank). " +
-                                 "Value is available in Jinja in a list called answer_choices."
+                            help="A comma-separated list of possible outputs (or leave blank). "
+                            + "Value is available in Jinja in a list called answer_choices.",
                         )
                         state.jinja = st.text_area("Template", height=40, value=template.jinja)
 
@@ -494,7 +494,7 @@ else:
                                     state.jinja,
                                     state.reference,
                                     state.task_template,
-                                    updated_answer_choices
+                                    updated_answer_choices,
                                 )
                                 # Update the state as well
                                 state.template_name = updated_template_name

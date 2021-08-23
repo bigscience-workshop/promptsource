@@ -219,8 +219,13 @@ class DatasetTemplates:
             self.write_to_file()
 
     def update_template(
-        self, current_template_name: str, new_template_name: str, jinja: str, reference: str, task_template: bool,
-            answer_choices: List[str]
+        self,
+        current_template_name: str,
+        new_template_name: str,
+        jinja: str,
+        reference: str,
+        task_template: bool,
+        answer_choices: List[str],
     ) -> None:
         """
         Updates a pre-existing template and writes changes
