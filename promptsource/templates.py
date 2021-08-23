@@ -219,7 +219,8 @@ class DatasetTemplates:
             self.write_to_file()
 
     def update_template(
-        self, current_template_name: str, new_template_name: str, jinja: str, reference: str, task_template: bool
+        self, current_template_name: str, new_template_name: str, jinja: str, reference: str, task_template: bool,
+            answer_choices: List[str]
     ) -> None:
         """
         Updates a pre-existing template and writes changes
@@ -228,12 +229,15 @@ class DatasetTemplates:
         :param new_template_name: new name for the template
         :param jinja: new jinja entry
         :param reference: new reference entry
+        :param task_template: new task_template value
+        :param answer_choices: new answer_choices list
         """
         template_id = self.name_to_id_mapping[current_template_name]
         self.templates[template_id].name = new_template_name
         self.templates[template_id].jinja = jinja
         self.templates[template_id].reference = reference
         self.templates[template_id].task_template = task_template
+        self.templates[template_id].answer_choices = answer_choices
 
         self.write_to_file()
 

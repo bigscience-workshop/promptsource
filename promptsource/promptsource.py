@@ -334,6 +334,8 @@ else:
                 st.text(template.reference)
                 st.markdown("##### Task Template? ")
                 st.text(template.get_task_template())
+                st.markdown("##### Answer Choices")
+                st.text(", ".join(template.answer_choices if template.answer_choices is not None else ""))
                 st.markdown("##### Jinja")
                 splitted_template = template.jinja.split("|||")
                 st.markdown("###### Prompt + X")
@@ -463,6 +465,12 @@ else:
                             value=template.get_task_template(),
                             help="Task templates correspond one-to-one with the original task.",
                         )
+                        state.answer_choices = st.text_input(
+                            "Answer Choices",
+                            value=", ".join(template.answer_choices) if template.answer_choices is not None else "",
+                            help="A comma-separated list of possible outputs (or leave blank). " +
+                                 "Value is available in Jinja in a list called answer_choices."
+                        )
                         state.jinja = st.text_area("Template", height=40, value=template.jinja)
 
                         if st.form_submit_button("Save"):
@@ -477,12 +485,16 @@ else:
                             elif updated_template_name == "":
                                 st.error("Need to provide a template name.")
                             else:
+                                # Parses state.answer_choices
+                                updated_answer_choices = [x.strip() for x in state.answer_choices.split(",")]
+
                                 dataset_templates.update_template(
                                     state.template_name,
                                     updated_template_name,
                                     state.jinja,
                                     state.reference,
                                     state.task_template,
+                                    updated_answer_choices
                                 )
                                 # Update the state as well
                                 state.template_name = updated_template_name
