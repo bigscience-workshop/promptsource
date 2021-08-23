@@ -2,6 +2,7 @@ dataset: adversarial_qa
 subset: droberta
 templates:
   061ecbe3-7d01-479a-9356-6a5ba260a487: !Template
+    answer_choices: null
     id: 061ecbe3-7d01-479a-9356-6a5ba260a487
     jinja: 'Documentation:
 
@@ -41,20 +42,18 @@ templates:
     reference: 'Input: Question, Context Output: Answer+Index (Python format)'
     task_template: true
   1aaf3296-2e10-4211-a44f-8bb811f48edc: !Template
+    answer_choices: null
     id: 1aaf3296-2e10-4211-a44f-8bb811f48edc
     jinja: 'I know that the answer to "{{question}}" is in "{{context}}" somewhere.
-      Can you return the offsets of the answer?
-      Note: Follow 0-indexing and [inclusive, exclusive) format for range.
-      |||
-      {% if answers.text != [] %}
-      {{(answers.answer_start[0], answers.answer_start[0]+answers.text[0]|length)}}
-      {% else %}
-      Answer not found
+      Can you return the offsets of the answer? Note: Follow 0-indexing and [inclusive,
+      exclusive) format for range. ||| {% if answers.text != [] %} {{(answers.answer_start[0],
+      answers.answer_start[0]+answers.text[0]|length)}} {% else %} Answer not found
       {% endif %}'
     name: adversarial_qa_droberta_7
     reference: 'Input: QC, Output: Offsets'
     task_template: true
   4134737a-670d-4f57-8510-7cfbd1720600: !Template
+    answer_choices: null
     id: 4134737a-670d-4f57-8510-7cfbd1720600
     jinja: 'Given the following passage
 
@@ -74,6 +73,7 @@ templates:
     reference: 'Input: QC, Output: Answer'
     task_template: true
   72adfa1b-df68-40a3-a5ac-3f9330fb0e78: !Template
+    answer_choices: null
     id: 72adfa1b-df68-40a3-a5ac-3f9330fb0e78
     jinja: 'I want to make a question paper for students. I''ve crawled paragraphs
       from Wikipedia and now want to test their reading comprehension prowess. I am
@@ -88,19 +88,17 @@ templates:
     reference: 'Input: Context, Output: QA (set a question paper)'
     task_template: false
   84045341-e2dd-4f74-9012-6e93fb6b79dd: !Template
+    answer_choices: null
     id: 84045341-e2dd-4f74-9012-6e93fb6b79dd
     jinja: '"{{answers.text[0]}}" is in "{{context}}". But the paragraph is very long
       and manual counting will take ages. Can you return the starting and ending indices?
-      |||
-      {% if answers.text != [] %}
-      {{(answers.answer_start[0], answers.answer_start[0] + answers.text[0]|length)}}
-      {% else %}
-      Answer not found
-      {% endif %}'
+      ||| {% if answers.text != [] %} {{(answers.answer_start[0], answers.answer_start[0]
+      + answers.text[0]|length)}} {% else %} Answer not found {% endif %}'
     name: adversarial_qa_droberta_9
     reference: 'Input: CA, Output: offsets of A'
     task_template: false
   907041f6-3261-46bf-b84a-38487fed81a8: !Template
+    answer_choices: null
     id: 907041f6-3261-46bf-b84a-38487fed81a8
     jinja: 'My professor gave us an assignment today. I don''t like cheating, but
       the exercise is easy for humans and frankly, a waste of time for me. Could you
@@ -112,6 +110,7 @@ templates:
     reference: 'Input: QC, Output: A (formulate as an assignment)'
     task_template: true
   a351c42c-7327-4068-b4a3-87ce052cef24: !Template
+    answer_choices: null
     id: a351c42c-7327-4068-b4a3-87ce052cef24
     jinja: 'Q: "{{question}}"
 
@@ -127,6 +126,7 @@ templates:
     reference: 'Input: QC, Output: beginning offset of A'
     task_template: true
   c27aedc5-8a9b-44b0-8731-d623fa465611: !Template
+    answer_choices: null
     id: c27aedc5-8a9b-44b0-8731-d623fa465611
     jinja: 'I want to test the ability of students to read a passage and answer questions
       about it. Could you please come up with a good question for the passage "{{context}}"?
@@ -137,6 +137,7 @@ templates:
     reference: 'Input: Context, Output: Question (generate a question)'
     task_template: false
   e45082a1-8887-41d4-a30c-950c024570fa: !Template
+    answer_choices: null
     id: e45082a1-8887-41d4-a30c-950c024570fa
     jinja: 'Question: "{{question}}"
 
@@ -153,6 +154,7 @@ templates:
     reference: 'Input: QC, Output: Answer (short form)'
     task_template: true
   f3dadda4-7c8e-4be9-a89c-22b3913828f5: !Template
+    answer_choices: null
     id: f3dadda4-7c8e-4be9-a89c-22b3913828f5
     jinja: 'I know that the answer to the question "{{question}}" is in "{{context}}".
       Can you tell me what it is? |||

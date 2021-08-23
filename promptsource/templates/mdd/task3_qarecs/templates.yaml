@@ -2,11 +2,12 @@ dataset: mdd
 subset: task3_qarecs
 templates:
   1614890b-362c-4ee8-850d-841cf511d169: !Template
+    answer_choices: null
     id: 1614890b-362c-4ee8-850d-841cf511d169
-    jinja: "{% if dialogue_turns.utterance|length==6%}
+    jinja: '{% if dialogue_turns.utterance|length==6%}
 
       This is a film-related dialogue between Speaker 1 and Speaker 2. Complete Speaker
-      2's intervention to answer Speaker 1's question.
+      2''s intervention to answer Speaker 1''s question.
 
 
       Speaker 1: {{dialogue_turns.utterance[0]}}
@@ -24,15 +25,15 @@ templates:
 
       |||
 
-      {% endif %}"
+      {% endif %}'
     name: next_utterance_4_for_6
-    reference:
-      Given the first three dialogues,  generate next utterance for dialogues
+    reference: Given the first three dialogues,  generate next utterance for dialogues
       of length 6.
   3e5a19e5-aa33-467a-bcd2-f84d99f32759: !Template
+    answer_choices: null
     id: 3e5a19e5-aa33-467a-bcd2-f84d99f32759
-    jinja: '{% set context_init= ["", "Someone said", "He said", "She
-      said", "They said", "A friend asked me", "A colleague asked me"]|choice %}
+    jinja: '{% set context_init= ["", "Someone said", "He said", "She said", "They
+      said", "A friend asked me", "A colleague asked me"]|choice %}
 
       {{context_init}}
 
@@ -43,11 +44,11 @@ templates:
     reference: Given likes, recommend a movie.
     task_template: false
   76888d6e-76fa-47db-a8b3-9980f082df51: !Template
+    answer_choices: null
     id: 76888d6e-76fa-47db-a8b3-9980f082df51
-    jinja: '
-      {% set context_init = ["", "Someone said", "He said", "She said",
-      "They asked", "A friend asked me", "A colleague asked me"]|choice %}
-      {% set pronoun = "he" %}
+    jinja: ' {% set context_init = ["", "Someone said", "He said", "She said", "They
+      asked", "A friend asked me", "A colleague asked me"]|choice %} {% set pronoun
+      = "he" %}
 
       {% if dialogue_turns.utterance|length==6 %}
 
@@ -65,8 +66,7 @@ templates:
 
       {% elif "colleague" in context_init or "friend" in context_init %}
 
-      {% set pronoun = ["he","she","they"]|choice %}
-      {%endif%}
+      {% set pronoun = ["he","she","they"]|choice %} {%endif%}
 
       {{context_init}}{% if context_init=="" %}{{dialogue_turns.utterance[4]}}|||{{dialogue_turns.utterance[5]}}
 
@@ -79,21 +79,18 @@ templates:
 
       {% endif %}'
     name: recommend_movie_2
-    reference:
-      Given a single preference, recommend a movie. Only works for dialogues
+    reference: Given a single preference, recommend a movie. Only works for dialogues
       with 6 utterances.
     task_template: false
   91f33bcf-3c0e-49e6-ae86-28f77e224734: !Template
+    answer_choices: null
     id: 91f33bcf-3c0e-49e6-ae86-28f77e224734
-    jinja: '
-      {% set context_init= ["I am aware", "Someone is aware", "He is aware", "She
-      is aware", "They are aware", "A friend is aware", "A colleague is aware", "A
-      person is aware", "I know", "Someone knows", "He knows", "She knows", "They
+    jinja: ' {% set context_init= ["I am aware", "Someone is aware", "He is aware",
+      "She is aware", "They are aware", "A friend is aware", "A colleague is aware",
+      "A person is aware", "I know", "Someone knows", "He knows", "She knows", "They
       know", "A friend knows", "A colleague knows", "A person knows"]|choice %}
 
-      {% set pronoun = "he" %}
-      {% set pronoun_2 = "him" %}
-      {% set choice_idx = 0 %}
+      {% set pronoun = "he" %} {% set pronoun_2 = "him" %} {% set choice_idx = 0 %}
 
       {% if dialogue_turns.utterance|length==6 %}
 
@@ -115,8 +112,7 @@ templates:
 
       {% set pronoun_2 = "her" %}
 
-      {% elif "They" in context_init or "Someone" in context_init or "person" in
-      context_init%}
+      {% elif "They" in context_init or "Someone" in context_init or "person" in context_init%}
 
       {% set pronoun = "they" %}
 
@@ -145,19 +141,16 @@ templates:
 
       {% endif %}'
     name: recommend_movie_3
-    reference:
-      Given previous suggestion, some movie description, and preference,
+    reference: Given previous suggestion, some movie description, and preference,
       recommend a movie.
     task_template: false
   92cb9273-b89f-410f-a7f2-db8c84f42862: !Template
+    answer_choices: null
     id: 92cb9273-b89f-410f-a7f2-db8c84f42862
-    jinja: '
-      {% set context_init= ["", "He said", "She said", "They said", "Someone said",
-      "A friend said", "A colleague said", "A person said"]|choice %}
+    jinja: ' {% set context_init= ["", "He said", "She said", "They said", "Someone
+      said", "A friend said", "A colleague said", "A person said"]|choice %}
 
-      {% set pronoun = "he" %}
-      {% set pronoun_2 = "him" %}
-      {% set choice_idx = 0 %}
+      {% set pronoun = "he" %} {% set pronoun_2 = "him" %} {% set choice_idx = 0 %}
       {% if dialogue_turns.utterance|length==6 %}
 
       {% if "He" in context_init %}
@@ -172,8 +165,7 @@ templates:
 
       {% set pronoun_2 = "her" %}
 
-      {% elif "They" in context_init or "Someone" in context_init or "person" in
-      context_init%}
+      {% elif "They" in context_init or "Someone" in context_init or "person" in context_init%}
 
       {% set pronoun = "they" %}
 
@@ -209,10 +201,10 @@ templates:
     reference: Given likes and preferences, recommend a movie.
     task_template: false
   de1179b3-b6d6-4acf-9b0a-82cb2fa9d58f: !Template
+    answer_choices: null
     id: de1179b3-b6d6-4acf-9b0a-82cb2fa9d58f
-    jinja:
-      "Complete this movie-trivia-related dialogue between Speaker 1 and Speaker
-      2 by answering Speaker 1's question as Speaker 2.
+    jinja: 'Complete this movie-trivia-related dialogue between Speaker 1 and Speaker
+      2 by answering Speaker 1''s question as Speaker 2.
 
 
       Speaker 1: {{dialogue_turns.utterance[0]}}
@@ -230,16 +222,16 @@ templates:
       Speaker 1: {{dialogue_turns.utterance[4]}}
 
 
-      {% endif %} Speaker 2:|||{{dialogue_turns.utterance[-1]}}"
+      {% endif %} Speaker 2:|||{{dialogue_turns.utterance[-1]}}'
     name: next_utterance_4_and_6
     reference: Given the first dialogues, return the next utterance.
   e37a6f9c-344c-4b85-a41f-85bb84bab934: !Template
+    answer_choices: null
     id: e37a6f9c-344c-4b85-a41f-85bb84bab934
-    jinja:
-      "For the movie - {{dialogue_turns.utterance[1]}}, answer this question:
+    jinja: 'For the movie - {{dialogue_turns.utterance[1]}}, answer this question:
 
 
-      {{dialogue_turns.utterance[2]}}|||{{dialogue_turns.utterance[3]}}"
+      {{dialogue_turns.utterance[2]}}|||{{dialogue_turns.utterance[3]}}'
     name: qa_about movie
     reference: Given the movie name and a question, answer the question.
     task_template: false
