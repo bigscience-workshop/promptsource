@@ -270,7 +270,7 @@ class Template(yaml.YAMLObject):
 
     yaml_tag = "!Template"
 
-    def __init__(self, name, jinja, reference, task_template=False):
+    def __init__(self, name, jinja, reference, task_template=False, answer_choices=None):
         """
         Creates a prompt template.
 
@@ -287,6 +287,11 @@ class Template(yaml.YAMLObject):
         :param reference: string metadata describing author or paper reference
                           for template
         :param task_template: bool whether this template corresponds 1-1 with the dataset task
+        :param answer_choices: list of strings that enumerates the possible completions
+                               for templates that should be evaluated as ranked
+                               completions. If None, then the template is open-ended.
+                               This list is accessible from within Jinja as the
+                               variable `answer_choices`.
 
         """
         self.id = str(uuid.uuid4())
@@ -294,6 +299,7 @@ class Template(yaml.YAMLObject):
         self.jinja = jinja
         self.reference = reference
         self.task_template = task_template
+        self.answer_choices = answer_choices
 
     def get_id(self):
         """
@@ -331,27 +337,54 @@ class Template(yaml.YAMLObject):
         else:
             return False
 
+    def get_answer_choices(self):
+        """
+        Returns a list of strings enumerating the possible completions for
+        this template, or None if the template is open ended.
+
+        :return: List[String]
+        """
+        return self.answer_choices
+
     def apply(self, example, truncate=True, highlight_variables=False):
         """
         Creates a prompt by applying this template to an example
 
         :param example: the dataset example to create a prompt for
+        :param truncate: if True, example fields will be truncated to TEXT_VAR_LENGTH chars
         :param highlight_variables: highlight the added variables
         :return: tuple of 2 strings, for prompt and output
         """
         jinja = self.jinja
+
+        # Truncates the prompt if needed
         if truncate:
             trunc_command = (
                 f" | string | truncate({TEXT_VAR_LENGTH}) }}}}"  # Escaping curly braces requires doubling them
             )
             jinja = jinja.replace("}}", trunc_command)
+
+        # Highlights text that was substituted for variables, if requested
         if highlight_variables:
             jinja = jinja.replace("}}", " | highlight }}")
         rtemplate = env.from_string(jinja)
+
+        # Replaces any occurrences of the "|||" separator in the example, which
+        # which will be replaced back after splitting
         pipe_protector = "3ed2dface8203c4c9dfb1a5dc58e41e0"
         protected_example = {
             key: value.replace("|||", pipe_protector) if isinstance(value, str) else value
             for key, value in example.items()
         }
+
+        # Adds in answer_choices variable
+        if "answer_choices" in protected_example:
+            raise ValueError("Example contains the restricted key 'answer_choices'.")
+        protected_example["answer_choices"] = self.answer_choices
+
+        # Renders the Jinja template
         rendered_example = rtemplate.render(**protected_example)
+
+        # Splits on the separator, and then replaces back any occurrences of the
+        # separator in the original example
         return [part.replace(pipe_protector, "|||") for part in rendered_example.split("|||")]
