@@ -48,7 +48,7 @@ def test_dataset(dataset):
 
         variables = meta.find_undeclared_variables(parse)
         for variable in variables:
-            if variable not in features:
+            if variable not in features and variable != "answer_choices":
                 raise ValueError(f"Template for dataset {dataset_name}/{subset_name} "
                                  f"with uuid {template.get_id()} has unrecognized variable {variable}.")
 
