@@ -20,7 +20,7 @@ templates:
       Answer: {{answer}} |||
 
 
-      {{["No", "Yes"][label]}}'
+      {{answer_choices[label]}}'
     name: mc_taco_1
     reference: Basic Context, QA Pair, ask for plausibility
     task_template: true
@@ -31,8 +31,8 @@ templates:
     id: 38ab730f-1ed8-4362-99e1-c0d305aa056e
     jinja: "I've been grappling with the temporal accuracy of this answer for a while:\n\
       \nQ: \"{{question}}\"\n\nI have the following information: \"{{sentence}}\"\n\
-      \nA: \"{{answer}}\" \n\nThis is definitely not a/an ||| {{[\"plausible\", \"\
-      implausible\"][label]}} answer."
+      \nA: \"{{answer}}\" \n\nThis is definitely not a/an ||| {{answer_choices[label]}}\
+      \ answer."
     name: mc_taco_6
     reference: Context, QA Pair, Negation
     task_template: true
@@ -51,7 +51,7 @@ templates:
       Out of the above temporal categories, which one does the question "{{question}}"
       belong to? |||
 
-      {{["Event Duration", "Event Ordering", "Frequency", "Typical Time", "Stationarity"][category]}}'
+      {{answer_choices[category]}}'
     name: mc_taco_4
     reference: Temporal categories as part of the prompt
     task_template: false
@@ -89,7 +89,7 @@ templates:
       "{{answer}}" is a plausible answer to "{{question}}", given "{{sentence}}" |||
 
 
-      {{["False", "True"][label]}}'
+      {{answer_choices[label]}}'
     name: mc_taco_3
     reference: Context, QA Pair, T/F question
     task_template: true
@@ -104,6 +104,6 @@ templates:
     jinja: 'Which temporal category does the question "{{question}}" belong to? |||
 
 
-      {{["Event Duration", "Event Ordering", "Frequency", "Typical Time", "Stationarity"][category]}}'
+      {{answer_choices[category]}}'
     name: mc_taco_2
     reference: Question provided, predict Temporal Category

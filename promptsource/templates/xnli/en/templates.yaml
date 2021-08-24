@@ -14,7 +14,7 @@ templates:
       Question: Does Sentence 1 contradict Sentence 2? Yes, No, or {{"Neutral"}}?
       |||
 
-      {{["No", "Neutral", "Yes"][label]}}'
+      {{answer_choices[label]}}'
     name: Concatenation contraposition
     reference: Concatenation contraposition
     task_template: false
@@ -25,8 +25,7 @@ templates:
     - must be false
     id: a1506390-8d7a-4b8f-922c-6135e23094d7
     jinja: Given that {{premise}}, it {{"must be true, might be true, or must be false"}}
-      that {{hypothesis}}? ||| It {{ ["must be true", "might be true", "must be false"][label]
-      }}.
+      that {{hypothesis}}? ||| It {{ answer_choices[label] }}.
     name: "given\u2026 must be true that\u2026"
     reference: 'Maybe a little verbose for a generative model, but anecdotally this
       is the most natural way of how I say an NLI sentence pair out loud to humans.
@@ -45,7 +44,7 @@ templates:
 
       Question: Does Sentence 1 contradict Sentence 2? Yes or No? |||
 
-      {{["No", "No", "Yes"][label]}}'
+      {{answer_choices[label]}}'
     name: Label binarization contraposition
     reference: Inspired from https://arxiv.org/pdf/1902.01007.pdf Section 4 - Implementation
       and evaluation
@@ -57,7 +56,7 @@ templates:
     - 'No'
     id: d027ab50-a86b-45ba-99fa-018c0e4cac4a
     jinja: Given that {{premise}} Does it follow that {{hypothesis}} Yes, no, or maybe?
-      ||| {{ ["Yes", "Maybe", "No"][label] }}
+      ||| {{ answer_choices[label] }}
     name: "given\u2026 does it follow that\u2026 "
     reference: "\"Does it follow that\" could be replaced with \"can we infer that\u2026\
       \ \", \"is it guaranteed that\u2026\", etc. Ideally there should be a question\
@@ -71,7 +70,7 @@ templates:
     - 'False'
     id: d9e13133-267e-46c4-afad-c2379dcc5272
     jinja: "{{premise}}\nQuestion: {{hypothesis}} True, False, or Neither? ||| \n\
-      {{[\"True\", \"Neither\", \"False\"][label]}}"
+      {{answer_choices[label]}}"
     name: ANLI GPT3
     reference: ANLI prompt format from Table G7 in the GPT3 paper
     task_template: true
@@ -87,7 +86,7 @@ templates:
 
       Question: Does Sentence 1 entail Sentence 2? Yes or No? |||
 
-      {{["Yes", "No", "No"][label]}}'
+      {{answer_choices[label]}}'
     name: Label binarization
     reference: Grouping "neutral" and "contradiction" as a single label following
       https://arxiv.org/pdf/1902.01007.pdf Section 4 - Implementation and evaluation
@@ -99,7 +98,7 @@ templates:
     - 'No'
     id: ddfd2eb1-96a4-42db-ad5e-91d7cb011b4e
     jinja: '{{premise}} Based on the previous passage, is it true that {{hypothesis}}
-      Yes, no, or maybe? ||| {{ ["Yes", "Maybe", "No"][label] }}'
+      Yes, no, or maybe? ||| {{ answer_choices[label] }}'
     name: based on the previous passage
     reference: "Adapted from the BoolQ prompts in Schick & Sch\xFCtze 2021."
     task_template: true
@@ -115,7 +114,7 @@ templates:
 
       Question: Does Sentence 1 entail Sentence 2? Yes, No, or {{"Neutral"}}? |||
 
-      {{["Yes", "Neutral", "No"][label]}}'
+      {{answer_choices[label]}}'
     name: Concatenation
     reference: Concatenation of premise and hypothesis
     task_template: true

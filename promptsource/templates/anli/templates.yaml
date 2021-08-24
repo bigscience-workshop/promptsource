@@ -12,7 +12,7 @@ templates:
 
       Question: Does Sentence 1 contradict Sentence 2? Yes, No, or Neutral? |||
 
-      {{["No", "Neutral", "Yes"][label]}}'
+      {{answer_choices[label]}}'
     name: does S1 contradict S2?
     reference: Copied from Victor's prompts for XNLI.
     task_template: false
@@ -23,7 +23,7 @@ templates:
     - 'No'
     id: 5459237b-97de-4340-bf7b-2939c3f7ca19
     jinja: Given that {{premise}} Does it follow that {{hypothesis}} Yes, no, or maybe?
-      ||| {{ ["Yes", "Maybe", "No"][label] }}
+      ||| {{ answer_choices[label] }}
     name: "given\u2026 does it follow that\u2026 "
     reference: "\"Does it follow that\" could be replaced with \"can we infer that\u2026\
       \ \", \"is it guaranteed that\u2026\", etc. Ideally there should be a question\
@@ -38,8 +38,8 @@ templates:
     id: 620aa3fc-d5eb-46f5-a1ee-4c754527aa97
     jinja: '{{premise}}
 
-      Question: {{hypothesis}} True, False, or Neither? ||| {{ ["True", "Neither",
-      "False"][label] }}'
+      Question: {{hypothesis}} True, False, or Neither? ||| {{ answer_choices[label]
+      }}'
     name: GPT-3 style
     reference: 'Same as reported in Figure G7 of the GPT-3 paper, except that there
       is no task identifying tokens like "anli R1: ".'
@@ -51,7 +51,7 @@ templates:
     - 'No'
     id: 9b613182-c6ab-4427-9221-3d68f6d62765
     jinja: '{{premise}} Based on the previous passage, is it true that {{hypothesis}}
-      Yes, no, or maybe? ||| {{ ["Yes", "Maybe", "No"][label] }}'
+      Yes, no, or maybe? ||| {{ answer_choices[label] }}'
     name: based on the previous passage
     reference: "Adapted from the BoolQ prompts in Schick & Sch\xFCtze 2021."
     task_template: true
@@ -67,7 +67,7 @@ templates:
 
       Question: Does Sentence 1 entail Sentence 2? Yes, No, or Neutral? |||
 
-      {{["Yes", "Neutral", "No"][label]}}'
+      {{answer_choices[label]}}'
     name: does S1 entail S2?
     reference: Copied from Victor's prompts for XNLI.
     task_template: true
@@ -78,8 +78,7 @@ templates:
     - must be false
     id: e0e8b914-c32c-4c85-8b8f-0f61ae79e2b3
     jinja: Given that {{premise}}, it {{"must be true, might be true, or must be false"}}
-      that {{hypothesis}}? ||| It {{ ["must be true", "might be true", "must be false"][label]
-      }}.
+      that {{hypothesis}}? ||| It {{ answer_choices[label] }}.
     name: "given\u2026 it must be true that\u2026"
     reference: 'Maybe a little verbose for a generative model, but anecdotally this
       is the most natural way of how I say an NLI sentence pair out loud to humans.

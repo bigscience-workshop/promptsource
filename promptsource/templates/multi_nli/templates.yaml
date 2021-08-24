@@ -7,8 +7,7 @@ templates:
     - must be false
     id: 4100d721-b9c1-41ef-9392-3eeb64e8a4cd
     jinja: Given that {{premise}}, it {{"must be true, might be true, or must be false"}}
-      that {{hypothesis}}? ||| It {{ ["must be true", "might be true", "must be false"][label]
-      }}.
+      that {{hypothesis}}? ||| It {{ answer_choices[label] }}.
     name: "given\u2026 it must be true that\u2026"
     reference: 'Maybe a little verbose for a generative model, but anecdotally this
       is the most natural way of how I say an NLI sentence pair out loud to humans.
@@ -23,8 +22,8 @@ templates:
     id: 6c6d824a-89c8-48cc-a4b5-cab04d649117
     jinja: '{{premise}}
 
-      Question: {{hypothesis}} True, False, or Neither? ||| {{ ["True", "Neither",
-      "False"][label] }}'
+      Question: {{hypothesis}} True, False, or Neither? ||| {{ answer_choices[label]
+      }}'
     name: GPT-3 style
     reference: 'Same as reported in Figure G7 of the GPT-3 paper, except that there
       is no task identifying tokens like "anli R1: ".'
@@ -36,7 +35,7 @@ templates:
     - 'No'
     id: b2dcedb3-265e-4dfa-bbd2-9d9d992bd389
     jinja: Given that {{premise}} Does it follow that {{hypothesis}} Yes, no, or maybe?
-      ||| {{ ["Yes", "Maybe", "No"][label] }}
+      ||| {{ answer_choices[label] }}
     name: "given\u2026 does it follow that\u2026 "
     reference: "\"Does it follow that\" could be replaced with \"can we infer that\u2026\
       \ \", \"is it guaranteed that\u2026\", etc. Ideally there should be a question\
@@ -55,7 +54,7 @@ templates:
 
       Question: Does Sentence 1 contradict Sentence 2? Yes, No, or Neutral? |||
 
-      {{ ["No", "Neutral", "Yes"][label] }}'
+      {{ answer_choices[label] }}'
     name: does S1 contradict S2?
     reference: Copied from Victor's prompts for XNLI.
     task_template: false
@@ -71,7 +70,7 @@ templates:
 
       Question: Does Sentence 1 entail Sentence 2? Yes, No, or Neutral? |||
 
-      {{ ["Yes", "Neutral", "No"][label] }}'
+      {{ answer_choices[label] }}'
     name: does S1 entail S2?
     reference: Copied from Victor's prompts for XNLI.
     task_template: true
@@ -82,7 +81,7 @@ templates:
     - 'No'
     id: f1a17d8b-78fb-4300-bc13-8c4572a091fa
     jinja: '{{premise}} Based on the previous passage, is it true that {{hypothesis}}
-      Yes, no, or maybe? ||| {{ ["Yes", "Maybe", "No"][label] }}'
+      Yes, no, or maybe? ||| {{ answer_choices[label] }}'
     name: based on the previous passage
     reference: "Adapted from the BoolQ prompts in Schick & Sch\xFCtze 2021."
     task_template: true
