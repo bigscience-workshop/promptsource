@@ -333,15 +333,15 @@ class Template(yaml.YAMLObject):
 
     def get_task_template(self):
         """
-        Returns whether this template corresponds 1-1 with the dataset task
+        Returns whether this template corresponds to the original or usual task
+        for this dataset.
+
+        task_template is just another piece of metadata stored in the
+        Template.Metadata object. This method is for backwards compatibility.
 
         :return: bool
         """
-
-        if hasattr(self, "task_template"):
-            return self.task_template
-        else:
-            return False
+        return self.metadata.task_template
 
     def get_answer_choices(self):
         """
