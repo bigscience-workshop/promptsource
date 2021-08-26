@@ -305,6 +305,7 @@ class Template(yaml.YAMLObject):
         self.reference = reference
         self.task_template = task_template
         self.answer_choices = answer_choices
+        self.metadata = Template.Metadata()
 
     def get_id(self):
         """
@@ -393,3 +394,58 @@ class Template(yaml.YAMLObject):
         # Splits on the separator, and then replaces back any occurrences of the
         # separator in the original example
         return [part.replace(pipe_protector, "|||") for part in rendered_example.split("|||")]
+
+    class Metadata(yaml.YAMLObject):
+        """
+        Metadata for a prompt template.
+        """
+
+        yaml_tag = "!TemplateMetadata"
+
+        def __init__(self, task_template, nontrivial_choices_given, nontrivial_choices_hidden,
+                     trivial_choices_given, trivial_choices_hidden,
+                     negated_answers, counting, long_distance, no_sep_2_sentences,
+                     answer_span_indices, non_natural_language):
+            """
+            Initializes template metadata.
+
+            In the following, trivial choices are defined as Yes/No, True/False,
+            etc. and nontrivial choices are other types of choices denoted in
+            the answer_choices field.
+
+            :param task_template: If True, this template corresponds to the original
+                        or usual task for this dataset
+            :param nontrivial_choices_given: If True, nontrivial choices are
+                        included in in the prompt
+            :param nontrivial_choices_hidden: If True, the template requires
+                        nontrivial choices but they are not included in the prompt
+            :param trivial_choices_given: If True, trivial choices are
+                        included in in the prompt
+            :param trivial_choices_hidden: If True, the template requires
+                        trivial choices but they are not included in the promp
+            :param negated_answers: If True, the template uses negation to flip
+                        the usual answer for the task
+            :param counting: If True, the template requires counting of some kind
+            :param long_distance: If True, the description of the task in the prompt
+                        is usually separated by a gap of more than 2 paragraphs
+            :param no_sep_2_sentences: If True, the template places multiple fields
+                        of the example contiguously, with no explicit separator,
+                        in a way that might create ambiguity
+            :param answer_span_indices: If True, the template refers to choices
+                        with (and requires a response with respect to) indices
+            :param non_natural_language: If True, the template requires generating
+                        anything other than natural language, such as code,
+                        complex math expressions, or expert linguistic annotations
+                        like parse trees.
+            """
+            self.task_template = task_template
+            self.nontrivial_choices_given = nontrivial_choices_given
+            self.nontrivial_choices_hidden = nontrivial_choices_hidden
+            self.trivial_choices_given = trivial_choices_given
+            self.trivial_choices_hidden = trivial_choices_hidden
+            self.negated_answers = negated_answers
+            self.counting = counting
+            self.long_distance = long_distance
+            self.no_sep_2_sentences = no_sep_2_sentences
+            self. answer_span_indices = answer_span_indices
+            self.non_natural_language = non_natural_language

@@ -29,6 +29,18 @@ templates:
       \ if ner['type'] == 'MISC' -%}\n{{miscs.append(ner['name']) | default(\"\",\
       \ True)}}\n{%- endfor -%}\n{%- endfor -%}\n{% if miscs %}\n{{\"Miscellaneous:\
       \ \"}}{{ miscs | unique | join(\", \")}}{{\".\"}}\n{% endif %}"
+    metadata: !TemplateMetadata
+      answer_span_indices: null
+      counting: null
+      long_distance: null
+      negated_answers: null
+      no_sep_2_sentences: null
+      non_natural_language: null
+      nontrivial_choices_given: null
+      nontrivial_choices_hidden: null
+      task_template: false
+      trivial_choices_given: null
+      trivial_choices_hidden: null
     name: type-to-entity
     reference: ''
     task_template: false
@@ -50,6 +62,18 @@ templates:
       \ }} \n{% endfor %}\n{% endfor %}\n{% for name, type in zip(names, types) %}\n\
       {{name}}{{\": \"}}\n{% endfor %}\n|||\n{% for name, type in zip(names, types)\
       \ %}\n{{name}}{{\": \"}}{{type}}\n{% endfor %}"
+    metadata: !TemplateMetadata
+      answer_span_indices: null
+      counting: null
+      long_distance: null
+      negated_answers: null
+      no_sep_2_sentences: null
+      non_natural_language: null
+      nontrivial_choices_given: null
+      nontrivial_choices_hidden: null
+      task_template: true
+      trivial_choices_given: null
+      trivial_choices_hidden: null
     name: ner-type
     reference: ''
     task_template: true
@@ -62,6 +86,18 @@ templates:
       \ the locations in the text below. \n\n{% for sent in sents -%}\n{{ sent | join(\"\
       \ \") }}\n{%- endfor -%} \n|||\n{{ locations| unique | join(\", \")}}{{\".\"\
       }}\n{% endif %}"
+    metadata: !TemplateMetadata
+      answer_span_indices: null
+      counting: null
+      long_distance: null
+      negated_answers: null
+      no_sep_2_sentences: null
+      non_natural_language: null
+      nontrivial_choices_given: null
+      nontrivial_choices_hidden: null
+      task_template: false
+      trivial_choices_given: null
+      trivial_choices_hidden: null
     name: find-all-locations
     reference: ''
     task_template: false
@@ -74,6 +110,18 @@ templates:
       \ %}\nFind all of the organizations in the text below.\n\n{% for sent in sents\
       \ -%}\n{{ sent | join(\" \") }}\n{%- endfor -%} \n|||\n{{ organizations| unique\
       \ | join(\", \")}}{{\".\"}}\n{% endif %}"
+    metadata: !TemplateMetadata
+      answer_span_indices: null
+      counting: null
+      long_distance: null
+      negated_answers: null
+      no_sep_2_sentences: null
+      non_natural_language: null
+      nontrivial_choices_given: null
+      nontrivial_choices_hidden: null
+      task_template: false
+      trivial_choices_given: null
+      trivial_choices_hidden: null
     name: find-all-organizations
     reference: ''
     task_template: false
@@ -87,6 +135,18 @@ templates:
       head: {{vertexSet[head][0]['name']}}, tail: {{vertexSet[tail][0]['name']}},\
       \ relation: {{relation}}\n{% endfor %}\n|||\n{% for sent in sents -%}\n{{ sent\
       \ | join(\" \") }}\n{%- endfor -%} \n{% endif %}"
+    metadata: !TemplateMetadata
+      answer_span_indices: null
+      counting: null
+      long_distance: null
+      negated_answers: null
+      no_sep_2_sentences: null
+      non_natural_language: null
+      nontrivial_choices_given: null
+      nontrivial_choices_hidden: null
+      task_template: false
+      trivial_choices_given: null
+      trivial_choices_hidden: null
     name: relation-to-text
     reference: ''
     task_template: false
@@ -101,6 +161,18 @@ templates:
       \ | default(\"\", True) }} \n{% endfor %}\n{% endfor %}\n{% for name, type in\
       \ zip(names, types) %}\n{{name}}{{\": \"}}{{type}}\n{% endfor %}\n|||\n{% for\
       \ sent in sents -%}\n{{ sent | join(\" \") }}\n{%- endfor -%} "
+    metadata: !TemplateMetadata
+      answer_span_indices: null
+      counting: null
+      long_distance: null
+      negated_answers: null
+      no_sep_2_sentences: null
+      non_natural_language: null
+      nontrivial_choices_given: null
+      nontrivial_choices_hidden: null
+      task_template: false
+      trivial_choices_given: null
+      trivial_choices_hidden: null
     name: ner-to-text
     reference: ''
     task_template: false
@@ -113,6 +185,18 @@ templates:
       \ times in the text below. \n\n{% for sent in sents -%}\n{{ sent | join(\" \"\
       ) }}\n{%- endfor -%} \n|||\n{{ times| unique | join(\", \")}}{{\".\"}}\n{% endif\
       \ %}"
+    metadata: !TemplateMetadata
+      answer_span_indices: null
+      counting: null
+      long_distance: null
+      negated_answers: null
+      no_sep_2_sentences: null
+      non_natural_language: null
+      nontrivial_choices_given: null
+      nontrivial_choices_hidden: null
+      task_template: false
+      trivial_choices_given: null
+      trivial_choices_hidden: null
     name: find-all-times
     reference: ''
     task_template: false
@@ -125,6 +209,18 @@ templates:
       \ people in the text below. \n\n{% for sent in sents -%}\n{{ sent | join(\"\
       \ \") }}\n{%- endfor -%} \n|||\n{{ people| unique | join(\", \")}}{{\".\"}}\n\
       {% endif %}"
+    metadata: !TemplateMetadata
+      answer_span_indices: null
+      counting: null
+      long_distance: null
+      negated_answers: null
+      no_sep_2_sentences: null
+      non_natural_language: null
+      nontrivial_choices_given: null
+      nontrivial_choices_hidden: null
+      task_template: false
+      trivial_choices_given: null
+      trivial_choices_hidden: null
     name: find-all-people
     reference: ''
     task_template: false
@@ -141,6 +237,18 @@ templates:
       \ labels['relation_text'][1:]) %}\nhead: {{vertexSet[head][0]['name']}}, tail:\
       \ {{vertexSet[tail][0]['name']}}, relation: {{relation}}\n{% endfor %}\n{% endif\
       \ %}"
+    metadata: !TemplateMetadata
+      answer_span_indices: null
+      counting: null
+      long_distance: null
+      negated_answers: null
+      no_sep_2_sentences: null
+      non_natural_language: null
+      nontrivial_choices_given: null
+      nontrivial_choices_hidden: null
+      task_template: true
+      trivial_choices_given: null
+      trivial_choices_hidden: null
     name: relation
     reference: ''
     task_template: true
@@ -153,6 +261,18 @@ templates:
       \ numbers in the text below. Please do not include years.\n\n{% for sent in\
       \ sents -%}\n{{ sent | join(\" \") }}\n{%- endfor -%} \n|||\n{{ numbers| unique\
       \ | join(\", \")}}{{\".\"}}\n{% endif %}"
+    metadata: !TemplateMetadata
+      answer_span_indices: null
+      counting: null
+      long_distance: null
+      negated_answers: null
+      no_sep_2_sentences: null
+      non_natural_language: null
+      nontrivial_choices_given: null
+      nontrivial_choices_hidden: null
+      task_template: false
+      trivial_choices_given: null
+      trivial_choices_hidden: null
     name: find-all-numbers
     reference: ''
     task_template: false

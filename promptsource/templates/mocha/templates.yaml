@@ -9,6 +9,18 @@ templates:
       \ What about these two sentences: \n\n(1) \"{{reference}}\"\n\n(2) \"{{ candidate2\
       \ }}\"\n{% endif %}\n|||\n{{ score }} \n\n{{ score2 if candidate2 else \"\"\
       \ }}\n"
+    metadata: !TemplateMetadata
+      answer_span_indices: null
+      counting: null
+      long_distance: null
+      negated_answers: null
+      no_sep_2_sentences: null
+      non_natural_language: null
+      nontrivial_choices_given: null
+      nontrivial_choices_hidden: null
+      task_template: true
+      trivial_choices_given: null
+      trivial_choices_hidden: null
     name: (Regression) Scoring Candidate against Reference
     reference: Similarity measure between candidate and reference answers (in a regression
       manner)
@@ -20,6 +32,18 @@ templates:
       \ and pick the corresponding answer.\n\nPassage: {{ context }}\n\nAnswer 1 (Gold):\
       \ {{ reference }}\n\nAnswer 2: {{ candidate }}\n\n{% if candidate2 %}\nAnswer\
       \ 3: {{ candidate2 }}\n{% endif %} \n|||\n{{ question }}"
+    metadata: !TemplateMetadata
+      answer_span_indices: null
+      counting: null
+      long_distance: null
+      negated_answers: null
+      no_sep_2_sentences: null
+      non_natural_language: null
+      nontrivial_choices_given: null
+      nontrivial_choices_hidden: null
+      task_template: null
+      trivial_choices_given: null
+      trivial_choices_hidden: null
     name: Generate Question
     reference: Given passage and the answers, generate a question for the gold answer.
   31e49d18-800f-4d16-8d84-86509db30499: !Template
@@ -32,6 +56,18 @@ templates:
       \ else \"\" }} Answer \"similar\" or \"not similar\".\n\n\n|||\n{{ [\"not similar\"\
       , \"similar\"][score > 3] }} \n\n{{[\"not similar\", \"similar\"][score2 > 3]\
       \ if candidate2 != \"\" else \"\"}}\n{% endif %}"
+    metadata: !TemplateMetadata
+      answer_span_indices: null
+      counting: null
+      long_distance: null
+      negated_answers: null
+      no_sep_2_sentences: null
+      non_natural_language: null
+      nontrivial_choices_given: null
+      nontrivial_choices_hidden: null
+      task_template: false
+      trivial_choices_given: null
+      trivial_choices_hidden: null
     name: (Classification) Scoring Candidate against Reference w/o Context
     reference: Similarity measure between candidate and reference answers (in a classification
       manner)
@@ -44,6 +80,18 @@ templates:
       \ endif %}\n\nGive the similarity measure (on a scale of 1 to 5) for answers\
       \ A and B. {{ \"Do the same for answers A and C.\" if candidate2 else \"\" }}\n\
       \n|||\n{{ score }} \n\n{{ score2 if candidate2 else \"\" }}\n"
+    metadata: !TemplateMetadata
+      answer_span_indices: null
+      counting: null
+      long_distance: null
+      negated_answers: null
+      no_sep_2_sentences: null
+      non_natural_language: null
+      nontrivial_choices_given: null
+      nontrivial_choices_hidden: null
+      task_template: false
+      trivial_choices_given: null
+      trivial_choices_hidden: null
     name: (Regression) Scoring Candidate against Reference w/o Context
     reference: Similarity measure between candidate and reference answers (in a regression
       manner)
@@ -57,6 +105,18 @@ templates:
       Is the answer \"{{ candidate2 }}\" similar to the answer above? Answer yes or\
       \ no. \n{% endif %}\n|||\n{{ [\"no\", \"yes\"][score > 3] }} \n\n{{[\"no\",\
       \ \"yes\"][score2 > 3] if candidate2 != \"\" else \"\"}}\n{% endif %}"
+    metadata: !TemplateMetadata
+      answer_span_indices: null
+      counting: null
+      long_distance: null
+      negated_answers: null
+      no_sep_2_sentences: null
+      non_natural_language: null
+      nontrivial_choices_given: null
+      nontrivial_choices_hidden: null
+      task_template: false
+      trivial_choices_given: null
+      trivial_choices_hidden: null
     name: (Classification) Scoring Candidate against Reference
     reference: Similarity measure between candidate and reference answers (in a classification
       manner)
@@ -70,6 +130,18 @@ templates:
       \ if candidate2 else \"\" }} Output the result value between 1 (completely different)\
       \ and 5 (identical). \n|||\n{{ score }} \n\n{{ score2 if candidate2 else \"\"\
       \ }}\n"
+    metadata: !TemplateMetadata
+      answer_span_indices: null
+      counting: null
+      long_distance: null
+      negated_answers: null
+      no_sep_2_sentences: null
+      non_natural_language: null
+      nontrivial_choices_given: null
+      nontrivial_choices_hidden: null
+      task_template: false
+      trivial_choices_given: null
+      trivial_choices_hidden: null
     name: (Regression) Scoring Candidate against Reference w/o Question and Context
     reference: Similarity measure between candidate and reference answers (in a regression
       manner)
@@ -94,6 +166,18 @@ templates:
       |||
 
       {{ reference }}'
+    metadata: !TemplateMetadata
+      answer_span_indices: null
+      counting: null
+      long_distance: null
+      negated_answers: null
+      no_sep_2_sentences: null
+      non_natural_language: null
+      nontrivial_choices_given: null
+      nontrivial_choices_hidden: null
+      task_template: null
+      trivial_choices_given: null
+      trivial_choices_hidden: null
     name: Generate Correct Answer using Noisy Candidate
     reference: Given the passage, the question, and the candidate answer (that may
       be incorrect), generate the correct answer.
@@ -105,6 +189,18 @@ templates:
       \ and score2 != 3 %}\n\"{{ reference }}\" / \"{{ candidate2 }}\"\n{% endif %}\n\
       |||\n{{ [\"no\", \"yes\"][score > 3] }} \n\n{{[\"no\", \"yes\"][score2 > 3]\
       \ if candidate2 != \"\" else \"\"}}\n{% endif %}"
+    metadata: !TemplateMetadata
+      answer_span_indices: null
+      counting: null
+      long_distance: null
+      negated_answers: null
+      no_sep_2_sentences: null
+      non_natural_language: null
+      nontrivial_choices_given: null
+      nontrivial_choices_hidden: null
+      task_template: false
+      trivial_choices_given: null
+      trivial_choices_hidden: null
     name: (Classification) Scoring Candidate against Reference w/o Context and Question
     reference: Similarity measure between candidate and reference answers (in a classification
       manner)
@@ -125,6 +221,18 @@ templates:
       \ %}\n{% if cd == reference %}\n{{ loop.index }}\n{% elif cd == candidate and\
       \ score >= 3%}\n{{ loop.index }}\n{% elif cd == candidate2 and score2 >= 3%}\n\
       {{ loop.index }}\n{% endif %}\n{% endfor %}"
+    metadata: !TemplateMetadata
+      answer_span_indices: null
+      counting: null
+      long_distance: null
+      negated_answers: null
+      no_sep_2_sentences: null
+      non_natural_language: null
+      nontrivial_choices_given: null
+      nontrivial_choices_hidden: null
+      task_template: false
+      trivial_choices_given: null
+      trivial_choices_hidden: null
     name: Pick Correct Answers
     reference: Given passage, question, and all possible answers, pick correct answers  (using
       similarity cutoff >=3 to reference answer)

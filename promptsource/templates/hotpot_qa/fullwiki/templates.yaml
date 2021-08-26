@@ -10,6 +10,18 @@ templates:
       \ in supporting_facts.title%}\n{% set outer_loop = loop %}\n{% for title in\
       \ context.title%}\n{% if title==paragraph %}\n- {{ context.sentences[loop.index0][supporting_facts.sent_id[outer_loop.index0]]\
       \ }}\n{% endif %}\n{% endfor %}\n{% endfor %}"
+    metadata: !TemplateMetadata
+      answer_span_indices: null
+      counting: null
+      long_distance: null
+      negated_answers: null
+      no_sep_2_sentences: null
+      non_natural_language: null
+      nontrivial_choices_given: null
+      nontrivial_choices_hidden: null
+      task_template: true
+      trivial_choices_given: null
+      trivial_choices_hidden: null
     name: Generate Answer and Explanations
     reference: Given information and question, answer it and list the sentences from
       information that explain the answer.
@@ -21,6 +33,18 @@ templates:
       \ paragraphs below:\n{% for sents in context.sentences %}\n  - {{sents | join(\"\
       \")}}\n{% endfor %}\n||| \n{% for sents in context.sentences %}\n  - {{sents\
       \ | join(\"\")}} : {{context.title[loop.index0]}}\n{% endfor %}"
+    metadata: !TemplateMetadata
+      answer_span_indices: null
+      counting: null
+      long_distance: null
+      negated_answers: null
+      no_sep_2_sentences: null
+      non_natural_language: null
+      nontrivial_choices_given: null
+      nontrivial_choices_hidden: null
+      task_template: false
+      trivial_choices_given: null
+      trivial_choices_hidden: null
     name: 'Generate Title #2'
     reference: 'Given a list of paragraphs, generate titles for each of them with
       the format of "paragraph: title".'
@@ -31,6 +55,18 @@ templates:
     jinja: "Information:\n{% for sents in context.sentences %}\n  - {{sents | join(\"\
       \")}}\n{% endfor %}\nWhat is the question that begets the answer of \"{{answer}}\"\
       ?\n||| \n{{question}}"
+    metadata: !TemplateMetadata
+      answer_span_indices: null
+      counting: null
+      long_distance: null
+      negated_answers: null
+      no_sep_2_sentences: null
+      non_natural_language: null
+      nontrivial_choices_given: null
+      nontrivial_choices_hidden: null
+      task_template: null
+      trivial_choices_given: null
+      trivial_choices_hidden: null
     name: Generate Question
     reference: Given information and answer, generate question.
   8b7b3f27-c235-4a1c-907d-3f37e5f94d93: !Template
@@ -41,6 +77,18 @@ templates:
       |||
 
       {{type}}'
+    metadata: !TemplateMetadata
+      answer_span_indices: null
+      counting: null
+      long_distance: null
+      negated_answers: null
+      no_sep_2_sentences: null
+      non_natural_language: null
+      nontrivial_choices_given: null
+      nontrivial_choices_hidden: null
+      task_template: null
+      trivial_choices_given: null
+      trivial_choices_hidden: null
     name: Classify Question Type
     reference: Given question, classify its type.
   970e537a-5295-4712-a3a2-d31ca11d1695: !Template
@@ -53,6 +101,18 @@ templates:
       \ = loop %}\n{% for title in context.title%}\n{% if title==paragraph %}\n- {{\
       \ context.sentences[loop.index0][supporting_facts.sent_id[outer_loop.index0]]\
       \ }}\n{% endif %}\n{% endfor %}\n{% endfor %}"
+    metadata: !TemplateMetadata
+      answer_span_indices: null
+      counting: null
+      long_distance: null
+      negated_answers: null
+      no_sep_2_sentences: null
+      non_natural_language: null
+      nontrivial_choices_given: null
+      nontrivial_choices_hidden: null
+      task_template: null
+      trivial_choices_given: null
+      trivial_choices_hidden: null
     name: Generate Explanations
     reference: 'Given information, question, and its answer, list the sentences from
       information that explain the answer '
@@ -61,6 +121,18 @@ templates:
     id: e1aadf60-85b4-4c1b-9803-c5231e71e74d
     jinja: "Information:\n{% for sents in context.sentences %}\n  - {{sents | join(\"\
       \")}}\n{% endfor %}\nQuestion: {{question}}\n||| \nAnswer: {{answer}}"
+    metadata: !TemplateMetadata
+      answer_span_indices: null
+      counting: null
+      long_distance: null
+      negated_answers: null
+      no_sep_2_sentences: null
+      non_natural_language: null
+      nontrivial_choices_given: null
+      nontrivial_choices_hidden: null
+      task_template: null
+      trivial_choices_given: null
+      trivial_choices_hidden: null
     name: Generate Answer
     reference: Given information and question, generate answer.
   e20171e3-8965-4878-9014-0b72c84e9fec: !Template
@@ -69,6 +141,18 @@ templates:
     jinja: "Generate titles (separated by semi-colons) for each of the paragraphs\
       \ below:\n{% for sents in context.sentences %}\n  - {{sents | join(\"\")}}\n\
       {% endfor %}\n||| \n{{context.title | join(\"; \")}}"
+    metadata: !TemplateMetadata
+      answer_span_indices: null
+      counting: null
+      long_distance: null
+      negated_answers: null
+      no_sep_2_sentences: null
+      non_natural_language: null
+      nontrivial_choices_given: null
+      nontrivial_choices_hidden: null
+      task_template: false
+      trivial_choices_given: null
+      trivial_choices_hidden: null
     name: 'Generate Title #1'
     reference: Given a list of paragraphs, generate a string of titles (separated
       by semi-colons) for each of them.
