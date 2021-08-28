@@ -401,51 +401,135 @@ class Template(yaml.YAMLObject):
         """
 
         yaml_tag = "!TemplateMetadata"
+        TRIVIAL_CHOICES = ('yes', 'no', 'true', 'false')
 
-        def __init__(self, task_template, nontrivial_choices_given, nontrivial_choices_hidden,
-                     trivial_choices_given, trivial_choices_hidden,
-                     negated_answers, counting, long_distance, no_sep_2_sentences,
-                     answer_span_indices, non_natural_language):
+        def __init__(
+                self,
+                task_format: str,  # dropdown choice of 'classification', 'generation', 'extraction'
+                original_task: bool,
+                contributor: str,
+                metric: Optional[str] = None,
+                comment: Optional[str] = None,
+
+                # if task_format == classification
+                choices_in_prompt: Optional[bool] = None,
+                fixed_choices: Optional[bool] = None,
+                choices_fieldname: Optional[str] = None,
+
+                # internal flags
+                _do_train: Optional[bool] = None,
+                _do_eval: Optional[bool] = None,
+                _comment: Optional[str] = None,
+                _version: Optional[str] = '2021/09',  # maybe change to datetime today
+                ):
             """
             Initializes template metadata.
 
-            In the following, trivial choices are defined as Yes/No, True/False,
-            etc. and nontrivial choices are other types of choices denoted in
-            the answer_choices field.
-
-            :param task_template: If True, this template corresponds to the original
-                        or usual task for this dataset
-            :param nontrivial_choices_given: If True, nontrivial choices are
-                        included in in the prompt
-            :param nontrivial_choices_hidden: If True, the template requires
-                        nontrivial choices but they are not included in the prompt
-            :param trivial_choices_given: If True, trivial choices are
-                        included in in the prompt
-            :param trivial_choices_hidden: If True, the template requires
-                        trivial choices but they are not included in the promp
-            :param negated_answers: If True, the template uses negation to flip
-                        the usual answer for the task
-            :param counting: If True, the template requires counting of some kind
-            :param long_distance: If True, the description of the task in the prompt
-                        is usually separated by a gap of more than 2 paragraphs
-            :param no_sep_2_sentences: If True, the template places multiple fields
-                        of the example contiguously, with no explicit separator,
-                        in a way that might create ambiguity
-            :param answer_span_indices: If True, the template refers to choices
-                        with (and requires a response with respect to) indices
-            :param non_natural_language: If True, the template requires generating
-                        anything other than natural language, such as code,
-                        complex math expressions, or expert linguistic annotations
-                        like parse trees.
+            :param original_task: If True, this prompt asks a model to perform the original task designed for
+                this dataset.
+            :param contributor: Full name of the person who adds this prompt to PromptSource. Note this is not
+                the same as the original author of this prompt, which should be cited in the `comment` field
+                (or the old `reference` field).
+            :param metric: Each prompt could potentially use different metrics, especially for non-original
+                task prompts.
+            :param comment: Notes on how this prompt differs from others, who is the original author, what are
+                some potential issues, etc.
+            :param choices_in_prompt: If True, the answer choices are included in the templates such that models
+                see those choices in the input. Only applicable to classification tasks.
+            :param fixed_choices: If True, the answer choices are a fixed set of options (like "yes"/"no"/"maybe")
+                that are the same for every example in the dataset. If False, each example has its own set of answer
+                choices. Only applicable to classification tasks.
+            :param choices_fieldname: The Hugging Face `datasets` fieldname for the example-specific answer choices,
+                e.g., `entities` for SuperGLUE ReCoRD, `options` for RACE. Only applicable to classification tasks
+                with fixed_choices == False.
             """
-            self.task_template = task_template
-            self.nontrivial_choices_given = nontrivial_choices_given
-            self.nontrivial_choices_hidden = nontrivial_choices_hidden
-            self.trivial_choices_given = trivial_choices_given
-            self.trivial_choices_hidden = trivial_choices_hidden
-            self.negated_answers = negated_answers
-            self.counting = counting
-            self.long_distance = long_distance
-            self.no_sep_2_sentences = no_sep_2_sentences
-            self. answer_span_indices = answer_span_indices
-            self.non_natural_language = non_natural_language
+            assert task_format in ('classification', 'generation', 'extraction')
+            if task_format == 'classification':
+                assert fixed_choices is not None
+                if fixed_choices:
+                    self.trivial_choices = True
+                    for choice in self.answer_choices:
+                        if choice.lower() not in self.TRIVIAL_CHOICES:
+                            self.trivial_choices = False
+                    self.num_classes = len(self.answer_choices)
+                else:  # example-specific answer choices
+                    assert choices_fieldname is not None, 'Need to load per example choices for rank clasification.'
+
+            self.task_format = task_format
+            self.original_task = original_task
+            self.contributor = contributor
+            self.metric = metric
+            self.comment = comment
+
+            self.choices_in_prompt = choices_in_prompt
+            self.fixed_choices = fixed_choices
+            self.choices_fieldname = choices_fieldname
+
+            self._do_train = _do_train
+            self._do_eval = _do_eval
+            self._comment = _comment
+            self._version = _version
+
+
+        def init_from_legacy_annotation(self, row: Dict[str, str]):
+            """
+            Initializes template metadata from Albert's CSV annotations.
+            """
+            self._version = '2021/06'
+
+            if row['comment']:
+                self._internal_comment = row['comment'] + '; '
+            else:
+                self._internal_comment = ''
+
+            self._do_train = not bool(row['skip_train'])
+            self._do_eval = bool(row['do_eval'])
+
+            if row['nontrivial_choices_given']:
+                self.task_format = 'classification'
+                self.trivial_choices = False
+                self.choices_in_prompt = True
+                self.fixed_choices = 'unknown'  # HACK type error
+                self.num_classes = 'unknown'
+            elif row['nontrivial_choices_hidden']:
+                self.task_format = 'classification'
+                self.trivial_choices = False
+                self.choices_in_prompt = False
+                self.fixed_choices = 'unknown'
+                self.num_classes = 'unknown'
+            elif row['trivial_choices_given']:
+                self.task_format = 'classification'
+                self.trivial_choices = True
+                self.choices_in_prompt = True
+                self.fixed_choices = True
+                self.num_classes = 2
+            elif row['trivial_choices_hidden']:
+                self.task_format = 'classification'
+                self.trivial_choices = False
+                self.choices_in_prompt = False
+                self.fixed_choices = True
+                self.num_classes = 2
+            elif row['generative_non_true_task']:
+                self.task_format = 'generation'
+                self.original_task = False
+            elif row['generative_non_true_implausible']:
+                self.task_format = 'generation'
+                self.original_task = False
+                self._comment += 'implausibly open-ended;'
+            elif row['generative_true_task']:
+                self.task_format = 'generation'
+                self.original_task = True
+            elif row['answer_span_indices']:
+                self.task_format = 'extraction'
+            else:
+                self.task_format = 'unknown'
+
+            # # TODO probably not make flags of them, just append to _comment
+            # if row['negated_answers']:
+            #     self._comment += 'prompt asks for negated answers; '
+            # self.negated_answers = negated_answers
+            # self.counting = counting
+            # self.long_distance = long_distance
+            # self.no_sep_2_sentences = no_sep_2_sentences
+            # self.answer_span_indices = answer_span_indices
+            # self.non_natural_language = non_natural_language
