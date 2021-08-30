@@ -473,8 +473,8 @@ else:
                             format_choices,
                             index=format_index,
                             help="Either 'Classification' (output is from a set of labels), 'Generation' "
-                                 "(output is open ended and not contained in the prompt), or 'Extraction' "
-                                 "(output is open ended but contained in the prompt, including indexed choices).",
+                            "(output is open ended and not contained in the prompt), or 'Extraction' "
+                            "(output is open ended but contained in the prompt, including indexed choices).",
                         )
                         state.metadata.task_template = st.checkbox(
                             "Task Template?",

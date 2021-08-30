@@ -184,10 +184,8 @@ class Template(yaml.YAMLObject):
             task_format: str,  # dropdown choice of 'Classification', 'Generation', 'Extraction'
             task_template: bool,
             metric: Optional[List[str]] = None,
-
             # if task_format == classification
             choices_in_prompt: Optional[bool] = None,
-
             # Internal flags
             _do_train: Optional[bool] = None,
             _do_eval: Optional[bool] = None,
