@@ -46,6 +46,198 @@ env.filters["choice"] = choice
 env.filters["most_frequent"] = most_frequent
 
 
+class Template(yaml.YAMLObject):
+    """
+    A prompt template.
+    """
+
+    yaml_tag = "!Template"
+
+    def __init__(self, name, jinja, reference, metadata=None, answer_choices=None):
+        """
+        Creates a prompt template.
+
+        A prompt template is expressed in Jinja. It is rendered using an example
+        from the corresponding Hugging Face datasets library (a dictionary). The
+        separator ||| should appear once to divide the template into prompt and
+        output. Generally, the prompt should provide information on the desired
+        behavior, e.g., text passage and instructions, and the output should be
+        a desired response.
+
+        :param id: unique identifier to use as key in the yaml file
+        :param name: unique name (per dataset) for template
+        :param jinja: template expressed in Jinja
+        :param reference: string metadata describing author or paper reference
+                          for template
+        :param metadata: a Metadata object with template annotations
+        :param answer_choices: list of strings that enumerates the possible completions
+                               for templates that should be evaluated as ranked
+                               completions. If None, then the template is open-ended.
+                               This list is accessible from within Jinja as the
+                               variable `answer_choices`.
+
+        """
+        self.id = str(uuid.uuid4())
+        self.name = name
+        self.jinja = jinja
+        self.reference = reference
+        self.answer_choices = answer_choices
+        self.metadata = metadata if metadata is not None else Template.Metadata(*[None] * 11)
+
+    def get_id(self):
+        """
+        Returns the id of the template
+
+        :return: unique id for template
+        """
+        return self.id
+
+    def get_name(self):
+        """
+        Returns the name of the template
+
+        :return: unique (per dataset) name for template
+        """
+        return self.name
+
+    def get_reference(self):
+        """
+        Returns the bibliographic reference (or author) for the template
+
+        :return: reference as a string
+        """
+        return self.reference
+
+    def get_task_template(self):
+        """
+        Returns whether this template corresponds to the original or usual task
+        for this dataset.
+
+        task_template is just another piece of metadata stored in the
+        Template.Metadata object. This method is for backwards compatibility.
+
+        :return: bool
+        """
+        return self.metadata.task_template
+
+    def get_answer_choices(self):
+        """
+        Returns a list of strings enumerating the possible completions for
+        this template, or None if the template is open ended.
+
+        :return: List[String]
+        """
+        return self.answer_choices
+
+    def apply(self, example, truncate=True, highlight_variables=False):
+        """
+        Creates a prompt by applying this template to an example
+
+        :param example: the dataset example to create a prompt for
+        :param truncate: if True, example fields will be truncated to TEXT_VAR_LENGTH chars
+        :param highlight_variables: highlight the added variables
+        :return: tuple of 2 strings, for prompt and output
+        """
+        jinja = self.jinja
+
+        # Truncates the prompt if needed
+        if truncate:
+            trunc_command = (
+                f" | string | truncate({TEXT_VAR_LENGTH}) }}}}"  # Escaping curly braces requires doubling them
+            )
+            jinja = jinja.replace("}}", trunc_command)
+
+        # Highlights text that was substituted for variables, if requested
+        if highlight_variables:
+            jinja = jinja.replace("}}", " | highlight }}")
+        rtemplate = env.from_string(jinja)
+
+        # Replaces any occurrences of the "|||" separator in the example, which
+        # which will be replaced back after splitting
+        pipe_protector = "3ed2dface8203c4c9dfb1a5dc58e41e0"
+        protected_example = {
+            key: value.replace("|||", pipe_protector) if isinstance(value, str) else value
+            for key, value in example.items()
+        }
+
+        # Adds in answer_choices variable
+        if "answer_choices" in protected_example:
+            raise ValueError("Example contains the restricted key 'answer_choices'.")
+        protected_example["answer_choices"] = self.answer_choices
+
+        # Renders the Jinja template
+        rendered_example = rtemplate.render(**protected_example)
+
+        # Splits on the separator, and then replaces back any occurrences of the
+        # separator in the original example
+        return [part.replace(pipe_protector, "|||") for part in rendered_example.split("|||")]
+
+    class Metadata(yaml.YAMLObject):
+        """
+        Metadata for a prompt template.
+        """
+
+        yaml_tag = "!TemplateMetadata"
+
+        def __init__(
+            self,
+            task_template,
+            nontrivial_choices_given,
+            nontrivial_choices_hidden,
+            trivial_choices_given,
+            trivial_choices_hidden,
+            negated_answers,
+            counting,
+            long_distance,
+            no_sep_2_sentences,
+            answer_span_indices,
+            non_natural_language,
+        ):
+            """
+            Initializes template metadata.
+
+            In the following, trivial choices are defined as Yes/No, True/False,
+            etc. and nontrivial choices are other types of choices denoted in
+            the answer_choices field.
+
+            :param task_template: If True, this template corresponds to the original
+                        or usual task for this dataset
+            :param nontrivial_choices_given: If True, nontrivial choices are
+                        included in in the prompt
+            :param nontrivial_choices_hidden: If True, the template requires
+                        nontrivial choices but they are not included in the prompt
+            :param trivial_choices_given: If True, trivial choices are
+                        included in in the prompt
+            :param trivial_choices_hidden: If True, the template requires
+                        trivial choices but they are not included in the promp
+            :param negated_answers: If True, the template uses negation to flip
+                        the usual answer for the task
+            :param counting: If True, the template requires counting of some kind
+            :param long_distance: If True, the description of the task in the prompt
+                        is usually separated by a gap of more than 2 paragraphs
+            :param no_sep_2_sentences: If True, the template places multiple fields
+                        of the example contiguously, with no explicit separator,
+                        in a way that might create ambiguity
+            :param answer_span_indices: If True, the template refers to choices
+                        with (and requires a response with respect to) indices
+            :param non_natural_language: If True, the template requires generating
+                        anything other than natural language, such as code,
+                        complex math expressions, or expert linguistic annotations
+                        like parse trees.
+            """
+            self.task_template = task_template
+            self.nontrivial_choices_given = nontrivial_choices_given
+            self.nontrivial_choices_hidden = nontrivial_choices_hidden
+            self.trivial_choices_given = trivial_choices_given
+            self.trivial_choices_hidden = trivial_choices_hidden
+            self.negated_answers = negated_answers
+            self.counting = counting
+            self.long_distance = long_distance
+            self.no_sep_2_sentences = no_sep_2_sentences
+            self.answer_span_indices = answer_span_indices
+            self.non_natural_language = non_natural_language
+
+
 class TemplateCollection:
     """
     This helper class wraps the DatasetTemplates class
@@ -224,7 +416,7 @@ class DatasetTemplates:
         new_template_name: str,
         jinja: str,
         reference: str,
-        task_template: bool,
+        metadata: Template.Metadata,
         answer_choices: List[str],
     ) -> None:
         """
@@ -234,14 +426,14 @@ class DatasetTemplates:
         :param new_template_name: new name for the template
         :param jinja: new jinja entry
         :param reference: new reference entry
-        :param task_template: new task_template value
+        :param metadata: a Metadata object with template annotations
         :param answer_choices: new answer_choices list
         """
         template_id = self.name_to_id_mapping[current_template_name]
         self.templates[template_id].name = new_template_name
         self.templates[template_id].jinja = jinja
         self.templates[template_id].reference = reference
-        self.templates[template_id].task_template = task_template
+        self.templates[template_id].metadata = metadata
         self.templates[template_id].answer_choices = answer_choices
 
         self.write_to_file()
@@ -266,186 +458,3 @@ class DatasetTemplates:
 
     def __len__(self) -> int:
         return len(self.templates)
-
-
-class Template(yaml.YAMLObject):
-    """
-    A prompt template.
-    """
-
-    yaml_tag = "!Template"
-
-    def __init__(self, name, jinja, reference, task_template=False, answer_choices=None):
-        """
-        Creates a prompt template.
-
-        A prompt template is expressed in Jinja. It is rendered using an example
-        from the corresponding Hugging Face datasets library (a dictionary). The
-        separator ||| should appear once to divide the template into prompt and
-        output. Generally, the prompt should provide information on the desired
-        behavior, e.g., text passage and instructions, and the output should be
-        a desired response.
-
-        :param id: unique identifier to use as key in the yaml file
-        :param name: unique name (per dataset) for template
-        :param jinja: template expressed in Jinja
-        :param reference: string metadata describing author or paper reference
-                          for template
-        :param task_template: bool whether this template corresponds 1-1 with the dataset task
-        :param answer_choices: list of strings that enumerates the possible completions
-                               for templates that should be evaluated as ranked
-                               completions. If None, then the template is open-ended.
-                               This list is accessible from within Jinja as the
-                               variable `answer_choices`.
-
-        """
-        self.id = str(uuid.uuid4())
-        self.name = name
-        self.jinja = jinja
-        self.reference = reference
-        self.task_template = task_template
-        self.answer_choices = answer_choices
-        self.metadata = Template.Metadata()
-
-    def get_id(self):
-        """
-        Returns the id of the template
-
-        :return: unique id for template
-        """
-        return self.id
-
-    def get_name(self):
-        """
-        Returns the name of the template
-
-        :return: unique (per dataset) name for template
-        """
-        return self.name
-
-    def get_reference(self):
-        """
-        Returns the bibliographic reference (or author) for the template
-
-        :return: reference as a string
-        """
-        return self.reference
-
-    def get_task_template(self):
-        """
-        Returns whether this template corresponds to the original or usual task
-        for this dataset.
-
-        task_template is just another piece of metadata stored in the
-        Template.Metadata object. This method is for backwards compatibility.
-
-        :return: bool
-        """
-        return self.metadata.task_template
-
-    def get_answer_choices(self):
-        """
-        Returns a list of strings enumerating the possible completions for
-        this template, or None if the template is open ended.
-
-        :return: List[String]
-        """
-        return self.answer_choices
-
-    def apply(self, example, truncate=True, highlight_variables=False):
-        """
-        Creates a prompt by applying this template to an example
-
-        :param example: the dataset example to create a prompt for
-        :param truncate: if True, example fields will be truncated to TEXT_VAR_LENGTH chars
-        :param highlight_variables: highlight the added variables
-        :return: tuple of 2 strings, for prompt and output
-        """
-        jinja = self.jinja
-
-        # Truncates the prompt if needed
-        if truncate:
-            trunc_command = (
-                f" | string | truncate({TEXT_VAR_LENGTH}) }}}}"  # Escaping curly braces requires doubling them
-            )
-            jinja = jinja.replace("}}", trunc_command)
-
-        # Highlights text that was substituted for variables, if requested
-        if highlight_variables:
-            jinja = jinja.replace("}}", " | highlight }}")
-        rtemplate = env.from_string(jinja)
-
-        # Replaces any occurrences of the "|||" separator in the example, which
-        # which will be replaced back after splitting
-        pipe_protector = "3ed2dface8203c4c9dfb1a5dc58e41e0"
-        protected_example = {
-            key: value.replace("|||", pipe_protector) if isinstance(value, str) else value
-            for key, value in example.items()
-        }
-
-        # Adds in answer_choices variable
-        if "answer_choices" in protected_example:
-            raise ValueError("Example contains the restricted key 'answer_choices'.")
-        protected_example["answer_choices"] = self.answer_choices
-
-        # Renders the Jinja template
-        rendered_example = rtemplate.render(**protected_example)
-
-        # Splits on the separator, and then replaces back any occurrences of the
-        # separator in the original example
-        return [part.replace(pipe_protector, "|||") for part in rendered_example.split("|||")]
-
-    class Metadata(yaml.YAMLObject):
-        """
-        Metadata for a prompt template.
-        """
-
-        yaml_tag = "!TemplateMetadata"
-
-        def __init__(self, task_template, nontrivial_choices_given, nontrivial_choices_hidden,
-                     trivial_choices_given, trivial_choices_hidden,
-                     negated_answers, counting, long_distance, no_sep_2_sentences,
-                     answer_span_indices, non_natural_language):
-            """
-            Initializes template metadata.
-
-            In the following, trivial choices are defined as Yes/No, True/False,
-            etc. and nontrivial choices are other types of choices denoted in
-            the answer_choices field.
-
-            :param task_template: If True, this template corresponds to the original
-                        or usual task for this dataset
-            :param nontrivial_choices_given: If True, nontrivial choices are
-                        included in in the prompt
-            :param nontrivial_choices_hidden: If True, the template requires
-                        nontrivial choices but they are not included in the prompt
-            :param trivial_choices_given: If True, trivial choices are
-                        included in in the prompt
-            :param trivial_choices_hidden: If True, the template requires
-                        trivial choices but they are not included in the promp
-            :param negated_answers: If True, the template uses negation to flip
-                        the usual answer for the task
-            :param counting: If True, the template requires counting of some kind
-            :param long_distance: If True, the description of the task in the prompt
-                        is usually separated by a gap of more than 2 paragraphs
-            :param no_sep_2_sentences: If True, the template places multiple fields
-                        of the example contiguously, with no explicit separator,
-                        in a way that might create ambiguity
-            :param answer_span_indices: If True, the template refers to choices
-                        with (and requires a response with respect to) indices
-            :param non_natural_language: If True, the template requires generating
-                        anything other than natural language, such as code,
-                        complex math expressions, or expert linguistic annotations
-                        like parse trees.
-            """
-            self.task_template = task_template
-            self.nontrivial_choices_given = nontrivial_choices_given
-            self.nontrivial_choices_hidden = nontrivial_choices_hidden
-            self.trivial_choices_given = trivial_choices_given
-            self.trivial_choices_hidden = trivial_choices_hidden
-            self.negated_answers = negated_answers
-            self.counting = counting
-            self.long_distance = long_distance
-            self.no_sep_2_sentences = no_sep_2_sentences
-            self. answer_span_indices = answer_span_indices
-            self.non_natural_language = non_natural_language

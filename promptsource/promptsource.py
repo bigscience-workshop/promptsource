@@ -136,7 +136,9 @@ if mode == "Helicopter view":
                 "Validation size": split_sizes["validation"] if "validation" in split_sizes else 0,
                 "Test size": split_sizes["test"] if "test" in split_sizes else 0,
                 "Number of templates": len(dataset_templates),
-                "Number of task templates": sum([t.get_task_template() for t in dataset_templates.templates.values()]),
+                "Number of task templates": sum(
+                    [bool(t.get_task_template()) for t in dataset_templates.templates.values()]
+                ),
                 "Template names": [t.name for t in dataset_templates.templates.values()],
                 # TODO: template name is not very informative... refine that
             }
@@ -460,9 +462,10 @@ else:
                             help="Short description of the template and/or paper reference for the template.",
                             value=template.reference,
                         )
-                        state.task_template = st.checkbox(
+                        state.metadata = template.metadata
+                        state.metadata.task_template = st.checkbox(
                             "Task Template?",
-                            value=template.get_task_template(),
+                            value=template.metadata.task_template,
                             help="Task templates correspond one-to-one with the original task.",
                         )
                         state.answer_choices = st.text_input(
@@ -493,7 +496,7 @@ else:
                                     updated_template_name,
                                     state.jinja,
                                     state.reference,
-                                    state.task_template,
+                                    state.metadata,
                                     updated_answer_choices,
                                 )
                                 # Update the state as well
