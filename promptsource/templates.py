@@ -82,7 +82,7 @@ class Template(yaml.YAMLObject):
         self.jinja = jinja
         self.reference = reference
         self.answer_choices = answer_choices
-        self.metadata = metadata if metadata is not None else Template.Metadata(*[None] * 11)
+        self.metadata = metadata if metadata is not None else Template.Metadata(*[None] * 6)
 
     def get_id(self):
         """

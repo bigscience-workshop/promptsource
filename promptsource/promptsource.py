@@ -476,6 +476,8 @@ else:
                             "(output is open ended and not contained in the prompt), or 'Extraction' "
                             "(output is open ended but contained in the prompt, including indexed choices).",
                         )
+                        if state.metadata.task_format == '':
+                            state.metadata.task_format = None
                         state.metadata.task_template = st.checkbox(
                             "Task Template?",
                             value=template.metadata.task_template,
