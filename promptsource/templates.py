@@ -181,7 +181,9 @@ class Template(yaml.YAMLObject):
 
         def __init__(
             self,
-            task_template,
+            task_format: str,  # dropdown choice of 'classification', 'generation', 'extraction'
+            task_template: bool,
+
             nontrivial_choices_given,
             nontrivial_choices_hidden,
             trivial_choices_given,
@@ -192,6 +194,15 @@ class Template(yaml.YAMLObject):
             no_sep_2_sentences,
             answer_span_indices,
             non_natural_language,
+
+            metric: Optional[str] = None,
+
+            # if task_format == classification
+            choices_in_prompt: Optional[bool] = None,
+
+            # Internal flags
+            _do_train: Optional[bool] = None,
+            _do_eval: Optional[bool] = None,
         ):
             """
             Initializes template metadata.
@@ -225,6 +236,9 @@ class Template(yaml.YAMLObject):
                         complex math expressions, or expert linguistic annotations
                         like parse trees.
             """
+            self.task_format = task_format
+            self.metric = metric
+            self.choices_in_prompt = choices_in_prompt
             self.task_template = task_template
             self.nontrivial_choices_given = nontrivial_choices_given
             self.nontrivial_choices_hidden = nontrivial_choices_hidden
@@ -236,6 +250,9 @@ class Template(yaml.YAMLObject):
             self.no_sep_2_sentences = no_sep_2_sentences
             self.answer_span_indices = answer_span_indices
             self.non_natural_language = non_natural_language
+
+            self._do_train = _do_train
+            self._do_eval = _do_eval
 
 
 class TemplateCollection:
