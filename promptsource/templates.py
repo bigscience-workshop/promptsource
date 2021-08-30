@@ -181,7 +181,7 @@ class Template(yaml.YAMLObject):
 
         def __init__(
             self,
-            task_format: str,  # dropdown choice of 'classification', 'generation', 'extraction'
+            task_format: str,  # dropdown choice of 'Classification', 'Generation', 'Extraction'
             task_template: bool,
 
             nontrivial_choices_given,
