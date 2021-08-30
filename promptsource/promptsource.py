@@ -463,10 +463,28 @@ else:
                             value=template.reference,
                         )
                         state.metadata = template.metadata
+                        format_choices = ["", "Classification", "Generation", "Extraction"]
+                        if template.metadata.task_format is None:
+                            format_index = 0
+                        else:
+                            format_index = format_choices.index(template.metadata.task_format)
+                        state.metadata.task_format = st.selectbox(
+                            "Task Format:",
+                            format_choices,
+                            index=format_index,
+                            help="Either 'Classification' (output is from a set of labels), 'Generation' "
+                                 "(output is open ended and not contained in the prompt), or 'Extraction' "
+                                 "(output is open ended but contained in the prompt, including indexed choices).",
+                        )
                         state.metadata.task_template = st.checkbox(
                             "Task Template?",
                             value=template.metadata.task_template,
-                            help="Task templates correspond one-to-one with the original task.",
+                            help="Template asks model to perform the original task designed for this dataset.",
+                        )
+                        state.metadata.choices_in_prompt = st.checkbox(
+                            "Choices in Prompt?",
+                            value=template.metadata.choices_in_prompt,
+                            help="Template explicitly lists choices in the prompt for the output.",
                         )
                         state.answer_choices = st.text_input(
                             "Answer Choices",
