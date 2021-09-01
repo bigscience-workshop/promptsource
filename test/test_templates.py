@@ -2,6 +2,7 @@ from jinja2 import meta, TemplateError
 import pytest
 import promptsource.templates
 from promptsource.utils import get_dataset_builder
+from uuid import UUID
 
 # Sets up Jinja environment
 env = promptsource.templates.env
@@ -44,6 +45,7 @@ def test_dataset(dataset):
     2. Does the template contain a prompt/output separator "|||" ?
     3. Are all names and templates within a data (sub)set unique?
     4. Is the YAML dictionary properly formatted?
+    5. Is the UUID valid?
 
     :param dataset: (dataset_name, subset_name) pair to test
 
@@ -103,6 +105,9 @@ def test_dataset(dataset):
         except KeyError as e:
             raise ValueError(f"Template for dataset {dataset_name}/{subset_name} "
                              f"with uuid {template.get_id()} has wrong YAML key.") from e
+
+        # Check 5: Is the UUID valid?
+        UUID(template.get_id())
 
     # Turned off for now until we fix.
     #assert any_task, "There must be at least one task template for each dataset"
