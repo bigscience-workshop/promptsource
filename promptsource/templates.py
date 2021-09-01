@@ -82,7 +82,7 @@ class Template(yaml.YAMLObject):
         self.jinja = jinja
         self.reference = reference
         self.answer_choices = answer_choices
-        self.metadata = metadata if metadata is not None else Template.Metadata(*[None] * 6)
+        self.metadata = metadata if metadata is not None else Template.Metadata(*[None] * 5)
 
     def get_id(self):
         """
@@ -169,10 +169,8 @@ class Template(yaml.YAMLObject):
 
         def __init__(
             self,
-            task_format: str,  # dropdown choice of 'Classification', 'Generation', 'Extraction'
             original_task: bool,
             metric: Optional[List[str]] = None,
-            # if task_format == classification
             choices_in_prompt: Optional[bool] = None,
             # Internal flags
             _do_train: Optional[bool] = None,
@@ -185,10 +183,6 @@ class Template(yaml.YAMLObject):
             etc. and nontrivial choices are other types of choices denoted in
             the answer_choices field.
 
-            :param task_format: Either "Classification" (output is from a set of labels),
-                "Generation" (output is open ended and not contained in the prompt),
-                or "Extraction" (output is open ended but contained in the prompt,
-                including indexed choices)
             :param original_task: If True, this prompt asks a model to perform the original task designed for
                 this dataset.
             :param metric: List of strings denoting metrics to use for evaluation
@@ -199,7 +193,6 @@ class Template(yaml.YAMLObject):
             :param _do_train: internal parameter. If True, this template should be
                 used for evaluation
             """
-            self.task_format = task_format
             self.original_task = original_task
             self.metric = metric
             self.choices_in_prompt = choices_in_prompt
