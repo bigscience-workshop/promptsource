@@ -126,7 +126,7 @@ if mode == "Helicopter view":
 
         split_sizes = {k: v.num_examples for k, v in subset_infos.splits.items()}
 
-        # Collect template counts, task template counts and names
+        # Collect template counts, original task counts and names
         dataset_templates = template_collection.get_dataset(dataset_name, subset_name)
         results.append(
             {
@@ -136,8 +136,8 @@ if mode == "Helicopter view":
                 "Validation size": split_sizes["validation"] if "validation" in split_sizes else 0,
                 "Test size": split_sizes["test"] if "test" in split_sizes else 0,
                 "Number of templates": len(dataset_templates),
-                "Number of task templates": sum(
-                    [bool(t.get_task_template()) for t in dataset_templates.templates.values()]
+                "Number of original task templates": sum(
+                    [bool(t.metadata.original_task) for t in dataset_templates.templates.values()]
                 ),
                 "Template names": [t.name for t in dataset_templates.templates.values()],
                 # TODO: template name is not very informative... refine that
@@ -334,8 +334,8 @@ else:
                 st.text(template.name)
                 st.markdown("##### Reference")
                 st.text(template.reference)
-                st.markdown("##### Task Template? ")
-                st.text(template.get_task_template())
+                st.markdown("##### Original Task? ")
+                st.text(template.metadata.original_task)
                 st.markdown("##### Answer Choices")
                 st.text(", ".join(template.answer_choices if template.answer_choices is not None else ""))
                 st.markdown("##### Jinja")
@@ -478,9 +478,9 @@ else:
                         )
                         if state.metadata.task_format == "":
                             state.metadata.task_format = None
-                        state.metadata.task_template = st.checkbox(
-                            "Task Template?",
-                            value=template.metadata.task_template,
+                        state.metadata.original_task = st.checkbox(
+                            "Original Task?",
+                            value=template.metadata.original_task,
                             help="Template asks model to perform the original task designed for this dataset.",
                         )
                         state.metadata.choices_in_prompt = st.checkbox(

@@ -108,18 +108,6 @@ class Template(yaml.YAMLObject):
         """
         return self.reference
 
-    def get_task_template(self):
-        """
-        Returns whether this template corresponds to the original or usual task
-        for this dataset.
-
-        task_template is just another piece of metadata stored in the
-        Template.Metadata object. This method is for backwards compatibility.
-
-        :return: bool
-        """
-        return self.metadata.task_template
-
     def get_answer_choices(self):
         """
         Returns a list of strings enumerating the possible completions for
@@ -182,7 +170,7 @@ class Template(yaml.YAMLObject):
         def __init__(
             self,
             task_format: str,  # dropdown choice of 'Classification', 'Generation', 'Extraction'
-            task_template: bool,
+            original_task: bool,
             metric: Optional[List[str]] = None,
             # if task_format == classification
             choices_in_prompt: Optional[bool] = None,
@@ -201,7 +189,7 @@ class Template(yaml.YAMLObject):
                 "Generation" (output is open ended and not contained in the prompt),
                 or "Extraction" (output is open ended but contained in the prompt,
                 including indexed choices)
-            :param task_template: If True, this prompt asks a model to perform the original task designed for
+            :param original_task: If True, this prompt asks a model to perform the original task designed for
                 this dataset.
             :param metric: List of strings denoting metrics to use for evaluation
             :param choices_in_prompt: If True, the answer choices are included in the templates such that models
@@ -212,9 +200,9 @@ class Template(yaml.YAMLObject):
                 used for evaluation
             """
             self.task_format = task_format
+            self.original_task = original_task
             self.metric = metric
             self.choices_in_prompt = choices_in_prompt
-            self.task_template = task_template
             self._do_train = _do_train
             self._do_eval = _do_eval
 

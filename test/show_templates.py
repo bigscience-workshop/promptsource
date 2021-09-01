@@ -33,7 +33,7 @@ for template_name in template_list:
     template = dataset_templates[template_name]
     print("TEMPLATE")
     print("NAME:", template_name)
-    print("Is Task Template: ", template.get_task_template())
+    print("Is Original Task: ", template.metadata.original_task)
     print(template.jinja)
     print()
 

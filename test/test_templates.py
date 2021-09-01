@@ -63,10 +63,10 @@ def test_dataset(dataset):
 
     # Iterates over each template for current data (sub)set
     dataset_templates = template_collection.get_dataset(dataset_name, subset_name)
-    any_task = False
+    any_original = False
     for template_name in dataset_templates.all_template_names:
         template = dataset_templates[template_name]
-        any_task = any_task or template.get_task_template()
+        any_original = any_original or template.metadata.original_task
         # Check 1: Jinja and all features valid?
         try:
             parse = env.parse(template.jinja)
@@ -110,4 +110,4 @@ def test_dataset(dataset):
         UUID(template.get_id())
 
     # Turned off for now until we fix.
-    #assert any_task, "There must be at least one task template for each dataset"
+    #assert any_original, "There must be at least one original task template for each dataset"
