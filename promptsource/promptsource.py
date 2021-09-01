@@ -298,7 +298,8 @@ else:
             st.sidebar.write(example)
 
         st.sidebar.subheader("Dataset Schema")
-        st.sidebar.write(render_features(dataset.features))
+        rendered_features = render_features(dataset.features)
+        st.sidebar.write(rendered_features)
 
         #
         # Display dataset information
@@ -497,13 +498,28 @@ else:
                         # Sort alphabetically
                         metrics_choices = sorted(metrics_choices)
                         state.metadata.metrics = st.multiselect(
-                            "Metrics", metrics_choices, default=state.metadata.metrics
+                            "Metrics",
+                            metrics_choices,
+                            default=template.metadata.metrics,
+                            help="",
                         )
                         state.answer_choices = st.text_input(
                             "Answer Choices",
                             value=" ||| ".join(template.answer_choices) if template.answer_choices is not None else "",
                             help="A ||| separated list of possible outputs (or leave blank). "
                             + "Value is available in Jinja in a list called answer_choices.",
+                        )
+                        answer_choices_key_options = list(rendered_features.keys())
+                        answer_choices_key_options.insert(0, "")
+                        if template.answer_choices_key is None:
+                            answer_choices_key_index = 0
+                        else:
+                            answer_choices_key_index = answer_choices_key_options.index(template.answer_choices_key)
+                        state.answer_choices_key = st.selectbox(
+                            "Answer Choices Key",
+                            answer_choices_key_options,
+                            index=answer_choices_key_index,
+                            help="",
                         )
                         state.jinja = st.text_area("Template", height=40, value=template.jinja)
 
@@ -519,8 +535,12 @@ else:
                             elif updated_template_name == "":
                                 st.error("Need to provide a template name.")
                             else:
-                                # Parses state.answer_choices
+                                # Parses state.answer_choices and state.answer_choices_key
                                 updated_answer_choices = [x.strip() for x in state.answer_choices.split("|||")]
+                                if state.answer_choices_key != "":
+                                    updated_answer_choices_key = state.answer_choices_key
+                                else:
+                                    updated_answer_choices_key = None
 
                                 dataset_templates.update_template(
                                     state.template_name,
@@ -529,6 +549,7 @@ else:
                                     state.reference,
                                     state.metadata,
                                     updated_answer_choices,
+                                    updated_answer_choices_key,
                                 )
                                 # Update the state as well
                                 state.template_name = updated_template_name

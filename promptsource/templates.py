@@ -53,7 +53,7 @@ class Template(yaml.YAMLObject):
 
     yaml_tag = "!Template"
 
-    def __init__(self, name, jinja, reference, metadata=None, answer_choices=None):
+    def __init__(self, name, jinja, reference, metadata=None, answer_choices=None, answer_choices_key=None):
         """
         Creates a prompt template.
 
@@ -64,25 +64,28 @@ class Template(yaml.YAMLObject):
         behavior, e.g., text passage and instructions, and the output should be
         a desired response.
 
-        :param id: unique identifier to use as key in the yaml file
         :param name: unique name (per dataset) for template
         :param jinja: template expressed in Jinja
-        :param reference: string metadata describing author or paper reference
-                          for template
+        :param reference: string describing author or paper reference for template
         :param metadata: a Metadata object with template annotations
         :param answer_choices: list of strings that enumerates the possible completions
                                for templates that should be evaluated as ranked
                                completions. If None, then the template is open-ended.
                                This list is accessible from within Jinja as the
                                variable `answer_choices`.
+        :param answer_choices_key: string name of key in example dictionary that
+                                   points to an iterable of strings representing
+                                   per-example choices for open-ended templates.
+                                   Should be None if no such key exists.
 
         """
         self.id = str(uuid.uuid4())
         self.name = name
         self.jinja = jinja
         self.reference = reference
-        self.answer_choices = answer_choices
         self.metadata = metadata if metadata is not None else Template.Metadata()
+        self.answer_choices = answer_choices
+        self.answer_choices_key = answer_choices_key
 
     def get_id(self):
         """
@@ -112,6 +115,16 @@ class Template(yaml.YAMLObject):
         """
         Returns a list of strings enumerating the possible completions for
         this template, or None if the template is open ended.
+
+        :return: List[String]
+        """
+        return self.answer_choices
+
+    def get_answer_choices_key(self):
+        """
+        Returns a string name of key in example dictionary that points to an
+        iterable of strings representing per-example choices, or None if no
+        such key exists.
 
         :return: List[String]
         """
@@ -380,6 +393,7 @@ class DatasetTemplates:
         reference: str,
         metadata: Template.Metadata,
         answer_choices: List[str],
+        answer_choices_key: str,
     ) -> None:
         """
         Updates a pre-existing template and writes changes
@@ -390,6 +404,7 @@ class DatasetTemplates:
         :param reference: new reference entry
         :param metadata: a Metadata object with template annotations
         :param answer_choices: new answer_choices list
+        :param answer_choices_key: new answer_choices_key string
         """
         template_id = self.name_to_id_mapping[current_template_name]
         self.templates[template_id].name = new_template_name
@@ -397,6 +412,7 @@ class DatasetTemplates:
         self.templates[template_id].reference = reference
         self.templates[template_id].metadata = metadata
         self.templates[template_id].answer_choices = answer_choices
+        self.templates[template_id].answer_choices_key = answer_choices_key
 
         self.write_to_file()
 
