@@ -475,9 +475,21 @@ else:
                         )
                         # Metrics from here:
                         # https://github.com/google-research/text-to-text-transfer-transformer/blob/4b580f23968c2139be7fb1cd53b22c7a7f686cdf/t5/evaluation/metrics.py
-                        metrics_choices = ["BLEU", "ROUGE", "Span Squad", "Squad", "Trivia QA", "Accuracy",
-                                           "Sequence Accuracy", "Pearson Correlation", "Spearman Correlation",
-                                           "MultiRC", "AUC", "COQA F1", "Edit Distance"]
+                        metrics_choices = [
+                            "BLEU",
+                            "ROUGE",
+                            "Span Squad",
+                            "Squad",
+                            "Trivia QA",
+                            "Accuracy",
+                            "Sequence Accuracy",
+                            "Pearson Correlation",
+                            "Spearman Correlation",
+                            "MultiRC",
+                            "AUC",
+                            "COQA F1",
+                            "Edit Distance",
+                        ]
                         # Add mean reciprocal rank
                         metrics_choices.append("Mean Reciprocal Rank")
                         # Add generic other
