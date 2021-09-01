@@ -1,9 +1,57 @@
 dataset: duorc
 subset: SelfRC
 templates:
-  1e6e6a07-4655-4dd8-a694-373bd3049698: !Template
+  1f544641-ba15-44ef-bfcd-c951d320eb9a: !Template
     answer_choices: null
-    id: 1e6e6a07-4655-4dd8-a694-373bd3049698
+    id: 1f544641-ba15-44ef-bfcd-c951d320eb9a
+    jinja: "{% if no_answer %}\nGenerate a question for the following plot: {{plot}}\n\
+      {% else %}\nGenerate a question which has the following answer: \n{{answers|choice}}\
+      \ \nfor the following plot: \n{{plot}}\n{% endif %}\n|||\n{{question}}"
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: false
+      choices_in_prompt: null
+      metric: null
+      task_format: null
+      task_template: null
+    name: generate_question_by_answer
+    reference: Given the passage and the answer, generate a question which has that
+      answer.
+  af62f222-a8d2-439f-9586-52e0279d25cc: !Template
+    answer_choices: null
+    id: af62f222-a8d2-439f-9586-52e0279d25cc
+    jinja: 'Generate a question for the following plot: {{ plot }}
+
+      |||
+
+      {{ question }}'
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: false
+      choices_in_prompt: null
+      metric: null
+      task_format: null
+      task_template: null
+    name: generate_question
+    reference: Given the plot, generate a question.
+  c76b38f1-b47a-4354-960d-58d2f0974d14: !Template
+    answer_choices: null
+    id: c76b38f1-b47a-4354-960d-58d2f0974d14
+    jinja: "{% if no_answer %}\n Build a story around this: {{ question }}\n{% else\
+      \ %}\nBuild a story around this: {{ question }} {{answers|choice}}\n{% endif\
+      \ %}\n|||\n{{ plot }}"
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: false
+      choices_in_prompt: null
+      metric: null
+      task_format: null
+      task_template: null
+    name: build_story_around_qa
+    reference: Given the question-answer pair, generate a relevant plot.
+  c917a801-28fe-4c78-93d8-8e43897aa613: !Template
+    answer_choices: null
+    id: c917a801-28fe-4c78-93d8-8e43897aa613
     jinja: '{{question}} {{plot}}
 
       |||
@@ -26,57 +74,9 @@ templates:
       task_template: null
     name: question_answering
     reference: Given a passage and a question, generate an answer.
-  840f6409-4273-4968-9a17-a0c300e9412f: !Template
+  d486ac96-de6b-403a-8628-5adb23252194: !Template
     answer_choices: null
-    id: 840f6409-4273-4968-9a17-a0c300e9412f
-    jinja: 'Generate a question for the following plot: {{ plot }}
-
-      |||
-
-      {{ question }}'
-    metadata: !TemplateMetadata
-      _do_eval: false
-      _do_train: false
-      choices_in_prompt: null
-      metric: null
-      task_format: null
-      task_template: null
-    name: generate_question
-    reference: Given the plot, generate a question.
-  e2d42f3f-d835-4127-a93e-2e8e257590eb: !Template
-    answer_choices: null
-    id: e2d42f3f-d835-4127-a93e-2e8e257590eb
-    jinja: "{% if no_answer %}\n Build a story around this: {{ question }}\n{% else\
-      \ %}\nBuild a story around this: {{ question }} {{answers|choice}}\n{% endif\
-      \ %}\n|||\n{{ plot }}"
-    metadata: !TemplateMetadata
-      _do_eval: false
-      _do_train: false
-      choices_in_prompt: null
-      metric: null
-      task_format: null
-      task_template: null
-    name: build_story_around_qa
-    reference: Given the question-answer pair, generate a relevant plot.
-  e453150d-ae6c-44e0-b6e3-cde724256ba7: !Template
-    answer_choices: null
-    id: e453150d-ae6c-44e0-b6e3-cde724256ba7
-    jinja: "{% if no_answer %}\nGenerate a question for the following plot: {{plot}}\n\
-      {% else %}\nGenerate a question which has the following answer: \n{{answers|choice}}\
-      \ \nfor the following plot: \n{{plot}}\n{% endif %}\n|||\n{{question}}"
-    metadata: !TemplateMetadata
-      _do_eval: false
-      _do_train: false
-      choices_in_prompt: null
-      metric: null
-      task_format: null
-      task_template: null
-    name: generate_question_by_answer
-    reference: Given the passage and the answer, generate a question which has that
-      answer.
-  e847d8db-8807-4eab-8cb5-d4bc8175a6cf: !Template
-    answer_choices: null
-    id: e847d8db-8807-4eab-8cb5-d4bc8175a6cf
+    id: d486ac96-de6b-403a-8628-5adb23252194
     jinja: 'Suggest a movie title for the following plot: {{plot}}
 
       |||

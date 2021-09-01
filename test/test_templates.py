@@ -10,6 +10,31 @@ env = promptsource.templates.env
 template_collection = promptsource.templates.TemplateCollection()
 
 
+def test_uuids():
+    """
+    Checks that all UUIDs across promptsource are unique. (Although collisions
+    are unlikely, copying and pasting YAML files could lead to duplicates.
+    """
+    all_uuids = {}
+
+    # Iterates over all datasets
+    for dataset_name, subset_name in template_collection.keys:
+
+        # Iterates over each template for current data (sub)set
+        dataset_templates = template_collection.get_dataset(dataset_name, subset_name)
+        for template_name in dataset_templates.all_template_names:
+            template = dataset_templates[template_name]
+
+            uuid = template.get_id()
+
+            if uuid in all_uuids:
+                raise ValueError(f"Template {template_name} for dataset {dataset_name}/{subset_name} "
+                                 f"has duplicate uuid {template.get_id()} as "
+                                 f"{all_uuids[uuid][0]}/{all_uuids[uuid][1]}.")
+
+            all_uuids[uuid] = (dataset_name, subset_name)
+
+
 @pytest.mark.parametrize("dataset", template_collection.keys)
 def test_dataset(dataset):
     """
@@ -18,6 +43,7 @@ def test_dataset(dataset):
     1. Do all templates parse in Jinja and are all referenced variables in the dataset schema?
     2. Does the template contain a prompt/output separator "|||" ?
     3. Are all names and templates within a data (sub)set unique?
+    4. Is the YAML dictionary properly formatted?
 
     :param dataset: (dataset_name, subset_name) pair to test
 
@@ -68,6 +94,15 @@ def test_dataset(dataset):
 
         template_name_set.add(template.get_name())
         template_jinja_set.add(template.jinja)
+
+        # Check 4: Is the YAML dictionary properly formatted?
+        try:
+            if dataset_templates.templates[template.get_id()] != template:
+                raise ValueError(f"Template for dataset {dataset_name}/{subset_name} "
+                                 f"with uuid {template.get_id()} has wrong YAML key.")
+        except KeyError as e:
+            raise ValueError(f"Template for dataset {dataset_name}/{subset_name} "
+                             f"with uuid {template.get_id()} has wrong YAML key.") from e
 
     # Turned off for now until we fix.
     #assert any_task, "There must be at least one task template for each dataset"

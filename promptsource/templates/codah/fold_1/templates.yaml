@@ -1,16 +1,14 @@
 dataset: codah
 subset: fold_1
 templates:
-  008b421e-3ca1-495b-acf8-d88fe352da53: !Template
+  0a7ef357-b2c2-4c1c-a4b9-7e069780ae76: !Template
     answer_choices: null
-    id: 008b421e-3ca1-495b-acf8-d88fe352da53
-    jinja: '{{question_propmt}}
+    id: 0a7ef357-b2c2-4c1c-a4b9-7e069780ae76
+    jinja: 'Finish the following text:
 
 
-      - {{ candidate_answers | join("\n- ") }}
+      {{question_propmt}}
 
-
-      Which is the correct ending?
 
       |||
 
@@ -21,12 +19,12 @@ templates:
       choices_in_prompt: null
       metric: null
       task_format: null
-      task_template: true
-    name: answer_with_option_post
+      task_template: null
+    name: finish_pre
     reference: ''
-  01fd9142-114e-43ea-bdef-9ccc46135ebb: !Template
+  0d54d52b-91dc-4e23-98a1-3b81bbd8558f: !Template
     answer_choices: null
-    id: 01fd9142-114e-43ea-bdef-9ccc46135ebb
+    id: 0d54d52b-91dc-4e23-98a1-3b81bbd8558f
     jinja: '{{question_propmt}}
 
 
@@ -46,97 +44,9 @@ templates:
       task_template: true
     name: answer_with_option
     reference: ''
-  10a5996d-4aa5-40a8-95d9-fff842c75653: !Template
+  2adfb019-690a-482c-aecc-2b43168a9a2a: !Template
     answer_choices: null
-    id: 10a5996d-4aa5-40a8-95d9-fff842c75653
-    jinja: '{{question_propmt}}
-
-
-      Finish the sentence
-
-      |||
-
-      {{candidate_answers[correct_answer_idx]}}'
-    metadata: !TemplateMetadata
-      _do_eval: false
-      _do_train: false
-      choices_in_prompt: null
-      metric: null
-      task_format: null
-      task_template: null
-    name: answer_no_option
-    reference: ''
-  30959166-08a2-4412-93e9-a865db651a09: !Template
-    answer_choices:
-    - Idioms
-    - Reference
-    - Polysemy
-    - Negation
-    - Quantitative
-    - Others
-    id: 30959166-08a2-4412-93e9-a865db651a09
-    jinja: "{{question_propmt}}\n\nPossible categories for this sentence are {{',\
-      \ '.join(answer_choices)}}.\n\nFrom which category does the sentence belong?\
-      \ \n|||\n{{answer_choices[question_category]}}"
-    metadata: !TemplateMetadata
-      _do_eval: false
-      _do_train: false
-      choices_in_prompt: null
-      metric: null
-      task_format: null
-      task_template: null
-    name: question_category
-    reference: ''
-  36a9e72d-3bd5-4c81-bfd7-108706d1f8db: !Template
-    answer_choices: null
-    id: 36a9e72d-3bd5-4c81-bfd7-108706d1f8db
-    jinja: '{{question_propmt}}
-
-
-      Choose a candidate ending from this list:
-
-      - {{ candidate_answers | join("\n- ") }}
-
-      |||
-
-      {{candidate_answers[correct_answer_idx]}}'
-    metadata: !TemplateMetadata
-      _do_eval: false
-      _do_train: false
-      choices_in_prompt: null
-      metric: null
-      task_format: null
-      task_template: true
-    name: choose_from_list
-    reference: ''
-  99f0a5f0-2e5d-4e04-817c-8968be2cc760: !Template
-    answer_choices: null
-    id: 99f0a5f0-2e5d-4e04-817c-8968be2cc760
-    jinja: '{{question_propmt}}
-
-      {% for k in range(candidate_answers | length) %}
-
-      {{'' -> ''.join([(k + 1) | string, candidate_answers[k]])}}
-
-      {% endfor %}
-
-      Is the right answer {{"1, 2, 3 or 4"}} ?
-
-      |||
-
-      {{correct_answer_idx}}'
-    metadata: !TemplateMetadata
-      _do_eval: false
-      _do_train: false
-      choices_in_prompt: null
-      metric: null
-      task_format: null
-      task_template: true
-    name: answer_with_option_idx
-    reference: ''
-  9e383a33-67e3-4a03-a4c5-50f986022a71: !Template
-    answer_choices: null
-    id: 9e383a33-67e3-4a03-a4c5-50f986022a71
+    id: 2adfb019-690a-482c-aecc-2b43168a9a2a
     jinja: '{{question_propmt}}
 
 
@@ -159,14 +69,57 @@ templates:
       task_template: true
     name: finish_from_the_list_post
     reference: ''
-  b4784090-b540-4de5-b391-a9f130c101be: !Template
+  3a946e9d-7b34-47ed-b3b8-7894ded8839d: !Template
     answer_choices: null
-    id: b4784090-b540-4de5-b391-a9f130c101be
-    jinja: 'Finish the following text:
+    id: 3a946e9d-7b34-47ed-b3b8-7894ded8839d
+    jinja: '{{question_propmt}}
 
 
-      {{question_propmt}}
+      - {{ candidate_answers | join("\n- ") }}
 
+
+      Which is the correct ending?
+
+      |||
+
+      {{candidate_answers[correct_answer_idx]}}'
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: false
+      choices_in_prompt: null
+      metric: null
+      task_format: null
+      task_template: true
+    name: answer_with_option_post
+    reference: ''
+  47651e9b-c25c-49a4-b32a-c0029cdc2aa2: !Template
+    answer_choices:
+    - Idioms
+    - Reference
+    - Polysemy
+    - Negation
+    - Quantitative
+    - Others
+    id: 47651e9b-c25c-49a4-b32a-c0029cdc2aa2
+    jinja: "{{question_propmt}}\n\nPossible categories for this sentence are {{',\
+      \ '.join(answer_choices)}}.\n\nFrom which category does the sentence belong?\
+      \ \n|||\n{{answer_choices[question_category]}}"
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: false
+      choices_in_prompt: null
+      metric: null
+      task_format: null
+      task_template: null
+    name: question_category
+    reference: ''
+  757a5faf-a48c-41b6-b7bd-a512d5e6107b: !Template
+    answer_choices: null
+    id: 757a5faf-a48c-41b6-b7bd-a512d5e6107b
+    jinja: '{{question_propmt}}
+
+
+      Finish the sentence
 
       |||
 
@@ -178,9 +131,56 @@ templates:
       metric: null
       task_format: null
       task_template: null
-    name: finish_pre
+    name: answer_no_option
     reference: ''
-  c171ce3b-08c4-4056-af11-7bdb165fc75d: !Template
+  9f1a9858-9528-47ed-a5ee-16d18b48c0da: !Template
+    answer_choices: null
+    id: 9f1a9858-9528-47ed-a5ee-16d18b48c0da
+    jinja: '{{question_propmt}}
+
+
+      Finish the sentence using one of the following endings:
+
+      - {{ candidate_answers | join("\n- ") }}
+
+      |||
+
+      {{candidate_answers[correct_answer_idx]}}'
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: false
+      choices_in_prompt: null
+      metric: null
+      task_format: null
+      task_template: true
+    name: finish_from_the_list
+    reference: ''
+  a5aad762-bc91-4b21-b869-323aaea78d20: !Template
+    answer_choices: null
+    id: a5aad762-bc91-4b21-b869-323aaea78d20
+    jinja: '{{question_propmt}}
+
+      {% for k in range(candidate_answers | length) %}
+
+      {{'' -> ''.join([(k + 1) | string, candidate_answers[k]])}}
+
+      {% endfor %}
+
+      Is the right answer {{"1, 2, 3 or 4"}} ?
+
+      |||
+
+      {{correct_answer_idx}}'
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: false
+      choices_in_prompt: null
+      metric: null
+      task_format: null
+      task_template: true
+    name: answer_with_option_idx
+    reference: ''
+  c05e77b5-4a88-4b07-9a9a-baab17fe7e85: !Template
     answer_choices:
     - Idioms
     - Reference
@@ -188,7 +188,7 @@ templates:
     - Negation
     - Quantitative
     - Others
-    id: c171ce3b-08c4-4056-af11-7bdb165fc75d
+    id: c05e77b5-4a88-4b07-9a9a-baab17fe7e85
     jinja: '{{question_propmt}}
 
 
@@ -208,13 +208,13 @@ templates:
       task_template: null
     name: question_category_bis
     reference: ''
-  cc338e7b-c13c-4c4d-af51-7151c24c001e: !Template
+  c3df4771-59a6-41a1-8e84-cf7bae719394: !Template
     answer_choices: null
-    id: cc338e7b-c13c-4c4d-af51-7151c24c001e
+    id: c3df4771-59a6-41a1-8e84-cf7bae719394
     jinja: '{{question_propmt}}
 
 
-      Finish the sentence using one of the following endings:
+      Choose a candidate ending from this list:
 
       - {{ candidate_answers | join("\n- ") }}
 
@@ -228,5 +228,5 @@ templates:
       metric: null
       task_format: null
       task_template: true
-    name: finish_from_the_list
+    name: choose_from_list
     reference: ''

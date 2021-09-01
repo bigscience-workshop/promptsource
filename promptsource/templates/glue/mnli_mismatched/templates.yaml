@@ -1,12 +1,12 @@
 dataset: glue
 subset: mnli_mismatched
 templates:
-  2884f60d-8069-4238-92fa-3314bbf76c3d: !Template
+  6e6ffb0a-6981-4fd9-a188-15fe2c07d7f0: !Template
     answer_choices:
     - 'yes'
     - unclear
     - 'no'
-    id: 2884f60d-8069-4238-92fa-3314bbf76c3d
+    id: 6e6ffb0a-6981-4fd9-a188-15fe2c07d7f0
     jinja: '{{premise}}
 
       Is it therefore the case that "{{hypothesis}}"? Please answer {{"yes, no, or
@@ -24,12 +24,84 @@ templates:
       task_template: null
     name: is it the case
     reference: ''
-  a558db31-99e3-45ee-9e24-a4d1b64ed1df: !Template
+  704397f4-c16e-4737-ad6d-2f282517810f: !Template
+    answer_choices:
+    - 'yes'
+    - maybe
+    - 'no'
+    id: 704397f4-c16e-4737-ad6d-2f282517810f
+    jinja: '{{premise}}
+
+      Does this imply that "{{hypothesis}}"? Please answer {{"yes, no, or maybe"}}.
+
+      |||
+
+      {{answer_choices[label]}}'
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: false
+      choices_in_prompt: null
+      metric: null
+      task_format: null
+      task_template: null
+    name: imply
+    reference: ''
+  709efd1d-3911-4db7-969b-7fc8600b796c: !Template
+    answer_choices:
+    - 'yes'
+    - maybe
+    - 'no'
+    id: 709efd1d-3911-4db7-969b-7fc8600b796c
+    jinja: 'Consider the premise:
+
+      {{premise}}
+
+      and the hypothesis:
+
+      {{hypothesis}}
+
+      Does the hypothesis follow from the premise? {{"A) yes B) no C) maybe"}}
+
+      |||
+
+      {{answer_choices[label]}}'
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: false
+      choices_in_prompt: null
+      metric: null
+      task_format: null
+      task_template: null
+    name: premise hypothesis
+    reference: ''
+  873607a6-cf11-4fb4-a038-0fe3a843315d: !Template
+    answer_choices:
+    - 'yes'
+    - maybe
+    - 'no'
+    id: 873607a6-cf11-4fb4-a038-0fe3a843315d
+    jinja: '{{premise}}
+
+      Does this mean that "{{hypothesis}}"? {{"A) yes B) no or C) maybe."}}
+
+      |||
+
+      {{answer_choices[label]}}'
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: false
+      choices_in_prompt: null
+      metric: null
+      task_format: null
+      task_template: null
+    name: does this mean
+    reference: ''
+  b249978b-b1ee-440b-ae67-280e6631286b: !Template
     answer_choices:
     - entailment
     - neutral
     - contradiction
-    id: a558db31-99e3-45ee-9e24-a4d1b64ed1df
+    id: b249978b-b1ee-440b-ae67-280e6631286b
     jinja: 'In this task, you need to determine if two passages have one of three
       relationships: {{"entailment, neural, or contradiction"}}. {{"Entailment"}}
       means that the first passage implies the second. {{"Neutral"}} means that their
@@ -53,76 +125,4 @@ templates:
       task_format: null
       task_template: null
     name: entailment
-    reference: ''
-  a730746a-58c3-4c5d-9e93-a73dbe3661e1: !Template
-    answer_choices:
-    - 'yes'
-    - maybe
-    - 'no'
-    id: a730746a-58c3-4c5d-9e93-a73dbe3661e1
-    jinja: '{{premise}}
-
-      Does this mean that "{{hypothesis}}"? {{"A) yes B) no or C) maybe."}}
-
-      |||
-
-      {{answer_choices[label]}}'
-    metadata: !TemplateMetadata
-      _do_eval: false
-      _do_train: false
-      choices_in_prompt: null
-      metric: null
-      task_format: null
-      task_template: null
-    name: does this mean
-    reference: ''
-  ab25652e-20a7-4a1e-a530-916b2adc64a0: !Template
-    answer_choices:
-    - 'yes'
-    - maybe
-    - 'no'
-    id: ab25652e-20a7-4a1e-a530-916b2adc64a0
-    jinja: 'Consider the premise:
-
-      {{premise}}
-
-      and the hypothesis:
-
-      {{hypothesis}}
-
-      Does the hypothesis follow from the premise? {{"A) yes B) no C) maybe"}}
-
-      |||
-
-      {{answer_choices[label]}}'
-    metadata: !TemplateMetadata
-      _do_eval: false
-      _do_train: false
-      choices_in_prompt: null
-      metric: null
-      task_format: null
-      task_template: null
-    name: premise hypothesis
-    reference: ''
-  ac71489b-c5e9-4c60-8eae-35eb14cb5545: !Template
-    answer_choices:
-    - 'yes'
-    - maybe
-    - 'no'
-    id: ac71489b-c5e9-4c60-8eae-35eb14cb5545
-    jinja: '{{premise}}
-
-      Does this imply that "{{hypothesis}}"? Please answer {{"yes, no, or maybe"}}.
-
-      |||
-
-      {{answer_choices[label]}}'
-    metadata: !TemplateMetadata
-      _do_eval: false
-      _do_train: false
-      choices_in_prompt: null
-      metric: null
-      task_format: null
-      task_template: null
-    name: imply
     reference: ''
