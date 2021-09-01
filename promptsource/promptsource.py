@@ -473,6 +473,20 @@ else:
                             value=template.metadata.choices_in_prompt,
                             help="Template explicitly lists choices in the prompt for the output.",
                         )
+                        # Metrics from here:
+                        # https://github.com/google-research/text-to-text-transfer-transformer/blob/4b580f23968c2139be7fb1cd53b22c7a7f686cdf/t5/evaluation/metrics.py
+                        metrics_choices = ["BLEU", "ROUGE", "Span Squad", "Squad", "Trivia QA", "Accuracy",
+                                           "Sequence Accuracy", "Pearson Correlation", "Spearman Correlation",
+                                           "MultiRC", "AUC", "COQA F1", "Edit Distance"]
+                        # Add mean reciprocal rank
+                        metrics_choices.append("Mean Reciprocal Rank")
+                        # Add generic other
+                        metrics_choices.append("Other")
+                        # Sort alphabetically
+                        metrics_choices = sorted(metrics_choices)
+                        state.metadata.metrics = st.multiselect(
+                            "Metrics", metrics_choices, default=state.metadata.metrics
+                        )
                         state.answer_choices = st.text_input(
                             "Answer Choices",
                             value=" ||| ".join(template.answer_choices) if template.answer_choices is not None else "",

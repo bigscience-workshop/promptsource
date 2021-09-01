@@ -82,7 +82,7 @@ class Template(yaml.YAMLObject):
         self.jinja = jinja
         self.reference = reference
         self.answer_choices = answer_choices
-        self.metadata = metadata if metadata is not None else Template.Metadata(*[None] * 5)
+        self.metadata = metadata if metadata is not None else Template.Metadata()
 
     def get_id(self):
         """
@@ -169,9 +169,9 @@ class Template(yaml.YAMLObject):
 
         def __init__(
             self,
-            original_task: bool,
-            metric: Optional[List[str]] = None,
+            original_task: Optional[bool] = None,
             choices_in_prompt: Optional[bool] = None,
+            metrics: Optional[List[str]] = None,
             # Internal flags
             _do_train: Optional[bool] = None,
             _do_eval: Optional[bool] = None,
@@ -185,17 +185,17 @@ class Template(yaml.YAMLObject):
 
             :param original_task: If True, this prompt asks a model to perform the original task designed for
                 this dataset.
-            :param metric: List of strings denoting metrics to use for evaluation
             :param choices_in_prompt: If True, the answer choices are included in the templates such that models
                 see those choices in the input. Only applicable to classification tasks.
+            :param metrics: List of strings denoting metrics to use for evaluation
             :param _do_train: internal parameter. If True, this template should be
                 used for training
             :param _do_train: internal parameter. If True, this template should be
                 used for evaluation
             """
             self.original_task = original_task
-            self.metric = metric
             self.choices_in_prompt = choices_in_prompt
+            self.metrics = metrics
             self._do_train = _do_train
             self._do_eval = _do_eval
 
