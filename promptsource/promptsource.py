@@ -540,6 +540,8 @@ else:
                             else:
                                 # Parses state.answer_choices and state.answer_choices_key
                                 updated_answer_choices = [x.strip() for x in state.answer_choices.split("|||")]
+                                if len(updated_answer_choices) == 0 or len(updated_answer_choices) == 1:
+                                    updated_answer_choices = None
                                 if state.answer_choices_key != "":
                                     updated_answer_choices_key = state.answer_choices_key
                                 else:
