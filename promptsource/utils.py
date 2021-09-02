@@ -4,7 +4,7 @@ import datasets
 import pandas as pd
 import requests
 
-from promptsource.templates import TemplateCollection
+from templates import TemplateCollection
 
 
 def get_templates_data_frame():
