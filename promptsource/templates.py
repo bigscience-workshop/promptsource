@@ -185,9 +185,6 @@ class Template(yaml.YAMLObject):
             original_task: Optional[bool] = None,
             choices_in_prompt: Optional[bool] = None,
             metrics: Optional[List[str]] = None,
-            # Internal flags
-            _do_train: Optional[bool] = None,
-            _do_eval: Optional[bool] = None,
         ):
             """
             Initializes template metadata.
@@ -201,16 +198,10 @@ class Template(yaml.YAMLObject):
             :param choices_in_prompt: If True, the answer choices are included in the templates such that models
                 see those choices in the input. Only applicable to classification tasks.
             :param metrics: List of strings denoting metrics to use for evaluation
-            :param _do_train: internal parameter. If True, this template should be
-                used for training
-            :param _do_train: internal parameter. If True, this template should be
-                used for evaluation
             """
             self.original_task = original_task
             self.choices_in_prompt = choices_in_prompt
             self.metrics = metrics
-            self._do_train = _do_train
-            self._do_eval = _do_eval
 
 
 class TemplateCollection:

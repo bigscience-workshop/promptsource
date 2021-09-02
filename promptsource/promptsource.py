@@ -502,7 +502,7 @@ else:
                             metrics_choices,
                             default=template.metadata.metrics,
                             help="Select all metrics that are commonly used (or should "
-                                 "be used if a new task) to evaluate this template.",
+                            "be used if a new task) to evaluate this template.",
                         )
                         state.answer_choices = st.text_input(
                             "Answer Choices",
@@ -521,8 +521,8 @@ else:
                             answer_choices_key_options,
                             index=answer_choices_key_index,
                             help="Select a key from the example schema containing an iterable "
-                                 "of strings with choices for the correct output (or leave "
-                                 "blank if not applicable).",
+                            "of strings with choices for the correct output (or leave "
+                            "blank if not applicable).",
                         )
                         state.jinja = st.text_area("Template", height=40, value=template.jinja)
 

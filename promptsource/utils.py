@@ -1,8 +1,9 @@
 # coding=utf-8
 
 import datasets
-import requests
 import pandas as pd
+import requests
+
 from promptsource.templates import TemplateCollection
 
 
@@ -23,8 +24,6 @@ def get_templates_data_frame():
         "metrics": [],
         "answer_choices": [],
         "answer_choices_key": [],
-        "_do_train": [],
-        "_do_eval": [],
         "jinja": [],
     }
 
@@ -44,8 +43,6 @@ def get_templates_data_frame():
             data["metrics"].append(template.metadata.metrics)
             data["answer_choices"].append(template.get_answer_choices())
             data["answer_choices_key"].append(template.get_answer_choices_key())
-            data["_do_train"].append(template.metadata._do_train)
-            data["_do_eval"].append(template.metadata._do_eval)
             data["jinja"].append(template.jinja)
 
     return pd.DataFrame(data)
