@@ -2,14 +2,28 @@ dataset: glue
 subset: qqp
 templates:
   8e711799-a57c-4941-833b-466bedfb80ad: !Template
+    answer_choices:
+    - 'no'
+    - 'yes'
+    answer_choices_key: null
     id: 8e711799-a57c-4941-833b-466bedfb80ad
     jinja: I'm an administrator on the website Quora. There are two posts, one that
       asks "{{question1}}" and another that asks "{{question2}}". I can merge questions
-      if they are asking the same thing. Can I merge these two questions? ||| {{ ["no",
-      "yes"][label] }}
+      if they are asking the same thing. Can I merge these two questions? ||| {{ answer_choices[label]
+      }}
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: true
+      choices_in_prompt: false
+      metrics: []
+      original_task: null
     name: quora
     reference: ''
   94972071-a726-42a3-a726-13f414b65e67: !Template
+    answer_choices:
+    - not duplicates
+    - duplicates
+    answer_choices_key: null
     id: 94972071-a726-42a3-a726-13f414b65e67
     jinja: '{{question1}}
 
@@ -19,24 +33,60 @@ templates:
 
       |||
 
-      {{ ["not duplicates", "duplicates"][label] }}'
+      {{ answer_choices[label] }}'
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: true
+      choices_in_prompt: true
+      metrics: []
+      original_task: null
     name: duplicate or not
     reference: ''
   a45ad5cd-a3ba-4ab2-a728-a9ea0f27102b: !Template
+    answer_choices:
+    - 'no'
+    - 'yes'
+    answer_choices_key: null
     id: a45ad5cd-a3ba-4ab2-a728-a9ea0f27102b
     jinja: Are the questions "{{question1}}" and "{{question2}}" asking the same thing?
-      ||| {{ ["no", "yes"][label] }}
+      ||| {{ answer_choices[label] }}
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: true
+      choices_in_prompt: false
+      metrics: []
+      original_task: null
     name: same thing
     reference: ''
   c0182cd1-c7ac-4abe-829f-4651536af951: !Template
+    answer_choices:
+    - 'no'
+    - 'yes'
+    answer_choices_key: null
     id: c0182cd1-c7ac-4abe-829f-4651536af951
     jinja: Can an answer to "{{question1}}" also be used to answer "{{question2}}"?
-      ||| {{ ["no", "yes"][label] }}
+      ||| {{ answer_choices[label] }}
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: true
+      choices_in_prompt: false
+      metrics: []
+      original_task: null
     name: answer
     reference: ''
   fd244bd3-ca3b-4e4f-9722-fd006c50e157: !Template
+    answer_choices:
+    - 'no'
+    - 'yes'
+    answer_choices_key: null
     id: fd244bd3-ca3b-4e4f-9722-fd006c50e157
     jinja: I received the questions "{{question1}}" and "{{question2}}". Are they
-      duplicates? ||| {{ ["no", "yes"][label] }}
+      duplicates? ||| {{ answer_choices[label] }}
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: true
+      choices_in_prompt: false
+      metrics: []
+      original_task: null
     name: duplicate
     reference: ''

@@ -1,6 +1,8 @@
 dataset: acronym_identification
 templates:
   64f438f2-9968-459f-82d2-24bad632b358: !Template
+    answer_choices: null
+    answer_choices_key: null
     id: 64f438f2-9968-459f-82d2-24bad632b358
     jinja: "{% set random_abbr = '' %}\n{% set _dummy = none %}\n{% set abbr_exp_dict\
       \ = namespace(value = {}) %}\n{% set abbr_string=namespace(value='') %}\n{%\
@@ -31,17 +33,24 @@ templates:
       \ = abbr_exp_dict.value.update({abbr_string.value:exp_string.value}) %}\n  {%\
       \ endif %}\n{% else %}\n  {% if abbr_string.value!=''%}\n    {% if abbr_string.value\
       \ not in abbr_exp_dict.value.keys() %}\n      {% set _dummy = abbr_exp_dict.value.update({abbr_string.value:''})\
-      \ %}\n    {% endif %}\n  {% endif %}\n{% endif %}\n{% if abbr_exp_dict.value %}\n\
-      {% set random_abbr = abbr_exp_dict.value.keys()|list|choice %}\nGiven the following\
-      \ tokens, find the expansion of {{random_abbr}}. Return {{\"Unclear\"}} if the\
-      \ expansion can't be found.\n \n{{tokens|join(' ')}}\n|||\n{% if random_abbr\
+      \ %}\n    {% endif %}\n  {% endif %}\n{% endif %}\n{% if abbr_exp_dict.value\
+      \ %}\n{% set random_abbr = abbr_exp_dict.value.keys()|list|choice %}\nGiven\
+      \ the following tokens, find the expansion of {{random_abbr}}. Return {{\"Unclear\"\
+      }} if the expansion can't be found.\n \n{{tokens|join(' ')}}\n|||\n{% if random_abbr\
       \ in abbr_exp_dict.value.keys() and abbr_exp_dict.value[random_abbr]!='' %}\n\
       {{abbr_exp_dict.value[random_abbr]}}\n{% else %}\nUnclear\n{% endif %}\n{% endif\
       \ %}"
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: false
+      choices_in_prompt: null
+      metrics: []
+      original_task: false
     name: find_expansion
     reference: Given the tokens, find the expansion of an abbreviation in the tokens.
-    task_template: false
   81babc83-18cd-4eed-a343-8ede56b21df5: !Template
+    answer_choices: null
+    answer_choices_key: null
     id: 81babc83-18cd-4eed-a343-8ede56b21df5
     jinja: "Given the BIO encoding as follows:  \"{{\"B-short\"}}\" and \"{{\"I-short\"\
       }}\" represent the beginning and intermediate tokens for abbreviations.\"{{\"\
@@ -51,10 +60,17 @@ templates:
       \ comma-separated tokens: \n\n{{tokens|join(', ')}}\n|||\n{% for label in labels\
       \ %}{{[\"B-long\", \"B-short\", \"I-long\",  \"I-short\", \"O\"][label]}}{%\
       \ if not loop.last %},{%endif %}{% endfor %}"
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: false
+      choices_in_prompt: null
+      metrics: []
+      original_task: true
     name: bio_encode
     reference: Given the comma separated tokens, generate BIO encoding for abbreviations.
-    task_template: true
   8832e5f7-7c45-46da-b85f-71fcb444f264: !Template
+    answer_choices: null
+    answer_choices_key: null
     id: 8832e5f7-7c45-46da-b85f-71fcb444f264
     jinja: 'List all the expansions of the acronyms present in the following comma-separated
       tokens. Return {{"No expansions found"}} if the expansions can''t be found.
@@ -102,10 +118,17 @@ templates:
       No expansions found.
 
       {% endif %}'
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: false
+      choices_in_prompt: null
+      metrics: []
+      original_task: false
     name: list_expansions
     reference: Given the tokens, list the expansion tokens.
-    task_template: false
   cae58242-cde9-472d-ae9e-56fc7e79c0d1: !Template
+    answer_choices: null
+    answer_choices_key: null
     id: cae58242-cde9-472d-ae9e-56fc7e79c0d1
     jinja: "List all the acryonyms in the following comma-separated tokens: \n\n{{tokens|join(',\
       \ ')}}\n|||\n{% set abbr_string=namespace(value='') %}\n{% set answer_list=namespace(value=[])\
@@ -117,10 +140,17 @@ templates:
       \ %}\n{% endif %}\n{% if loop.last and abbr_string.value!='' %}\n{% set answer_list.value\
       \ = answer_list.value +[abbr_string.value] %}\n{% endif %}\n{% endfor %}\n{{\
       \ answer_list.value|join(', ') }}"
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: false
+      choices_in_prompt: null
+      metrics: []
+      original_task: false
     name: list_abbreviations
     reference: Given the tokens, list the abbreviations.
-    task_template: false
   e4e42433-0e37-4aa5-bbce-7f336ecac6a3: !Template
+    answer_choices: null
+    answer_choices_key: null
     id: e4e42433-0e37-4aa5-bbce-7f336ecac6a3
     jinja: "{% set _dummy = none %}\n{% set abbr_exp_dict = namespace(value = {})\
       \ %}\n{% set abbr_string=namespace(value='') %}\n{% set exp_string=namespace(value='')%}\n\
@@ -155,10 +185,17 @@ templates:
       \ expansion can't be found.\n \n{{tokens|join(' ')}}\n|||\n{% for item, value\
       \ in abbr_exp_dict.value.items() %}\n{{item}} : {% if value!='' %}{{value}}{%\
       \ else %}Unclear{% endif %}\n{%endfor%}"
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: false
+      choices_in_prompt: null
+      metrics: []
+      original_task: false
     name: find_mapping
     reference: Given the tokens, find the abbreviation mapping.
-    task_template: false
   eed32ee4-ebc3-499f-ba61-e91461f56ccb: !Template
+    answer_choices: null
+    answer_choices_key: null
     id: eed32ee4-ebc3-499f-ba61-e91461f56ccb
     jinja: "{% set random_exp = '' %}{% set _dummy = none %}{% set exp_abbr_dict =\
       \ namespace(value = {}) %}{% set abbr_string=namespace(value='') %}{% set exp_string=namespace(value='')%}{%\
@@ -190,6 +227,11 @@ templates:
       \ abbreviation can't be found.\n \n{{tokens|join(' ')}}|||{% if random_exp in\
       \ exp_abbr_dict.value.keys() and exp_abbr_dict.value[random_exp]!='' %}{{exp_abbr_dict.value[random_exp]}}{%\
       \ else %}Unclear{% endif %}{% endif %}"
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: false
+      choices_in_prompt: null
+      metrics: []
+      original_task: false
     name: find_abbreviation
     reference: Given the tokens, find the abbreviation for an expansion.
-    task_template: false

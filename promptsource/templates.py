@@ -46,6 +46,164 @@ env.filters["choice"] = choice
 env.filters["most_frequent"] = most_frequent
 
 
+class Template(yaml.YAMLObject):
+    """
+    A prompt template.
+    """
+
+    yaml_tag = "!Template"
+
+    def __init__(self, name, jinja, reference, metadata=None, answer_choices=None, answer_choices_key=None):
+        """
+        Creates a prompt template.
+
+        A prompt template is expressed in Jinja. It is rendered using an example
+        from the corresponding Hugging Face datasets library (a dictionary). The
+        separator ||| should appear once to divide the template into prompt and
+        output. Generally, the prompt should provide information on the desired
+        behavior, e.g., text passage and instructions, and the output should be
+        a desired response.
+
+        :param name: unique name (per dataset) for template
+        :param jinja: template expressed in Jinja
+        :param reference: string describing author or paper reference for template
+        :param metadata: a Metadata object with template annotations
+        :param answer_choices: list of strings that enumerates the possible completions
+                               for templates that should be evaluated as ranked
+                               completions. If None, then the template is open-ended.
+                               This list is accessible from within Jinja as the
+                               variable `answer_choices`.
+        :param answer_choices_key: string name of key in example dictionary that
+                                   points to an iterable of strings representing
+                                   per-example choices for open-ended templates.
+                                   Should be None if no such key exists.
+
+        """
+        self.id = str(uuid.uuid4())
+        self.name = name
+        self.jinja = jinja
+        self.reference = reference
+        self.metadata = metadata if metadata is not None else Template.Metadata()
+        self.answer_choices = answer_choices
+        self.answer_choices_key = answer_choices_key
+
+    def get_id(self):
+        """
+        Returns the id of the template
+
+        :return: unique id for template
+        """
+        return self.id
+
+    def get_name(self):
+        """
+        Returns the name of the template
+
+        :return: unique (per dataset) name for template
+        """
+        return self.name
+
+    def get_reference(self):
+        """
+        Returns the bibliographic reference (or author) for the template
+
+        :return: reference as a string
+        """
+        return self.reference
+
+    def get_answer_choices(self):
+        """
+        Returns a list of strings enumerating the possible completions for
+        this template, or None if the template is open ended.
+
+        :return: List[String]
+        """
+        return self.answer_choices
+
+    def get_answer_choices_key(self):
+        """
+        Returns a string name of key in example dictionary that points to an
+        iterable of strings representing per-example choices, or None if no
+        such key exists.
+
+        :return: List[String]
+        """
+        return self.answer_choices
+
+    def apply(self, example, truncate=True, highlight_variables=False):
+        """
+        Creates a prompt by applying this template to an example
+
+        :param example: the dataset example to create a prompt for
+        :param truncate: if True, example fields will be truncated to TEXT_VAR_LENGTH chars
+        :param highlight_variables: highlight the added variables
+        :return: tuple of 2 strings, for prompt and output
+        """
+        jinja = self.jinja
+
+        # Truncates the prompt if needed
+        if truncate:
+            trunc_command = (
+                f" | string | truncate({TEXT_VAR_LENGTH}) }}}}"  # Escaping curly braces requires doubling them
+            )
+            jinja = jinja.replace("}}", trunc_command)
+
+        # Highlights text that was substituted for variables, if requested
+        if highlight_variables:
+            jinja = jinja.replace("}}", " | highlight }}")
+        rtemplate = env.from_string(jinja)
+
+        # Replaces any occurrences of the "|||" separator in the example, which
+        # which will be replaced back after splitting
+        pipe_protector = "3ed2dface8203c4c9dfb1a5dc58e41e0"
+        protected_example = {
+            key: value.replace("|||", pipe_protector) if isinstance(value, str) else value
+            for key, value in example.items()
+        }
+
+        # Adds in answer_choices variable
+        if "answer_choices" in protected_example:
+            raise ValueError("Example contains the restricted key 'answer_choices'.")
+        protected_example["answer_choices"] = self.answer_choices
+
+        # Renders the Jinja template
+        rendered_example = rtemplate.render(**protected_example)
+
+        # Splits on the separator, and then replaces back any occurrences of the
+        # separator in the original example
+        return [part.replace(pipe_protector, "|||") for part in rendered_example.split("|||")]
+
+    class Metadata(yaml.YAMLObject):
+        """
+        Metadata for a prompt template.
+        """
+
+        yaml_tag = "!TemplateMetadata"
+
+        def __init__(
+            self,
+            original_task: Optional[bool] = None,
+            choices_in_prompt: Optional[bool] = None,
+            metrics: Optional[List[str]] = None,
+        ):
+            """
+            Initializes template metadata.
+
+            In the following, trivial choices are defined as Yes/No, True/False,
+            etc. and nontrivial choices are other types of choices denoted in
+            the answer_choices field.
+
+            :param original_task: If True, this prompt asks a model to perform the original task designed for
+                this dataset.
+            :param choices_in_prompt: If True, the answer choices are included in the templates such that models
+                see those choices in the input. Only applicable to classification tasks.
+            :param metrics: List of strings denoting metrics to use for evaluation
+            """
+            self.original_task = original_task
+            self.choices_in_prompt = choices_in_prompt
+            self.metrics = metrics
+
+
 class TemplateCollection:
     """
     This helper class wraps the DatasetTemplates class
@@ -169,8 +327,6 @@ class DatasetTemplates:
     def read_from_file(self) -> Dict:
         """
         Reads a file containing a prompt collection.
-
-        :param file: file-like object producing strings
         """
 
         if not os.path.exists(self.yaml_path):
@@ -181,8 +337,6 @@ class DatasetTemplates:
     def write_to_file(self) -> None:
         """
         Writes to a file with the current prompt collection.
-
-        :param file: file-like object supporting string inputs
         """
         # Sync the mapping
         self.sync_mapping()
@@ -223,7 +377,14 @@ class DatasetTemplates:
             self.write_to_file()
 
     def update_template(
-        self, current_template_name: str, new_template_name: str, jinja: str, reference: str, task_template: bool
+        self,
+        current_template_name: str,
+        new_template_name: str,
+        jinja: str,
+        reference: str,
+        metadata: Template.Metadata,
+        answer_choices: List[str],
+        answer_choices_key: str,
     ) -> None:
         """
         Updates a pre-existing template and writes changes
@@ -232,12 +393,17 @@ class DatasetTemplates:
         :param new_template_name: new name for the template
         :param jinja: new jinja entry
         :param reference: new reference entry
+        :param metadata: a Metadata object with template annotations
+        :param answer_choices: new answer_choices list
+        :param answer_choices_key: new answer_choices_key string
         """
         template_id = self.name_to_id_mapping[current_template_name]
         self.templates[template_id].name = new_template_name
         self.templates[template_id].jinja = jinja
         self.templates[template_id].reference = reference
-        self.templates[template_id].task_template = task_template
+        self.templates[template_id].metadata = metadata
+        self.templates[template_id].answer_choices = answer_choices
+        self.templates[template_id].answer_choices_key = answer_choices_key
 
         self.write_to_file()
 
@@ -261,97 +427,3 @@ class DatasetTemplates:
 
     def __len__(self) -> int:
         return len(self.templates)
-
-
-class Template(yaml.YAMLObject):
-    """
-    A prompt template.
-    """
-
-    yaml_tag = "!Template"
-
-    def __init__(self, name, jinja, reference, task_template=False):
-        """
-        Creates a prompt template.
-
-        A prompt template is expressed in Jinja. It is rendered using an example
-        from the corresponding Hugging Face datasets library (a dictionary). The
-        separator ||| should appear once to divide the template into prompt and
-        output. Generally, the prompt should provide information on the desired
-        behavior, e.g., text passage and instructions, and the output should be
-        a desired response.
-
-        :param id: unique identifier to use as key in the yaml file
-        :param name: unique name (per dataset) for template
-        :param jinja: template expressed in Jinja
-        :param reference: string metadata describing author or paper reference
-                          for template
-        :param task_template: bool whether this template corresponds 1-1 with the dataset task
-
-        """
-        self.id = str(uuid.uuid4())
-        self.name = name
-        self.jinja = jinja
-        self.reference = reference
-        self.task_template = task_template
-
-    def get_id(self):
-        """
-        Returns the id of the template
-
-        :return: unique id for template
-        """
-        return self.id
-
-    def get_name(self):
-        """
-        Returns the name of the template
-
-        :return: unique (per dataset) name for template
-        """
-        return self.name
-
-    def get_reference(self):
-        """
-        Returns the bibliographic reference (or author) for the template
-
-        :return: reference as a string
-        """
-        return self.reference
-
-    def get_task_template(self):
-        """
-        Returns whether this template corresponds 1-1 with the dataset task
-
-        :return: bool
-        """
-
-        if hasattr(self, "task_template"):
-            return self.task_template
-        else:
-            return False
-
-    def apply(self, example, truncate=True, highlight_variables=False):
-        """
-        Creates a prompt by applying this template to an example
-
-        :param example: the dataset example to create a prompt for
-        :param highlight_variables: highlight the added variables
-        :return: tuple of 2 strings, for prompt and output
-        """
-        jinja = self.jinja
-        if truncate:
-            trunc_command = (
-                f" | string | truncate({TEXT_VAR_LENGTH}) }}}}"  # Escaping curly braces requires doubling them
-            )
-            jinja = jinja.replace("}}", trunc_command)
-        if highlight_variables:
-            jinja = jinja.replace("}}", " | highlight }}")
-        rtemplate = env.from_string(jinja)
-        pipe_protector = "3ed2dface8203c4c9dfb1a5dc58e41e0"
-        protected_example = {
-            key: value.replace("|||", pipe_protector) if isinstance(value, str) else value
-            for key, value in example.items()
-        }
-        rendered_example = rtemplate.render(**protected_example)
-        return [part.replace(pipe_protector, "|||") for part in rendered_example.split("|||")]

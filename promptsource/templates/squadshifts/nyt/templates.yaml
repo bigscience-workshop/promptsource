@@ -1,46 +1,167 @@
 dataset: squadshifts
 subset: nyt
 templates:
-  0b69eb58-0ad7-45b4-baf2-f3abac775fe2: !Template
-    id: 0b69eb58-0ad7-45b4-baf2-f3abac775fe2
-    jinja: 'Generate a title for the following short passage:
-
-
-      {{context}} |||
-
-      {{title|replace("_"," ")}}
-
-      '
-    name: title
+  07b55280-3b59-43a2-acb7-84cff5938a94: !Template
+    answer_choices: null
+    answer_choices_key: null
+    id: 07b55280-3b59-43a2-acb7-84cff5938a94
+    jinja: "Question: {{question}}\n\nAnswer: \n|||\n{{answers['text'] | most_frequent\
+      \ | choice}}"
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: false
+      choices_in_prompt: null
+      metrics: []
+      original_task: false
+    name: cbqa question answer
     reference: ''
-    task_template: false
-  258731f1-2101-4178-b30f-571336fbef78: !Template
-    id: 258731f1-2101-4178-b30f-571336fbef78
-    jinja: 'For the following passage-question pair, list all possible wrong answers
-      (pitfalls) test-takers may choose:
+  09548d27-c97f-48d4-b9e4-ff591e4caeee: !Template
+    answer_choices: null
+    answer_choices_key: null
+    id: 09548d27-c97f-48d4-b9e4-ff591e4caeee
+    jinja: '{{question}}
+
+
+      |||
+
+
+      {{answers[''text''] | most_frequent | choice}}'
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: false
+      choices_in_prompt: null
+      metrics: []
+      original_task: false
+    name: cbqa
+    reference: ''
+  0cc0f615-9d2e-4d44-91a0-69042eb31a52: !Template
+    answer_choices: null
+    answer_choices_key: null
+    id: 0cc0f615-9d2e-4d44-91a0-69042eb31a52
+    jinja: "Q: {{question}}\n\nA: \n|||\n{{answers['text'] | most_frequent | choice}}"
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: false
+      choices_in_prompt: null
+      metrics: []
+      original_task: false
+    name: cbqa qa
+    reference: ''
+  45f2143e-52cb-4498-abf7-54cee1eec9db: !Template
+    answer_choices: null
+    answer_choices_key: null
+    id: 45f2143e-52cb-4498-abf7-54cee1eec9db
+    jinja: 'After reading the following paragraph, please answer this question: {{question}}
 
 
       {{context}}
 
-      {{question}} |||
 
-      {{answers["text"]|join(", ")}}'
-    name: possible_pitfalls
+      |||
+
+      {{answers[''text''] | most_frequent | choice}}'
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: false
+      choices_in_prompt: null
+      metrics: []
+      original_task: true
+    name: after
     reference: ''
-    task_template: true
-  5cce68fe-de8c-40ed-b1f5-d70ce78859df: !Template
-    id: 5cce68fe-de8c-40ed-b1f5-d70ce78859df
-    jinja: 'Generate a possible question for the following short passage:
+  4d61ade3-199c-443f-9bf6-f49ce6bcf85f: !Template
+    answer_choices: null
+    answer_choices_key: null
+    id: 4d61ade3-199c-443f-9bf6-f49ce6bcf85f
+    jinja: 'At what character does the text "{{answers["text"][0]}}" start in the
+      following paragraph?
 
 
-      {{context}} |||
+      {{context}}
+
+
+      |||
+
+      {{answers["answer_start"][0]}}'
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: false
+      choices_in_prompt: null
+      metrics: []
+      original_task: false
+    name: find text
+    reference: ''
+  8557989a-e874-4c10-b63b-63687105c8a1: !Template
+    answer_choices: null
+    answer_choices_key: null
+    id: 8557989a-e874-4c10-b63b-63687105c8a1
+    jinja: 'Please come up with a good question to test reading comprehension about
+      the following paragraph:
+
+
+      {{context}}
+
+
+      |||
+
 
       {{question}}'
-    name: possible_qn
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: false
+      choices_in_prompt: null
+      metrics: []
+      original_task: null
+    name: generate question
     reference: ''
-    task_template: false
-  7ff63436-6cff-4963-b208-2002151daad7: !Template
-    id: 7ff63436-6cff-4963-b208-2002151daad7
+  857d47f4-aa11-4772-b0eb-828872a13c0a: !Template
+    answer_choices: null
+    answer_choices_key: null
+    id: 857d47f4-aa11-4772-b0eb-828872a13c0a
+    jinja: 'Use the following non-answers to generate a possible short passage-question
+      pair:
+
+      {{answers["text"]|join('', '')}} |||
+
+      {{context}}
+
+      {{question}}
+
+      '
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: false
+      choices_in_prompt: null
+      metrics: []
+      original_task: false
+    name: answers_question
+    reference: ''
+  a69a1548-2bef-447c-bc7b-a6de28e0ed43: !Template
+    answer_choices: null
+    answer_choices_key: null
+    id: a69a1548-2bef-447c-bc7b-a6de28e0ed43
+    jinja: 'Count the characters up until "{{answers["text"][0]}}" appears in the
+      following chunk of text.
+
+
+      {{context}}
+
+
+      |||
+
+
+      {{answers["answer_start"][0]}}'
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: false
+      choices_in_prompt: null
+      metrics: []
+      original_task: null
+    name: count letters
+    reference: ''
+  a9017ef5-345f-4815-8c8a-eb16c6e40305: !Template
+    answer_choices: null
+    answer_choices_key: null
+    id: a9017ef5-345f-4815-8c8a-eb16c6e40305
     jinja: 'List all possible non-answers that have a lot of words in common with
       the following context-question pair:
 
@@ -52,59 +173,57 @@ templates:
       {{answers["text"]|join('', '')}}
 
       '
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: false
+      choices_in_prompt: null
+      metrics: []
+      original_task: true
     name: incorrect_answers
     reference: ''
-    task_template: true
-  f3187941-53ef-4285-b5bd-deaf1ef81001: !Template
-    id: f3187941-53ef-4285-b5bd-deaf1ef81001
-    jinja: 'Use the following non-answers to generate a possible short passage-question
-      pair:
+  a9733fa0-36bb-46a7-b895-dd347ab6c30d: !Template
+    answer_choices: null
+    answer_choices_key: null
+    id: a9733fa0-36bb-46a7-b895-dd347ab6c30d
+    jinja: 'Generate a possible question for the following short passage:
 
-      {{answers["text"]|join('', '')}} |||
 
-      {{context}}
+      {{context}} |||
 
-      {{question}}
-
-      '
-    name: answers_question
+      {{question}}'
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: false
+      choices_in_prompt: null
+      metrics: []
+      original_task: false
+    name: possible_qn
     reference: ''
-    task_template: false
-  129b0f6f-3c65-4e7c-97c2-ef30cf92f417: !Template
-    id: 129b0f6f-3c65-4e7c-97c2-ef30cf92f417
-    jinja: "Question: {{question}}\n\nAnswer: \n|||\n{{answers['text'] | most_frequent\
-      \ | choice}}"
-    name: cbqa question answer
-    reference: ''
-    task_template: false
-  3c6bb901-c615-478f-904b-29122208e8bf: !Template
-    id: 3c6bb901-c615-478f-904b-29122208e8bf
-    jinja: 'After reading the following paragraph, please answer this question: {{question}}
+  b9a6bc1e-2438-44f2-af80-388d9c9e40a1: !Template
+    answer_choices: null
+    answer_choices_key: null
+    id: b9a6bc1e-2438-44f2-af80-388d9c9e40a1
+    jinja: '{{["Question", "Problem"]  | choice}} {{range(1, 12) | choice}}: {{question}}
 
 
-      {{context}}
+      Hint: {{context}}
 
 
       |||
 
-      {{answers[''text''] | most_frequent | choice}}'
-    name: after
+      {{answers["text"] | most_frequent | choice}}'
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: false
+      choices_in_prompt: null
+      metrics: []
+      original_task: false
+    name: question/hint
     reference: ''
-    task_template: true
-  4c9c3a3c-da8c-42aa-a605-3063122c32eb: !Template
-    id: 4c9c3a3c-da8c-42aa-a605-3063122c32eb
-    jinja: '{{question}}
-
-
-      |||
-
-
-      {{answers[''text''] | most_frequent | choice}}'
-    name: cbqa
-    reference: ''
-    task_template: false
-  952fccbc-c318-455b-97a5-e72070d7fbe3: !Template
-    id: 952fccbc-c318-455b-97a5-e72070d7fbe3
+  d57bce72-7ff8-4c20-b3fe-193461f68944: !Template
+    answer_choices: null
+    answer_choices_key: null
+    id: d57bce72-7ff8-4c20-b3fe-193461f68944
     jinja: 'I''m creating a final exam for my reading class. Can you please come up
       with a good question to quiz how well students have read the following text
       snippet?
@@ -117,85 +236,38 @@ templates:
 
 
       {{question}}'
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: false
+      choices_in_prompt: null
+      metrics: []
+      original_task: null
     name: exam creation help
     reference: ''
-  969cb982-3751-451f-a211-79c754a8d638: !Template
-    id: 969cb982-3751-451f-a211-79c754a8d638
-    jinja: 'Please come up with a good question to test reading comprehension about
-      the following paragraph:
+  d9ff0860-0ead-4529-b68d-ff0f05c5d1bd: !Template
+    answer_choices: null
+    answer_choices_key: null
+    id: d9ff0860-0ead-4529-b68d-ff0f05c5d1bd
+    jinja: 'Generate a title for the following short passage:
 
 
-      {{context}}
+      {{context}} |||
 
+      {{title|replace("_"," ")}}
 
-      |||
-
-
-      {{question}}'
-    name: generate question
+      '
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: false
+      choices_in_prompt: null
+      metrics: []
+      original_task: false
+    name: title
     reference: ''
-  b9296bf2-fb8c-4918-b118-d987aa92db3c: !Template
-    id: b9296bf2-fb8c-4918-b118-d987aa92db3c
-    jinja: 'Count the characters up until "{{answers["text"][0]}}" appears in the
-      following chunk of text.
-
-
-      {{context}}
-
-
-      |||
-
-
-      {{answers["answer_start"][0]}}'
-    name: count letters
-    reference: ''
-  bc766330-9e98-4d10-be7d-bca0393308cb: !Template
-    id: bc766330-9e98-4d10-be7d-bca0393308cb
-    jinja: 'I''m working on the final exam for my class and am trying to figure out
-      the answer to the question "{{question}}" I found the following info on Wikipedia
-      and I think it has the answer. Can you tell me the answer?
-
-
-      {{context}}
-
-
-      |||
-
-      {{answers[''text''] | most_frequent | choice}}'
-    name: exam
-    reference: ''
-    task_template: false
-  dff1c9a3-0ef5-4f5e-8630-8f41e297f4c7: !Template
-    id: dff1c9a3-0ef5-4f5e-8630-8f41e297f4c7
-    jinja: 'At what character does the text "{{answers["text"][0]}}" start in the
-      following paragraph?
-
-
-      {{context}}
-
-
-      |||
-
-      {{answers["answer_start"][0]}}'
-    name: find text
-    reference: ''
-    task_template: false
-  e68c1bd0-1bcf-4ee1-89f1-01f2fb76ddfc: !Template
-    id: e68c1bd0-1bcf-4ee1-89f1-01f2fb76ddfc
-    jinja: '{{["Question", "Problem"]  | choice}} {{range(1, 12) | choice}}: {{question}}
-
-
-      Hint: {{context}}
-
-
-      |||
-
-      {{answers["text"] | most_frequent | choice}}'
-    name: question/hint
-    reference: ''
-    task_template: false
-  f8e5918c-d9e2-40cc-93f3-65c7ed11bf09: !Template
-    id: f8e5918c-d9e2-40cc-93f3-65c7ed11bf09
+  e878e5d6-f71f-4c2e-80a3-1fa416e9531e: !Template
+    answer_choices: null
+    answer_choices_key: null
+    id: e878e5d6-f71f-4c2e-80a3-1fa416e9531e
     jinja: 'I''ve always wondered: {{question}}
 
 
@@ -208,12 +280,55 @@ templates:
       |||
 
       {{answers[''text''] | most_frequent | choice}}'
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: false
+      choices_in_prompt: null
+      metrics: []
+      original_task: false
     name: wondered
     reference: ''
-    task_template: false
-  g77c3f2d-a53b-4086-b236-14c63fc327e9: !Template
-    id: g77c3f2d-a53b-4086-b236-14c63fc327e9
-    jinja: "Q: {{question}}\n\nA: \n|||\n{{answers['text'] | most_frequent | choice}}"
-    name: cbqa qa
+  ea4d6a09-d413-4ca4-9b6b-43de7aacc831: !Template
+    answer_choices: null
+    answer_choices_key: null
+    id: ea4d6a09-d413-4ca4-9b6b-43de7aacc831
+    jinja: 'I''m working on the final exam for my class and am trying to figure out
+      the answer to the question "{{question}}" I found the following info on Wikipedia
+      and I think it has the answer. Can you tell me the answer?
+
+
+      {{context}}
+
+
+      |||
+
+      {{answers[''text''] | most_frequent | choice}}'
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: false
+      choices_in_prompt: null
+      metrics: []
+      original_task: false
+    name: exam
     reference: ''
-    task_template: false
+  f9d5a9a8-53c4-4443-88a5-5a613d89744a: !Template
+    answer_choices: null
+    answer_choices_key: null
+    id: f9d5a9a8-53c4-4443-88a5-5a613d89744a
+    jinja: 'For the following passage-question pair, list all possible wrong answers
+      (pitfalls) test-takers may choose:
+
+
+      {{context}}
+
+      {{question}} |||
+
+      {{answers["text"]|join(", ")}}'
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: false
+      choices_in_prompt: null
+      metrics: []
+      original_task: true
+    name: possible_pitfalls
+    reference: ''

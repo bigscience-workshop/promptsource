@@ -1,9 +1,11 @@
 dataset: conv_ai
 templates:
   1664cdd9-54e8-4679-821b-8013e9df197e: !Template
+    answer_choices: null
+    answer_choices_key: null
     id: 1664cdd9-54e8-4679-821b-8013e9df197e
-    jinja: '{% if 0 < (thread | selectattr("userId", "equalto", "Alice") | list | length) %}
-      {{context}}
+    jinja: '{% if 0 < (thread | selectattr("userId", "equalto", "Alice") | list |
+      length) %} {{context}}
 
 
       {% for utterance in thread %}
@@ -27,15 +29,22 @@ templates:
       {% endif %}
 
       {% endfor %}
-      
+
       {% endif %}'
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: false
+      choices_in_prompt: null
+      metrics: []
+      original_task: false
     name: engagement_alice_1
     reference: ''
-    task_template: false
   2d3ca9f5-60f0-459d-932f-ab30e1e79b22: !Template
+    answer_choices: null
+    answer_choices_key: null
     id: 2d3ca9f5-60f0-459d-932f-ab30e1e79b22
-    jinja: '{% if 0 < (thread | selectattr("userId", "equalto", "Bob") | list | length) %}
-      "{{context}}"
+    jinja: '{% if 0 < (thread | selectattr("userId", "equalto", "Bob") | list | length)
+      %} "{{context}}"
 
 
       Would you say Bob engagement is real, given the previous context, in this conversation:
@@ -57,17 +66,25 @@ templates:
       {% endif %}
 
       {% endfor %}
-      
+
       {% endif %}'
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: false
+      choices_in_prompt: null
+      metrics: []
+      original_task: false
     name: engagement_bob_1
     reference: ''
-    task_template: false
   4390549a-3bdf-43ad-9e69-6bc380f33f01: !Template
+    answer_choices: null
+    answer_choices_key: null
     id: 4390549a-3bdf-43ad-9e69-6bc380f33f01
-    jinja: '{% set alice = (evaluation|selectattr("userId", "equalto", "Alice")|first)["engagement"] %}
-      {% set bob = (evaluation|selectattr("userId", "equalto", "Bob")|first)["engagement"] %}
-      {% if (0 < (thread | selectattr("userId", "equalto", "Bob") | list | length)) and (0 < (thread | selectattr("userId", "equalto", "Alice") | list | length)) %}
-      {{context}}
+    jinja: '{% set alice = (evaluation|selectattr("userId", "equalto", "Alice")|first)["engagement"]
+      %} {% set bob = (evaluation|selectattr("userId", "equalto", "Bob")|first)["engagement"]
+      %} {% if (0 < (thread | selectattr("userId", "equalto", "Bob") | list | length))
+      and (0 < (thread | selectattr("userId", "equalto", "Alice") | list | length))
+      %} {{context}}
 
 
       Given the previous context, who do you think is more engaged in this conversation
@@ -82,14 +99,22 @@ templates:
       |||
 
       {% if alice == bob %}both{% elif alice < bob %}Bob{% else %}Alice{% endif %}
-      
+
       {% endif %}'
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: false
+      choices_in_prompt: null
+      metrics: []
+      original_task: false
     name: engagement_0
     reference: ''
-    task_template: false
   955dd9f5-0fe5-46c3-a217-995bd876f26f: !Template
+    answer_choices: null
+    answer_choices_key: null
     id: 955dd9f5-0fe5-46c3-a217-995bd876f26f
-    jinja: '{% if 0 < (thread | selectattr("userId", "equalto", "Bob") | list | length) %}{{context}}
+    jinja: '{% if 0 < (thread | selectattr("userId", "equalto", "Bob") | list | length)
+      %}{{context}}
 
 
       Given the preceding context, would you say Bob''s engagement is real, from his
@@ -114,22 +139,29 @@ templates:
       {% endif %}
 
       {% endfor %}
-      
+
       {% endif %}'
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: false
+      choices_in_prompt: null
+      metrics: []
+      original_task: false
     name: engagement_bob_0
     reference: ''
-    task_template: false
   c0840f89-e444-49ab-bab0-08f71ec89093: !Template
+    answer_choices: null
+    answer_choices_key: null
     id: c0840f89-e444-49ab-bab0-08f71ec89093
-    jinja: '{% if 0 < (thread | selectattr("userId", "equalto", "Alice") | list | length) %}
-      context:
+    jinja: '{% if 0 < (thread | selectattr("userId", "equalto", "Alice") | list |
+      length) %} context:
 
 
       {{context}}
 
 
       conversation:
-      
+
       {% for utterance in thread %}
 
       - {{ utterance["userId"] }}: {{ utterance["text"] }}
@@ -140,24 +172,32 @@ templates:
 
       {% for eval in evaluation %}
 
-        {% if "Alice" == eval["userId"] %}
+      {% if "Alice" == eval["userId"] %}
 
-          {% if 3 < eval["engagement"] %}yes{% else %}no{% endif %}
+      {% if 3 < eval["engagement"] %}yes{% else %}no{% endif %}
 
-        {% endif %}
+      {% endif %}
 
       {% endfor %}
 
       {% endif %}'
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: false
+      choices_in_prompt: null
+      metrics: []
+      original_task: false
     name: engagement_alice_0
     reference: ''
-    task_template: false
   db94d56f-3fc8-4b6a-b3d3-2ac37e8110ff: !Template
+    answer_choices: null
+    answer_choices_key: null
     id: db94d56f-3fc8-4b6a-b3d3-2ac37e8110ff
-    jinja: '{% set alice = (evaluation|selectattr("userId", "equalto", "Alice")|first)["engagement"] %}
-      {% set bob = (evaluation|selectattr("userId", "equalto", "Bob")|first)["engagement"] %}
-      {% if (0 < (thread | selectattr("userId", "equalto", "Bob") | list | length)) and (0 < (thread | selectattr("userId", "equalto", "Alice") | list | length)) %}
-      {{context}}
+    jinja: '{% set alice = (evaluation|selectattr("userId", "equalto", "Alice")|first)["engagement"]
+      %} {% set bob = (evaluation|selectattr("userId", "equalto", "Bob")|first)["engagement"]
+      %} {% if (0 < (thread | selectattr("userId", "equalto", "Bob") | list | length))
+      and (0 < (thread | selectattr("userId", "equalto", "Alice") | list | length))
+      %} {{context}}
 
 
       Who would you say is more engaged here: Alice or Bob (or both are), given the
@@ -174,6 +214,11 @@ templates:
       {% if alice == bob %}both{% elif alice < bob %}Bob{% else %}Alice{% endif %}
 
       {% endif %}'
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: false
+      choices_in_prompt: null
+      metrics: []
+      original_task: false
     name: engagement_1
     reference: ''
-    task_template: false

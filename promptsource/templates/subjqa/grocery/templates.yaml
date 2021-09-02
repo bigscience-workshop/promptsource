@@ -1,32 +1,94 @@
 dataset: subjqa
 subset: grocery
 templates:
-  071f2b19-7392-4258-8a60-5a96f3e44b0d: !Template
-    id: 071f2b19-7392-4258-8a60-5a96f3e44b0d
+  255dd1c5-3129-4f69-ae4f-3f2b47be926d: !Template
+    answer_choices: null
+    answer_choices_key: null
+    id: 255dd1c5-3129-4f69-ae4f-3f2b47be926d
+    jinja: 'Possible categories:
+
+      - {{ ["books", "electronics", "grocery", "movies", "restaurants", "tripadvisor"]  |
+      join("\n- ") }}
+
+
+      Context:
+
+      {{context}}
+
+
+      Which of the category corresponds to the context?
+
+
+      |||
+
+
+      {{domain}}'
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: false
+      choices_in_prompt: null
+      metrics: []
+      original_task: false
+    name: domain_q
+    reference: ''
+  4857a5ed-9df9-417b-ac6e-504604ab7e37: !Template
+    answer_choices: null
+    answer_choices_key: null
+    id: 4857a5ed-9df9-417b-ac6e-504604ab7e37
+    jinja: 'Question:
+
+      {{question}}
+
+
+      On a scale of 1 to 5 (1 being the most subjective), how subjective is the question?
+
+
+      |||
+
+
+      {{question_subj_level}}'
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: false
+      choices_in_prompt: null
+      metrics: []
+      original_task: false
+    name: q_subj_score
+    reference: ''
+  5173e70e-7396-4932-95b6-3b740058a6bc: !Template
+    answer_choices: null
+    answer_choices_key: null
+    id: 5173e70e-7396-4932-95b6-3b740058a6bc
     jinja: 'Context:
 
       {{context}}
 
 
-      Answer the following question with extracts from the context: {{question}}
+      Question:
+
+      {{question}}
+
+
+      How would you rate the subjectivity of the question (on a 1 to 5 scale with
+      1 being the most subjective)?
 
 
       |||
 
-      {% if (answers["text"]  | length) == 0 %}
 
-      {{ "Unanswerable" }}
-
-      {% else %}
-
-      {{answers["text"] | join(" \n ")}}
-
-      {% endif %}'
-    name: answer_q_with_context_first
+      {{question_subj_level}}'
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: false
+      choices_in_prompt: null
+      metrics: []
+      original_task: false
+    name: q_subj_score_with_context
     reference: ''
-    task_template: true
-  a217525b-caf2-4ae3-8a6e-06bd48bf4728: !Template
-    id: a217525b-caf2-4ae3-8a6e-06bd48bf4728
+  90b561d0-307f-49aa-a642-bbbad543f498: !Template
+    answer_choices: null
+    answer_choices_key: null
+    id: 90b561d0-307f-49aa-a642-bbbad543f498
     jinja: '{{question}}
 
 
@@ -50,74 +112,49 @@ templates:
       {{answers["text"] | join(" \n ")}}
 
       {% endif %}'
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: false
+      choices_in_prompt: null
+      metrics: []
+      original_task: true
     name: answer_q_with_context_after
     reference: ''
-    task_template: true
-  afe5086e-d9fe-4981-bcac-67d580950110: !Template
-    id: afe5086e-d9fe-4981-bcac-67d580950110
-    jinja: 'Question:
-
-      {{question}}
-
-
-      On a scale of 1 to 5 (1 being the most subjective), how subjective is the question?
-
-
-      |||
-
-
-      {{question_subj_level}}'
-    name: q_subj_score
-    reference: ''
-    task_template: false
-  b4a015eb-9346-4739-9ebd-5f91d2f230be: !Template
-    id: b4a015eb-9346-4739-9ebd-5f91d2f230be
+  c6ef2acd-f32f-49f5-9803-5017412f739d: !Template
+    answer_choices: null
+    answer_choices_key: null
+    id: c6ef2acd-f32f-49f5-9803-5017412f739d
     jinja: 'Context:
 
       {{context}}
 
 
-      Question:
-
-      {{question}}
-
-
-      How would you rate the subjectivity of the question (on a 1 to 5 scale with
-      1 being the most subjective)?
+      Answer the following question with extracts from the context: {{question}}
 
 
       |||
 
+      {% if (answers["text"]  | length) == 0 %}
 
-      {{question_subj_level}}'
-    name: q_subj_score_with_context
+      {{ "Unanswerable" }}
+
+      {% else %}
+
+      {{answers["text"] | join(" \n ")}}
+
+      {% endif %}'
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: false
+      choices_in_prompt: null
+      metrics: []
+      original_task: true
+    name: answer_q_with_context_first
     reference: ''
-    task_template: false
-  f074e3ce-966c-4d63-8d03-f0b6e5093b38: !Template
-    id: f074e3ce-966c-4d63-8d03-f0b6e5093b38
-    jinja: 'Possible categories:
-
-      - {{ ["books", "electronics", "grocery", "movies", "restaurants", "tripadvisor"]  |
-      join("\n- ") }}
-
-
-      Context:
-
-      {{context}}
-
-
-      Which of the category corresponds to the context?
-
-
-      |||
-
-
-      {{domain}}'
-    name: domain_q
-    reference: ''
-    task_template: false
-  f53cc9f9-1d34-47ff-b440-a6ad896bdc4a: !Template
-    id: f53cc9f9-1d34-47ff-b440-a6ad896bdc4a
+  f19ac17f-ed79-4f64-9f7b-511d9f4e4c6b: !Template
+    answer_choices: null
+    answer_choices_key: null
+    id: f19ac17f-ed79-4f64-9f7b-511d9f4e4c6b
     jinja: 'Context:
 
       {{context}}
@@ -131,6 +168,11 @@ templates:
 
 
       {{domain}}'
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: false
+      choices_in_prompt: null
+      metrics: []
+      original_task: false
     name: domain_q_v2
     reference: ''
-    task_template: false

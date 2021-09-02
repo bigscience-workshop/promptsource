@@ -1,6 +1,8 @@
 dataset: piqa
 templates:
   1a1d13ee-2ef5-4c80-89dc-b9e003d4ef45: !Template
+    answer_choices: null
+    answer_choices_key: null
     id: 1a1d13ee-2ef5-4c80-89dc-b9e003d4ef45
     jinja: 'Given a goal and a correct solution, generate a similar but wrong solution.
 
@@ -15,9 +17,17 @@ templates:
       {{[sol1, sol2][1 - label]}}
 
       '
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: true
+      choices_in_prompt: null
+      metrics: []
+      original_task: null
     name: Generate a similar but wrong solution
     reference: ''
   45773b41-4d13-4ade-9102-afe1543f5776: !Template
+    answer_choices: null
+    answer_choices_key: null
     id: 45773b41-4d13-4ade-9102-afe1543f5776
     jinja: 'Given a goal and 2 solutions, choose the most appropriate solution.
 
@@ -32,16 +42,34 @@ templates:
       |||
 
       {{[sol1, sol2][label]}}'
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: false
+      choices_in_prompt: true
+      metrics: []
+      original_task: null
     name: 'choose the most appropriate solution: reorder solution'
     reference: ''
   5f4b4645-9438-4375-9062-083130e6d04e: !Template
+    answer_choices: null
+    answer_choices_key: null
     id: 5f4b4645-9438-4375-9062-083130e6d04e
     jinja: "Given a goal and a wrong solution, rewrite it to give a correct solution.\n\
       Goal: {{goal}} \nSolution: {{[sol1, sol2][1 - label]}}\nCorrected solution:\n\
       |||\n{{[sol1, sol2][label]}}\n"
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: true
+      choices_in_prompt: null
+      metrics: []
+      original_task: null
     name: Correct the solution
     reference: ''
   99565244-4eaf-4004-a28b-4362ba5bcac3: !Template
+    answer_choices:
+    - 'No'
+    - 'Yes'
+    answer_choices_key: null
     id: 99565244-4eaf-4004-a28b-4362ba5bcac3
     jinja: '{{goal}} {{sol2}}
 
@@ -49,10 +77,18 @@ templates:
 
       |||
 
-      {{["No", "Yes"][label]}}'
+      {{answer_choices[label]}}'
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: true
+      choices_in_prompt: false
+      metrics: []
+      original_task: null
     name: Does this solution make sense? sol2
     reference: ''
   adfef248-f856-44fa-affd-e3223718854e: !Template
+    answer_choices: null
+    answer_choices_key: null
     id: adfef248-f856-44fa-affd-e3223718854e
     jinja: 'Given a goal and 2 solutions, choose the most appropriate solution.
 
@@ -67,9 +103,17 @@ templates:
       |||
 
       {{[sol1, sol2][label]}}'
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: true
+      choices_in_prompt: true
+      metrics: []
+      original_task: null
     name: choose the most appropriate solution
     reference: ''
   b5c69473-eedb-4c4f-a5fa-d4e266e43535: !Template
+    answer_choices: null
+    answer_choices_key: null
     id: b5c69473-eedb-4c4f-a5fa-d4e266e43535
     jinja: 'Given a sentence, correct it if it doesn''t make sense.
 
@@ -82,18 +126,36 @@ templates:
       {{goal}} {{[sol1[0].lower() + sol1[1:], sol2[0].lower() + sol2[1:]][label]}}
 
       '
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: true
+      choices_in_prompt: null
+      metrics: []
+      original_task: null
     name: 'Correct the solution if false: from sol 2'
     reference: ''
   c8c45ef1-2ffc-43d7-8710-b98c2fc4f699: !Template
+    answer_choices: null
+    answer_choices_key: null
     id: c8c45ef1-2ffc-43d7-8710-b98c2fc4f699
     jinja: '{{goal}}
 
       |||
 
       {{[sol1[0].lower() + sol1[1:], sol2[0].lower() + sol2[1:]][label]}}'
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: true
+      choices_in_prompt: null
+      metrics: []
+      original_task: null
     name: no prompt needed
     reference: ''
   f044def7-01c2-42de-b6ad-4e8c63ab2bf1: !Template
+    answer_choices:
+    - 'Yes'
+    - 'No'
+    answer_choices_key: null
     id: f044def7-01c2-42de-b6ad-4e8c63ab2bf1
     jinja: '{{goal}} {{sol1[0].lower() + sol1[1:]}}
 
@@ -101,10 +163,18 @@ templates:
 
       |||
 
-      {{["Yes", "No"][label]}}'
+      {{answer_choices[label]}}'
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: true
+      choices_in_prompt: false
+      metrics: []
+      original_task: null
     name: Does this solution make sense? sol1
     reference: ''
   f42cd457-a14b-465a-a139-d7d2407a3bac: !Template
+    answer_choices: null
+    answer_choices_key: null
     id: f42cd457-a14b-465a-a139-d7d2407a3bac
     jinja: 'Given a sentence, correct it if it doesn''t make sense.
 
@@ -117,5 +187,11 @@ templates:
       {{goal}} {{[sol1[0].lower() + sol1[1:], sol2[0].lower() + sol2[1:]][label]}}
 
       '
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: true
+      choices_in_prompt: null
+      metrics: []
+      original_task: null
     name: 'Correct the solution if false: from sol 1'
     reference: ''
