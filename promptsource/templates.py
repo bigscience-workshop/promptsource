@@ -5,6 +5,7 @@ from collections import Counter, defaultdict
 from shutil import rmtree
 from typing import Dict, List, Optional, Tuple
 
+import pandas as pd
 import pkg_resources
 import yaml
 from jinja2 import BaseLoader, Environment
@@ -427,3 +428,44 @@ class DatasetTemplates:
 
     def __len__(self) -> int:
         return len(self.templates)
+
+
+def get_templates_data_frame():
+    """
+    Gathers all template information into a Pandas DataFrame.
+
+    :return: Pandas DataFrame
+    """
+    data = {
+        "id": [],
+        "dataset": [],
+        "subset": [],
+        "name": [],
+        "reference": [],
+        "original_task": [],
+        "choices_in_prompt": [],
+        "metrics": [],
+        "answer_choices": [],
+        "answer_choices_key": [],
+        "jinja": [],
+    }
+
+    template_collection = TemplateCollection()
+
+    for key in template_collection.keys:
+        templates = template_collection.get_dataset(key[0], key[1])
+        for template_name in templates.all_template_names:
+            template = templates[template_name]
+            data["id"].append(template.get_id())
+            data["dataset"].append(key[0])
+            data["subset"].append(key[1])
+            data["name"].append(template.get_name())
+            data["reference"].append(template.get_reference())
+            data["original_task"].append(template.metadata.original_task)
+            data["choices_in_prompt"].append(template.metadata.choices_in_prompt)
+            data["metrics"].append(template.metadata.metrics)
+            data["answer_choices"].append(template.get_answer_choices())
+            data["answer_choices_key"].append(template.get_answer_choices_key())
+            data["jinja"].append(template.jinja)
+
+    return pd.DataFrame(data)
