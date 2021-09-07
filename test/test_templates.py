@@ -1,3 +1,4 @@
+import time
 from jinja2 import meta, TemplateError
 import pytest
 import promptsource.templates
@@ -53,7 +54,19 @@ def test_dataset(dataset):
     dataset_name, subset_name = dataset
 
     # Loads dataset information
-    builder_instance = get_dataset_builder(dataset_name, subset_name)
+    tries = 0
+    max_tries = 3
+    while True:
+        try:
+            builder_instance = get_dataset_builder(dataset_name, subset_name)
+            break
+        except ConnectionError as e:
+            if tries < max_tries:
+                time.sleep(2)
+                tries += 1
+            else:
+                raise e
+
     features = builder_instance.info.features.keys()
     features = set([feature.replace("-", "_") for feature in features])
 
