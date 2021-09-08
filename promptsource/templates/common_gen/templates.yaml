@@ -56,7 +56,7 @@ templates:
     id: b2033df4-7922-45b8-a113-e7784135cea9
     jinja: "{% set seq = [ \n'From the concepts mentioned below, generate a sentence:',\
       \ \n'Convert the concepts to a sentence:', \n'Given the list of concepts, write\
-      \ a sentence:'\n] %} \n{{ seq | random }}\n{{ concepts | join(\", \") }}\n|||\n\
+      \ a sentence:'\n] %} \n{{ seq | choice }}\n{{ concepts | join(\", \") }}\n|||\n\
       {{target}}"
     metadata: !TemplateMetadata
       choices_in_prompt: false
@@ -71,36 +71,19 @@ templates:
     answer_choices: null
     answer_choices_key: null
     id: b7012213-04c4-424d-85fb-39d63d8a0ca2
-    jinja: 'What is the topic of the sentence: {{target}}
+    jinja: 'What are the topics in the sentence: {{target}}
 
       |||
 
-      {{ concepts | random }}'
+      {{ concepts | join(", ") }}'
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
       - BLEU
       - ROUGE
       original_task: false
-    name: random topic from the sentence
+    name: topics from the sentence
     reference: The template generates a random topic from the sentence
-  c6b06ee9-62f3-44ee-8748-dc440929cc82: !Template
-    answer_choices: null
-    answer_choices_key: null
-    id: c6b06ee9-62f3-44ee-8748-dc440929cc82
-    jinja: '{{ concepts | join(", ") }}
-
-      |||
-
-      {{target}}'
-    metadata: !TemplateMetadata
-      choices_in_prompt: false
-      metrics:
-      - BLEU
-      - ROUGE
-      original_task: true
-    name: no prompt
-    reference: 'Template with no prompt '
   ed215962-8e51-45e7-b025-6e822f877098: !Template
     answer_choices: null
     answer_choices_key: null
