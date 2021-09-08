@@ -13,7 +13,7 @@ templates:
       ] %}
 
 
-      {{ seq | random }}
+      {{ seq | choice }}
 
       Context: {{context}};
 
@@ -45,7 +45,8 @@ templates:
     id: 189dcc58-fd13-4771-ad03-7879a61c7ab7
     jinja: '{% if answers.text != [] %}
 
-      Determine the question to the answer with the given context.
+      Determine the question that you might ask to the following answer for the given
+      context
 
       Context: {{context}};
 
@@ -76,25 +77,21 @@ templates:
 
       ''What is this about? '',
 
-      ''What is paragraph about? '',
+      ''What is the paragraph about? '',
 
-      ''Get topic from: '',
+      ''Get the topic from: '',
 
-      ''Get topic from '',
-
-      ''From passage get topic'',
-
-      ''From passage get topic. '',
+      ''From the passage,  get the topic'',
 
       ''I want to know the topic. '',
 
-      ''Topic from passage: '',
+      ''Topic from the passage: '',
 
-      ''Topic from paragraph: '',
+      ''Topic from the paragraph: '',
 
       ] %}
 
-      {{ seq | random }}
+      {{ seq | choice }}
 
       {{context}} |||
 
@@ -123,23 +120,23 @@ templates:
 
       ''The paragraph is about '',
 
-      ''What is paragraph about? '',
+      ''What is the paragraph about? '',
 
-      ''Get topic: '',
+      ''Get the topic: '',
 
-      ''From passage, the topic is'',
+      ''From the passage, the topic is'',
 
       ''I want to know the topic. '',
 
-      ''Topic from passage: '',
+      ''Topic from the passage: '',
 
-      ''Topic from paragraph: '',
+      ''Topic from the paragraph: '',
 
       ] %}
 
       {{context}}
 
-      {{ seq | random }}|||
+      {{ seq | choice }}|||
 
       {{title | replace("_", " ")}}'
     metadata: !TemplateMetadata
@@ -160,7 +157,7 @@ templates:
     id: 7a44cd99-7420-4456-aaaa-34e2c81d1679
     jinja: '{% if answers.text != [] %}
 
-      Determine the question to the answer.
+      What is a question that would give the following answer?
 
       Answer: {{answers.text[0]}};
 
@@ -193,7 +190,7 @@ templates:
 
       ''Tell me '',
 
-      ''From passage, '',
+      ''From the passage, '',
 
       ''I want to know '',
 
@@ -201,7 +198,7 @@ templates:
 
       ''What is the answer to: '',
 
-      ''Find answer to: '',
+      ''Find the answer to: '',
 
       ''Answer: '',
 
@@ -209,7 +206,7 @@ templates:
 
       ] %}
 
-      {{context}} {{ seq | random }}{{question}}|||
+      {{context}} {{ seq | choice }}{{question}}|||
 
       {% if answers.text == [] %}
 
@@ -257,8 +254,9 @@ templates:
     - 'no'
     answer_choices_key: null
     id: e2e41877-4794-4ff9-9f92-a2a85105e2a7
-    jinja: "{{context}}; {{question}} \nIs this question answerable? ||| \n{% if answers.text\
-      \ != [] %}\nyes\n{% else %}\nno\n{% endif %}"
+    jinja: "Context: {{context}}; \n\nQuestion: {{question}} \n\nIs this question\
+      \ answerable? ||| \n{% if answers.text != [] %}\n{{answer_choices[0]}}\n{% else\
+      \ %}\n{{answer_choices[1]}}\n{% endif %}"
     metadata: !TemplateMetadata
       choices_in_prompt: true
       metrics:
@@ -282,7 +280,7 @@ templates:
 
       {% if answers.text != [] %}
 
-      {{ seq | random }}
+      {{ seq | choice }}
 
       Question: {{question}};  Answer: {{answers.text[0]}}; Topic: |||
 
@@ -304,7 +302,7 @@ templates:
     answer_choices: null
     answer_choices_key: null
     id: fdcf132e-6c70-4188-999e-93601ee8e089
-    jinja: 'What is the follow passage about?
+    jinja: 'What is the following passage about?
 
       {{context}} |||
 
