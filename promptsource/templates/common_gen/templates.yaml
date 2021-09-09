@@ -1,5 +1,19 @@
 dataset: common_gen
 templates:
+  45778bd5-fddc-4c60-a77b-4eff5bed1c0b: !Template
+    answer_choices: null
+    answer_choices_key: null
+    id: 45778bd5-fddc-4c60-a77b-4eff5bed1c0b
+    jinja: "Ignoring the order of the concepts: {{ concepts | join(\", \") }}; \n\
+      Generate a sentence with all the concepts :\n|||\n{{target}}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      - ROUGE
+      original_task: true
+    name: Given concepts - type 2
+    reference: Ignoring the order of the concepts:...
   684f1859-0b8d-4efe-82e1-7218838813cd: !Template
     answer_choices: null
     answer_choices_key: null
@@ -13,8 +27,10 @@ templates:
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: true
-      choices_in_prompt: null
-      metrics: []
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      - ROUGE
       original_task: true
     name: Put together
     reference: This is similar to a task description
@@ -27,11 +43,47 @@ templates:
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: true
-      choices_in_prompt: null
-      metrics: []
-      original_task: false
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      - ROUGE
+      original_task: true
     name: choice in concept centric sentence generation
     reference: ''
+  b2033df4-7922-45b8-a113-e7784135cea9: !Template
+    answer_choices: null
+    answer_choices_key: null
+    id: b2033df4-7922-45b8-a113-e7784135cea9
+    jinja: "{% set seq = [ \n'From the concepts mentioned below, generate a sentence:',\
+      \ \n'Convert the concepts to a sentence:', \n'Given the list of concepts, write\
+      \ a sentence:'\n] %} \n{{ seq | choice }}\n{{ concepts | join(\", \") }}\n|||\n\
+      {{target}}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      - ROUGE
+      original_task: true
+    name: random task template prompt
+    reference: With a randomly chosen task template, generate a sentence from the
+      list of concepts
+  b7012213-04c4-424d-85fb-39d63d8a0ca2: !Template
+    answer_choices: null
+    answer_choices_key: null
+    id: b7012213-04c4-424d-85fb-39d63d8a0ca2
+    jinja: 'What are the topics in the sentence: {{target}}
+
+      |||
+
+      {{ concepts | join(", ") }}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      - ROUGE
+      original_task: false
+    name: topics from the sentence
+    reference: The template generates a random topic from the sentence
   ed215962-8e51-45e7-b025-6e822f877098: !Template
     answer_choices: null
     answer_choices_key: null
@@ -41,11 +93,31 @@ templates:
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: true
-      choices_in_prompt: null
-      metrics: []
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      - ROUGE
       original_task: false
     name: sentence to concepts
     reference: Template identifies the concepts from the sentence
+  f3fce748-89e0-4b88-94bb-72ddb9a04d10: !Template
+    answer_choices: null
+    answer_choices_key: null
+    id: f3fce748-89e0-4b88-94bb-72ddb9a04d10
+    jinja: 'Can you write a sentence about the topic {{concepts | choice}}?
+
+      |||
+
+      {{target}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      - ROUGE
+      original_task: false
+    name: topic to sentence
+    reference: 'Choose a random topic and ask the model to write a sentence about
+      it '
   fa787974-86dd-4f66-b2d7-6d3523ce00e1: !Template
     answer_choices: null
     answer_choices_key: null
@@ -56,8 +128,10 @@ templates:
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: true
-      choices_in_prompt: null
-      metrics: []
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      - ROUGE
       original_task: true
     name: Example prompt
     reference: The prompt is in the form of an example
@@ -70,8 +144,10 @@ templates:
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: true
-      choices_in_prompt: null
-      metrics: []
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      - ROUGE
       original_task: true
-    name: Given concepts
+    name: Given concepts type 1
     reference: 'The prompt has the prefix "Given the .." '
