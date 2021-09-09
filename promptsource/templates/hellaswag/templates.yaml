@@ -125,10 +125,10 @@ templates:
     - 'No'
     answer_choices_key: null
     id: 663470b8-3fab-449c-84ab-6c4738da51b3
-    jinja: "{% set rand = [0, 1, 2, 3] | random %}\nConsider the following description:\
+    jinja: "{% set instance = [0, 1, 2, 3] | choice %}\nConsider the following description:\
       \ {{ ctx_a }}\nIs the following an appropriate continuation?\n{{ ctx_b }} {{\
-      \ endings[rand] }}\nYes or No?\n||| \n{% if label  == rand | string() %}\nYes\n\
-      {% else %} \nNo\n{% endif %}"
+      \ endings[instance] }}\nYes or No?\n||| \n{% if label  == instance | string()\
+      \ %}\n{{answer_choices[0]}}\n{% else %} \n{{answer_choices[1]}}\n{% endif %}"
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: true
@@ -196,10 +196,11 @@ templates:
     - 'No'
     answer_choices_key: null
     id: d95b81c4-5db7-44c1-926e-c7222c896a32
-    jinja: "{% set rand = [0, 1, 2, 3] | random %}\nConsider the following text: {{\
-      \ ctx_b }} {{ endings[rand] }}\nIs it an appropriate continuation of the following\
-      \ text: \n{{ ctx_a }} ?\nYes or No?\n||| \n{% if label  == rand | string() %}\n\
-      Yes\n{% else %} \nNo\n{% endif %}"
+    jinja: "{% set instance = [0, 1, 2, 3] | choice %}\nConsider the following text:\
+      \ {{ ctx_b }} {{ endings[rand] }}\nIs it an appropriate continuation of the\
+      \ following text: \n{{ ctx_a }} ?\nYes or No?\n||| \n{% if label  == instance\
+      \ | string() %}\n{{answer_choices[0]}}\n{% else %} \n{{answer_choices[1]}}\n\
+      {% endif %}"
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: true
@@ -220,15 +221,17 @@ templates:
     id: db8b1c25-f2db-4604-b8fc-f93d69d6fae7
     jinja: '{{ ctx }}...
 
-      How does the description likely end? Choose the correct ending index with the
-      format "Ending {1, 2, 3, 4}"
+      How does the description likely end?
 
 
       Ending 1: {{ endings[0] }}
 
+
       Ending 2: {{ endings[1] }}
 
+
       Ending 3: {{ endings[2] }}
+
 
       Ending 4: {{ endings[3] }}
 
@@ -251,10 +254,9 @@ templates:
     answer_choices_key: null
     id: def77598-682f-48de-b187-55db4d390f07
     jinja: "If a description of a situation begins like this: {{ ctx }}... Then how\n\
-      does it continue? (Return the output with the format: Ending 1, 2, 3, or 4)\n\
-      \ \nEnding 1: {{ endings[0] }}\nEnding 2: {{ endings[1] }}\nEnding 3: {{ endings[2]\
-      \ }}\nEnding 4: {{ endings[3] }}\n||| {{ {\"0\": \"Ending 1\", \"1\": \"Ending\
-      \ 2\", \"2\": \"Ending 3\", \"3\": \"Ending 4\"}[label] }}"
+      does it continue? \n\nEnding 1: {{ endings[0] }}\n\nEnding 2: {{ endings[1]\
+      \ }}\n\nEnding 3: {{ endings[2] }}\n\nEnding 4: {{ endings[3] }}\n|||{{answer_choices[label\
+      \ | int()] }}"
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: true
