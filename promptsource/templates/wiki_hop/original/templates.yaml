@@ -8,7 +8,7 @@ templates:
     jinja: "Information:\n- {{ supports | join(\"\\n- \") }}\n\n{% set question_split\
       \ = question.split(' ') %}\nWhat object entity has the relation of '{{ question_split[0]\
       \ | replace(\"_\", \" \")}}' with the subject '{{ question_split[1:] | join(\"\
-      \ \")}}'? \n\nChoices:\n- {{ candidates | join(\"\\n- \") }}\n\n|||\n{{answer}}"
+      \ \")}}'? \n\nChoices: {{ candidates | join(\"|||\") }}\n\n|||\n{{answer}}"
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: true
@@ -118,9 +118,7 @@ templates:
       subject ''{{ question_split[1:] | join(" ")}}''.
 
 
-      Choices:
-
-      - {{ candidates | join("\n- ") }}
+      Choices: {{ candidates | join("|||") }}
 
 
       |||
@@ -151,9 +149,7 @@ templates:
       choices below.
 
 
-      Choices:
-
-      - {{ candidates | join("\n- ") }}
+      Choices: {{ candidates | join("|||") }}
 
 
       |||
@@ -210,9 +206,7 @@ templates:
       ''{{ question_split[0] | replace("_", " ")}}''.
 
 
-      Choices:
-
-      - {{ candidates | join("\n- ") }}
+      Choices: {{ candidates | join("|||") }}
 
 
       |||
@@ -241,9 +235,7 @@ templates:
       the relation of ''{{ question_split[0] | replace("_", " ")}}''?
 
 
-      Choices:
-
-      - {{ candidates | join("\n- ") }}
+      Choices: {{ candidates | join("|||") }}
 
 
       |||
