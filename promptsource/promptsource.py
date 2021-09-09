@@ -344,7 +344,9 @@ else:
                 st.markdown("##### Answer Choices")
                 st.text(", ".join(template.answer_choices) if template.answer_choices is not None else None)
                 st.markdown("##### Answer Choices Key")
-                st.text(template.answer_choices_key.to_str() if template.get_answer_choices_key() is not None else None)
+                st.text(
+                    template.answer_choices_key.to_str() if template.get_answer_choices_key() is not None else None
+                )
                 st.markdown("##### Jinja")
                 splitted_template = template.jinja.split("|||")
                 st.markdown("###### Prompt + X")
