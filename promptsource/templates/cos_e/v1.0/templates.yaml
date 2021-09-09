@@ -3,7 +3,7 @@ subset: v1.0
 templates:
   1040d9f9-4ba6-44a5-9d44-aa907ef35d49: !Template
     answer_choices: null
-    answer_choices_key: null
+    answer_choices_key: '{{ choices | join("|||") }}'
     id: 1040d9f9-4ba6-44a5-9d44-aa907ef35d49
     jinja: '{{ question }}
 
@@ -11,7 +11,7 @@ templates:
 
       Options:
 
-      - {{ choices | join("\n- ") }}
+      - {{ answer_choices | join("\n- ") }}
 
       |||
 
@@ -19,9 +19,10 @@ templates:
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: false
-      choices_in_prompt: null
-      metrics: []
-      original_task: true
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
+      original_task: false
     name: question_description_option_text
     reference: ''
   60e81a2b-8441-41c9-a904-46746216b621: !Template
@@ -29,8 +30,6 @@ templates:
     - A
     - B
     - C
-    - D
-    - E
     answer_choices_key: null
     id: 60e81a2b-8441-41c9-a904-46746216b621
     jinja: "{{ question }}\nChoose the most suitable option to answer the above question.\n\
@@ -40,18 +39,20 @@ templates:
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: false
-      choices_in_prompt: null
-      metrics: []
-      original_task: true
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
+      original_task: false
     name: question_description_option_id
     reference: ''
   836b1643-b0c7-4c21-b33f-1a0aacae6562: !Template
     answer_choices: null
-    answer_choices_key: null
+    answer_choices_key: '{{ choices | join("|||") }}'
     id: 836b1643-b0c7-4c21-b33f-1a0aacae6562
     jinja: '{{ question }}
 
-      - {{ choices | join("\n- ") }}
+      - {{ answer_choices | join("\n- ") }}
+
 
       The best answer is
 
@@ -61,9 +62,10 @@ templates:
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: false
-      choices_in_prompt: null
-      metrics: []
-      original_task: true
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
+      original_task: false
     name: question_option_description_text
     reference: ''
   97ffc573-3aaf-46b5-873f-cd1081c87ea2: !Template
@@ -76,7 +78,8 @@ templates:
 
       - {{ choices | join("\n- ") }}
 
-      The answer is {{ answer }} because
+
+      The answer is "{{ answer }}" because
 
       |||
 
@@ -84,18 +87,57 @@ templates:
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: false
-      choices_in_prompt: null
-      metrics: []
-      original_task: false
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      - ROUGE
+      original_task: true
     name: generate_explanation_given_text
+    reference: ''
+  9ad6c3c2-883f-474f-98e1-7afc7744485c: !Template
+    answer_choices: null
+    answer_choices_key: null
+    id: 9ad6c3c2-883f-474f-98e1-7afc7744485c
+    jinja: 'Here''s a question: {{ question }}
+
+
+      Here are possible answers to this question:
+
+      - {{ choices | join("\n- ") }}
+
+
+      I believe the correct choice is "{{answer}}", here''s why:
+
+      |||
+
+      {{ abstractive_explanation }}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      - ROUGE
+      original_task: true
+    name: i_think
+    reference: ''
+  b46fcaba-9076-49b6-ab5a-ebdbd5a098b4: !Template
+    answer_choices: null
+    answer_choices_key: null
+    id: b46fcaba-9076-49b6-ab5a-ebdbd5a098b4
+    jinja: "Question: {{question}}\n\nChoices: \n- {{ choices | join(\"\\n- \") }}\n\
+      \nThe rationale to choose \"{{answer}}\" as the answer is that: |||\n{{abstractive_explanation}}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      - ROUGE
+      original_task: true
+    name: rationale
     reference: ''
   bf17f5c6-65e9-4449-ba49-f5fde0041d08: !Template
     answer_choices:
     - A
     - B
     - C
-    - D
-    - E
     answer_choices_key: null
     id: bf17f5c6-65e9-4449-ba49-f5fde0041d08
     jinja: '{{ question }}
@@ -114,14 +156,15 @@ templates:
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: false
-      choices_in_prompt: null
-      metrics: []
-      original_task: true
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
+      original_task: false
     name: question_option_description_id
     reference: ''
   e57e45eb-9d02-4e15-9a95-ba4ef68245c1: !Template
     answer_choices: null
-    answer_choices_key: null
+    answer_choices_key: '{{ choices | join("|||") }}'
     id: e57e45eb-9d02-4e15-9a95-ba4ef68245c1
     jinja: 'Pick the option in line with common sense to answer the question.
 
@@ -129,7 +172,7 @@ templates:
 
       Options:
 
-      - {{ choices | join("\n- ") }}
+      - {{ answer_choices | join("\n- ") }}
 
       |||
 
@@ -137,9 +180,10 @@ templates:
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: false
-      choices_in_prompt: null
-      metrics: []
-      original_task: true
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
+      original_task: false
     name: description_question_option_text
     reference: ''
   ee4a3703-db30-4fb5-9cb5-29a15be03fbf: !Template
@@ -147,8 +191,6 @@ templates:
     - A
     - B
     - C
-    - D
-    - E
     answer_choices_key: null
     id: ee4a3703-db30-4fb5-9cb5-29a15be03fbf
     jinja: 'Pick the option in line with common sense to answer the question.
@@ -169,9 +211,10 @@ templates:
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: false
-      choices_in_prompt: null
-      metrics: []
-      original_task: true
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
+      original_task: false
     name: description_question_option_id
     reference: ''
   ef98a220-34e2-46cd-8466-fe817af8ec44: !Template
@@ -184,7 +227,8 @@ templates:
 
       - {{ choices | join("\n- ") }}
 
-      Commonsense says
+
+      Explain why a human would choose "{{answer}}" to answer the question above:
 
       |||
 
@@ -192,8 +236,25 @@ templates:
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: false
-      choices_in_prompt: null
-      metrics: []
-      original_task: false
-    name: generate_explanation_no_given_answer
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      - ROUGE
+      original_task: true
+    name: explain_why_human
+    reference: ''
+  fc3474c4-63ec-4a94-87cf-0e3044b29282: !Template
+    answer_choices: null
+    answer_choices_key: null
+    id: fc3474c4-63ec-4a94-87cf-0e3044b29282
+    jinja: "Here's a question and a few possible answers: \n\nQ: {{ question }}\n\
+      Possible A: {{ choices | join(\", \") }}\n\nWhy is \"{{answer}}\" an answer\
+      \ aligned with human common sense? \n|||\n{{ abstractive_explanation }}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      - ROUGE
+      original_task: true
+    name: aligned_with_common_sense
     reference: ''

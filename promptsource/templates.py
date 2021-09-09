@@ -74,10 +74,9 @@ class Template(yaml.YAMLObject):
                                completions. If None, then the template is open-ended.
                                This list is accessible from within Jinja as the
                                variable `answer_choices`.
-        :param answer_choices_key: string name of key in example dictionary that
-                                   points to an iterable of strings representing
-                                   per-example choices for open-ended templates.
-                                   Should be None if no such key exists.
+                               TODO: Merge answer_choices and answer_choices_key
+        :param answer_choices_key: Jinja expression for answer choices, or None if
+                                   no answer choices
 
         """
         self.id = str(uuid.uuid4())
@@ -119,17 +118,32 @@ class Template(yaml.YAMLObject):
 
         :return: List[String]
         """
+        # TODO: Replace answer_choices with answer_choices_key values
         return self.answer_choices
 
-    def get_answer_choices_key(self):
+    def get_answer_choices_expr(self):
         """
-        Returns a string name of key in example dictionary that points to an
-        iterable of strings representing per-example choices, or None if no
-        such key exists.
+        Returns a Jinja expression for computing the answer choices from an example.
 
-        :return: List[String]
+        :return: String, or None if no answer choices
         """
-        return self.answer_choices
+        # TODO: Change to return answer_choices
+        return self.answer_choices_key
+
+    def get_answer_choices_list(self, example):
+        """
+        Returns a list of answer choices for a given example
+
+        :return: list of strings, or None if get_answer_choices_expr is None
+        """
+        if self.get_answer_choices_expr() is None:
+            return None
+
+        jinja = self.answer_choices_key
+        rtemplate = env.from_string(jinja)
+        protected_example = self._escape_pipe(example)
+        rendered_choices = rtemplate.render(**protected_example)
+        return [self._unescape_pipe(answer_choice.strip()) for answer_choice in rendered_choices.split("|||")]
 
     def apply(self, example, truncate=True, highlight_variables=False):
         """
@@ -154,25 +168,41 @@ class Template(yaml.YAMLObject):
             jinja = jinja.replace("}}", " | highlight }}")
         rtemplate = env.from_string(jinja)
 
-        # Replaces any occurrences of the "|||" separator in the example, which
-        # which will be replaced back after splitting
-        pipe_protector = "3ed2dface8203c4c9dfb1a5dc58e41e0"
-        protected_example = {
-            key: value.replace("|||", pipe_protector) if isinstance(value, str) else value
-            for key, value in example.items()
-        }
+        protected_example = self._escape_pipe(example)
 
         # Adds in answer_choices variable
         if "answer_choices" in protected_example:
             raise ValueError("Example contains the restricted key 'answer_choices'.")
-        protected_example["answer_choices"] = self.answer_choices
+
+        if self.answer_choices is not None:
+            protected_example["answer_choices"] = self.answer_choices
+        elif self.get_answer_choices_list(example) is not None:
+            # TODO: Combine this all into a call to get_answer_choices_list
+            protected_example["answer_choices"] = self.get_answer_choices_list(example)
 
         # Renders the Jinja template
         rendered_example = rtemplate.render(**protected_example)
 
         # Splits on the separator, and then replaces back any occurrences of the
         # separator in the original example
-        return [part.replace(pipe_protector, "|||") for part in rendered_example.split("|||")]
+        return [self._unescape_pipe(part) for part in rendered_example.split("|||")]
+
+    pipe_protector = "3ed2dface8203c4c9dfb1a5dc58e41e0"
+
+    @classmethod
+    def _escape_pipe(cls, example):
+        # Replaces any occurrences of the "|||" separator in the example, which
+        # which will be replaced back after splitting
+        protected_example = {
+            key: value.replace("|||", cls.pipe_protector) if isinstance(value, str) else value
+            for key, value in example.items()
+        }
+        return protected_example
+
+    @classmethod
+    def _unescape_pipe(cls, string):
+        # replaces back any occurrences of the separator in a string
+        return string.replace(cls.pipe_protector, "|||")
 
     class Metadata(yaml.YAMLObject):
         """
@@ -465,7 +495,7 @@ def get_templates_data_frame():
             data["choices_in_prompt"].append(template.metadata.choices_in_prompt)
             data["metrics"].append(template.metadata.metrics)
             data["answer_choices"].append(template.get_answer_choices())
-            data["answer_choices_key"].append(template.get_answer_choices_key())
+            data["answer_choices_key"].append(template.get_answer_choices_expr())
             data["jinja"].append(template.jinja)
 
     return pd.DataFrame(data)
