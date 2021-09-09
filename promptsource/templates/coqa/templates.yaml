@@ -4,7 +4,9 @@ templates:
     answer_choices: null
     answer_choices_key: null
     id: 530616d3-1cc8-4faa-a855-4b21e0da9ec9
-    jinja: "{{story}}\n\nQ: {{questions[0]}} \n\nA: ||| {{answers[\"input_text\"][0]}}"
+    jinja: "Answer the question based on the information contained in the passage.\n\
+      Q: {{questions[0]}} \n\nPassage: {{story}}\n\nA: ||| {{answers[\"input_text\"\
+      ][0]}}"
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: false
@@ -18,7 +20,7 @@ templates:
     answer_choices: null
     answer_choices_key: null
     id: 7c0e2256-961c-48e9-bc08-6c270cc68b4a
-    jinja: '{{story}}
+    jinja: 'Answer the last question based on the hint.
 
       {% for question, answer in zip(questions[:-1], answers["input_text"][:-1]) %}
 
@@ -31,6 +33,9 @@ templates:
 
 
       Q: {{questions[-1]}}
+
+
+      Hint: {{story}}
 
 
       A:|||
