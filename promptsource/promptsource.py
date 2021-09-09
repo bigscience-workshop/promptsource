@@ -534,7 +534,7 @@ else:
                             "Answer Choices Key",
                             value=answer_choices_key,
                             help="A Jinja expression for computing answer choices. "
-                                 "Separate choices with a triple bar (|||).",
+                            "Separate choices with a triple bar (|||).",
                         )
 
                         # Jinja
