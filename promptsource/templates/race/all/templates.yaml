@@ -54,7 +54,7 @@ templates:
     reference: ''
   59b5c4e3-9539-449f-ac60-04e681c705b5: !Template
     answer_choices: null
-    answer_choices_key: '{ options | join("|||") }'
+    answer_choices_key: '{{ options | join("|||") }}'
     id: 59b5c4e3-9539-449f-ac60-04e681c705b5
     jinja: 'Read the following article and answer the question.
 
@@ -66,8 +66,7 @@ templates:
 
       |||
 
-      {{ [options.0,options.1,options.2,options.3][{"A":0,"B":1,"C":2,"D":3}[answer]]
-      }}'
+      {{ answer_choices[{"A":0,"B":1,"C":2,"D":3}[answer]] }}'
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: false
@@ -79,7 +78,7 @@ templates:
     reference: ''
   81368f4b-817f-4c81-9db5-b86905bb975e: !Template
     answer_choices: null
-    answer_choices_key: '{ options | join("|||") }'
+    answer_choices_key: '{{ options | join("|||") }}'
     id: 81368f4b-817f-4c81-9db5-b86905bb975e
     jinja: 'Read the following article and select the best answer.
 
@@ -87,17 +86,11 @@ templates:
 
       Question: {{question}}
 
-      - {{options.0}}
-
-      - {{options.1}}
-
-      - {{options.2}}
-
-      - {{options.3}}
+      - {{answer_choices | join("\n- ")}}
 
       |||
 
-      {{[options.0,options.1,options.2,options.3][{"A":0,"B":1,"C":2,"D":3}[answer]]}}'
+      {{answer_choices[{"A":0,"B":1,"C":2,"D":3}[answer]]}}'
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: false
@@ -187,7 +180,7 @@ templates:
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: false
-      choices_in_prompt: false
+      choices_in_prompt: true
       metrics:
       - Accuracy
       original_task: true
