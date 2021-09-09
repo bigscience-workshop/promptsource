@@ -3,9 +3,9 @@ subset: ARC-Challenge
 templates:
   32f7eb4d-dd38-4503-b67d-a8a96ab40449: !Template
     answer_choices: null
-    answer_choices_key: null
+    answer_choices_key: '{{choices.text | join("|||")}}'
     id: 32f7eb4d-dd38-4503-b67d-a8a96ab40449
-    jinja: 'Pick all the incorrect options for the following question:
+    jinja: 'Pick and copy all the incorrect options for the following question:
 
 
       {{question}}
@@ -13,11 +13,7 @@ templates:
 
       Options:
 
-      {% for i in range(choices["label"]|length) %}
-
-      - {{choices["text"][i]}}
-
-      {% endfor %} |||
+      - {{answer_choices | join("\n- ")}}|||
 
       {% for i in range(choices["label"]|length) %}
 
@@ -31,58 +27,94 @@ templates:
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: true
-      choices_in_prompt: null
-      metrics: []
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
+      - Other
       original_task: false
-    name: 'false'
+    name: 'pick_false_options'
+    reference: 'answer_choices_key: choices.text'
+  540ebc31-2ea6-4feb-a6fd-67b6e71cf20a: !Template
+    answer_choices: null
+    answer_choices_key: '{{choices.label | join ("|||")}}'
+    id: 540ebc31-2ea6-4feb-a6fd-67b6e71cf20a
+    jinja: "Here's a problem to solve: {{question}}\n\nAmong the 4 following options,\
+      \ which is the correct answer?\n{% for letter, t in zip(answer_choices, choices.text)\
+      \ %}\n- {{letter}}: {{t}}\n {% endfor %}|||{{answerKey}}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
+      original_task: true
+    name: heres_a_problem
     reference: ''
   5ec2b8ca-e4c0-444e-b097-89ccce811550: !Template
     answer_choices: null
-    answer_choices_key: null
+    answer_choices_key: '{{choices.text | join("|||")}}'
     id: 5ec2b8ca-e4c0-444e-b097-89ccce811550
     jinja: '{{question}}
 
 
       Options:
 
-      {% for i in range(choices["label"]|length) %}
+      - {{answer_choices | join("\n- ")}}|||
 
-      - {{choices["text"][i]}}
-
-      {% endfor %} |||
-
-      {{choices["text"][choices["label"].index(answerKey)]}}'
+      {{answer_choices[choices["label"].index(answerKey)]}}'
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: true
       choices_in_prompt: true
-      metrics: []
+      metrics:
+      - Accuracy
       original_task: true
     name: qa_options
     reference: ''
-  9ca0d44d-6383-4d16-ade7-266a31bb501e: !Template
+  5ff84886-9d5f-40d1-80d7-2a39b7c16ec6: !Template
     answer_choices: null
-    answer_choices_key: null
-    id: 9ca0d44d-6383-4d16-ade7-266a31bb501e
-    jinja: 'Use the following options to generate a possible question:
+    answer_choices_key: '{{choices.text | join("|||")}}'
+    id: 5ff84886-9d5f-40d1-80d7-2a39b7c16ec6
+    jinja: 'I am hesitating between 4 options to answer the following question, which
+      option should I choose?
 
+      Question: {{question}}
 
-      {{choices["text"]|join(", ")}} |||
+      Possibilities:
 
-      {{question}}
+      - {{answer_choices | join("\n- ")}}|||
 
-      '
+      {{answer_choices[choices["label"].index(answerKey)]}}'
     metadata: !TemplateMetadata
-      _do_eval: false
-      _do_train: true
-      choices_in_prompt: null
-      metrics: []
-      original_task: false
-    name: answer_qn
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
+      original_task: true
+    name: i_am_hesitating
+    reference: ''
+  ced2b33b-b590-4522-b041-51d7dd669561: !Template
+    answer_choices: null
+    answer_choices_key: '{{choices.text | join("|||")}}'
+    id: ced2b33b-b590-4522-b041-51d7dd669561
+    jinja: 'I gave my students this multiple choice question: {{question}}
+
+
+      Only one answer is correct among these 4 choices:
+
+      - {{answer_choices | join("\n- ")}}
+
+
+      Could you tell me which one is correct?|||
+
+      {{answer_choices[choices["label"].index(answerKey)]}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
+      original_task: true
+    name: multiple_choice
     reference: ''
   e371fc1a-8edb-477b-b345-9d73e97ffade: !Template
     answer_choices: null
-    answer_choices_key: null
+    answer_choices_key: '{{choices.label | join(" ||| ")}}'
     id: e371fc1a-8edb-477b-b345-9d73e97ffade
     jinja: 'Pick the most correct option to answer the following question.
 
@@ -92,9 +124,9 @@ templates:
 
       Options:
 
-      {% for i in range(choices["label"]|length) %}
+      {% for letter, t in zip(answer_choices, choices.text) %}
 
-      {{choices["label"][i]}}: {{choices["text"][i]}}
+      - {{letter}}: {{t}}
 
       {% endfor %} |||
 
@@ -103,7 +135,8 @@ templates:
       _do_eval: false
       _do_train: true
       choices_in_prompt: true
-      metrics: []
+      metrics:
+      - Accuracy
       original_task: true
-    name: test
+    name: pick_the_most_correct_option
     reference: ''
