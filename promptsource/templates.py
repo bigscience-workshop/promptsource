@@ -129,7 +129,7 @@ class Template(yaml.YAMLObject):
 
         :return: List[String]
         """
-        return self.answer_choices
+        return self.answer_choices_key
 
     def apply(self, example, truncate=True, highlight_variables=False):
         """
@@ -173,6 +173,79 @@ class Template(yaml.YAMLObject):
         # Splits on the separator, and then replaces back any occurrences of the
         # separator in the original example
         return [part.replace(pipe_protector, "|||") for part in rendered_example.split("|||")]
+
+    class AnswerChoicesKey(yaml.YAMLObject):
+        """
+        Representation of how answer choices are stored in examples for a template.
+        """
+
+        yaml_tag = "!TemplateAnswerChoicesKey"
+
+        def __init__(self, keys: List[str], separate_keys: bool):
+            """
+            Initializes template answer choices key.
+
+            Answer choices keys are lists of strings, that can be interpreted in
+            one of two ways. For a list [key1, key, ...], if separate_keys = True,
+            then the choices are example[key1], example[key2], ... If separate_keys = False,
+            then the choices for example are an iterable found at example[key1][key2]...
+
+            Note that if the choices are stored in an
+
+            :param keys: list of strings that define where answer choices are in an example
+            :param separate_keys: If True, each key is for a separate choice in an example
+            """
+            self.keys = keys
+            self.separate_keys = separate_keys
+
+        @classmethod
+        def from_str(cls, answer_choices_key):
+            """
+            Parse string representation and return corresponding AnswerChoicesKey object.
+
+            Format is triple bar `|||` separated list for separate_keys = True and
+            semi-colon `;` separated list of keys for separte_keys = False.
+
+            Returns None if given only whitespace.
+
+            :param answer_choices_key: string representation
+            :return: a new AnswerChoicesKey object
+            """
+            if answer_choices_key.strip() == "":
+                return None
+
+            if "|||" in answer_choices_key:
+                return cls([key.strip() for key in answer_choices_key.split("|||")], True)
+            elif ";" in answer_choices_key:
+                return cls([key.strip() for key in answer_choices_key.split(";")], False)
+            else:
+                return cls([answer_choices_key.strip()], False)
+
+        def to_str(self):
+            """
+            Returns a string representation of the answer choices key for the UI.
+
+            :return: string representation
+            """
+            if self.separate_keys:
+                return " ||| ".join(self.keys)
+            else:
+                return " ; ".join(self.keys)
+
+        def get_answer_choices(self, example):
+            """
+            Return the answer choices for a given example as a list-like.
+
+            :param example: the example for which choices should be returned.
+            :return: list-like of strings, the possible outputs for this prompted example
+            """
+            if self.separate_keys:
+                return [example[key] for key in self.keys]
+            else:
+                to_return = example
+                for key in self.keys:
+                    to_return = to_return[key]
+                return to_return
 
     class Metadata(yaml.YAMLObject):
         """
