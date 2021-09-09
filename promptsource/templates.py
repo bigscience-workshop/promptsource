@@ -134,8 +134,11 @@ class Template(yaml.YAMLObject):
         """
         Returns a list of answer choices for a given example
 
-        :return: list of strings
+        :return: list of strings, or None if get_answer_choices_expr is None
         """
+        if self.get_answer_choices_expr() is None:
+            return None
+
         jinja = self.answer_choices_key
         rtemplate = env.from_string(jinja)
         protected_example = self._escape_pipe(example)

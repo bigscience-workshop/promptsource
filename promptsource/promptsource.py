@@ -344,7 +344,7 @@ else:
                 st.markdown("##### Answer Choices")
                 st.text(", ".join(template.answer_choices) if template.answer_choices is not None else None)
                 st.markdown("##### Answer Choices Key")
-                st.text(template.get_answer_choices_expr())
+                show_jinja(template.get_answer_choices_expr())
                 st.markdown("##### Jinja")
                 splitted_template = template.jinja.split("|||")
                 st.markdown("###### Prompt + X")
@@ -523,9 +523,13 @@ else:
                         )
 
                         # Answer choices key
+                        if template.get_answer_choices_expr() is not None:
+                            answer_choices_key = template.get_answer_choices_expr()
+                        else:
+                            answer_choices_key = ""
                         state.answer_choices_key = st.text_input(
                             "Answer Choices Key",
-                            value=template.get_answer_choices_expr(),
+                            value=answer_choices_key,
                             help="A Jinja expression for computing answer choices. "
                                  "Separate choices with a triple bar (|||).",
                         )
