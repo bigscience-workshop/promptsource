@@ -13,7 +13,7 @@ templates:
       ] %}
 
 
-      {{ seq | random }}
+      {{ seq | choice }}
 
       Context: {{context}};
 
@@ -33,9 +33,10 @@ templates:
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: true
-      choices_in_prompt: true
-      metrics: []
-      original_task: null
+      choices_in_prompt: false
+      metrics:
+      - Squad
+      original_task: true
     name: Questions with Context
     reference: Given context and question, give answer
   189dcc58-fd13-4771-ad03-7879a61c7ab7: !Template
@@ -44,7 +45,8 @@ templates:
     id: 189dcc58-fd13-4771-ad03-7879a61c7ab7
     jinja: '{% if answers.text != [] %}
 
-      Determine the question to the answer with the given context.
+      Determine the question that you might have asked to get back the following answer for the given
+      context
 
       Context: {{context}};
 
@@ -60,9 +62,11 @@ templates:
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: true
-      choices_in_prompt: null
-      metrics: []
-      original_task: null
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      - ROUGE
+      original_task: false
     name: Jeopardy with Context
     reference: Given context and an answer, guess the question.
   20064b80-e4d0-41b7-9135-92c0077d5044: !Template
@@ -73,25 +77,21 @@ templates:
 
       ''What is this about? '',
 
-      ''What is paragraph about? '',
+      ''What is the paragraph about? '',
 
-      ''Get topic from: '',
+      ''Get the topic from: '',
 
-      ''Get topic from '',
-
-      ''From passage get topic'',
-
-      ''From passage get topic. '',
+      ''From the passage,  get the topic'',
 
       ''I want to know the topic. '',
 
-      ''Topic from passage: '',
+      ''Topic from the passage: '',
 
-      ''Topic from paragraph: '',
+      ''Topic from the paragraph: '',
 
       ] %}
 
-      {{ seq | random }}
+      {{ seq | choice }}
 
       {{context}} |||
 
@@ -99,9 +99,12 @@ templates:
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: true
-      choices_in_prompt: null
-      metrics: []
-      original_task: null
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      - ROUGE
+      - Other
+      original_task: false
     name: Topic Prediction - Context with randomized prompt options
     reference: Asks to predict the topic given the context with additional input as
       if a person is asking another person.
@@ -117,31 +120,34 @@ templates:
 
       ''The paragraph is about '',
 
-      ''What is paragraph about? '',
+      ''What is the paragraph about? '',
 
-      ''Get topic: '',
+      ''Get the topic: '',
 
-      ''From passage, the topic is'',
+      ''From the passage, the topic is'',
 
       ''I want to know the topic. '',
 
-      ''Topic from passage: '',
+      ''Topic from the passage: '',
 
-      ''Topic from paragraph: '',
+      ''Topic from the paragraph: '',
 
       ] %}
 
       {{context}}
 
-      {{ seq | random }}|||
+      {{ seq | choice }}|||
 
       {{title | replace("_", " ")}}'
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: true
-      choices_in_prompt: null
-      metrics: []
-      original_task: null
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      - ROUGE
+      - Other
+      original_task: false
     name: Topic Prediction - Context with randomized prompt options placed in the
       end
     reference: The prompt is placed at the end of Context
@@ -151,7 +157,7 @@ templates:
     id: 7a44cd99-7420-4456-aaaa-34e2c81d1679
     jinja: '{% if answers.text != [] %}
 
-      Determine the question to the answer.
+      What is a question that would give the following answer?
 
       Answer: {{answers.text[0]}};
 
@@ -165,9 +171,11 @@ templates:
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: true
-      choices_in_prompt: null
-      metrics: []
-      original_task: null
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      - ROUGE
+      original_task: false
     name: Jeopardy without Context
     reference: Given an answer, output a viable question. Context is omitted.
   8bea1123-fd8d-4bac-96bf-b8a289ee74b3: !Template
@@ -182,7 +190,7 @@ templates:
 
       ''Tell me '',
 
-      ''From passage, '',
+      ''From the passage, '',
 
       ''I want to know '',
 
@@ -190,7 +198,7 @@ templates:
 
       ''What is the answer to: '',
 
-      ''Find answer to: '',
+      ''Find the answer to: '',
 
       ''Answer: '',
 
@@ -198,7 +206,7 @@ templates:
 
       ] %}
 
-      {{context}} {{ seq | random }}{{question}}|||
+      {{context}} {{ seq | choice }}{{question}}|||
 
       {% if answers.text == [] %}
 
@@ -212,9 +220,10 @@ templates:
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: true
-      choices_in_prompt: true
-      metrics: []
-      original_task: null
+      choices_in_prompt: false
+      metrics:
+      - Squad
+      original_task: true
     name: Questions with Context - Without Prompt Keywords
     reference: Given context and question, give answer. No keywords to delineate context
       and question is given.
@@ -232,11 +241,29 @@ templates:
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: true
-      choices_in_prompt: null
-      metrics: []
-      original_task: null
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      - ROUGE
+      original_task: false
     name: Trivia
     reference: Given input and directly outputs answer.
+  e2e41877-4794-4ff9-9f92-a2a85105e2a7: !Template
+    answer_choices:
+    - 'yes'
+    - 'no'
+    answer_choices_key: null
+    id: e2e41877-4794-4ff9-9f92-a2a85105e2a7
+    jinja: "Context: {{context}}; \n\nQuestion: {{question}} \n\nIs this question\
+      \ answerable? ||| \n{% if answers.text != [] %}\n{{answer_choices[0]}}\n{% else\
+      \ %}\n{{answer_choices[1]}}\n{% endif %}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
+      original_task: false
+    name: Unanwerable question
+    reference: The template checks if the question is answerable or not
   e51c23b9-5b10-4db3-a0d1-ba546830173d: !Template
     answer_choices: null
     answer_choices_key: null
@@ -253,7 +280,7 @@ templates:
 
       {% if answers.text != [] %}
 
-      {{ seq | random }}
+      {{ seq | choice }}
 
       Question: {{question}};  Answer: {{answers.text[0]}}; Topic: |||
 
@@ -263,16 +290,19 @@ templates:
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: true
-      choices_in_prompt: null
-      metrics: []
-      original_task: null
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      - ROUGE
+      - Other
+      original_task: false
     name: Topic Prediction - Question and Answer Pair
     reference: Given a Question-Answer pair, generate the topic.
   fdcf132e-6c70-4188-999e-93601ee8e089: !Template
     answer_choices: null
     answer_choices_key: null
     id: fdcf132e-6c70-4188-999e-93601ee8e089
-    jinja: 'What is the follow passage about?
+    jinja: 'What is the following passage about?
 
       {{context}} |||
 
@@ -280,8 +310,11 @@ templates:
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: true
-      choices_in_prompt: null
-      metrics: []
-      original_task: null
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      - ROUGE
+      - Other
+      original_task: false
     name: Topic Prediction - Context
     reference: Predict the topic from the passage
