@@ -52,13 +52,23 @@ templates:
     reference: ''
   4fb13ac1-f770-45ea-b5d5-91ac50b0d609: !Template
     answer_choices: null
-    answer_choices_key: null
+    answer_choices_key: '{{choices.text | join("|||")}}'
     id: 4fb13ac1-f770-45ea-b5d5-91ac50b0d609
-    jinja: ''
+    jinja: 'I am hesitating between 4 options to answer the following question, which
+      option should I choose?
+
+      Question: {{question}}
+
+      Possibilities:
+
+      - {{answer_choices | join("\n- ")}}|||
+
+      {{answer_choices[choices["label"].index(answerKey)]}}'
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: null
-      original_task: null
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
+      original_task: true
     name: i_am_hesitating
     reference: ''
   540ebc31-2ea6-4feb-a6fd-67b6e71cf20a: !Template
@@ -77,13 +87,24 @@ templates:
     reference: ''
   8c689423-880d-402b-8c7d-a1a98c7589e8: !Template
     answer_choices: null
-    answer_choices_key: null
+    answer_choices_key: '{{choices.text | join("|||")}}'
     id: 8c689423-880d-402b-8c7d-a1a98c7589e8
-    jinja: ''
+    jinja: 'I gave my students this multiple choice question: {{question}}
+
+
+      Only one answer is correct among these 4 choices:
+
+      - {{answer_choices | join("\n- ")}}
+
+
+      Could you tell me which one is correct?|||
+
+      {{answer_choices[choices["label"].index(answerKey)]}}'
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: null
-      original_task: null
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
+      original_task: true
     name: multiple_choice
     reference: ''
   c988ee30-a523-457b-af21-87353349b543: !Template
