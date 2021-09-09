@@ -2,7 +2,7 @@ dataset: social_i_qa
 templates:
   605691e9-df59-415d-a622-530734c7df38: !Template
     answer_choices: null
-    answer_choices_key: null
+    answer_choices_key: '{{answerA}} ||| {{answerB}} ||| {{answerC}}'
     id: 605691e9-df59-415d-a622-530734c7df38
     jinja: 'I heard that {{context}}
 
@@ -13,7 +13,7 @@ templates:
       |||
 
 
-      {{{"1": answerA, "2": answerB, "3": answerC}[label]}}'
+      {{answer_choices[label | int - 1]}}'
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
@@ -23,7 +23,7 @@ templates:
     reference: ''
   666f415b-e3ac-47bf-a79b-19024c4a4143: !Template
     answer_choices: null
-    answer_choices_key: null
+    answer_choices_key: '{{answerA}} ||| {{answerB}} ||| {{answerC}}'
     id: 666f415b-e3ac-47bf-a79b-19024c4a4143
     jinja: '{{context}}
 
@@ -31,13 +31,13 @@ templates:
       Given the context: {{question}}
 
 
-      Possible answers: {{answerA}}, {{answerB}}, {{answerC}}
+      Possible answers: {{answer_choices | join(", ")}}
 
 
       |||
 
 
-      {{{"1": answerA, "2": answerB, "3": answerC}[label]}}'
+      {{answer_choices[label | int - 1]}}'
     metadata: !TemplateMetadata
       _do_eval: true
       _do_train: true
@@ -93,7 +93,7 @@ templates:
     reference: ''
   cbad777f-5794-4d71-bf3d-54da6043e5f1: !Template
     answer_choices: null
-    answer_choices_key: null
+    answer_choices_key: '{{answerA}} ||| {{answerB}} ||| {{answerC}}'
     id: cbad777f-5794-4d71-bf3d-54da6043e5f1
     jinja: '{{context}}
 
@@ -104,7 +104,7 @@ templates:
       |||
 
 
-      {{{"1": answerA, "2": answerB, "3": answerC}[label]}}'
+      {{answer_choices[label | int - 1]}}'
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: true
