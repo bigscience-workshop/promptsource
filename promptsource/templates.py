@@ -74,10 +74,9 @@ class Template(yaml.YAMLObject):
                                completions. If None, then the template is open-ended.
                                This list is accessible from within Jinja as the
                                variable `answer_choices`.
-        :param answer_choices_key: string name of key in example dictionary that
-                                   points to an iterable of strings representing
-                                   per-example choices for open-ended templates.
-                                   Should be None if no such key exists.
+                               TODO: Merge answer_choices and answer_choices_key
+        :param answer_choices_key: Jinja expression for answer choices, or None if
+                                   no answer choices
 
         """
         self.id = str(uuid.uuid4())
@@ -119,17 +118,29 @@ class Template(yaml.YAMLObject):
 
         :return: List[String]
         """
+        # TODO: Replace answer_choices with answer_choices_key values
         return self.answer_choices
 
-    def get_answer_choices_key(self):
+    def get_answer_choices_expr(self):
         """
-        Returns a string name of key in example dictionary that points to an
-        iterable of strings representing per-example choices, or None if no
-        such key exists.
+        Returns a Jinja expression for computing the answer choices from an example.
 
-        :return: List[String]
+        :return: String, or None if no answer choices
         """
+        # TODO: Change to return answer_choices
         return self.answer_choices_key
+
+    def get_answer_choices_list(self, example):
+        """
+        Returns a list of answer choices for a given example
+
+        :return: list of strings
+        """
+        jinja = self.answer_choices_key
+        rtemplate = env.from_string(jinja)
+        protected_example = self._escape_pipe(example)
+        rendered_choices = rtemplate.render(**protected_example)
+        return [self._unescape_pipe(answer_choice.strip()) for answer_choice in rendered_choices.split("|||")]
 
     def apply(self, example, truncate=True, highlight_variables=False):
         """
@@ -154,98 +165,41 @@ class Template(yaml.YAMLObject):
             jinja = jinja.replace("}}", " | highlight }}")
         rtemplate = env.from_string(jinja)
 
-        # Replaces any occurrences of the "|||" separator in the example, which
-        # which will be replaced back after splitting
-        pipe_protector = "3ed2dface8203c4c9dfb1a5dc58e41e0"
-        protected_example = {
-            key: value.replace("|||", pipe_protector) if isinstance(value, str) else value
-            for key, value in example.items()
-        }
+        protected_example = self._escape_pipe(example)
 
         # Adds in answer_choices variable
         if "answer_choices" in protected_example:
             raise ValueError("Example contains the restricted key 'answer_choices'.")
-        protected_example["answer_choices"] = self.answer_choices
+
+        if self.answer_choices is not None:
+            protected_example["answer_choices"] = self.answer_choices
+        elif self.get_answer_choices_list(example) is not None:
+            # TODO: Combine this all into a call to get_answer_choices_list
+            protected_example["answer_choices"] = self.get_answer_choices_list(example)
 
         # Renders the Jinja template
         rendered_example = rtemplate.render(**protected_example)
 
         # Splits on the separator, and then replaces back any occurrences of the
         # separator in the original example
-        return [part.replace(pipe_protector, "|||") for part in rendered_example.split("|||")]
+        return [self._unescape_pipe(part) for part in rendered_example.split("|||")]
 
-    class AnswerChoicesKey(yaml.YAMLObject):
-        """
-        Representation of how answer choices are stored in examples for a template.
-        """
+    pipe_protector = "3ed2dface8203c4c9dfb1a5dc58e41e0"
 
-        yaml_tag = "!TemplateAnswerChoicesKey"
+    @classmethod
+    def _escape_pipe(cls, example):
+        # Replaces any occurrences of the "|||" separator in the example, which
+        # which will be replaced back after splitting
+        protected_example = {
+            key: value.replace("|||", cls.pipe_protector) if isinstance(value, str) else value
+            for key, value in example.items()
+        }
+        return protected_example
 
-        def __init__(self, keys: List[str], separate_keys: bool):
-            """
-            Initializes template answer choices key.
-
-            Answer choices keys are lists of strings, that can be interpreted in
-            one of two ways. For a list [key1, key, ...], if separate_keys = True,
-            then the choices are example[key1], example[key2], ... If separate_keys = False,
-            then the choices for example are an iterable found at example[key1][key2]...
-
-            Note that if the choices are stored in an
-
-            :param keys: list of strings that define where answer choices are in an example
-            :param separate_keys: If True, each key is for a separate choice in an example
-            """
-            self.keys = keys
-            self.separate_keys = separate_keys
-
-        @classmethod
-        def from_str(cls, answer_choices_key):
-            """
-            Parse string representation and return corresponding AnswerChoicesKey object.
-
-            Format is triple bar `|||` separated list for separate_keys = True and
-            semi-colon `;` separated list of keys for separte_keys = False.
-
-            Returns None if given only whitespace.
-
-            :param answer_choices_key: string representation
-            :return: a new AnswerChoicesKey object
-            """
-            if answer_choices_key.strip() == "":
-                return None
-
-            if "|||" in answer_choices_key:
-                return cls([key.strip() for key in answer_choices_key.split("|||")], True)
-            elif ";" in answer_choices_key:
-                return cls([key.strip() for key in answer_choices_key.split(";")], False)
-            else:
-                return cls([answer_choices_key.strip()], False)
-
-        def to_str(self):
-            """
-            Returns a string representation of the answer choices key for the UI.
-
-            :return: string representation
-            """
-            if self.separate_keys:
-                return " ||| ".join(self.keys)
-            else:
-                return " ; ".join(self.keys)
-
-        def get_answer_choices(self, example):
-            """
-            Return the answer choices for a given example as a list-like.
-
-            :param example: the example for which choices should be returned.
-            :return: list-like of strings, the possible outputs for this prompted example
-            """
-            if self.separate_keys:
-                return [example[key] for key in self.keys]
-            else:
-                to_return = example
-                for key in self.keys:
-                    to_return = to_return[key]
-                return to_return
+    @classmethod
+    def _unescape_pipe(cls, string):
+        # replaces back any occurrences of the separator in a string
+        return string.replace(cls.pipe_protector, "|||")
 
     class Metadata(yaml.YAMLObject):
         """
@@ -538,7 +492,7 @@ def get_templates_data_frame():
             data["choices_in_prompt"].append(template.metadata.choices_in_prompt)
             data["metrics"].append(template.metadata.metrics)
             data["answer_choices"].append(template.get_answer_choices())
-            data["answer_choices_key"].append(template.get_answer_choices_key())
+            data["answer_choices_key"].append(template.get_answer_choices_expr())
             data["jinja"].append(template.jinja)
 
     return pd.DataFrame(data)

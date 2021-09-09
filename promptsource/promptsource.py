@@ -344,9 +344,7 @@ else:
                 st.markdown("##### Answer Choices")
                 st.text(", ".join(template.answer_choices) if template.answer_choices is not None else None)
                 st.markdown("##### Answer Choices Key")
-                st.text(
-                    template.answer_choices_key.to_str() if template.get_answer_choices_key() is not None else None
-                )
+                st.text(template.get_answer_choices_expr())
                 st.markdown("##### Jinja")
                 splitted_template = template.jinja.split("|||")
                 st.markdown("###### Prompt + X")
@@ -525,18 +523,11 @@ else:
                         )
 
                         # Answer choices key
-                        if template.get_answer_choices_key() is not None:
-                            current_answer_choices_key = template.get_answer_choices_key().to_str()
-                        else:
-                            current_answer_choices_key = ""
                         state.answer_choices_key = st.text_input(
                             "Answer Choices Key",
-                            value=current_answer_choices_key,
-                            help="Provide a key from the example schema containing an iterable "
-                            "of strings with choices for the correct output (or leave "
-                            "blank if not applicable). If choices are nested in dictionaries, "
-                            "each key with a semi-colon (;). If each choice is a "
-                            "different key, separate keys with a triple bar (|||).",
+                            value=template.get_answer_choices_expr(),
+                            help="A Jinja expression for computing answer choices. "
+                                 "Separate choices with a triple bar (|||).",
                         )
 
                         # Jinja
@@ -559,10 +550,10 @@ else:
                                 updated_answer_choices = [x.strip() for x in state.answer_choices.split("|||")]
                                 if len(updated_answer_choices) == 0 or len(updated_answer_choices) == 1:
                                     updated_answer_choices = None
-
-                                updated_answer_choices_key = Template.AnswerChoicesKey.from_str(
-                                    state.answer_choices_key
-                                )
+                                if state.answer_choices_key == "":
+                                    updated_answer_choices_key = None
+                                else:
+                                    updated_answer_choices_key = state.answer_choices_key
 
                                 dataset_templates.update_template(
                                     state.template_name,
