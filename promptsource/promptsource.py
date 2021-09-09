@@ -344,7 +344,10 @@ else:
                 st.markdown("##### Answer Choices")
                 st.text(", ".join(template.answer_choices) if template.answer_choices is not None else None)
                 st.markdown("##### Answer Choices Key")
-                st.text(template.answer_choices_key)
+                if template.get_answer_choices_expr() is not None:
+                    show_jinja(template.get_answer_choices_expr())
+                else:
+                    st.text(None)
                 st.markdown("##### Jinja")
                 splitted_template = template.jinja.split("|||")
                 st.markdown("###### Prompt + X")
@@ -469,6 +472,8 @@ else:
                             help="Short description of the template and/or paper reference for the template.",
                             value=template.reference,
                         )
+
+                        # Metadata
                         state.metadata = template.metadata
                         state.metadata.original_task = st.checkbox(
                             "Original Task?",
@@ -480,6 +485,7 @@ else:
                             value=template.metadata.choices_in_prompt,
                             help="Template explicitly lists choices in the prompt for the output.",
                         )
+
                         # Metrics from here:
                         # https://github.com/google-research/text-to-text-transfer-transformer/blob/4b580f23968c2139be7fb1cd53b22c7a7f686cdf/t5/evaluation/metrics.py
                         metrics_choices = [
@@ -510,28 +516,31 @@ else:
                             help="Select all metrics that are commonly used (or should "
                             "be used if a new task) to evaluate this template.",
                         )
+
+                        # Answer choices
                         state.answer_choices = st.text_input(
                             "Answer Choices",
                             value=" ||| ".join(template.answer_choices) if template.answer_choices is not None else "",
                             help="A ||| separated list of possible outputs (or leave blank). "
                             + "Value is available in Jinja in a list called answer_choices.",
                         )
-                        answer_choices_key_options = list(rendered_features.keys())
-                        answer_choices_key_options.insert(0, "")
-                        if template.answer_choices_key is None:
-                            answer_choices_key_index = 0
+
+                        # Answer choices key
+                        if template.get_answer_choices_expr() is not None:
+                            answer_choices_key = template.get_answer_choices_expr()
                         else:
-                            answer_choices_key_index = answer_choices_key_options.index(template.answer_choices_key)
-                        state.answer_choices_key = st.selectbox(
+                            answer_choices_key = ""
+                        state.answer_choices_key = st.text_input(
                             "Answer Choices Key",
-                            answer_choices_key_options,
-                            index=answer_choices_key_index,
-                            help="Select a key from the example schema containing an iterable "
-                            "of strings with choices for the correct output (or leave "
-                            "blank if not applicable).",
+                            value=answer_choices_key,
+                            help="A Jinja expression for computing answer choices. "
+                            "Separate choices with a triple bar (|||).",
                         )
+
+                        # Jinja
                         state.jinja = st.text_area("Template", height=40, value=template.jinja)
 
+                        # Submit form
                         if st.form_submit_button("Save"):
                             if (
                                 updated_template_name in dataset_templates.all_template_names
@@ -548,10 +557,10 @@ else:
                                 updated_answer_choices = [x.strip() for x in state.answer_choices.split("|||")]
                                 if len(updated_answer_choices) == 0 or len(updated_answer_choices) == 1:
                                     updated_answer_choices = None
-                                if state.answer_choices_key != "":
-                                    updated_answer_choices_key = state.answer_choices_key
-                                else:
+                                if state.answer_choices_key == "":
                                     updated_answer_choices_key = None
+                                else:
+                                    updated_answer_choices_key = state.answer_choices_key
 
                                 dataset_templates.update_template(
                                     state.template_name,
