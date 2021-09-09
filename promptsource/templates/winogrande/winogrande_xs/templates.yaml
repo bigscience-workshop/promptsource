@@ -2,20 +2,23 @@ dataset: winogrande
 subset: winogrande_xs
 templates:
   6d411e7c-17ba-4a4d-890e-c3939c7d71f8: !Template
-    answer_choices: null
+    answer_choices:
+    - 'True'
+    - 'False'
     answer_choices_key: null
     id: 6d411e7c-17ba-4a4d-890e-c3939c7d71f8
     jinja: 'The _ in the sentence below refers to {{option1}}. Answer True or False!
 
       {{sentence}}|||
 
-      {% if answer== 1 %}True{% else%}False{% endif %}'
+      {{answer_choices[answer|int - 1]}}'
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: false
-      choices_in_prompt: null
-      metrics: []
-      original_task: null
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
+      original_task: true
     name: True or False
     reference: ''
   968ad851-7d51-41d7-9de8-627e684d7edf: !Template
@@ -30,9 +33,10 @@ templates:
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: false
-      choices_in_prompt: null
-      metrics: []
-      original_task: null
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
+      original_task: true
     name: sentence_question_answer
     reference: ''
   9c8f09af-9e02-491b-9567-2d2087448aeb: !Template
@@ -48,9 +52,10 @@ templates:
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: false
-      choices_in_prompt: null
-      metrics: []
-      original_task: null
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
+      original_task: true
     name: question_sentence_answer
     reference: ''
   dd10be20-0977-49e9-b745-bbfc8b01f7b9: !Template
@@ -63,10 +68,11 @@ templates:
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: false
-      choices_in_prompt: null
-      metrics: []
-      original_task: null
-    name: 'Replace '
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
+      original_task: true
+    name: Replace
     reference: ''
   f538cf99-7174-4063-aac3-093f06fc1e67: !Template
     answer_choices: null
@@ -80,8 +86,9 @@ templates:
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: false
-      choices_in_prompt: null
-      metrics: []
-      original_task: null
+      choices_in_prompt: false
+      metrics:
+      - Accuracy
+      original_task: true
     name: Fill in the blanks
     reference: ''

@@ -6,12 +6,13 @@ templates:
     id: 0791ec30-6361-4e62-8dce-ca9cbf997acc
     jinja: "Please answer correctly the following question related to the paragraph\
       \ below. \n\n{{ question }}\n\n{{ situation }}\n\nHint: {{ background }}\n|||\n\
-      {{ answers.text[0] if  answers.text[0] != None }}"
+      {{ answers.text | choice }}"
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: true
-      choices_in_prompt: true
-      metrics: []
+      choices_in_prompt: false
+      metrics:
+      - Squad
       original_task: true
     name: prompt_beginning
     reference: ''
@@ -20,13 +21,14 @@ templates:
     answer_choices_key: null
     id: 0909d72d-50c7-4cbb-bec4-1f891123717c
     jinja: "{{ situation }}\n\nGiven the paragraph above, please answer correctly\
-      \ the following question: \n\n{{ question }}\n|||\n{{ answers.text[0] if  answers.text[0]\
-      \ != None }}"
+      \ the following question: \n\n{{ question }}\n|||\n{{ answers.text | choice\
+      \ }}"
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: true
-      choices_in_prompt: true
-      metrics: []
+      choices_in_prompt: false
+      metrics:
+      - Squad
       original_task: false
     name: prompt_bottom_no_hint
     reference: ''
@@ -45,14 +47,37 @@ templates:
 
       |||
 
-      {{ answers.text[0] if  answers.text[0] != None }}'
+      {{ answers.text | choice }}'
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: true
-      choices_in_prompt: true
-      metrics: []
+      choices_in_prompt: false
+      metrics:
+      - Squad
       original_task: true
     name: prompt_bottom_hint_beginning
+    reference: ''
+  27fb16c6-a563-46ef-af73-42e15183824e: !Template
+    answer_choices: null
+    answer_choices_key: null
+    id: 27fb16c6-a563-46ef-af73-42e15183824e
+    jinja: 'Given the background: {{background}}
+
+
+      and the situation: {{situation}}
+
+
+      Answer the following question: {{question}}|||
+
+      {{ answers.text | choice }}
+
+      '
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - Squad
+      original_task: true
+    name: given_background_situation
     reference: ''
   31faf808-80ff-47af-ac49-d2cd7a7abcaf: !Template
     answer_choices: null
@@ -66,12 +91,13 @@ templates:
 
       |||
 
-      {{ answers.text[0] if  answers.text[0] != None }}'
+      {{ answers.text | choice }}'
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: true
-      choices_in_prompt: true
-      metrics: []
+      choices_in_prompt: false
+      metrics:
+      - Squad
       original_task: false
     name: plain_no_background
     reference: Task without background
@@ -89,12 +115,13 @@ templates:
 
       |||
 
-      {{ answers.text[0] if  answers.text[0] != None }}'
+      {{ answers.text | choice}}'
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: true
-      choices_in_prompt: true
-      metrics: []
+      choices_in_prompt: false
+      metrics:
+      - Squad
       original_task: true
     name: plain_bottom_hint
     reference: ''
@@ -112,14 +139,81 @@ templates:
 
       |||
 
-      {{ answers.text[0] if  answers.text[0] != None }}'
+      {{ answers.text | choice }}'
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: true
-      choices_in_prompt: true
-      metrics: []
+      choices_in_prompt: false
+      metrics:
+      - Squad
       original_task: true
-    name: plain
+    name: plain_background_situation
+    reference: ''
+  a17aefbb-c571-4127-8170-379e2ec83774: !Template
+    answer_choices: null
+    answer_choices_key: null
+    id: a17aefbb-c571-4127-8170-379e2ec83774
+    jinja: 'I can use this background: {{background}}
+
+
+      Now, I have a new situation: {{situation}}
+
+
+      Answer this question please: {{question}}|||
+
+      {{ answers.text | choice }}
+
+      '
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - Squad
+      original_task: true
+    name: background_new_situation_answer
+    reference: ''
+  b6da4f12-5384-46f5-a74e-c703c19d1698: !Template
+    answer_choices: null
+    answer_choices_key: null
+    id: b6da4f12-5384-46f5-a74e-c703c19d1698
+    jinja: 'You are given a new situation: {{situation}}
+
+
+      and a hint : {{background}}
+
+
+      Please answer this question : {{question}}|||
+
+      {{ answers.text | choice }}
+
+      '
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - Squad
+      original_task: true
+    name: background_situation_middle
+    reference: ''
+  cc747655-6472-4023-95e4-03cb85d5a1c5: !Template
+    answer_choices: null
+    answer_choices_key: null
+    id: cc747655-6472-4023-95e4-03cb85d5a1c5
+    jinja: 'I have a new situation: {{situation}}
+
+
+      But I can use this background: {{background}}
+
+
+      What is an answer for this question: {{question}}|||
+
+      {{ answers.text | choice }}
+
+      '
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - Squad
+      original_task: true
+    name: new_situation_background_answer
     reference: ''
   cc8f3c6b-b800-4b47-b6ec-e8febfdaad6f: !Template
     answer_choices: null
@@ -127,12 +221,13 @@ templates:
     id: cc8f3c6b-b800-4b47-b6ec-e8febfdaad6f
     jinja: "{{ situation }}\n\nGiven the paragraph above, please answer correctly\
       \ the following question: \n\n{{ question }}\n\nHint: {{ background }}\n|||\n\
-      {{ answers.text[0] if  answers.text[0] != None }}"
+      {{ answers.text | choice }}"
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: true
-      choices_in_prompt: true
-      metrics: []
+      choices_in_prompt: false
+      metrics:
+      - Squad
       original_task: true
     name: prompt_mix
     reference: ''
@@ -149,14 +244,15 @@ templates:
       Using the knowledge I acquired from the background article, how should I answer
       correctly the following question regarding my new situation: {{question}}|||
 
-      {{ answers.text[0] if  answers.text[0] != None }}
+      {{ answers.text | choice }}
 
       '
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: true
-      choices_in_prompt: true
-      metrics: []
+      choices_in_prompt: false
+      metrics:
+      - Squad
       original_task: true
-    name: funky_prompt
+    name: read_background_situation
     reference: ''

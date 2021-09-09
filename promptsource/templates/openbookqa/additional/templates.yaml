@@ -9,6 +9,7 @@ templates:
 
       - {{ choices["text"] | join("\n- ") }}
 
+
       Which is the correct answer?
 
       |||
@@ -17,11 +18,13 @@ templates:
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: false
-      choices_in_prompt: null
-      metrics: []
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
+      - Sequence Accuracy
       original_task: true
     name: which_correct_inverse
-    reference: Giving options before asking question
+    reference: Giving options before asking question; answer_choices_key = choices["text"]
   6744fbdf-3bb6-4fd4-8dd5-64748fa7b44b: !Template
     answer_choices: null
     answer_choices_key: null
@@ -39,13 +42,19 @@ templates:
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: false
-      choices_in_prompt: null
-      metrics: []
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
+      - Sequence Accuracy
       original_task: true
     name: choices
-    reference: ''
+    reference: answer_choices_key = choices["text"]
   7482300b-30c0-479f-9635-2bb6eec315fd: !Template
-    answer_choices: null
+    answer_choices:
+    - A
+    - B
+    - C
+    - D
     answer_choices_key: null
     id: 7482300b-30c0-479f-9635-2bb6eec315fd
     jinja: '{{question_stem}}
@@ -64,8 +73,10 @@ templates:
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: false
-      choices_in_prompt: null
-      metrics: []
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
+      - Sequence Accuracy
       original_task: true
     name: pick_using_id
     reference: Using the index (A, B, C, D) for the answer
@@ -86,11 +97,13 @@ templates:
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: false
-      choices_in_prompt: null
-      metrics: []
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
+      - Sequence Accuracy
       original_task: true
     name: choose_an_answer_with_options
-    reference: choose an answer from a list
+    reference: choose an answer from a list; answer_choices_key = choices["text"]
   92575e39-b256-413b-9c59-c96479ffd1a3: !Template
     answer_choices: null
     answer_choices_key: null
@@ -108,11 +121,13 @@ templates:
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: false
-      choices_in_prompt: null
-      metrics: []
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
+      - Sequence Accuracy
       original_task: true
     name: which_correct
-    reference: ''
+    reference: answer_choices_key = choices["text"]
   96b9fe26-8d82-444a-9489-7c00512d4a59: !Template
     answer_choices: null
     answer_choices_key: null
@@ -127,11 +142,14 @@ templates:
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: false
-      choices_in_prompt: null
-      metrics: []
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
+      - Sequence Accuracy
       original_task: true
     name: only_options
-    reference: Listing the options right after the question
+    reference: Listing the options right after the question; answer_choices_key =
+      choices["text"]
   ab352cd9-dd1e-4f9c-a1eb-e7aca7447e3a: !Template
     answer_choices: null
     answer_choices_key: null
@@ -149,8 +167,10 @@ templates:
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: false
-      choices_in_prompt: null
-      metrics: []
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
+      - Sequence Accuracy
       original_task: true
     name: pick_answer_with_options
-    reference: ''
+    reference: answer_choices_key = choices["text"]

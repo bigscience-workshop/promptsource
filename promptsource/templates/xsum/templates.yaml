@@ -14,8 +14,9 @@ templates:
     metadata: !TemplateMetadata
       _do_eval: true
       _do_train: true
-      choices_in_prompt: null
-      metrics: []
+      choices_in_prompt: false
+      metrics:
+      - ROUGE
       original_task: true
     name: generate_summary_for_this
     reference: ''
@@ -23,18 +24,66 @@ templates:
     answer_choices: null
     answer_choices_key: null
     id: 30292806-8e58-463c-8d92-ba525411c6fa
-    jinja: 'Document: {{document}}
+    jinja: 'Article: {{document}}
 
 
       Summary: ||| {{summary}}'
     metadata: !TemplateMetadata
       _do_eval: true
       _do_train: true
-      choices_in_prompt: null
-      metrics: []
+      choices_in_prompt: false
+      metrics:
+      - ROUGE
       original_task: true
-    name: 'Document:'
-    reference: ''
+    name: article_summary_pair
+    reference: Prefix-Tuning
+  3d388a1e-3361-407b-baa7-61397cc58382: !Template
+    answer_choices: null
+    answer_choices_key: null
+    id: 3d388a1e-3361-407b-baa7-61397cc58382
+    jinja: '{{document}}
+
+      How would you rephrase this in a few words? ||| {{summary}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - ROUGE
+      original_task: true
+    name: how_would_you_rephrase
+    reference: http://gptprompts.wikidot.com/prompt:summarization
+  4cfe4126-b9f5-44eb-8a98-973987c5f32e: !Template
+    answer_choices: null
+    answer_choices_key: null
+    id: 4cfe4126-b9f5-44eb-8a98-973987c5f32e
+    jinja: 'My second grader asked me what this article means:
+
+
+      """ {{document}} """
+
+
+      I reorganized it in a simple sentence that even an elementary school student
+      can understand: ||| {{summary}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - ROUGE
+      original_task: true
+    name: summary_for_my_2nd_grader
+    reference: http://gptprompts.wikidot.com/prompt:summarization
+  57a7a3f1-91f8-4f4b-b72d-745d7cb7b1e3: !Template
+    answer_choices: null
+    answer_choices_key: null
+    id: 57a7a3f1-91f8-4f4b-b72d-745d7cb7b1e3
+    jinja: '{{document}}
+
+      This boils down to the simple idea that ||| {{summary}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - ROUGE
+      original_task: true
+    name: boils_down_to_that
+    reference: http://gptprompts.wikidot.com/prompt:summarization
   65a3c419-57e9-48c2-b090-0c5d7adb23c6: !Template
     answer_choices: null
     answer_choices_key: null
@@ -45,10 +94,11 @@ templates:
     metadata: !TemplateMetadata
       _do_eval: true
       _do_train: true
-      choices_in_prompt: null
-      metrics: []
+      choices_in_prompt: false
+      metrics:
+      - ROUGE
       original_task: true
-    name: 'summarize:'
+    name: summarize
     reference: ''
   752fda48-e64c-47a7-8342-17c2c113f600: !Template
     answer_choices: null
@@ -60,10 +110,11 @@ templates:
     metadata: !TemplateMetadata
       _do_eval: true
       _do_train: true
-      choices_in_prompt: null
-      metrics: []
+      choices_in_prompt: false
+      metrics:
+      - ROUGE
       original_task: true
-    name: 'Summarize this document:'
+    name: summarize_this_and_summary_pair
     reference: ''
   826ffcd4-c0e6-4f4c-bd9a-fcf8ee169ede: !Template
     answer_choices: null
@@ -79,10 +130,29 @@ templates:
     metadata: !TemplateMetadata
       _do_eval: true
       _do_train: true
-      choices_in_prompt: null
-      metrics: []
+      choices_in_prompt: false
+      metrics:
+      - ROUGE
       original_task: true
     name: write_one_sentence
+    reference: ''
+  9a3f617f-628f-4fa5-9b74-47d0b166a487: !Template
+    answer_choices: null
+    answer_choices_key: null
+    id: 9a3f617f-628f-4fa5-9b74-47d0b166a487
+    jinja: 'First, please read the article below.
+
+
+      {{document}}
+
+
+      Now, can you write me an extremely short abstract for it?  ||| {{summary}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - ROUGE
+      original_task: true
+    name: read_this_first_and_then_write_abstract
     reference: ''
   d878b768-9da2-4d9d-9517-1edcca3b1b26: !Template
     answer_choices: null
@@ -95,8 +165,9 @@ templates:
     metadata: !TemplateMetadata
       _do_eval: true
       _do_train: true
-      choices_in_prompt: null
-      metrics: []
+      choices_in_prompt: false
+      metrics:
+      - ROUGE
       original_task: true
     name: TLDR
     reference: GPT-2 TLDR
