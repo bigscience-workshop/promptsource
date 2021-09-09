@@ -41,7 +41,7 @@ templates:
       Given the goal, what is the correct solution?
 
 
-      Answer:
+      Answer by copying the correct solution
 
       |||
 
@@ -151,7 +151,9 @@ templates:
     name: Does this solution make sense? sol2
     reference: ''
   adfef248-f856-44fa-affd-e3223718854e: !Template
-    answer_choices: null
+    answer_choices:
+    - Solution 1
+    - Solution 2
     answer_choices_key: null
     id: adfef248-f856-44fa-affd-e3223718854e
     jinja: 'Given a goal and 2 solutions, choose the most appropriate solution.
@@ -163,11 +165,11 @@ templates:
       - {{"Solution 2"}}: {{sol2}}
 
 
-      Answer:
+      Answer by returning either {{"Solution 1"}} or {{"Solution 2"}}
 
       |||
 
-      {{[sol1, sol2][label]}}'
+      {{answer_choices[label]}}'
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: true
@@ -181,7 +183,8 @@ templates:
     answer_choices: null
     answer_choices_key: null
     id: b5c69473-eedb-4c4f-a5fa-d4e266e43535
-    jinja: 'Given a sentence, correct it if it doesn''t make sense.
+    jinja: 'Given a sentence, correct it if it doesn''t make sense. If it makes sense,
+      just return it as the answer.
 
       Input: {{goal}} {{sol2[0].lower() + sol2[1:]}}
 
@@ -252,6 +255,7 @@ templates:
     jinja: 'Sentence: {{goal}} {{sol1[0].lower() + sol1[1:]}}
 
       If the sentence does not make sense, correct it so that it does make sense.
+      Otherwise, just copy it.
 
       Answer:
 
