@@ -2,15 +2,24 @@ dataset: meta_woz
 subset: dialogues
 templates:
   4b64c6e9-0aa0-431f-85b5-8367daa4773a: !Template
+    answer_choices: null
+    answer_choices_key: null
     id: 4b64c6e9-0aa0-431f-85b5-8367daa4773a
     jinja: "What does this conversation between a Chatbot and a client talk about\
       \ ? \n{% for utterance in turns %}\n{{[\"Client\", \"Chatbot\"][loop.index %\
       \ 2]}}: {{utterance}}\n{% endfor %}\n|||\n{{domain.replace('_', ' ') | lower\
       \ }}"
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: false
+      choices_in_prompt: null
+      metrics: []
+      original_task: false
     name: predict_domain_2
     reference: ''
-    task_template: false
   56151136-82a4-455b-98ed-aea6ee1c273d: !Template
+    answer_choices: null
+    answer_choices_key: null
     id: 56151136-82a4-455b-98ed-aea6ee1c273d
     jinja: '{% set count = namespace(value=0) %}
 
@@ -30,44 +39,79 @@ templates:
 
 
       '
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: false
+      choices_in_prompt: null
+      metrics: []
+      original_task: true
     name: predict_random
     reference: ''
-    task_template: true
   5e90f705-9d63-4917-acc9-3baabc6ee5e9: !Template
+    answer_choices: null
+    answer_choices_key: null
     id: 5e90f705-9d63-4917-acc9-3baabc6ee5e9
     jinja: "{% set rand_index= namespace(value=range(turns|length)|random()) %}\n\
       {% for utterance in turns %}\n{% if loop.index0 == rand_index.value %}\n{{[\"\
       Chatbot\", \"Human\"][loop.index0 % 2]}}: (blank)\n{% else %}\n{{[\"Chatbot\"\
       , \"Human\"][loop.index0 % 2]}}: {{utterance}}\n{% endif %}\n{% endfor %}\n\
       Fill in the blank \n|||\n{{turns[rand_index.value] }}"
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: false
+      choices_in_prompt: null
+      metrics: []
+      original_task: false
     name: 'predict_missing '
     reference: ''
-    task_template: false
   77a9e854-08ef-4f2d-86f9-ed077f18b39d: !Template
+    answer_choices: null
+    answer_choices_key: null
     id: 77a9e854-08ef-4f2d-86f9-ed077f18b39d
     jinja: "This conversation is between an AI assistant and a human. What is the\
       \ human inquiring about ? \n{% for utterance in turns %}\n{{[\"Human\", \" AI\
       \ assistant\"][loop.index % 2]}}: {{utterance}}\n{% endfor %}\n|||\n{{domain.replace('_',\
       \ ' ') | lower }}"
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: false
+      choices_in_prompt: null
+      metrics: []
+      original_task: false
     name: predict_domain_3
     reference: ''
-    task_template: false
   9150f1e0-8b9e-4f24-bc58-1cbb230cb8d9: !Template
+    answer_choices: null
+    answer_choices_key: null
     id: 9150f1e0-8b9e-4f24-bc58-1cbb230cb8d9
     jinja: "This conversation is between an AI assistant and a human. what does it\
       \ talk about ? \n{% for utterance in turns %}\n{{[\"Human\", \" AI assistant\"\
       ][loop.index % 2]}}: {{utterance}}\n{% endfor %}\n|||\n{{domain.replace('_',\
       \ ' ') | lower }}"
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: false
+      choices_in_prompt: null
+      metrics: []
+      original_task: false
     name: predict_domain_1
     reference: ''
-    task_template: false
   98b0697f-3144-40b6-b6ae-5d57c3f08db3: !Template
+    answer_choices: null
+    answer_choices_key: null
     id: 98b0697f-3144-40b6-b6ae-5d57c3f08db3
     jinja: "Chatbot: {{turns[0]}}\n\nHuman: {{turns[1]}}\n\nChatbot: \n|||\n{{turns[2]}}"
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: false
+      choices_in_prompt: null
+      metrics: []
+      original_task: true
     name: predict_next_stmt_1
     reference: ''
-    task_template: true
   a02a980d-630f-4845-8b4d-b0eb072110e9: !Template
+    answer_choices: null
+    answer_choices_key: null
     id: a02a980d-630f-4845-8b4d-b0eb072110e9
     jinja: '{% for utterance in turns[:-1] %}
 
@@ -82,10 +126,17 @@ templates:
       {{turns[-1]}}
 
       '
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: false
+      choices_in_prompt: null
+      metrics: []
+      original_task: false
     name: predict_last_stmt_3
     reference: ''
-    task_template: false
   a4a8c7a1-1747-4560-8365-e998b1d2cfdf: !Template
+    answer_choices: null
+    answer_choices_key: null
     id: a4a8c7a1-1747-4560-8365-e998b1d2cfdf
     jinja: '{% for utterance in turns[:-1] %}
 
@@ -100,10 +151,17 @@ templates:
       {{turns[-1]}}
 
       '
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: false
+      choices_in_prompt: null
+      metrics: []
+      original_task: true
     name: predict_last_stmt_1
     reference: ''
-    task_template: true
   eba8d3ba-88f8-4257-a252-b02eafcfc463: !Template
+    answer_choices: null
+    answer_choices_key: null
     id: eba8d3ba-88f8-4257-a252-b02eafcfc463
     jinja: '{% for utterance in turns[:-1] %}
 
@@ -118,6 +176,11 @@ templates:
       {{turns[-1]}}
 
       '
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: false
+      choices_in_prompt: null
+      metrics: []
+      original_task: true
     name: predict_last_stmt_2
     reference: ''
-    task_template: true

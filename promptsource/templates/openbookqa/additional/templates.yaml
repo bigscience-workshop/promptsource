@@ -1,38 +1,62 @@
 dataset: openbookqa
 subset: additional
 templates:
-  0206de6a-22da-4558-9b75-40c558ba60be: !Template
-    id: 0206de6a-22da-4558-9b75-40c558ba60be
+  39af6992-b4d0-4b37-8a28-55ac16d38944: !Template
+    answer_choices: null
+    answer_choices_key: null
+    id: 39af6992-b4d0-4b37-8a28-55ac16d38944
     jinja: '{{question_stem}}
-
-
-      Choose an answer from this list:
 
       - {{ choices["text"] | join("\n- ") }}
-
-      |||
-
-      {{choices["text"][{"A":0,"B":1,"C":2,"D":3}[answerKey]]}}'
-    name: choose_an_answer_with_options
-    reference: choose an answer from a list
-    task_template: true
-  0dfe6c27-9716-455d-92a8-63ada1eb949b: !Template
-    id: 0dfe6c27-9716-455d-92a8-63ada1eb949b
-    jinja: '{{question_stem}}
 
 
       Which is the correct answer?
 
+      |||
+
+      {{choices["text"][{"A":0,"B":1,"C":2,"D":3}[answerKey]]}}'
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: false
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
+      - Sequence Accuracy
+      original_task: true
+    name: which_correct_inverse
+    reference: Giving options before asking question; answer_choices_key = choices["text"]
+  6744fbdf-3bb6-4fd4-8dd5-64748fa7b44b: !Template
+    answer_choices: null
+    answer_choices_key: null
+    id: 6744fbdf-3bb6-4fd4-8dd5-64748fa7b44b
+    jinja: '{{question_stem}}
+
+
+      Choices:
+
       - {{ choices["text"] | join("\n- ") }}
 
       |||
 
       {{choices["text"][{"A":0,"B":1,"C":2,"D":3}[answerKey]]}}'
-    name: which_correct
-    reference: ''
-    task_template: true
-  90260bf9-caf1-4847-b0a7-c76bc015acbf: !Template
-    id: 90260bf9-caf1-4847-b0a7-c76bc015acbf
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: false
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
+      - Sequence Accuracy
+      original_task: true
+    name: choices
+    reference: answer_choices_key = choices["text"]
+  7482300b-30c0-479f-9635-2bb6eec315fd: !Template
+    answer_choices:
+    - A
+    - B
+    - C
+    - D
+    answer_choices_key: null
+    id: 7482300b-30c0-479f-9635-2bb6eec315fd
     jinja: '{{question_stem}}
 
       {% for k in range(choices["text"] | length) %}
@@ -46,52 +70,90 @@ templates:
       |||
 
       {{answerKey}}'
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: false
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
+      - Sequence Accuracy
+      original_task: true
     name: pick_using_id
     reference: Using the index (A, B, C, D) for the answer
-    task_template: true
-  96e5065b-2876-4e4f-a33a-bb94c3505bb6: !Template
-    id: 96e5065b-2876-4e4f-a33a-bb94c3505bb6
+  87c7b3ed-d3fd-4ff1-bb45-293660998dde: !Template
+    answer_choices: null
+    answer_choices_key: null
+    id: 87c7b3ed-d3fd-4ff1-bb45-293660998dde
     jinja: '{{question_stem}}
 
 
-      Choices:
+      Choose an answer from this list:
 
       - {{ choices["text"] | join("\n- ") }}
 
       |||
 
       {{choices["text"][{"A":0,"B":1,"C":2,"D":3}[answerKey]]}}'
-    name: choices
-    reference: ''
-    task_template: true
-  a4453d77-4cdd-44e5-9901-358f48631944: !Template
-    id: a4453d77-4cdd-44e5-9901-358f48631944
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: false
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
+      - Sequence Accuracy
+      original_task: true
+    name: choose_an_answer_with_options
+    reference: choose an answer from a list; answer_choices_key = choices["text"]
+  92575e39-b256-413b-9c59-c96479ffd1a3: !Template
+    answer_choices: null
+    answer_choices_key: null
+    id: 92575e39-b256-413b-9c59-c96479ffd1a3
     jinja: '{{question_stem}}
 
-      - {{ choices["text"] | join("\n- ") }}
-
-      |||
-
-      {{choices["text"][{"A":0,"B":1,"C":2,"D":3}[answerKey]]}}'
-    name: only_options
-    reference: Listing the options right after the question
-    task_template: true
-  c4814b92-9887-4b08-a4e2-1c7ca44345f7: !Template
-    id: c4814b92-9887-4b08-a4e2-1c7ca44345f7
-    jinja: '{{question_stem}}
-
-      - {{ choices["text"] | join("\n- ") }}
 
       Which is the correct answer?
 
+      - {{ choices["text"] | join("\n- ") }}
+
       |||
 
       {{choices["text"][{"A":0,"B":1,"C":2,"D":3}[answerKey]]}}'
-    name: which_correct_inverse
-    reference: Giving options before asking question
-    task_template: true
-  e9ca981e-0bda-4332-a101-41d5947df8f3: !Template
-    id: e9ca981e-0bda-4332-a101-41d5947df8f3
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: false
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
+      - Sequence Accuracy
+      original_task: true
+    name: which_correct
+    reference: answer_choices_key = choices["text"]
+  96b9fe26-8d82-444a-9489-7c00512d4a59: !Template
+    answer_choices: null
+    answer_choices_key: null
+    id: 96b9fe26-8d82-444a-9489-7c00512d4a59
+    jinja: '{{question_stem}}
+
+      - {{ choices["text"] | join("\n- ") }}
+
+      |||
+
+      {{choices["text"][{"A":0,"B":1,"C":2,"D":3}[answerKey]]}}'
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: false
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
+      - Sequence Accuracy
+      original_task: true
+    name: only_options
+    reference: Listing the options right after the question; answer_choices_key =
+      choices["text"]
+  ab352cd9-dd1e-4f9c-a1eb-e7aca7447e3a: !Template
+    answer_choices: null
+    answer_choices_key: null
+    id: ab352cd9-dd1e-4f9c-a1eb-e7aca7447e3a
     jinja: '{{question_stem}}
 
 
@@ -102,6 +164,13 @@ templates:
       |||
 
       {{choices["text"][{"A":0,"B":1,"C":2,"D":3}[answerKey]]}}'
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: false
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
+      - Sequence Accuracy
+      original_task: true
     name: pick_answer_with_options
-    reference: ''
-    task_template: true
+    reference: answer_choices_key = choices["text"]

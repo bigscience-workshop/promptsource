@@ -1,6 +1,8 @@
 dataset: quartz
 templates:
   005b9776-2170-47f8-a5d2-03e83d0e55ae: !Template
+    answer_choices: null
+    answer_choices_key: null
     id: 005b9776-2170-47f8-a5d2-03e83d0e55ae
     jinja: "Use information from the paragraph to answer the question.\n\nQuestion:\n\
       \n{% if '_____' in question %}\n{{ question | trim(\".?!\") | replace(\"_____\"\
@@ -8,46 +10,40 @@ templates:
       \ | trim(\".?!\") }} {{  choices[\"text\"] | join(\" or \") }}{{ \"?\" }} \n\
       {% endif %}\n\nParagraph :\n\n{{ para }}\n|||\n{% for i in range(choices[\"\
       label\"] | length) if choices[\"label\"][i]==answerKey -%}\n\n{{ choices[\"\
-      text\"][i]}}\n\n{%- endfor %}"
-    name: question-para-2
-    reference: ''
-    task_template: true
+      text\"][i] }}\n\n{%- endfor %}"
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: true
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
+      - Sequence Accuracy
+      original_task: true
+    name: use_info_from_question_paragraph
+    reference: 'Comment: Answer_choices_key: choices["text"]'
   01d6ae3e-87bb-456c-9722-92a214f6ff19: !Template
+    answer_choices: null
+    answer_choices_key: null
     id: 01d6ae3e-87bb-456c-9722-92a214f6ff19
     jinja: "{{ para }}\n{% if '_____' in question %}\n{{ question | trim(\".?!\")\
       \ | replace(\"_____\", choices[\"text\"] | join(\" or \")) }}{{ \"?\" }} \n\
       {% else %}\n{{ question | trim(\".?!\")}} {{  choices[\"text\"] | join(\" or\
       \ \") }}{{ \"?\" }} \n{% endif %}\n|||\n{% for i in range(choices[\"label\"\
-      ] | length) if choices[\"label\"][i]==answerKey -%}\n\n{{ choices[\"text\"][i]}}\n\
-      \n{%- endfor %}"
-    name: para-question-plain
-    reference: ''
-    task_template: true
-  07c22583-a52c-4416-8141-993202f2036f: !Template
-    id: 07c22583-a52c-4416-8141-993202f2036f
-    jinja: "Answer the question based on the following text.\n\nQuestion:\n\n{% if\
-      \ '_____' in question %}\n{{ question | trim(\".?!\") | replace(\"_____\", choices[\"\
-      text\"] | reverse | join(\" or \")) }}{{ \"?\" }} \n{% else %}\n{{ question\
-      \ | trim(\".?!\") }} {{  choices[\"text\"] | reverse | join(\" or \") }}{{ \"\
-      ?\" }} \n{% endif %}\n\nText:\n\n{{ para }}|||\n{% for i in range(choices[\"\
-      label\"] | length) if choices[\"label\"][i]==answerKey -%}\n\n{{ choices[\"\
-      text\"][i]}}\n\n{%- endfor %}"
-    name: question-para-3-reverse
-    reference: ''
-    task_template: true
-  19519902-adc9-439a-998b-f1e86e6a23ab: !Template
-    id: 19519902-adc9-439a-998b-f1e86e6a23ab
-    jinja: "Given the fact that:\n\n{{ para }}\n\nAnswer the question:\n\n{% if '_____'\
-      \ in question %}\n{{ question | trim(\".?!\") | replace(\"_____\", choices[\"\
-      text\"] | reverse | join(\" or \")) }}{{ \"?\" }} \n{% else %}\n{{ question\
-      \ | trim(\".?!\") }} {{  choices[\"text\"] | reverse | join(\" or \") }}{{ \"\
-      ?\" }} \n{% endif %}\n|||\n{% for i in range(choices[\"label\"] | length) if\
-      \ choices[\"label\"][i]==answerKey -%}\n\n{{ choices[\"text\"][i]}}\n\n{%- endfor\
-      \ %}"
-    name: para-question-1-reverse
-    reference: ''
-    task_template: true
+      ] | length) if choices[\"label\"][i]==answerKey -%}\n\n{{ choices[\"text\"][i]\
+      \ }}\n\n{%- endfor %}"
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: true
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
+      - Sequence Accuracy
+      original_task: true
+    name: paragraph_question_plain_concat
+    reference: 'Comment: Answer_choices_key: choices["text"]'
   22e29cab-f57f-4af7-92fc-72b131a96878: !Template
+    answer_choices: null
+    answer_choices_key: null
     id: 22e29cab-f57f-4af7-92fc-72b131a96878
     jinja: "Use information from the paragraph to answer the question.\n\nParagraph\
       \ :\n\n{{ para }}\n\nQuestion:\n\n{% if '_____' in question %}\n{{ question\
@@ -55,34 +51,61 @@ templates:
       \ \"?\" }} \n{% else %}\n{{ question | trim(\".?!\") }} {{  choices[\"text\"\
       ] | join(\" or \") }}{{ \"?\" }} \n{% endif %}\n|||\n{% for i in range(choices[\"\
       label\"] | length) if choices[\"label\"][i]==answerKey -%}\n\n{{ choices[\"\
-      text\"][i]}}\n\n{%- endfor %}"
-    name: para-question-2
-    reference: ''
-    task_template: true
+      text\"][i] }}\n\n{%- endfor %}"
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: true
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
+      - Sequence Accuracy
+      original_task: true
+    name: use_info_from_paragraph_question
+    reference: 'Comment: Answer_choices_key: choices["text"]'
   2f6baa0c-3b69-48be-b195-cc00cb5c96fa: !Template
+    answer_choices: null
+    answer_choices_key: null
     id: 2f6baa0c-3b69-48be-b195-cc00cb5c96fa
     jinja: "Answer the question based on the following text.\n\nQuestion:\n\n{% if\
       \ '_____' in question %}\n{{ question | trim(\".?!\") | replace(\"_____\", choices[\"\
       text\"] | join(\" or \")) }}{{ \"?\" }} \n{% else %}\n{{ question | trim(\"\
       .?!\") }} {{  choices[\"text\"] | join(\" or \") }}{{ \"?\" }} \n{% endif %}\n\
       \nText:\n\n{{ para }}|||\n{% for i in range(choices[\"label\"] | length) if\
-      \ choices[\"label\"][i]==answerKey -%}\n\n{{ choices[\"text\"][i]}}\n\n{%- endfor\
-      \ %}"
-    name: question-para-3
-    reference: ''
-    task_template: true
+      \ choices[\"label\"][i]==answerKey -%}\n\n{{ choices[\"text\"][i] }}\n\n{%-\
+      \ endfor %}"
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: true
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
+      - Sequence Accuracy
+      original_task: true
+    name: answer_question_based_on
+    reference: 'Comment: Answer_choices_key: choices["text"]'
   397bdb29-03e8-478b-9840-1bfe9d57d6fb: !Template
+    answer_choices: null
+    answer_choices_key: null
     id: 397bdb29-03e8-478b-9840-1bfe9d57d6fb
     jinja: "Answer the question below:\n\n{% if '_____' in question %}\n{{ question\
       \ | trim(\".?!\") | replace(\"_____\", choices[\"text\"] | join(\" or \")) }}{{\
       \ \"?\" }} \n{% else %}\n{{ question | trim(\".?!\") }} {{  choices[\"text\"\
       ] | join(\" or \") }}{{ \"?\" }} \n{% endif %}\n\nAssuming that:\n\n{{ para\
       \ }}|||\n{% for i in range(choices[\"label\"] | length) if choices[\"label\"\
-      ][i]==answerKey -%}\n\n{{ choices[\"text\"][i]}}\n\n{%- endfor %}"
-    name: question-para-1
-    reference: ''
-    task_template: true
+      ][i]==answerKey -%}\n\n{{ choices[\"text\"][i] }}\n\n{%- endfor %}"
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: true
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
+      - Sequence Accuracy
+      original_task: true
+    name: answer_question_below
+    reference: 'Comment: Answer_choices_key: choices["text"]'
   39a67851-fdf5-4f0d-bda2-4902be3a6bff: !Template
+    answer_choices: null
+    answer_choices_key: null
     id: 39a67851-fdf5-4f0d-bda2-4902be3a6bff
     jinja: "Read the passage below and choose the right answer to the following question\
       \ (choices are {{ choices[\"text\"] | join(\" or \") }} ):\n\n{{ para }}\n\n\
@@ -90,11 +113,20 @@ templates:
       , choices[\"text\"] | join(\" or \")) }}{{ \"?\" }} \n{% else %}\n{{ question\
       \ | trim(\".?!\") }} {{  choices[\"text\"] | join(\" or \") }}{{ \"?\" }} \n\
       {% endif %}\n|||\n{% for i in range(choices[\"label\"] | length) if choices[\"\
-      label\"][i]==answerKey -%}\n\n{{ choices[\"text\"][i]}}\n\n{%- endfor %}"
-    name: para-question-4-choices
-    reference: ''
-    task_template: true
+      label\"][i]==answerKey -%}\n\n{{ choices[\"text\"][i] }}\n\n{%- endfor %}"
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: true
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
+      - Sequence Accuracy
+      original_task: true
+    name: read_passage_below_choose
+    reference: 'Comment: Answer_choices_key: choices["text"]'
   5c794ff0-32b9-43d4-b496-1a4d246ecfc0: !Template
+    answer_choices: null
+    answer_choices_key: null
     id: 5c794ff0-32b9-43d4-b496-1a4d246ecfc0
     jinja: "{{ para }}\n\nHaving read the above passage, choose the right answer to\
       \ the following question (choices are {{ choices[\"text\"] | reverse | join(\"\
@@ -102,41 +134,35 @@ templates:
       \ | replace(\"_____\", choices[\"text\"] | join(\" or \")) }}{{ \"?\" }} \n\
       {% else %}\n{{ question | trim(\".?!\") }} {{  choices[\"text\"] | join(\" or\
       \ \") }}{{ \"?\" }} \n{% endif %}\n|||\n{% for i in range(choices[\"label\"\
-      ] | length) if choices[\"label\"][i]==answerKey -%}\n\n{{ choices[\"text\"][i]}}\n\
-      \n{%- endfor %}"
-    name: para-question-3-choices
-    reference: ''
-    task_template: true
+      ] | length) if choices[\"label\"][i]==answerKey -%}\n\n{{ choices[\"text\"][i]\
+      \ }}\n\n{%- endfor %}"
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: true
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
+      - Sequence Accuracy
+      original_task: true
+    name: having_read_above_passage
+    reference: 'Comment: Answer_choices_key: choices["text"]'
   a8c6ae4c-4874-47d1-93ea-801b6e080a58: !Template
+    answer_choices: null
+    answer_choices_key: null
     id: a8c6ae4c-4874-47d1-93ea-801b6e080a58
     jinja: "Given the fact that:\n\n{{ para }}\n\nAnswer the question:\n\n{% if '_____'\
       \ in question %}\n{{ question | trim(\".?!\") | replace(\"_____\", choices[\"\
       text\"] | join(\" or \")) }}{{ \"?\" }} \n{% else %}\n{{ question | trim(\"\
       .?!\") }} {{  choices[\"text\"] | join(\" or \") }}{{ \"?\" }} \n{% endif %}\n\
       |||\n{% for i in range(choices[\"label\"] | length) if choices[\"label\"][i]==answerKey\
-      \ -%}\n\n{{ choices[\"text\"][i]}}\n\n{%- endfor %}"
-    name: para-question-1
-    reference: ''
-    task_template: true
-  b040acbf-43d0-44cd-86a2-43978d590fd7: !Template
-    id: b040acbf-43d0-44cd-86a2-43978d590fd7
-    jinja: "Answer the question below:\n\n{% if '_____' in question %}\n{{ question\
-      \ | trim(\".?!\") | replace(\"_____\", choices[\"text\"] | reverse | join(\"\
-      \ or \")) }}{{ \"?\" }} \n{% else %}\n{{ question | trim(\".?!\") }} {{  choices[\"\
-      text\"] | reverse | join(\" or \") }}{{ \"?\" }} \n{% endif %}\n\nAssuming that:\n\
-      \n{{ para }}|||\n{% for i in range(choices[\"label\"] | length) if choices[\"\
-      label\"][i]==answerKey -%}\n\n{{ choices[\"text\"][i]}}\n\n{%- endfor %}"
-    name: question-para-1-reverse
-    reference: ''
-    task_template: true
-  d92ffda6-8e26-4a5a-ba30-2bc11699a0a7: !Template
-    id: d92ffda6-8e26-4a5a-ba30-2bc11699a0a7
-    jinja: "{{ para }}\n{% if '_____' in question %}\n{{ question | trim(\".?!\")\
-      \ | replace(\"_____\", choices[\"text\"] | reverse | join(\" or \")) }}{{ \"\
-      ?\" }} \n{% else %}\n{{ question | trim(\".?!\")}} {{  choices[\"text\"] | reverse\
-      \ | join(\" or \") }}{{ \"?\" }} \n{% endif %}\n|||\n{% for i in range(choices[\"\
-      label\"] | length) if choices[\"label\"][i]==answerKey -%}\n\n{{ choices[\"\
-      text\"][i]}}\n\n{%- endfor %}"
-    name: para-question-plain-reverse
-    reference: ''
-    task_template: true
+      \ -%}\n\n{{ choices[\"text\"][i] }}\n\n{%- endfor %}"
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: true
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
+      - Sequence Accuracy
+      original_task: true
+    name: given_the_fact_answer_the_q
+    reference: 'Comment: Answer_choices_key: choices["text"]'

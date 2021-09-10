@@ -2,6 +2,8 @@ dataset: adversarial_qa
 subset: dbert
 templates:
   100e8bf2-25e3-4a7b-9be3-b832415676ec: !Template
+    answer_choices: null
+    answer_choices_key: null
     id: 100e8bf2-25e3-4a7b-9be3-b832415676ec
     jinja: 'Given the following passage
 
@@ -15,29 +17,51 @@ templates:
       "{{question}}" |||
 
       {{answers.text[0]}}'
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: true
+      choices_in_prompt: null
+      metrics: []
+      original_task: true
     name: adversarial_qa_dbert_1
     reference: 'Input: QC, Output: Answer'
-    task_template: true
   20202955-ea65-461e-893b-633c3caf38d7: !Template
+    answer_choices: null
+    answer_choices_key: null
     id: 20202955-ea65-461e-893b-633c3caf38d7
     jinja: 'I know that the answer to the question "{{question}}" is in "{{context}}".
       Can you tell me what it is? |||
 
 
       {{answers.text[0]}}'
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: true
+      choices_in_prompt: null
+      metrics: []
+      original_task: true
     name: adversarial_qa_dbert_2
     reference: 'Input: QC, Output: A (rephrase)'
-    task_template: true
   222358b1-812f-4d47-a200-4cc2522faaef: !Template
+    answer_choices: null
+    answer_choices_key: null
     id: 222358b1-812f-4d47-a200-4cc2522faaef
-    jinja: "I know that the answer to \"{{question}}\" is in \"{{context}}\" somewhere.\
-      \ Can you return the offsets of the answer? \n\nNote: Follow 0-indexing and\
-      \ [inclusive, exclusive) format for range.\n|||\n{{(answers.answer_start[0],\
-      \ answers.answer_start[0]+answers.text[0]|length)}}"
+    jinja: 'I know that the answer to "{{question}}" is in "{{context}}" somewhere.
+      Can you return the offsets of the answer? Note: Follow 0-indexing and [inclusive,
+      exclusive) format for range. ||| {% if answers.text != [] %} {{(answers.answer_start[0],
+      answers.answer_start[0]+answers.text[0]|length)}} {% else %} Answer not found
+      {% endif %}'
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: true
+      choices_in_prompt: null
+      metrics: []
+      original_task: true
     name: adversarial_qa_dbert_7
     reference: 'Input: QC, Output: Offsets'
-    task_template: true
   42dc598c-7bf5-4957-adf4-5b30d9129534: !Template
+    answer_choices: null
+    answer_choices_key: null
     id: 42dc598c-7bf5-4957-adf4-5b30d9129534
     jinja: 'My professor gave us an assignment today. I don''t like cheating, but
       the exercise is easy for humans and frankly, a waste of time for me. Could you
@@ -45,10 +69,17 @@ templates:
       ("{{question}}"). What''s the answer? |||
 
       {{answers.text[0]}}'
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: true
+      choices_in_prompt: null
+      metrics: []
+      original_task: true
     name: adversarial_qa_dbert_6
     reference: 'Input: QC, Output: A (formulate as an assignment)'
-    task_template: true
   58eaf39c-ff65-4977-a68a-defd510a0f30: !Template
+    answer_choices: null
+    answer_choices_key: null
     id: 58eaf39c-ff65-4977-a68a-defd510a0f30
     jinja: 'Question: "{{question}}"
 
@@ -61,10 +92,17 @@ templates:
       |||
 
       {{answers.text[0]}}'
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: true
+      choices_in_prompt: null
+      metrics: []
+      original_task: true
     name: adversarial_qa_dbert_3
     reference: 'Input: QC, Output: Answer (short form)'
-    task_template: true
   9f1e33e8-c7fe-4cf7-9353-f61fe858a959: !Template
+    answer_choices: null
+    answer_choices_key: null
     id: 9f1e33e8-c7fe-4cf7-9353-f61fe858a959
     jinja: 'Documentation:
 
@@ -100,20 +138,34 @@ templates:
 
 
       {{answers.answer_start[0] | string}}'
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: true
+      choices_in_prompt: null
+      metrics: []
+      original_task: true
     name: adversarial_qa_dbert_10
     reference: 'Input: Question, Context Output: Answer+Index (Python format)'
-    task_template: true
   a2f12d1e-1f0c-4c10-9f6b-aa01196d80bd: !Template
+    answer_choices: null
+    answer_choices_key: null
     id: a2f12d1e-1f0c-4c10-9f6b-aa01196d80bd
     jinja: 'I want to test the ability of students to read a passage and answer questions
       about it. Could you please come up with a good question for the passage "{{context}}"?
       |||
 
       {{question}}'
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: true
+      choices_in_prompt: null
+      metrics: []
+      original_task: false
     name: adversarial_qa_dbert_4
     reference: 'Input: Context, Output: Question (generate a question)'
-    task_template: false
   a5988faf-c8c0-457c-b75f-8853e64a9b56: !Template
+    answer_choices: null
+    answer_choices_key: null
     id: a5988faf-c8c0-457c-b75f-8853e64a9b56
     jinja: 'I want to make a question paper for students. I''ve crawled paragraphs
       from Wikipedia and now want to test their reading comprehension prowess. I am
@@ -124,20 +176,33 @@ templates:
 
 
       Answer:  "{{answers.text[0]}}"'
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: true
+      choices_in_prompt: null
+      metrics: []
+      original_task: false
     name: adversarial_qa_dbert_5
     reference: 'Input: Context, Output: QA (set a question paper)'
-    task_template: false
   c3766395-d9b3-40e8-9748-589f7f8f1f53: !Template
+    answer_choices: null
+    answer_choices_key: null
     id: c3766395-d9b3-40e8-9748-589f7f8f1f53
     jinja: '"{{answers.text[0]}}" is in "{{context}}". But the paragraph is very long
       and manual counting will take ages. Can you return the starting and ending indices?
-      |||
-
-      {{(answers.answer_start[0], answers.answer_start[0] + answers.text[0]|length)}}'
+      ||| {% if answers.text != [] %} {{(answers.answer_start[0], answers.answer_start[0]
+      + answers.text[0]|length)}} {% else %} Answer not found {% endif %}'
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: true
+      choices_in_prompt: null
+      metrics: []
+      original_task: false
     name: adversarial_qa_dbert_9
     reference: 'Input: CA, Output: offsets of A'
-    task_template: false
   e10735e8-bf0d-4d61-b001-b59b4c660583: !Template
+    answer_choices: null
+    answer_choices_key: null
     id: e10735e8-bf0d-4d61-b001-b59b4c660583
     jinja: 'Q: "{{question}}"
 
@@ -149,6 +214,11 @@ templates:
       the index of the character from where the answer starts (as a hint). |||
 
       {{answers.answer_start[0] | string}}'
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: true
+      choices_in_prompt: null
+      metrics: []
+      original_task: true
     name: adversarial_qa_dbert_8
     reference: 'Input: QC, Output: beginning offset of A'
-    task_template: true

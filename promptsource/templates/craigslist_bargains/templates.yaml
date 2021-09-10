@@ -1,6 +1,8 @@
 dataset: craigslist_bargains
 templates:
   145dd841-b971-4550-bc88-305ad3278d58: !Template
+    answer_choices: null
+    answer_choices_key: null
     id: 145dd841-b971-4550-bc88-305ad3278d58
     jinja: 'The following conversation is a negotiation on craigslist. The first speaker
       is the buyer, and the second speaker is the seller.
@@ -27,7 +29,8 @@ templates:
 
       {% set final_price = -1 %}
 
-      {% if nonzero_price | length != 0 %}{% set final_price = nonzero_price[-1] %}{% endif %}
+      {% if nonzero_price | length != 0 %}{% set final_price = nonzero_price[-1] %}{%
+      endif %}
 
       {% if final_price == -1 %}
 
@@ -49,10 +52,17 @@ templates:
       good
 
       {% endif %}'
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: false
+      choices_in_prompt: null
+      metrics: []
+      original_task: false
     name: good deal for seller no list price implicit
     reference: implicit version of "good deal for seller no list price"
-    task_template: false
   27010b55-dd5b-4ee9-9e14-a4b809aa6cdb: !Template
+    answer_choices: null
+    answer_choices_key: null
     id: 27010b55-dd5b-4ee9-9e14-a4b809aa6cdb
     jinja: 'The following conversation is a negotiation on craigslist. The first speaker
       is the buyer, and the second speaker is the seller.
@@ -79,7 +89,8 @@ templates:
 
       {% set final_price = -1 %}
 
-      {% if nonzero_price | length != 0 %}{% set final_price = nonzero_price[-1] %}{% endif %}
+      {% if nonzero_price | length != 0 %}{% set final_price = nonzero_price[-1] %}{%
+      endif %}
 
       {% if final_price == -1 %}
 
@@ -101,10 +112,17 @@ templates:
       yes
 
       {% endif %}'
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: false
+      choices_in_prompt: null
+      metrics: []
+      original_task: false
     name: good deal for seller no list price
     reference: same as "good deal for seller" prompt, but excludes the list price
-    task_template: false
   3e1e2993-2b41-493b-8f27-9a7bb7fa4a0b: !Template
+    answer_choices: null
+    answer_choices_key: null
     id: 3e1e2993-2b41-493b-8f27-9a7bb7fa4a0b
     jinja: 'The following conversation is a negotiation on craigslist. The first speaker
       is the buyer, and the second speaker is the seller. The listed price was ${{items["Price"][0]}}0.
@@ -118,11 +136,18 @@ templates:
       |||
 
       ${{(agent_info[''Target''][0] - agent_info[''Target''][1]) | abs}}0'
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: false
+      choices_in_prompt: null
+      metrics: []
+      original_task: false
     name: gap between parties
     reference: asks model explicitly what the gap was between the buyer's target and
       the seller's target
-    task_template: false
   78d1b487-c535-4a0d-ae49-055d321db3fd: !Template
+    answer_choices: null
+    answer_choices_key: null
     id: 78d1b487-c535-4a0d-ae49-055d321db3fd
     jinja: 'The following conversation is a negotiation on craigslist. The first speaker
       is the buyer, and the second speaker is the seller. The listed price was ${{items["Price"][0]}}.
@@ -149,7 +174,8 @@ templates:
 
       {% set final_price = -1 %}
 
-      {% if nonzero_price | length != 0 %}{% set final_price = nonzero_price[-1] %}{% endif %}
+      {% if nonzero_price | length != 0 %}{% set final_price = nonzero_price[-1] %}{%
+      endif %}
 
       {% if final_price == -1 %}
 
@@ -171,12 +197,19 @@ templates:
       yes
 
       {% endif %}'
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: false
+      choices_in_prompt: null
+      metrics: []
+      original_task: false
     name: good deal for seller
     reference: asks the model whether the deal was good for the seller or not (it's
       good if the seller's target is closer to the final price than the buyer's, or
       there is a tie)
-    task_template: false
   a1dbb258-2e5c-4160-986b-46fc03546965: !Template
+    answer_choices: null
+    answer_choices_key: null
     id: a1dbb258-2e5c-4160-986b-46fc03546965
     jinja: 'The following conversation is a negotiation on craigslist. The first speaker
       is the buyer, and the second speaker is the seller. The listed price was ${{items["Price"][0]}}.
@@ -214,7 +247,8 @@ templates:
 
       {% set final_price = -1 %}
 
-      {% if nonzero_price | length != 0 %}{% set final_price = nonzero_price[-1] %}{% endif %}
+      {% if nonzero_price | length != 0 %}{% set final_price = nonzero_price[-1] %}{%
+      endif %}
 
       {% if final_price == -1 %}
 
@@ -236,10 +270,17 @@ templates:
       b) the seller
 
       {% endif %}'
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: false
+      choices_in_prompt: null
+      metrics: []
+      original_task: false
     name: best deal
     reference: explicitly asks model which party got the best deal
-    task_template: false
   b891bbe7-b3da-4118-b54f-4faa647e36f4: !Template
+    answer_choices: null
+    answer_choices_key: null
     id: b891bbe7-b3da-4118-b54f-4faa647e36f4
     jinja: 'The following conversation is a negotiation on craigslist. The first speaker
       is the buyer, and the second speaker is the seller.
@@ -265,6 +306,11 @@ templates:
       |||
 
       {{nonempty_utterance[-1]}}'
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: false
+      choices_in_prompt: null
+      metrics: []
+      original_task: true
     name: generate line
     reference: Generates the next line of negotiation
-    task_template: true

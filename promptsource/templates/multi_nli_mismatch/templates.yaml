@@ -1,44 +1,87 @@
 dataset: multi_nli_mismatch
 templates:
   08024afb-d156-46eb-9697-d3f6fcfeb460: !Template
+    answer_choices: null
+    answer_choices_key: null
     id: 08024afb-d156-46eb-9697-d3f6fcfeb460
-    jinja: "{{premise}}\nQuestion: {{hypothesis}} Yes, maybe, or no? ||| \n{% if label\
-      \ == \"entailment\" %} \nYes\n{% elif label == \"neutral\" %}\nMaybe\n{% else\
-      \ %}\nNo\n{% endif %}"
+    jinja: "{{premise}}\nQuestion: {{hypothesis}} Yes, maybe, or no? ||| \n{{ {\"\
+      entailment\": \"Yes\", \"neutral\": \"Maybe\", \"contradiction\": \"No\"}[label]\
+      \ }}"
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: false
+      choices_in_prompt: null
+      metrics: []
+      original_task: true
     name: GPT3-style
     reference: Similar to the Multi-NLI template
-    task_template: true
   2d88a6db-69c0-4a1b-b63d-c296827fb3ca: !Template
+    answer_choices: null
+    answer_choices_key: null
     id: 2d88a6db-69c0-4a1b-b63d-c296827fb3ca
     jinja: "{{premise}} Based on the previous passage, is it true that {{hypothesis}}\
-      \ Yes, maybe, or no?\n||| \n{% if label == \"entailment\" %} \nYes\n{% elif\
-      \ label == \"neutral\" %}\nNeutral\n{% else %}\nNo\n{% endif %}"
+      \ Yes, maybe, or no?\n||| \n{{ {\"entailment\": \"Yes\", \"neutral\": \"Neutral\"\
+      , \"contradiction\": \"No\"}[label] }}"
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: false
+      choices_in_prompt: null
+      metrics: []
+      original_task: true
     name: Based on the previous passage
     reference: Similar to the MNLI template
-    task_template: true
   33cd3db0-ec12-4fe4-8e67-2ed2547e3102: !Template
+    answer_choices: null
+    answer_choices_key: null
     id: 33cd3db0-ec12-4fe4-8e67-2ed2547e3102
     jinja: "Given that {{premise}} Does it follow that {{hypothesis}} Yes, no, or\
-      \ maybe?\n||| \n{% if label == \"entailment\" %} \nYes\n{% elif label == \"\
-      neutral\" %}\nMaybe\n{% else %}\nNo\n{% endif %}"
+      \ maybe?\n||| \n{{ {\"entailment\": \"Yes\", \"neutral\": \"Maybe\", \"contradiction\"\
+      : \"No\"}[label] }}"
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: false
+      choices_in_prompt: null
+      metrics: []
+      original_task: true
     name: "given\u2026 does it follow that\u2026 "
     reference: Similar to the MNLI template
-    task_template: true
   eb305885-3cf3-49b0-92de-6b9f51628007: !Template
+    answer_choices: null
+    answer_choices_key: null
     id: eb305885-3cf3-49b0-92de-6b9f51628007
-    jinja: "Sentence 1: {{premise}}\nSentence 2: {{hypothesis}}\nQuestion: Does Sentence\
-      \ 1 entail Sentence 2? Yes, No, or Neutral? |||\n{% if label == \"entailment\"\
-      \ %} \nYes\n{% elif label == \"neutral\" %}\nNeutral\n{% else %}\nNo\n{% endif\
-      \ %}"
+    jinja: 'Sentence 1: {{premise}}
+
+      Sentence 2: {{hypothesis}}
+
+      Question: Does Sentence 1 entail Sentence 2? Yes, No, or Neutral? |||
+
+      {{ {"entailment": "Yes", "neutral": "Neutral", "contradiction": "No"}[label]
+      }}'
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: false
+      choices_in_prompt: null
+      metrics: []
+      original_task: true
     name: Does S1 entail S2?
     reference: Similar to the MNLI template
-    task_template: true
   ece94a4c-cfa1-4eb5-9af7-204d0c5791ea: !Template
+    answer_choices: null
+    answer_choices_key: null
     id: ece94a4c-cfa1-4eb5-9af7-204d0c5791ea
-    jinja: "Sentence 1: {{premise}}\nSentence 2: {{hypothesis}}\nQuestion: Does Sentence\
-      \ 1 contradict Sentence 2? Yes, No, or Neutral? |||\n{% if label == \"entailment\"\
-      \ %} \nNo\n{% elif label == \"neutral\" %}\nNeutral\n{% else %}\nYes\n{% endif\
-      \ %}"
+    jinja: 'Sentence 1: {{premise}}
+
+      Sentence 2: {{hypothesis}}
+
+      Question: Does Sentence 1 contradict Sentence 2? Yes, No, or Neutral? |||
+
+      {{ {"entailment": "No", "neutral": "Neutral", "contradiction": "Yes"}[label]
+      }}'
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: false
+      choices_in_prompt: null
+      metrics: []
+      original_task: true
     name: Does S1 contradict S2?
     reference: Similar to the MNLI template
-    task_template: true

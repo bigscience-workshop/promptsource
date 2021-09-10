@@ -126,7 +126,7 @@ if mode == "Helicopter view":
 
         split_sizes = {k: v.num_examples for k, v in subset_infos.splits.items()}
 
-        # Collect template counts, task template counts and names
+        # Collect template counts, original task counts and names
         dataset_templates = template_collection.get_dataset(dataset_name, subset_name)
         results.append(
             {
@@ -136,7 +136,9 @@ if mode == "Helicopter view":
                 "Validation size": split_sizes["validation"] if "validation" in split_sizes else 0,
                 "Test size": split_sizes["test"] if "test" in split_sizes else 0,
                 "Number of templates": len(dataset_templates),
-                "Number of task templates": sum([t.get_task_template() for t in dataset_templates.templates.values()]),
+                "Number of original task templates": sum(
+                    [bool(t.metadata.original_task) for t in dataset_templates.templates.values()]
+                ),
                 "Template names": [t.name for t in dataset_templates.templates.values()],
                 # TODO: template name is not very informative... refine that
             }
@@ -296,7 +298,8 @@ else:
             st.sidebar.write(example)
 
         st.sidebar.subheader("Dataset Schema")
-        st.sidebar.write(render_features(dataset.features))
+        rendered_features = render_features(dataset.features)
+        st.sidebar.write(rendered_features)
 
         #
         # Display dataset information
@@ -332,8 +335,19 @@ else:
                 st.text(template.name)
                 st.markdown("##### Reference")
                 st.text(template.reference)
-                st.markdown("##### Task Template? ")
-                st.text(template.get_task_template())
+                st.markdown("##### Original Task? ")
+                st.text(template.metadata.original_task)
+                st.markdown("##### Choices in prompt? ")
+                st.text(template.metadata.choices_in_prompt)
+                st.markdown("##### Metrics")
+                st.text(", ".join(template.metadata.metrics) if template.metadata.metrics else None)
+                st.markdown("##### Answer Choices")
+                st.text(", ".join(template.answer_choices) if template.answer_choices is not None else None)
+                st.markdown("##### Answer Choices Key")
+                if template.get_answer_choices_expr() is not None:
+                    show_jinja(template.get_answer_choices_expr())
+                else:
+                    st.text(None)
                 st.markdown("##### Jinja")
                 splitted_template = template.jinja.split("|||")
                 st.markdown("###### Prompt + X")
@@ -458,13 +472,75 @@ else:
                             help="Short description of the template and/or paper reference for the template.",
                             value=template.reference,
                         )
-                        state.task_template = st.checkbox(
-                            "Task Template?",
-                            value=template.get_task_template(),
-                            help="Task templates correspond one-to-one with the original task.",
+
+                        # Metadata
+                        state.metadata = template.metadata
+                        state.metadata.original_task = st.checkbox(
+                            "Original Task?",
+                            value=template.metadata.original_task,
+                            help="Template asks model to perform the original task designed for this dataset.",
                         )
+                        state.metadata.choices_in_prompt = st.checkbox(
+                            "Choices in Prompt?",
+                            value=template.metadata.choices_in_prompt,
+                            help="Template explicitly lists choices in the prompt for the output.",
+                        )
+
+                        # Metrics from here:
+                        # https://github.com/google-research/text-to-text-transfer-transformer/blob/4b580f23968c2139be7fb1cd53b22c7a7f686cdf/t5/evaluation/metrics.py
+                        metrics_choices = [
+                            "BLEU",
+                            "ROUGE",
+                            "Span Squad",
+                            "Squad",
+                            "Trivia QA",
+                            "Accuracy",
+                            "Sequence Accuracy",
+                            "Pearson Correlation",
+                            "Spearman Correlation",
+                            "MultiRC",
+                            "AUC",
+                            "COQA F1",
+                            "Edit Distance",
+                        ]
+                        # Add mean reciprocal rank
+                        metrics_choices.append("Mean Reciprocal Rank")
+                        # Add generic other
+                        metrics_choices.append("Other")
+                        # Sort alphabetically
+                        metrics_choices = sorted(metrics_choices)
+                        state.metadata.metrics = st.multiselect(
+                            "Metrics",
+                            metrics_choices,
+                            default=template.metadata.metrics,
+                            help="Select all metrics that are commonly used (or should "
+                            "be used if a new task) to evaluate this template.",
+                        )
+
+                        # Answer choices
+                        state.answer_choices = st.text_input(
+                            "Answer Choices",
+                            value=" ||| ".join(template.answer_choices) if template.answer_choices is not None else "",
+                            help="A ||| separated list of possible outputs (or leave blank). "
+                            + "Value is available in Jinja in a list called answer_choices.",
+                        )
+
+                        # Answer choices key
+                        if template.get_answer_choices_expr() is not None:
+                            answer_choices_key = template.get_answer_choices_expr()
+                        else:
+                            answer_choices_key = ""
+                        state.answer_choices_key = st.text_input(
+                            "Answer Choices Key",
+                            value=answer_choices_key,
+                            help="A Jinja expression for computing answer choices. "
+                            "Separate choices with a triple bar (|||).",
+                        )
+
+                        # Jinja
                         state.jinja = st.text_area("Template", height=40, value=template.jinja)
 
+                        # Submit form
                         if st.form_submit_button("Save"):
                             if (
                                 updated_template_name in dataset_templates.all_template_names
@@ -477,12 +553,23 @@ else:
                             elif updated_template_name == "":
                                 st.error("Need to provide a template name.")
                             else:
+                                # Parses state.answer_choices and state.answer_choices_key
+                                updated_answer_choices = [x.strip() for x in state.answer_choices.split("|||")]
+                                if len(updated_answer_choices) == 0 or len(updated_answer_choices) == 1:
+                                    updated_answer_choices = None
+                                if state.answer_choices_key == "":
+                                    updated_answer_choices_key = None
+                                else:
+                                    updated_answer_choices_key = state.answer_choices_key
+
                                 dataset_templates.update_template(
                                     state.template_name,
                                     updated_template_name,
                                     state.jinja,
                                     state.reference,
-                                    state.task_template,
+                                    state.metadata,
+                                    updated_answer_choices,
+                                    updated_answer_choices_key,
                                 )
                                 # Update the state as well
                                 state.template_name = updated_template_name

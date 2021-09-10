@@ -2,6 +2,8 @@ dataset: adversarial_qa
 subset: dbidaf
 templates:
   0d62f7b4-09b2-41a2-9e70-bfa38d26862d: !Template
+    answer_choices: null
+    answer_choices_key: null
     id: 0d62f7b4-09b2-41a2-9e70-bfa38d26862d
     jinja: 'My professor gave us an assignment today. I don''t like cheating, but
       the exercise is easy for humans and frankly, a waste of time for me. Could you
@@ -9,10 +11,17 @@ templates:
       ("{{question}}"). What''s the answer? |||
 
       {{answers.text[0]}}'
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: true
+      choices_in_prompt: null
+      metrics: []
+      original_task: true
     name: adversarial_qa_dbidaf_6
     reference: 'Input: QC, Output: A (formulate as an assignment)'
-    task_template: true
   41f28b31-d0fc-4f20-a0a2-ff21813e298e: !Template
+    answer_choices: null
+    answer_choices_key: null
     id: 41f28b31-d0fc-4f20-a0a2-ff21813e298e
     jinja: 'Given the following passage
 
@@ -26,10 +35,17 @@ templates:
       "{{question}}" |||
 
       {{answers.text[0]}}'
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: true
+      choices_in_prompt: null
+      metrics: []
+      original_task: true
     name: adversarial_qa_dbidaf_1
     reference: 'Input: QC, Output: Answer'
-    task_template: true
   5d619c42-56b2-4809-b07a-f35ab5ccf093: !Template
+    answer_choices: null
+    answer_choices_key: null
     id: 5d619c42-56b2-4809-b07a-f35ab5ccf093
     jinja: 'Q: "{{question}}"
 
@@ -41,10 +57,17 @@ templates:
       the index of the character from where the answer starts (as a hint). |||
 
       {{answers.answer_start[0] | string}}'
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: true
+      choices_in_prompt: null
+      metrics: []
+      original_task: true
     name: adversarial_qa_dbidaf_8
     reference: 'Input: QC, Output: beginning offset of A'
-    task_template: true
   853caf94-4208-4ac3-ab96-e16e6b29fd9b: !Template
+    answer_choices: null
+    answer_choices_key: null
     id: 853caf94-4208-4ac3-ab96-e16e6b29fd9b
     jinja: 'I want to make a question paper for students. I''ve crawled paragraphs
       from Wikipedia and now want to test their reading comprehension prowess. I am
@@ -55,49 +78,84 @@ templates:
 
 
       Answer:  "{{answers.text[0]}}"'
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: true
+      choices_in_prompt: null
+      metrics: []
+      original_task: false
     name: adversarial_qa_dbidaf_5
     reference: 'Input: Context, Output: QA (set a question paper)'
-    task_template: false
   bf991a90-6a80-4a47-9f52-01cca1af4b31: !Template
+    answer_choices: null
+    answer_choices_key: null
     id: bf991a90-6a80-4a47-9f52-01cca1af4b31
-    jinja: "I know that the answer to \"{{question}}\" is in \"{{context}}\" somewhere.\
-      \ Can you return the offsets of the answer? \n\nNote: Follow 0-indexing and\
-      \ [inclusive, exclusive) format for range.\n|||\n{{(answers.answer_start[0],\
-      \ answers.answer_start[0]+answers.text[0]|length)}}\n"
+    jinja: 'I know that the answer to "{{question}}" is in "{{context}}" somewhere.
+      Can you return the offsets of the answer? Note: Follow 0-indexing and [inclusive,
+      exclusive) format for range. ||| {% if answers.text != [] %} {{(answers.answer_start[0],
+      answers.answer_start[0]+answers.text[0]|length)}} {% else %} Answer not found
+      {% endif %}'
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: true
+      choices_in_prompt: null
+      metrics: []
+      original_task: true
     name: adversarial_qa_dbidaf_7
     reference: 'Input: QC, Output: Offsets'
-    task_template: true
   c7a80603-d610-4999-98a7-815b2f84592d: !Template
+    answer_choices: null
+    answer_choices_key: null
     id: c7a80603-d610-4999-98a7-815b2f84592d
     jinja: 'I want to test the ability of students to read a passage and answer questions
       about it. Could you please come up with a good question for the passage "{{context}}"?
       |||
 
       {{question}}'
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: true
+      choices_in_prompt: null
+      metrics: []
+      original_task: false
     name: adversarial_qa_dbidaf_4
     reference: 'Input: Context, Output: Question (generate a question)'
-    task_template: false
   cc8468d0-096f-4209-afb7-a5aee07ce993: !Template
+    answer_choices: null
+    answer_choices_key: null
     id: cc8468d0-096f-4209-afb7-a5aee07ce993
     jinja: '"{{answers.text[0]}}" is in "{{context}}". But the paragraph is very long
       and manual counting will take ages. Can you return the starting and ending indices?
-      |||
-
-      {{(answers.answer_start[0], answers.answer_start[0] + answers.text[0]|length)}}'
+      ||| {% if answers.text != [] %} {{(answers.answer_start[0], answers.answer_start[0]
+      + answers.text[0]|length)}} {% else %} Answer not found {% endif %}'
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: true
+      choices_in_prompt: null
+      metrics: []
+      original_task: false
     name: adversarial_qa_dbidaf_9
     reference: 'Input: CA, Output: beginning offset of A'
-    task_template: false
   ce9bc00a-567b-4c4e-aad7-df6f5d5d57bb: !Template
+    answer_choices: null
+    answer_choices_key: null
     id: ce9bc00a-567b-4c4e-aad7-df6f5d5d57bb
     jinja: 'I know that the answer to the question "{{question}}" is in "{{context}}".
       Can you tell me what it is? |||
 
 
       {{answers.text[0]}}'
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: true
+      choices_in_prompt: null
+      metrics: []
+      original_task: true
     name: adversarial_qa_dbidaf_2
     reference: 'Input: QC, Output: A (rephrase)'
-    task_template: true
   f431e67a-2f8f-4617-aa58-2e50cb2a8df3: !Template
+    answer_choices: null
+    answer_choices_key: null
     id: f431e67a-2f8f-4617-aa58-2e50cb2a8df3
     jinja: 'Documentation:
 
@@ -133,10 +191,17 @@ templates:
 
 
       {{answers.answer_start[0] | string}}'
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: true
+      choices_in_prompt: null
+      metrics: []
+      original_task: true
     name: adversarial_qa_dbidaf_10
     reference: 'Input: Question, Context Output: Answer+Index (Python format)'
-    task_template: true
   fa185424-6ebe-49b8-b4ed-7632ca33c361: !Template
+    answer_choices: null
+    answer_choices_key: null
     id: fa185424-6ebe-49b8-b4ed-7632ca33c361
     jinja: 'Question: "{{question}}"
 
@@ -149,6 +214,11 @@ templates:
       |||
 
       {{answers.text[0]}}'
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: true
+      choices_in_prompt: null
+      metrics: []
+      original_task: true
     name: adversarial_qa_dbidaf_3
     reference: 'Input: QC, Output: Answer (short form)'
-    task_template: true

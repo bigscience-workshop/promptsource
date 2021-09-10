@@ -1,8 +1,61 @@
 dataset: ai2_arc
 subset: ARC-Easy
 templates:
-  32f7eb4d-dd38-4503-b67d-a8a96ab40449: !Template
-    id: 32f7eb4d-dd38-4503-b67d-a8a96ab40449
+  033498ca-3d9a-47e3-b631-d881ab53b5ad: !Template
+    answer_choices: null
+    answer_choices_key: null
+    id: 033498ca-3d9a-47e3-b631-d881ab53b5ad
+    jinja: 'Pick the most correct option to answer the following question.
+
+
+      {{question}}
+
+
+      Options:
+
+      {% for i in range(choices["label"]|length) %}
+
+      {{choices["label"][i]}}: {{choices["text"][i]}}
+
+      {% endfor %} |||
+
+      {{answerKey}}'
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: true
+      choices_in_prompt: true
+      metrics: []
+      original_task: true
+    name: test
+    reference: ''
+  252aa566-9482-4e81-aad9-664a9bebd8e8: !Template
+    answer_choices: null
+    answer_choices_key: null
+    id: 252aa566-9482-4e81-aad9-664a9bebd8e8
+    jinja: '{{question}}
+
+
+      Options:
+
+      {% for i in range(choices["label"]|length) %}
+
+      - {{choices["text"][i]}}
+
+      {% endfor %} |||
+
+      {{choices["text"][choices["label"].index(answerKey)]}}'
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: true
+      choices_in_prompt: true
+      metrics: []
+      original_task: true
+    name: qa_options
+    reference: ''
+  c988ee30-a523-457b-af21-87353349b543: !Template
+    answer_choices: null
+    answer_choices_key: null
+    id: c988ee30-a523-457b-af21-87353349b543
     jinja: 'Pick all the incorrect options for the following question:
 
 
@@ -26,28 +79,18 @@ templates:
       {% endif %}
 
       {% endfor %}'
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: true
+      choices_in_prompt: null
+      metrics: []
+      original_task: false
     name: 'false'
     reference: ''
-    task_template: false
-  5ec2b8ca-e4c0-444e-b097-89ccce811550: !Template
-    id: 5ec2b8ca-e4c0-444e-b097-89ccce811550
-    jinja: '{{question}}
-
-
-      Options:
-
-      {% for i in range(choices["label"]|length) %}
-
-      - {{choices["text"][i]}}
-
-      {% endfor %} |||
-
-      {{choices["text"][choices["label"].index(answerKey)]}}'
-    name: qa_options
-    reference: ''
-    task_template: true
-  9ca0d44d-6383-4d16-ade7-266a31bb501e: !Template
-    id: 9ca0d44d-6383-4d16-ade7-266a31bb501e
+  e1d05f20-8022-4bb2-abf2-11dba0541474: !Template
+    answer_choices: null
+    answer_choices_key: null
+    id: e1d05f20-8022-4bb2-abf2-11dba0541474
     jinja: 'Use the following options to generate a possible question:
 
 
@@ -56,26 +99,11 @@ templates:
       {{question}}
 
       '
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: true
+      choices_in_prompt: null
+      metrics: []
+      original_task: false
     name: answer_qn
     reference: ''
-    task_template: false
-  e371fc1a-8edb-477b-b345-9d73e97ffade: !Template
-    id: e371fc1a-8edb-477b-b345-9d73e97ffade
-    jinja: 'Pick the most correct option to answer the following question.
-
-
-      {{question}}
-
-
-      Options:
-
-      {% for i in range(choices["label"]|length) %}
-
-      {{choices["label"][i]}}: {{choices["text"][i]}}
-
-      {% endfor %} |||
-
-      {{answerKey}}'
-    name: test
-    reference: ''
-    task_template: true
