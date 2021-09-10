@@ -8,8 +8,8 @@ templates:
     jinja: "Information:\n{% for support in supports %}\n- {{ support }}\n{% endfor\
       \ %}\n\n{% set question_split = question.split(' ') %}\nWhat object entity has\
       \ the relation of '{{ question_split[0] | replace(\"_\", \" \")}}' with the\
-      \ subject '{{ question_split[1:] | join(\" \")}}'? \n\nChoices: {{ candidates\
-      \ | join(\" \\|\\|\\| \") }}\n\n|||\n{{answer}}"
+      \ subject '{{ question_split[1:] | join(\" \")}}'? \n\nChoices:\n{% for candidate\
+      \ in candidates %}\n- {{ candidate }}\n{% endfor %}\n\n|||\n{{answer}}"
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: true
@@ -135,7 +135,13 @@ templates:
       subject ''{{ question_split[1:] | join(" ")}}''.
 
 
-      Choices: {{ candidates | join(" \|\|\| ") }}
+      Choices:
+
+      {% for candidate in candidates %}
+
+      - {{ candidate }}
+
+      {% endfor %}
 
 
       |||
@@ -170,7 +176,13 @@ templates:
       choices below.
 
 
-      Choices: {{ candidates | join(" \|\|\| ") }}
+      Choices:
+
+      {% for candidate in candidates %}
+
+      - {{ candidate }}
+
+      {% endfor %}
 
 
       |||
@@ -235,7 +247,13 @@ templates:
       ''{{ question_split[0] | replace("_", " ")}}''.
 
 
-      Choices: {{ candidates | join(" \|\|\| ") }}
+      Choices:
+
+      {% for candidate in candidates %}
+
+      - {{ candidate }}
+
+      {% endfor %}
 
 
       |||
@@ -268,7 +286,13 @@ templates:
       the relation of ''{{ question_split[0] | replace("_", " ")}}''?
 
 
-      Choices: {{ candidates | join(" \|\|\| ") }}
+      Choices:
+
+      {% for candidate in candidates %}
+
+      - {{ candidate }}
+
+      {% endfor %}
 
 
       |||
