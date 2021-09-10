@@ -3,13 +3,13 @@ subset: winogrande_m
 templates:
   0e4787a1-066b-4809-8436-0c8c11d16bc3: !Template
     answer_choices: null
-    answer_choices_key: null
+    answer_choices_key: '{{option1}} ||| {{option2}}'
     id: 0e4787a1-066b-4809-8436-0c8c11d16bc3
     jinja: 'Fill in the _ in the below sentence!
 
       {{sentence}}|||
 
-      {% if answer== 1 %}{{option1}}{% else%}{{option2}}{% endif %}'
+      {{answer_choices[answer | int -1]}}'
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: false
@@ -41,14 +41,14 @@ templates:
     reference: ''
   c6d4210f-58ef-451f-8a82-ed2c0211d0ab: !Template
     answer_choices: null
-    answer_choices_key: null
+    answer_choices_key: '{{option1}} ||| {{option2}}'
     id: c6d4210f-58ef-451f-8a82-ed2c0211d0ab
-    jinja: 'In the sentence below, does {{option1}} or {{option2}} represent the _
-      ?
+    jinja: 'In the sentence below, does {{answer_choices[0]}} or {{answer_choices[1]}}
+      represent the _ ?
 
       {{sentence}}|||
 
-      {% if answer== 1 %}{{option1}}{% else%}{{option2}}{% endif %}'
+      {{answer_choices[answer | int - 1]}}'
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: false
@@ -60,13 +60,13 @@ templates:
     reference: ''
   e52f0840-a348-4e94-bf16-7000f16ba2ff: !Template
     answer_choices: null
-    answer_choices_key: null
+    answer_choices_key: '{{option1}} ||| {{option2}}'
     id: e52f0840-a348-4e94-bf16-7000f16ba2ff
     jinja: '{{sentence}}
 
-      What does the _ in the above sentence refer to? {{option1}} or {{option2}}|||
+      What does the _ in the above sentence refer to? {{answer_choices[0]}} or {{answer_choices[1]}}|||
 
-      {% if answer== 1 %}{{option1}}{% else%}{{option2}}{% endif %}'
+      {{answer_choices[answer | int - 1]}}'
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: false
@@ -78,11 +78,11 @@ templates:
     reference: ''
   fec83864-c942-48a5-8754-1518cd9cfc2c: !Template
     answer_choices: null
-    answer_choices_key: null
+    answer_choices_key: '{{option1}} ||| {{option2}}'
     id: fec83864-c942-48a5-8754-1518cd9cfc2c
     jinja: "{{sentence}}\nReplace the _ in the above sentence with the correct option:\
-      \ \nOption1: {{option1}}\nOption2: {{option2}}\n|||\n{% if answer== 1 %}{{option1}}{%\
-      \ else%}{{option2}}{% endif %}"
+      \ \nOption1: {{answer_choices[0]}}\nOption2: {{answer_choices[1]}}\n|||\n{{answer_choices[answer\
+      \ | int - 1]}}"
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: false
