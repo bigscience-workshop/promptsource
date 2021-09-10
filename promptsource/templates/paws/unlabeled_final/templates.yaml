@@ -1,202 +1,204 @@
 dataset: paws
 subset: unlabeled_final
 templates:
-  089565e1-c1e0-4333-8670-c164e07036fd: !Template
-    answer_choices: null
+  0be7cecd-b427-4ec9-9b0e-666d6dae00bb: !Template
+    answer_choices:
+    - 'No'
+    - 'Yes'
     answer_choices_key: null
-    id: 089565e1-c1e0-4333-8670-c164e07036fd
-    jinja: "{% if label == 0 or label == 1 %} \nSentence 1: {{sentence1}}\\nSentence\
-      \ 2: {{sentence2}}\\nQuestion: Can we rewrite Sentence 1 by Sentence 2? Yes\
-      \ or No? \n||| \n{% if label == 0 %} \nNo\n{% elif label == 1 %}\nYes\n{% endif\
-      \ %}\n{% endif %}"
+    id: 0be7cecd-b427-4ec9-9b0e-666d6dae00bb
+    jinja: "Determine if the following two sentences paraphrase or not.\nSent 1: {{sentence1}}\n\
+      Sent 2: {{sentence2}}\n||| \n{{answer_choices[label]}}"
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: false
-      choices_in_prompt: null
-      metrics: []
+      choices_in_prompt: false
+      metrics:
+      - Accuracy
       original_task: true
-    name: Rewrite
-    reference: Natural Question
-  096a6727-e645-443a-baaf-e53aef67690e: !Template
-    answer_choices: null
+    name: task_description-no-label
+    reference: Generalized prompt format, task_description-input.
+  472fe5eb-b499-4952-a930-f72f4ca9edbb: !Template
+    answer_choices:
+    - 'No'
+    - 'Yes'
     answer_choices_key: null
-    id: 096a6727-e645-443a-baaf-e53aef67690e
-    jinja: "{% if label == 0 or label == 1 %} \nSentence 1: {{sentence1}}\\nSentence\
-      \ 2: {{sentence2}}\\nQuestion: Does Sentence 1 and Sentence 2 express same meaning\
-      \ or not\n||| \n{% if label == 0 %} \nNo\n{% elif label == 1 %}\nYes\n{% endif\
-      \ %}\n{% endif %}"
+    id: 472fe5eb-b499-4952-a930-f72f4ca9edbb
+    jinja: "Sentence 1: {{sentence1}}\nSentence 2: {{sentence2}}\nQuestion: Does Sentence\
+      \ 1 and Sentence 2 express the same meaning? Yes or No? \n||| \n{{answer_choices[label]}}"
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: false
-      choices_in_prompt: null
-      metrics: []
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
       original_task: true
-    name: Meaning-no-label
-    reference: Natural question without label
-  4c9841cc-f0ed-4bf3-8951-d0d188c51f5a: !Template
-    answer_choices: null
+    name: Meaning
+    reference: Natural question
+  4c8d4e4c-eae4-45f6-bdf0-d132ae198dbb: !Template
+    answer_choices:
+    - 'No'
+    - 'Yes'
     answer_choices_key: null
-    id: 4c9841cc-f0ed-4bf3-8951-d0d188c51f5a
-    jinja: "{% if label == 0 or label == 1 %} \nSentence 1: {{sentence1}}\\nSentence\
-      \ 2: {{sentence2}}\\nQuestion: Does Sentence 1 paraphrase Sentence 2? Yes or\
-      \ No? \n||| \n{% if label == 0 %} \nNo\n{% elif label == 1 %}\nYes\n{% endif\
-      \ %}\n{% endif %}"
+    id: 4c8d4e4c-eae4-45f6-bdf0-d132ae198dbb
+    jinja: "{{sentence1}}\nIs that a paraphrase of the following sentence?\n{{sentence2}}?\n\
+      ||| \n{{answer_choices[label]}}"
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: false
-      choices_in_prompt: null
-      metrics: []
+      choices_in_prompt: false
+      metrics:
+      - Accuracy
       original_task: true
-    name: Concatenation
-    reference: Concatenation of sentence 1 and sentence 2
-  7f3ed525-21f9-46c1-8b53-77d5da36c93b: !Template
-    answer_choices: null
+    name: context-question-no-label
+    reference: Generalized prompt format, context-question without any label
+  678400f8-1a5c-4a40-b5ef-abeaa41e20bb: !Template
+    answer_choices:
+    - 'No'
+    - 'Yes'
     answer_choices_key: null
-    id: 7f3ed525-21f9-46c1-8b53-77d5da36c93b
-    jinja: "{% if label == 1 %} \nParaphrase the sentence: {{sentence2}} \n||| \n\
-      {{sentence1}} \n{% endif %}"
+    id: 678400f8-1a5c-4a40-b5ef-abeaa41e20bb
+    jinja: "Sentence 1: {{sentence1}}\nSentence 2: {{sentence2}}\nQuestion: Can we\
+      \ rewrite Sentence 1 by Sentence 2? \n||| \n{{answer_choices[label]}}"
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: false
-      choices_in_prompt: null
-      metrics: []
-      original_task: false
-    name: paraphrase-task-reverse
-    reference: Create a generative paraphrase task
-  9c8cb464-face-45d1-b87b-0c6722c9298a: !Template
-    answer_choices: null
-    answer_choices_key: null
-    id: 9c8cb464-face-45d1-b87b-0c6722c9298a
-    jinja: "{% if label == 0 or label == 1 %} \nSentence 1: {{sentence1}}\\nSentence\
-      \ 2: {{sentence2}}\\nQuestion: Can we rewrite Sentence 1 by Sentence 2? \n|||\
-      \ \n{% if label == 0 %} \nNo\n{% elif label == 1 %}\nYes\n{% endif %}\n{% endif\
-      \ %}"
-    metadata: !TemplateMetadata
-      _do_eval: false
-      _do_train: false
-      choices_in_prompt: null
-      metrics: []
+      choices_in_prompt: false
+      metrics:
+      - Accuracy
       original_task: true
     name: Rewrite-no-label
     reference: Natural Question without label
-  b009f81d-ffd7-4000-9c4e-96fdce95100c: !Template
+  7c205a61-64d4-4673-bb8e-bfa77562eebb: !Template
+    answer_choices:
+    - 'No'
+    - 'Yes'
+    answer_choices_key: null
+    id: 7c205a61-64d4-4673-bb8e-bfa77562eebb
+    jinja: "{{sentence1}}\nIs that a paraphrase of the following sentence?\n{{sentence2}}?\n\
+      Yes or No.\n||| \n{{answer_choices[label]}}"
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: false
+      choices_in_prompt: false
+      metrics:
+      - Accuracy
+      original_task: true
+    name: context-question
+    reference: Generalized prompt format, context-question
+  8c259e88-7646-4a50-a4ca-90393920f2bb: !Template
+    answer_choices:
+    - 'No'
+    - 'Yes'
+    answer_choices_key: null
+    id: 8c259e88-7646-4a50-a4ca-90393920f2bb
+    jinja: "Sentence 1: {{sentence1}}\nSentence 2: {{sentence2}}\nQuestion: Does Sentence\
+      \ 1 paraphrase Sentence 2? Yes or No? \n||| \n{{answer_choices[label]}}"
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: false
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
+      original_task: true
+    name: Concatenation
+    reference: Concatenation of sentence 1 and sentence 2
+  a3ee450f-0d02-47c3-aa0b-00c3f80539bb: !Template
     answer_choices: null
     answer_choices_key: null
-    id: b009f81d-ffd7-4000-9c4e-96fdce95100c
+    id: a3ee450f-0d02-47c3-aa0b-00c3f80539bb
     jinja: "{% if label == 1 %} \nParaphrase the sentence: {{sentence1}} \n||| \n\
       {{sentence2}} \n{% endif %}"
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: false
-      choices_in_prompt: null
-      metrics: []
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      - ROUGE
       original_task: false
     name: paraphrase-task
     reference: Create a generative paraphrase task
-  b5d03b48-d74d-4e10-a1d6-ced7bfd2d1dc: !Template
-    answer_choices: null
+  a6d9ec4e-acd4-46cd-9eeb-ae32e0ab80bb: !Template
+    answer_choices:
+    - 'No'
+    - 'Yes'
     answer_choices_key: null
-    id: b5d03b48-d74d-4e10-a1d6-ced7bfd2d1dc
-    jinja: "{% if label == 0 or label == 1 %} \nSentence 1: {{sentence1}}\\nSentence\
-      \ 2: {{sentence2}}\\nQuestion: Does Sentence 1 paraphrase Sentence 2? \n|||\
-      \ \n{% if label == 0 %} \nNo\n{% elif label == 1 %}\nYes\n{% endif %}\n{% endif\
-      \ %}"
+    id: a6d9ec4e-acd4-46cd-9eeb-ae32e0ab80bb
+    jinja: "Sentence 1: {{sentence1}}\nSentence 2: {{sentence2}}\nQuestion: Does Sentence\
+      \ 1 paraphrase Sentence 2? \n||| \n{{answer_choices[label]}}"
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: false
-      choices_in_prompt: null
-      metrics: []
+      choices_in_prompt: false
+      metrics:
+      - Accuracy
       original_task: true
     name: Concatenation-no-label
     reference: Concatenation of sentence 1 and sentence 2 without any label
-  beb0821e-19c8-4fc8-9972-d6ff05ec8af7: !Template
-    answer_choices: null
+  d5239f5f-2014-47c9-a0c1-4896f76f82bb: !Template
+    answer_choices:
+    - 'No'
+    - 'Yes'
     answer_choices_key: null
-    id: beb0821e-19c8-4fc8-9972-d6ff05ec8af7
-    jinja: "{% if label == 0 or label == 1 %} \nDetermine if the following two sentences\
-      \ paraphrase or not.\n{{sentence1}}\n{{sentence2}}\n||| \n{% if label == 0 %}\
-      \ \nNo\n{% elif label == 1 %}\nYes\n{% endif %}\n{% endif %}"
+    id: d5239f5f-2014-47c9-a0c1-4896f76f82bb
+    jinja: "Sentence 1: {{sentence1}}\nSentence 2: {{sentence2}}\nQuestion: Does Sentence\
+      \ 1 and Sentence 2 express the same meaning? \n||| \n{{answer_choices[label]}}"
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: false
-      choices_in_prompt: null
-      metrics: []
+      choices_in_prompt: false
+      metrics:
+      - Accuracy
       original_task: true
-    name: task_description-no-label
-    reference: Generalized prompt format, task_description-input.
-  c1d65167-6d30-4c8a-ad9f-36b60bb36939: !Template
-    answer_choices: null
+    name: Meaning-no-label
+    reference: Natural question without label
+  d9911dad-75fe-4506-9843-3a46ba5e49bb: !Template
+    answer_choices:
+    - 'False'
+    - 'True'
     answer_choices_key: null
-    id: c1d65167-6d30-4c8a-ad9f-36b60bb36939
-    jinja: "{% if label == 0 or label == 1 %} \n{{sentence1}}\nIs that a paraphrase\
-      \ of the following sentence?\n{{sentence2}}?\nYes, No\n||| \n{% if label ==\
-      \ 0 %} \nNo\n{% elif label == 1 %}\nYes\n{% endif %}\n{% endif %}"
+    id: d9911dad-75fe-4506-9843-3a46ba5e49bb
+    jinja: "{{sentence1}} Question: {{sentence2}} True or False? \n||| \n{{answer_choices[label]}}"
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: false
-      choices_in_prompt: null
-      metrics: []
-      original_task: true
-    name: context-question
-    reference: Generalized prompt format, context-question
-  c4251363-b633-49db-b72c-39ac46ce6017: !Template
-    answer_choices: null
-    answer_choices_key: null
-    id: c4251363-b633-49db-b72c-39ac46ce6017
-    jinja: "{% if label == 0 or label == 1 %} \n{{sentence1}}\nIs that a paraphrase\
-      \ of the following sentence?\n{{sentence2}}?\n||| \n{% if label == 0 %} \nNo\n\
-      {% elif label == 1 %}\nYes\n{% endif %}\n{% endif %}"
-    metadata: !TemplateMetadata
-      _do_eval: false
-      _do_train: false
-      choices_in_prompt: null
-      metrics: []
-      original_task: true
-    name: context-question-no-label
-    reference: Generalized prompt format, context-question without any label
-  cc704c16-6137-4cef-9500-d070199ccbe7: !Template
-    answer_choices: null
-    answer_choices_key: null
-    id: cc704c16-6137-4cef-9500-d070199ccbe7
-    jinja: "{% if label == 0 or label == 1 %} \n{{sentence1}} Question: {{sentence2}}\
-      \ True or False? \n||| \n{% if label == 0 %} \nFalse\n{% elif label == 1 %}\n\
-      True\n{% endif %}\n{% endif %}"
-    metadata: !TemplateMetadata
-      _do_eval: false
-      _do_train: false
-      choices_in_prompt: null
-      metrics: []
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
       original_task: true
     name: PAWS-ANLI GPT3
     reference: ANLI prompt format from Table G7 in the GPT3 paper
-  e6207329-8cfd-4440-8c57-1e63333f1195: !Template
-    answer_choices: null
+  dd52359b-dc56-4241-8179-c98c636f03bb: !Template
+    answer_choices:
+    - 'No'
+    - 'Yes'
     answer_choices_key: null
-    id: e6207329-8cfd-4440-8c57-1e63333f1195
-    jinja: "{% if label == 0 or label == 1 %} \nSentence 1: {{sentence1}}\\nSentence\
-      \ 2: {{sentence2}}\\nQuestion: Does Sentence 1 and Sentence 2 express same meaning?\
-      \ Yes or No? \n||| \n{% if label == 0 %} \nNo\n{% elif label == 1 %}\nYes\n\
-      {% endif %}\n{% endif %}"
+    id: dd52359b-dc56-4241-8179-c98c636f03bb
+    jinja: "Sentence 1: {{sentence1}}\nSentence 2: {{sentence2}}\nQuestion: Can we\
+      \ rewrite Sentence 1 by Sentence 2? Yes or No? \n||| \n{{answer_choices[label]}}"
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: false
-      choices_in_prompt: null
-      metrics: []
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
       original_task: true
-    name: Meaning
-    reference: Natural question
-  ec218500-5a73-45c2-af7a-a004e124774b: !Template
-    answer_choices: null
+    name: Rewrite
+    reference: Natural Question
+  f0866713-c59a-4c5d-a307-95e80a935fbb: !Template
+    answer_choices:
+    - 'No'
+    - 'Yes'
     answer_choices_key: null
-    id: ec218500-5a73-45c2-af7a-a004e124774b
-    jinja: "{% if label == 0 or label == 1 %} \n{{sentence1}} Question: {{sentence2}}\
-      \ paraphrase or not?\n||| \n{% if label == 0 %} \nFalse\n{% elif label == 1\
-      \ %}\nTrue\n{% endif %}\n{% endif %}"
+    id: f0866713-c59a-4c5d-a307-95e80a935fbb
+    jinja: "{{sentence1}} Question: {{sentence2}} paraphrase or not?\n||| \n{{answer_choices[label]}}"
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: false
-      choices_in_prompt: null
-      metrics: []
+      choices_in_prompt: false
+      metrics:
+      - Accuracy
       original_task: true
     name: PAWS-ANLI GPT3-no-label
     reference: ANLI prompt format from Table G7 in the GPT3 paper. Additionally added
