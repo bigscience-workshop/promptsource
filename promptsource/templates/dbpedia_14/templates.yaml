@@ -1,61 +1,5 @@
 dataset: dbpedia_14
 templates:
-  54b94957-86da-4066-8e62-b7252aacc199: !Template
-    answer_choices:
-    - Company
-    - Educational Institution
-    - Artist
-    - Athlete
-    - Office Holder
-    - Mean Of Transportation
-    - Building
-    - Natural Place
-    - Village
-    - Animal
-    - Plant
-    - Album
-    - Film
-    - Written Work
-    answer_choices_key: null
-    id: 54b94957-86da-4066-8e62-b7252aacc199
-    jinja: '{{title}} : {{content}} The text refers to ||| {{ answer_choices[label]
-      }}'
-    metadata: !TemplateMetadata
-      _do_eval: false
-      _do_train: true
-      choices_in_prompt: false
-      metrics: []
-      original_task: null
-    name: dbpedia_5
-    reference: ''
-  6b080596-de2e-48f8-a374-819f42b8015f: !Template
-    answer_choices:
-    - Company
-    - Educational Institution
-    - Artist
-    - Athlete
-    - Office Holder
-    - Mean Of Transportation
-    - Building
-    - Natural Place
-    - Village
-    - Animal
-    - Plant
-    - Album
-    - Film
-    - Written Work
-    answer_choices_key: null
-    id: 6b080596-de2e-48f8-a374-819f42b8015f
-    jinja: '{{title}} The title refers to what category? ||| {{ answer_choices[label]
-      }}'
-    metadata: !TemplateMetadata
-      _do_eval: false
-      _do_train: true
-      choices_in_prompt: false
-      metrics: []
-      original_task: null
-    name: dbpedia_8
-    reference: ''
   824ecb55-ecad-40c2-8033-f2fa0add2ddf: !Template
     answer_choices:
     - Company
@@ -74,15 +18,21 @@ templates:
     - Written Work
     answer_choices_key: null
     id: 824ecb55-ecad-40c2-8033-f2fa0add2ddf
-    jinja: '{{title}} - {{content}} The text refers to what category? ||| {{ answer_choices[label]
-      }}'
+    jinja: '{{content}} Given a list of categories: {{"company, educational institution,
+      artist, athlete, office holder, mean of transportation, building, natural place,
+      village, animal, plant, album, film or written work"}}, what category does the
+      paragraph belong to? ||| {{ answer_choices[label] }}
+
+
+      '
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: true
-      choices_in_prompt: false
-      metrics: []
-      original_task: null
-    name: dbpedia_1
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
+      original_task: true
+    name: given_list_what_category_does_the_paragraph_belong_to
     reference: ''
   8eda7e71-6734-486f-b883-e99d3f14c0bf: !Template
     answer_choices:
@@ -102,17 +52,17 @@ templates:
     - Written Work
     answer_choices_key: null
     id: 8eda7e71-6734-486f-b883-e99d3f14c0bf
-    jinja: '{{title}} - {{content}} Pick one category that labels the above text.
-      The options are - {{"company, educational institution, artist, athlete, office
-      holder, mean of transportation, building, natural place, village, animal, plant,
-      album, film or written work"}}. ||| {{ answer_choices[label] }}'
+    jinja: Pick one category for the following text. The options are - {{"company,
+      educational institution, artist, athlete, office holder, mean of transportation,
+      building, natural place, village, animal, plant, album, film or written work"}}.
+      {{title}} - {{content}} ||| {{ answer_choices[label] }}
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: true
       choices_in_prompt: true
       metrics: []
-      original_task: null
-    name: dbpedia_10
+      original_task: true
+    name: pick_one_category_for_the_following_text
     reference: ''
   9dfa5d15-96bc-41ee-ad89-4f8df5c4ff67: !Template
     answer_choices:
@@ -141,36 +91,8 @@ templates:
       _do_train: true
       choices_in_prompt: true
       metrics: []
-      original_task: null
-    name: dbpedia_9
-    reference: ''
-  ce7a49b1-c5ac-40fe-9060-73cc80d55e47: !Template
-    answer_choices:
-    - Company
-    - Educational Institution
-    - Artist
-    - Athlete
-    - Office Holder
-    - Mean Of Transportation
-    - Building
-    - Natural Place
-    - Village
-    - Animal
-    - Plant
-    - Album
-    - Film
-    - Written Work
-    answer_choices_key: null
-    id: ce7a49b1-c5ac-40fe-9060-73cc80d55e47
-    jinja: '{{title}} - {{content}} The text refers to ||| {{ answer_choices [label]
-      }}'
-    metadata: !TemplateMetadata
-      _do_eval: false
-      _do_train: true
-      choices_in_prompt: false
-      metrics: []
-      original_task: null
-    name: dbpedia_3
+      original_task: true
+    name: 'given_a_choice_of_categories '
     reference: ''
   f72fa410-3278-4f62-91f0-f9edf4a4e792: !Template
     answer_choices:
@@ -190,13 +112,19 @@ templates:
     - Written Work
     answer_choices_key: null
     id: f72fa410-3278-4f62-91f0-f9edf4a4e792
-    jinja: '{{title}} This title belongs to the category - ||| {{ answer_choices[label]
-      }}'
+    jinja: '"{{title}}", given a list of categories: {{"company, educational institution,
+      artist, athlete, office holder, mean of transportation, building, natural place,
+      village, animal, plant, album, film or written work"}}, what category does the
+      title belong to? ||| {{ answer_choices[label] }}
+
+
+      '
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: true
-      choices_in_prompt: false
-      metrics: []
-      original_task: null
-    name: dbpedia_7
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
+      original_task: true
+    name: given_a_list_of_category_what_does_the_title_belong_to
     reference: ''
