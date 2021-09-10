@@ -169,67 +169,43 @@ templates:
     reference: Fine grained labels with coarse-label `NUM`, context provided first
   3aff84f3-e478-4598-abe8-40aa24cec1fa: !Template
     answer_choices:
-    - Manner
-    - Creative Piece
-    - Animal
-    - Expression abbreviated
-    - Individual
-    - Group
-    - Title
-    - Defintion
-    - Date
-    - Reason
-    - Event
-    - State
-    - Description
-    - Count
-    - Other
-    - Letter
-    - Religion
-    - Food
-    - Country
-    - Color
-    - Term
-    - City
-    - Organ of the body
-    - Disease or medicine
-    - Mountain
-    - Price
-    - Product
-    - Period
-    - Substance
-    - Sport
-    - Plant
-    - Technique
-    - Size
-    - Instrument
-    - Abbreviation
-    - Speed
-    - Word
-    - Language
-    - Percentage
-    - Code
-    - Distance
-    - Temperature
-    - Symbol
-    - Order
-    - Vehicle
-    - Weight
-    - Currency
+    - an animal
+    - an organ of the body
+    - a color
+    - creative piece
+    - currency
+    - disease or medicine
+    - event
+    - food
+    - musical instrument
+    - language
+    - letter
+    - plant
+    - product
+    - religion
+    - sport
+    - substance
+    - symbol
+    - technique
+    - term
+    - vehicle
+    - word
+    - other entity
     answer_choices_key: null
     id: 3aff84f3-e478-4598-abe8-40aa24cec1fa
     jinja: '{% if label_coarse == 1 %}
 
-      Is this question asking for {{"an animal, an organ of the body, a color, a creative
-      piece, a currency, a disease or medicine, an event, a food, a musical instrument,
-      a language, a letter, a plant, a product, a religion, a sport, a substance,
-      a symbol, a technique, a term, a vehicle, a word, or other entity"}}?
+      Is this question asking for {{'', ''.join(answer_choices)}}?
 
       {{text}}
 
       |||
 
-      {{ answer_choices[label_fine] }}
+      {% set label_mapping = {2:0, 22:1, 19:2, 1000:3, 46:3, 23:4, 10:5, 17:6, 33:7,
+      37:8, 15:9, 30:10, 26:11, 16:12, 28:13, 42:14, 31:15, 20:16, 44:17, 36:18, 14:19}
+      %}
+
+      {{ answer_choices [label_mapping[label_fine]] }}
 
       {% endif %}'
     metadata: !TemplateMetadata
@@ -238,7 +214,7 @@ templates:
       choices_in_prompt: true
       metrics:
       - Accuracy
-      original_task: null
+      original_task: false
     name: fine_grained_ENTY
     reference: Fine grained labels with coarse-label `ENTY`, context after question
   43a188a2-b6dd-46a7-af2e-81a64b90b92a: !Template
@@ -507,65 +483,23 @@ templates:
     reference: ''
   7a9e6f3c-1dee-45b0-a315-1badaf59a7b8: !Template
     answer_choices:
-    - Manner
-    - Creative Piece
-    - Animal
-    - Expression abbreviated
-    - Individual
-    - Group
-    - Title
-    - Defintion
-    - Date
-    - Reason
-    - Event
-    - State
-    - Description
-    - Count
-    - Other
-    - Letter
-    - Religion
-    - Food
-    - Country
-    - Color
-    - Term
-    - City
-    - Organ of the body
-    - Disease or medicine
-    - Mountain
-    - Price
-    - Product
-    - Period
-    - Substance
-    - Sport
-    - Plant
-    - Technique
-    - Size
-    - Instrument
-    - Abbreviation
-    - Speed
-    - Word
-    - Language
-    - Percentage
-    - Code
-    - Distance
-    - Temperature
-    - Symbol
-    - Order
-    - Vehicle
-    - Weight
-    - Currency
+    - definition
+    - description
+    - manner of action
+    - reason
     answer_choices_key: null
     id: 7a9e6f3c-1dee-45b0-a315-1badaf59a7b8
     jinja: '{% if label_coarse == 0 %}
 
-      Is this question asking for {{"a definition, a description, a manner of action,
-      or a reason"}}?
+      Is this question asking for {{'', ''.join(answer_choices)}}?
 
       {{text}}
 
       |||
 
-      {{ answer_choices[label_fine] }}
+      {% set label_mapping={0:2, 7:1,  12:0, 9:3} %}
+
+      {{ answer_choices[label_mapping[label_fine]] }}
 
       {% endif %}'
     metadata: !TemplateMetadata
@@ -574,7 +508,7 @@ templates:
       choices_in_prompt: true
       metrics:
       - Accuracy
-      original_task: null
+      original_task: false
     name: fine_grained_DESC
     reference: Fine grained labels with coarse-label `DESC`, context after question
   861d1a48-1113-4f35-b777-2b2f12ab9d5d: !Template
@@ -606,66 +540,13 @@ templates:
     reference: Context then prompt
   93a06e72-2c15-4f8a-a46c-6a10919c4ea4: !Template
     answer_choices:
-    - Manner
-    - Creative Piece
-    - Animal
-    - Expression abbreviated
-    - Individual
-    - Group
-    - Title
-    - Defintion
-    - Date
-    - Reason
-    - Event
-    - State
-    - Description
-    - Count
-    - Other
-    - Letter
-    - Religion
-    - Food
-    - Country
-    - Color
-    - Term
-    - City
-    - Organ of the body
-    - Disease or medicine
-    - Mountain
-    - Price
-    - Product
-    - Period
-    - Substance
-    - Sport
-    - Plant
-    - Technique
-    - Size
-    - Instrument
-    - Abbreviation
-    - Speed
-    - Word
-    - Language
-    - Percentage
-    - Code
-    - Distance
-    - Temperature
-    - Symbol
-    - Order
-    - Vehicle
-    - Weight
-    - Currency
+    - abbreviation
+    - expression abbreviated
     answer_choices_key: null
     id: 93a06e72-2c15-4f8a-a46c-6a10919c4ea4
-    jinja: '{% if label_coarse == 2 %}
-
-      Is this question asking for an {{"abbreviation or an expression abbreviated"}}?
-
-      {{text}}
-
-      |||
-
-      {{answer_choices[label_fine] }}
-
-      {% endif %}'
+    jinja: "{% if label_coarse == 2 %}\nIs this question asking for an {{', ',join(answer_choices)}}?\n\
+      {{text}}\n|||\n{% set label_mapping = {34:0, 3:1} %} \n{{answer_choices[label_mapping[label_fine]]\
+      \ }}\n{% endif %}"
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: true
@@ -677,74 +558,20 @@ templates:
     reference: Fine grained labels with coarse-label `ABBR`, context after question
   a0096044-3b4c-4c80-b139-25eac8fe692a: !Template
     answer_choices:
-    - Manner
-    - Creative Piece
-    - Animal
-    - Expression abbreviated
-    - Individual
-    - Group
-    - Title
-    - Defintion
-    - Date
-    - Reason
-    - Event
-    - State
-    - Description
-    - Count
-    - Other
-    - Letter
-    - Religion
-    - Food
-    - Country
-    - Color
-    - Term
-    - City
-    - Organ of the body
-    - Disease or medicine
-    - Mountain
-    - Price
-    - Product
-    - Period
-    - Substance
-    - Sport
-    - Plant
-    - Technique
-    - Size
-    - Instrument
-    - Abbreviation
-    - Speed
-    - Word
-    - Language
-    - Percentage
-    - Code
-    - Distance
-    - Temperature
-    - Symbol
-    - Order
-    - Vehicle
-    - Weight
-    - Currency
+    - abbreviation
+    - expression abbreviated
     answer_choices_key: null
     id: a0096044-3b4c-4c80-b139-25eac8fe692a
-    jinja: '{% if label_coarse == 2 %}
-
-      {{text}}
-
-
-      Is this question asking for an {{"abbreviation or an expression abbreviated"}}?
-
-      |||
-
-      {{ answer_choices [label_fine] }}
-
-      {% endif %}'
+    jinja: "{% if label_coarse == 2 %}\n{{text}}\n\nIs this question asking for an\
+      \ {{', '.join(answer_choices)}}?\n|||\n{% set label_mapping = {34:0, 3:1} %}\
+      \ \n{{ answer_choices [label_mapping[label_fine]] }}\n{% endif %}"
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: true
       choices_in_prompt: true
       metrics:
       - Accuracy
-      original_task: null
+      original_task: false
     name: fine_grained_ABBR_context_first
     reference: Fine grained labels with coarse-label `ABBR`, context provided first
   aad2def1-b694-40ee-9c26-3d1cf5c577da: !Template
@@ -987,53 +814,10 @@ templates:
     reference: Fine grained labels with coarse-label `HUM`, context provided first
   fa588c55-5c69-4fd0-a0b1-edbfa092f710: !Template
     answer_choices:
-    - Manner
-    - Creative Piece
-    - Animal
-    - Expression abbreviated
-    - Individual
-    - Group
-    - Title
-    - Defintion
-    - Date
-    - Reason
-    - Event
-    - State
-    - Description
-    - Count
-    - Other
-    - Letter
-    - Religion
-    - Food
-    - Country
-    - Color
-    - Term
-    - City
-    - Organ of the body
-    - Disease or medicine
-    - Mountain
-    - Price
-    - Product
-    - Period
-    - Substance
-    - Sport
-    - Plant
-    - Technique
-    - Size
-    - Instrument
-    - Abbreviation
-    - Speed
-    - Word
-    - Language
-    - Percentage
-    - Code
-    - Distance
-    - Temperature
-    - Symbol
-    - Order
-    - Vehicle
-    - Weight
-    - Currency
+    - definition
+    - description
+    - manner of action
+    - reason
     answer_choices_key: null
     id: fa588c55-5c69-4fd0-a0b1-edbfa092f710
     jinja: '{% if label_coarse == 0 %}
@@ -1041,12 +825,13 @@ templates:
       {{text}}
 
 
-      Is this question asking for {{"a definition, a description, a manner of action,
-      or a reason"}}?
+      Is this question asking for {{'', ''.join(answer_choices)}}?
 
       |||
 
-      {{ answer_choices [label_fine] }}
+      {% set label_mapping={0:2, 7:1,  12:0, 9:3} %}
+
+      {{ answer_choices [label_mapping[label_fine]] }}
 
       {% endif %}'
     metadata: !TemplateMetadata
