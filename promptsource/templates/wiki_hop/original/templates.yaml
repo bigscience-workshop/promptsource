@@ -5,10 +5,11 @@ templates:
     answer_choices: null
     answer_choices_key: candidates
     id: 0bb6b603-115e-4ae9-b17b-881fa72b2e81
-    jinja: "Information:\n- {{ supports | join(\"\\n- \") }}\n\n{% set question_split\
-      \ = question.split(' ') %}\nWhat object entity has the relation of '{{ question_split[0]\
-      \ | replace(\"_\", \" \")}}' with the subject '{{ question_split[1:] | join(\"\
-      \ \")}}'? \n\nChoices: {{ candidates | join(\"|||\") }}\n\n|||\n{{answer}}"
+    jinja: "Information:\n{% for support in supports %}\n- {{ support }}\n{% endfor\
+      \ %}\n\n{% set question_split = question.split(' ') %}\nWhat object entity has\
+      \ the relation of '{{ question_split[0] | replace(\"_\", \" \")}}' with the\
+      \ subject '{{ question_split[1:] | join(\" \")}}'? \n\nChoices: {{ candidates\
+      \ | join(\" \\|\\|\\| \") }}\n\n|||\n{{answer}}"
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: true
@@ -25,7 +26,11 @@ templates:
     id: 23e0d05a-8777-45c4-8692-13f3dc5a40bb
     jinja: 'Information:
 
-      - {{ supports | join("\n- ") }}
+      {% for support in supports %}
+
+      - {{ support }}
+
+      {% endfor %}
 
 
       {% set question_split = question.split('' '') %}
@@ -53,7 +58,11 @@ templates:
     id: 2fadafea-f814-4ff1-a3aa-cace9067f31f
     jinja: 'Information:
 
-      - {{ supports | join("\n- ") }}
+      {% for support in supports %}
+
+      - {{ support }}
+
+      {% endfor %}
 
 
       {% set question_split = question.split('' '') %}
@@ -81,7 +90,11 @@ templates:
     id: 40bdb0e7-def9-4829-9a37-a05d354ef7cd
     jinja: 'Information:
 
-      - {{ supports | join("\n- ") }}
+      {% for support in supports %}
+
+      - {{ support }}
+
+      {% endfor %}
 
 
       {% set question_split = question.split('' '') %}
@@ -108,7 +121,11 @@ templates:
     id: 4836e754-b2c9-4697-b386-6770494dc5f5
     jinja: 'Information:
 
-      - {{ supports | join("\n- ") }}
+      {% for support in supports %}
+
+      - {{ support }}
+
+      {% endfor %}
 
 
       {% set question_split = question.split('' '') %}
@@ -118,7 +135,7 @@ templates:
       subject ''{{ question_split[1:] | join(" ")}}''.
 
 
-      Choices: {{ candidates | join("|||") }}
+      Choices: {{ candidates | join(" \|\|\| ") }}
 
 
       |||
@@ -138,7 +155,11 @@ templates:
     id: 4a1b61f6-c619-4d3d-aec2-f41a8986641c
     jinja: 'Information:
 
-      - {{ supports | join("\n- ") }}
+      {% for support in supports %}
+
+      - {{ support }}
+
+      {% endfor %}
 
 
       {% set question_split = question.split('' '') %}
@@ -149,7 +170,7 @@ templates:
       choices below.
 
 
-      Choices: {{ candidates | join("|||") }}
+      Choices: {{ candidates | join(" \|\|\| ") }}
 
 
       |||
@@ -169,7 +190,11 @@ templates:
     id: c4675106-0ac5-4bf0-a400-f628daae81db
     jinja: 'Information:
 
-      - {{ supports | join("\n- ") }}
+      {% for support in supports %}
+
+      - {{ support }}
+
+      {% endfor %}
 
 
       {% set question_split = question.split('' '') %}
@@ -196,7 +221,11 @@ templates:
     id: e4dc7abf-d56a-4217-ba7f-7470cd959e8e
     jinja: 'Information:
 
-      - {{ supports | join("\n- ") }}
+      {% for support in supports %}
+
+      - {{ support }}
+
+      {% endfor %}
 
 
       {% set question_split = question.split('' '') %}
@@ -206,7 +235,7 @@ templates:
       ''{{ question_split[0] | replace("_", " ")}}''.
 
 
-      Choices: {{ candidates | join("|||") }}
+      Choices: {{ candidates | join(" \|\|\| ") }}
 
 
       |||
@@ -226,7 +255,11 @@ templates:
     id: f44936e1-cbde-4d41-b462-6150cce8c1c8
     jinja: 'Information:
 
-      - {{ supports | join("\n- ") }}
+      {% for support in supports %}
+
+      - {{ support }}
+
+      {% endfor %}
 
 
       {% set question_split = question.split('' '') %}
@@ -235,7 +268,7 @@ templates:
       the relation of ''{{ question_split[0] | replace("_", " ")}}''?
 
 
-      Choices: {{ candidates | join("|||") }}
+      Choices: {{ candidates | join(" \|\|\| ") }}
 
 
       |||
