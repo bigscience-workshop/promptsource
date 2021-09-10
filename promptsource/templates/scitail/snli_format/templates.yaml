@@ -1,17 +1,98 @@
 dataset: scitail
 subset: snli_format
 templates:
-  707f9870-64dc-4f24-b4e3-3f26297ec28c: !Template
+  13a8a810-fbc8-459a-b9d7-08f03029f5f9: !Template
+    answer_choices:
+    - neutral
+    - entailment
+    answer_choices_key: null
+    id: 13a8a810-fbc8-459a-b9d7-08f03029f5f9
+    jinja: "Sentence1: {{sentence1}} \n\n\nSentence2: {{sentence2}}\n\n\nWhat is the\
+      \ entailment label for these 2 sentences: {{answer_choices[0]}} or {{answer_choices[1]}}\
+      \ ?\n\n|||{{gold_label}}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      metrics: []
+      original_task: true
+    name: Simple Entailment
+    reference: 'Direct question about entailment label. '
+  22d94093-f4d5-45ca-8c09-0548b07d9c02: !Template
     answer_choices: null
     answer_choices_key: null
+    id: 22d94093-f4d5-45ca-8c09-0548b07d9c02
+    jinja: 'Sentences: {{sentence1}} {{sentence2}}
+
+
+      What is the entail label for these sentences? {{gold_label}}
+
+      '
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - Accuracy
+      original_task: false
+    name: Entailment as Direct Question
+    reference: Directly predict class label
+  669a4cf9-2ed9-4630-96bf-e954ddc4428b: !Template
+    answer_choices:
+    - neutral
+    - entailment
+    answer_choices_key: null
+    id: 669a4cf9-2ed9-4630-96bf-e954ddc4428b
+    jinja: '{{sentence1}} | {{sentence2}}
+
+
+      Which label describes the logical entailment of these sentences? {{answer_choices[0]}}
+      or {{answer_choices[1]}}
+
+
+      ||| {{gold_label}}
+
+      '
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
+      original_task: true
+    name: 'Entailment '
+    reference: entailment posed as question
+  707f9870-64dc-4f24-b4e3-3f26297ec28c: !Template
+    answer_choices:
+    - neural
+    - entailment
+    answer_choices_key: null
     id: 707f9870-64dc-4f24-b4e3-3f26297ec28c
-    jinja: "{{sentence1}} \n{{sentence2}}\nAre these sentences {{\"neutral or entailment\"\
-      }} to one another?|||\n{{gold_label}}"
+    jinja: "{{sentence1}} \n{{sentence2}}\n\n\nAre these sentences {{answer_choices[0]}}\
+      \ or {{answer_choices[1]}} to one another?|||\n{{gold_label}}"
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: false
-      choices_in_prompt: null
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
+      original_task: true
+    name: Entailment Alternate Phrasing
+    reference: ''
+  dc4d6b4b-0bf3-4141-9feb-4bf680c35757: !Template
+    answer_choices:
+    - 'yes'
+    - 'no'
+    answer_choices_key: null
+    id: dc4d6b4b-0bf3-4141-9feb-4bf680c35757
+    jinja: 'Sentences: {{sentence1}} {{sentence2}}
+
+
+      Are these sentences entailed? {{answer_choices[0]}} or {{answer_choices[1]}}
+
+
+      |||{% if gold_label=="entailment"%} {{answer_choices[0]}} {% else %} {{answer_choices[1]}}{%
+      endif %}
+
+
+      '
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
       metrics: []
       original_task: false
-    name: Test1
-    reference: ''
+    name: Entailment as Yes/No Question
+    reference: Reformulation of class as binary (entailed vs. neutral) yes/no question
