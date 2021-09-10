@@ -1,0 +1,90 @@
+dataset: quac
+templates:
+  12c9d007-991c-49ed-82e2-13a7d3147881: !Template
+    answer_choices: null
+    answer_choices_key: null
+    id: 12c9d007-991c-49ed-82e2-13a7d3147881
+    jinja: "Given the dialogue : \n\nStudent: {{questions[0]}}\n\nTeacher: {{answers.texts[0]\
+      \ | choice}}\n\nThe context : {{context}}\n\nAnswer the question: {{questions[1]\
+      \ }}\n|||\n{{answers.texts[1] | choice }}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - Squad
+      original_task: true
+    name: Answer Given Only First Dialouge
+    reference: ''
+  1d4014c2-7cf7-45d1-8f85-a701b6a65118: !Template
+    answer_choices: null
+    answer_choices_key: null
+    id: 1d4014c2-7cf7-45d1-8f85-a701b6a65118
+    jinja: "Given the dialogue: \n{% for i in range(0, questions | length - 1)%}\n\
+      Student: {{questions[i]}}\n\nTeacher: {{answers.texts[i] | choice}}\n{% endfor\
+      \ %}\n\nThe context: {{context}}\n\nAnswer the question: {{questions | last\
+      \ }}\n|||\n{{answers.texts| last | choice }}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - Squad
+      original_task: true
+    name: Answer Given Full Dialouge
+    reference: ''
+  1f28f748-bc9e-4881-89ae-1d561abf2f2b: !Template
+    answer_choices: null
+    answer_choices_key: null
+    id: 1f28f748-bc9e-4881-89ae-1d561abf2f2b
+    jinja: 'This conversation happened between a teacher and a student:
+
+      {% for i in range(0, questions | length - 1) %}
+
+      Student: {{questions[i]}}
+
+
+      Teacher: {{answers.texts[i] | choice}}
+
+      {% endfor %}
+
+
+      Use the article : {{context}} to answer the question: {{questions | last }}
+
+      |||
+
+      {{answers.texts | last | choice }}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - Squad
+      original_task: true
+    name: 'Answer Converation '
+    reference: ''
+  2c052ef8-adfa-497b-adb1-9e942ad998e0: !Template
+    answer_choices: null
+    answer_choices_key: null
+    id: 2c052ef8-adfa-497b-adb1-9e942ad998e0
+    jinja: "I read an article : {{context}} \n\nThen the following conversation: \n\
+      {% for i in range(0, questions | length - 1) %}\nStudent: {{questions[i]}}\n\
+      \nTeacher: {{answers.texts[i] | choice}}\n{% endfor %}\nUse both to answer the\
+      \ question:  {{questions | last }}\n|||\n{{answers.texts | last | choice }}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - Squad
+      original_task: true
+    name: 'Context First '
+    reference: ''
+  70c85283-44f3-4d31-866c-02294aed7a59: !Template
+    answer_choices: null
+    answer_choices_key: null
+    id: 70c85283-44f3-4d31-866c-02294aed7a59
+    jinja: "Read the article: {{context}} \n\nThen answer the question:  {{questions\
+      \ | last}}\n\nYou can use this dialogue to find the answer faster:\n{% for i\
+      \ in range(0, questions | length - 1)%}\nStudent: {{questions[i]}}\n\nTeacher:\
+      \ {{answers.texts[i] | choice}}\n{% endfor %}\n|||\n{{answers.texts | last |\
+      \ choice }}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - Squad
+      original_task: true
+    name: Use Dialouge as Hint
+    reference: ''
