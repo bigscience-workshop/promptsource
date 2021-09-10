@@ -10,8 +10,8 @@ templates:
     id: 6e6ffb0a-6981-4fd9-a188-15fe2c07d7f0
     jinja: '{{premise}}
 
-      Is it therefore the case that "{{hypothesis}}"? Please answer {{"yes, no, or
-      unclear"}}.
+      Is it therefore the case that "{{hypothesis}}"? Please answer {{answer_choices[0]}},
+      {{answer_choices[2]}}, or {{answer_choices[1]}}.
 
       |||
 
@@ -19,9 +19,10 @@ templates:
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: false
-      choices_in_prompt: null
-      metrics: []
-      original_task: null
+      choices_in_prompt: true
+      metrics:
+        - Accuracy
+      original_task: true
     name: is it the case
     reference: ''
   704397f4-c16e-4737-ad6d-2f282517810f: !Template
@@ -33,7 +34,8 @@ templates:
     id: 704397f4-c16e-4737-ad6d-2f282517810f
     jinja: '{{premise}}
 
-      Does this imply that "{{hypothesis}}"? Please answer {{"yes, no, or maybe"}}.
+      Does this imply that "{{hypothesis}}"? Please answer {{answer_choices[0]}},
+      {{answer_choices[2]}} or {{answer_choices[1]}}.
 
       |||
 
@@ -41,9 +43,10 @@ templates:
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: false
-      choices_in_prompt: null
-      metrics: []
-      original_task: null
+      choices_in_prompt: true
+      metrics:
+        - Accuracy
+      original_task: true
     name: imply
     reference: ''
   709efd1d-3911-4db7-969b-7fc8600b796c: !Template
@@ -61,7 +64,8 @@ templates:
 
       {{hypothesis}}
 
-      Does the hypothesis follow from the premise? {{"A) yes B) no C) maybe"}}
+      Does the hypothesis follow from the premise? A) {{answer_choices[0]}} B) {{answer_choices[2]}}
+      C) {{answer_choices[1]}}
 
       |||
 
@@ -69,9 +73,10 @@ templates:
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: false
-      choices_in_prompt: null
-      metrics: []
-      original_task: null
+      choices_in_prompt: true
+      metrics:
+        - Accuracy
+      original_task: true
     name: premise hypothesis
     reference: ''
   873607a6-cf11-4fb4-a038-0fe3a843315d: !Template
@@ -83,7 +88,8 @@ templates:
     id: 873607a6-cf11-4fb4-a038-0fe3a843315d
     jinja: '{{premise}}
 
-      Does this mean that "{{hypothesis}}"? {{"A) yes B) no or C) maybe."}}
+      Does this mean that "{{hypothesis}}"? A) {{answer_choices[0]}} B) {{answer_choices[2]}}
+      or C) {{answer_choices[1]}}.
 
       |||
 
@@ -91,9 +97,10 @@ templates:
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: false
-      choices_in_prompt: null
-      metrics: []
-      original_task: null
+      choices_in_prompt: true
+      metrics:
+        - Accuracy
+      original_task: true
     name: does this mean
     reference: ''
   b249978b-b1ee-440b-ae67-280e6631286b: !Template
@@ -104,16 +111,16 @@ templates:
     answer_choices_key: null
     id: b249978b-b1ee-440b-ae67-280e6631286b
     jinja: 'In this task, you need to determine if two passages have one of three
-      relationships: {{"entailment, neural, or contradiction"}}. {{"Entailment"}}
-      means that the first passage implies the second. {{"Neutral"}} means that their
-      relationship is unclear. {{"Contradiction"}} means the first passage contradicts
-      the second. Here are the two passages:
+      relationships: {{answer_choices[0]}}, {{answer_choices[1]}}, {{answer_choices[2]}}.
+      {{answer_choices[0].upper()}} means that the first passage implies the second.
+      {{answer_choices[1].upper()}} means that their relationship is unclear. {{answer_choices[2].upper()}}
+      means the first passage contradicts the second. Here are the two passages:
 
       {{premise}}
 
       {{hypothesis}}
 
-      Is the relationship {{"entailment, neutral, or contradiction"}}?
+      Is the relationship {{answer_choices[0]}}, {{answer_choices[1]}}, or {{answer_choices[2]}}?
 
       |||
 
@@ -121,6 +128,10 @@ templates:
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: false
+      choices_in_prompt: true
+      metrics:
+        - Accuracy
+      original_task: true
       choices_in_prompt: null
       metrics: []
       original_task: null
