@@ -5,22 +5,18 @@ templates:
     answer_choices: null
     answer_choices_key: null
     id: 0b4789ce-d7cb-4cdf-8c1f-1ea059cf04e6
-    jinja: '{% if entity_pages.wiki_context |length >0 and answer.aliases %}
-
-      I am trying to figure out the answer to the question, "{{question}}" I found
-      the following text-snippet on Wikipedia and I think it has the answer. Can you
-      tell me the answer?
-
-      \n{{entity_pages.wiki_context|choice}}
-
-      ||| {{answer.aliases|choice}}
-
-      {% endif %}'
+    jinja: "{% if entity_pages.wiki_context |length >0 and answer.aliases %}\n   \
+      \ I am trying to figure out the answer to the question, \"{{question}}\" I found\
+      \ the following text-snippet on Wikipedia and I think it has the answer. Can\
+      \ you tell me the answer?\n\n    {{entity_pages.wiki_context|choice}}\n\n  \
+      \  ||| \n\n    {{answer.aliases|choice}}\n\n{% endif %}"
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: true
-      choices_in_prompt: null
-      metrics: []
+      choices_in_prompt: false
+      metrics:
+      - Sequence Accuracy
+      - Other
       original_task: true
     name: reading_comprehension_1
     reference: Reading Comprehension with KB
@@ -28,50 +24,65 @@ templates:
     answer_choices: null
     answer_choices_key: null
     id: 5946db1a-a068-4a31-a06f-74a7d976cb6d
-    jinja: '{% if answer.aliases %} Guess a question from the topic "{{answer.aliases|choice}}"
-      |||  {{question}} {% endif %}'
+    jinja: "{% if answer.aliases %} \n    Guess a question that has the answer \"\
+      {{answer.aliases|choice}}\" \n    |||  \n    {{question}} \n{% endif %}"
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: true
-      choices_in_prompt: null
-      metrics: []
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      - ROUGE
       original_task: false
     name: guess_question
     reference: Guess a question.
+  7ada9605-6fd1-49a9-a56e-6d778d4a0eb6: !Template
+    answer_choices: null
+    answer_choices_key: null
+    id: 7ada9605-6fd1-49a9-a56e-6d778d4a0eb6
+    jinja: "{% if answer.aliases %} \n    The goal is to predict an English answer\
+      \ string for an input English question. \n    Question : {{question}}\n    Answer\
+      \ : \n    ||| \n    {{answer.aliases|choice}} \n{% endif %}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - Sequence Accuracy
+      - Other
+      original_task: true
+    name: formal_description
+    reference: ''
   91d9f950-a25a-4557-a16f-952d74629584: !Template
     answer_choices: null
     answer_choices_key: null
     id: 91d9f950-a25a-4557-a16f-952d74629584
-    jinja: '{% if answer.aliases %} Answer the following question. \n{{question}}
-      |||{{answer.aliases|choice}} {% endif %}'
+    jinja: "{% if answer.aliases %} \n    Answer the following question.\n    {{question}}\
+      \ \n    |||\n    {{answer.aliases|choice}} \n{% endif %}"
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: true
-      choices_in_prompt: null
-      metrics: []
-      original_task: false
+      choices_in_prompt: false
+      metrics:
+      - Sequence Accuracy
+      - Other
+      original_task: true
     name: question_with_instruction
-    reference: Question followed by an instruction
+    reference: Instruction before question.
   9ef24a64-c598-4ba7-a77f-cb6fd8dcb8ff: !Template
     answer_choices: null
     answer_choices_key: null
     id: 9ef24a64-c598-4ba7-a77f-cb6fd8dcb8ff
-    jinja: '{% if search_results.search_context |length >0 and answer.aliases %}
-
-      I am trying to figure out the answer to the question, "{{question}}" I found
-      the following text-snippet on the internet and I think it has the answer. Can
-      you tell me the answer?
-
-      \n{{search_results.search_context|choice}}
-
-      ||| {{answer.aliases|choice}}
-
-      {% endif %}'
+    jinja: "{% if search_results.search_context |length >0 and answer.aliases %}\n\
+      \    \n    I am trying to figure out the answer to the question, \"{{question}}\"\
+      \ I found the following text-snippet on the internet and I think it has the\
+      \ answer. Can you tell me the answer?\n    \n    {{search_results.search_context|choice}}\n\
+      \n    ||| \n\n    {{answer.aliases|choice}}\n\n{% endif %}"
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: true
-      choices_in_prompt: null
-      metrics: []
+      choices_in_prompt: false
+      metrics:
+      - Sequence Accuracy
+      - Other
       original_task: true
     name: reading_comprehension_2
     reference: Reading Comprehension
@@ -79,27 +90,31 @@ templates:
     answer_choices: null
     answer_choices_key: null
     id: bfec3d73-c024-492f-8878-64fdb6639a29
-    jinja: '{% if answer.aliases %} I''ve always wondered: {{question}} ||| {{answer.aliases|choice}}
-      {% endif %}'
+    jinja: "{% if answer.aliases %} \n   I've always wondered: {{question}} \n   \
+      \ ||| \n    {{answer.aliases|choice}}\n{% endif %}"
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: true
-      choices_in_prompt: null
-      metrics: []
-      original_task: false
-    name: context_self_description
-    reference: Ask a question by self description
+      choices_in_prompt: false
+      metrics:
+      - Sequence Accuracy
+      - Other
+      original_task: true
+    name: first_person_context
+    reference: Ask a question in first person
   c29c7072-0535-4e38-ba0c-b7ac0acdacf8: !Template
     answer_choices: null
     answer_choices_key: null
     id: c29c7072-0535-4e38-ba0c-b7ac0acdacf8
-    jinja: '{% if answer.aliases %} Question : {{question}} \nAnswer : ||| {{answer.aliases|choice}}
-      {% endif %}'
+    jinja: "{% if answer.aliases %} \n    Question : {{question}}\n    Answer : \n\
+      \    ||| \n    {{answer.aliases|choice}}\n{% endif %}"
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: true
-      choices_in_prompt: null
-      metrics: []
-      original_task: false
+      choices_in_prompt: false
+      metrics:
+      - Sequence Accuracy
+      - Other
+      original_task: true
     name: question_answer
     reference: Plain Question

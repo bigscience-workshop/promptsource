@@ -1,8 +1,29 @@
 dataset: social_i_qa
 templates:
+  605691e9-df59-415d-a622-530734c7df38: !Template
+    answer_choices: null
+    answer_choices_key: '{{answerA}} ||| {{answerB}} ||| {{answerC}}'
+    id: 605691e9-df59-415d-a622-530734c7df38
+    jinja: 'I heard that {{context}}
+
+
+      And I was wondering {{question}}
+
+
+      |||
+
+
+      {{answer_choices[label | int - 1]}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - Accuracy
+      original_task: true
+    name: I was wondering
+    reference: ''
   666f415b-e3ac-47bf-a79b-19024c4a4143: !Template
     answer_choices: null
-    answer_choices_key: null
+    answer_choices_key: '{{answerA}} ||| {{answerB}} ||| {{answerC}}'
     id: 666f415b-e3ac-47bf-a79b-19024c4a4143
     jinja: '{{context}}
 
@@ -10,23 +31,26 @@ templates:
       Given the context: {{question}}
 
 
-      Possible answers: {{answerA}}, {{answerB}}, {{answerC}}
+      Possible answers: {{answer_choices | join(", ")}}
 
 
       |||
 
 
-      {{{"1": answerA, "2": answerB, "3": answerC}[label]}}'
+      {{answer_choices[label | int - 1]}}'
     metadata: !TemplateMetadata
       _do_eval: true
       _do_train: true
       choices_in_prompt: true
-      metrics: []
+      metrics:
+      - Accuracy
       original_task: true
-    name: social_i_qa1
-    reference: Show possible answers and generate correct possible answer
+    name: Show choices and generate answer
+    reference: ''
   991f78cc-82d3-482f-b1de-f37a7179a316: !Template
-    answer_choices: null
+    answer_choices:
+    - 'Yes'
+    - 'No'
     answer_choices_key: null
     id: 991f78cc-82d3-482f-b1de-f37a7179a316
     jinja: "{% set random_answer_id = range(0,2) | choice%}\n{% set answers = [answerA,\
@@ -37,10 +61,11 @@ templates:
       _do_eval: false
       _do_train: true
       choices_in_prompt: false
-      metrics: []
+      metrics:
+      - Accuracy
       original_task: true
-    name: social_i_qa5
-    reference: Check if a random answer is valid or not
+    name: Check if a random answer is valid or not
+    reference: ''
   b980667e-b4ca-44ce-aba9-5b47d3ccf406: !Template
     answer_choices: null
     answer_choices_key: null
@@ -59,14 +84,16 @@ templates:
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: true
-      choices_in_prompt: null
-      metrics: []
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      - ROUGE
       original_task: false
-    name: social_i_qa4
-    reference: Generate the question from the answer
+    name: Generate the question from the answer
+    reference: ''
   cbad777f-5794-4d71-bf3d-54da6043e5f1: !Template
     answer_choices: null
-    answer_choices_key: null
+    answer_choices_key: '{{answerA}} ||| {{answerB}} ||| {{answerC}}'
     id: cbad777f-5794-4d71-bf3d-54da6043e5f1
     jinja: '{{context}}
 
@@ -77,17 +104,21 @@ templates:
       |||
 
 
-      {{{"1": answerA, "2": answerB, "3": answerC}[label]}}'
+      {{answer_choices[label | int - 1]}}'
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: true
       choices_in_prompt: false
-      metrics: []
+      metrics:
+      - Accuracy
       original_task: true
-    name: social_i_qa2
-    reference: Generate answer without seeing possible answers
+    name: Generate answer
+    reference: ''
   e2316120-2461-4664-943d-962a85008e23: !Template
-    answer_choices: null
+    answer_choices:
+    - A
+    - B
+    - C
     answer_choices_key: null
     id: e2316120-2461-4664-943d-962a85008e23
     jinja: 'Context: {{context}}
@@ -96,21 +127,28 @@ templates:
       Question: {{question}}
 
 
-      Possible answers: {{answerA}}, {{answerB}}, {{answerC}}
-
-
       Which one of these answers best answers the question according to the context?
+
+
+      A: {{answerA}}
+
+
+      B: {{answerB}}
+
+
+      C: {{answerC}}
 
 
       |||
 
 
-      {{{"1": "First", "2": "Second", "3": "Third"}[label]}} answer'
+      {{{"1": "A", "2": "B", "3": "C"}[label]}}'
     metadata: !TemplateMetadata
       _do_eval: true
       _do_train: true
       choices_in_prompt: true
-      metrics: []
+      metrics:
+      - Accuracy
       original_task: true
-    name: social_i_qa3
-    reference: Show possible answers and find the index of the good answer.
+    name: Show choices and generate index
+    reference: ''

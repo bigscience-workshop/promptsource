@@ -1,176 +1,10 @@
 dataset: adversarial_qa
-subset: droberta
+subset: adversarialQA
 templates:
-  061ecbe3-7d01-479a-9356-6a5ba260a487: !Template
+  00755780-f3c0-44b4-b159-8f3873cdb163: !Template
     answer_choices: null
     answer_choices_key: null
-    id: 061ecbe3-7d01-479a-9356-6a5ba260a487
-    jinja: 'Documentation:
-
-
-      find_answer(text_1, text_2): Finds the answer to question text_1 in context
-      text_2
-
-
-      find_index(text_1, text_2): Finds the starting index of text_1 in text_2
-
-
-      Code:
-
-
-      context = """{{context}}"""
-
-
-      question = """{{question}}"""
-
-
-      {{"answer"}} = find_answer({{"question"}}, {{"context"}})
-
-
-      {{"answer_idx"}} = find_index({{"answer"}}, {{"context"}})
-
-
-      print({{"answer"}})
-
-
-      print({{"answer_idx"}}) |||
-
-      {{answers.text[0]}}
-
-
-      {{answers.answer_start[0] | string}}'
-    metadata: !TemplateMetadata
-      _do_eval: false
-      _do_train: true
-      choices_in_prompt: null
-      metrics: []
-      original_task: true
-    name: adversarial_qa_droberta_10
-    reference: 'Input: Question, Context Output: Answer+Index (Python format)'
-  1aaf3296-2e10-4211-a44f-8bb811f48edc: !Template
-    answer_choices: null
-    answer_choices_key: null
-    id: 1aaf3296-2e10-4211-a44f-8bb811f48edc
-    jinja: 'I know that the answer to "{{question}}" is in "{{context}}" somewhere.
-      Can you return the offsets of the answer? Note: Follow 0-indexing and [inclusive,
-      exclusive) format for range. ||| {% if answers.text != [] %} {{(answers.answer_start[0],
-      answers.answer_start[0]+answers.text[0]|length)}} {% else %} Answer not found
-      {% endif %}'
-    metadata: !TemplateMetadata
-      _do_eval: false
-      _do_train: true
-      choices_in_prompt: null
-      metrics: []
-      original_task: true
-    name: adversarial_qa_droberta_7
-    reference: 'Input: QC, Output: Offsets'
-  4134737a-670d-4f57-8510-7cfbd1720600: !Template
-    answer_choices: null
-    answer_choices_key: null
-    id: 4134737a-670d-4f57-8510-7cfbd1720600
-    jinja: 'Given the following passage
-
-
-      "{{context}}",
-
-
-      answer the following question:
-
-
-      "{{question}}" |||
-
-      {{answers.text[0]}}
-
-      '
-    metadata: !TemplateMetadata
-      _do_eval: false
-      _do_train: true
-      choices_in_prompt: null
-      metrics: []
-      original_task: true
-    name: adversarial_qa_droberta_1
-    reference: 'Input: QC, Output: Answer'
-  72adfa1b-df68-40a3-a5ac-3f9330fb0e78: !Template
-    answer_choices: null
-    answer_choices_key: null
-    id: 72adfa1b-df68-40a3-a5ac-3f9330fb0e78
-    jinja: 'I want to make a question paper for students. I''ve crawled paragraphs
-      from Wikipedia and now want to test their reading comprehension prowess. I am
-      lazy; can you output a question-answer pair for the paragraph "{{context}}"?
-      |||
-
-      Question: "{{question}}"
-
-
-      Answer:  "{{answers.text[0]}}"'
-    metadata: !TemplateMetadata
-      _do_eval: false
-      _do_train: true
-      choices_in_prompt: null
-      metrics: []
-      original_task: false
-    name: adversarial_qa_droberta_5
-    reference: 'Input: Context, Output: QA (set a question paper)'
-  84045341-e2dd-4f74-9012-6e93fb6b79dd: !Template
-    answer_choices: null
-    answer_choices_key: null
-    id: 84045341-e2dd-4f74-9012-6e93fb6b79dd
-    jinja: '"{{answers.text[0]}}" is in "{{context}}". But the paragraph is very long
-      and manual counting will take ages. Can you return the starting and ending indices?
-      ||| {% if answers.text != [] %} {{(answers.answer_start[0], answers.answer_start[0]
-      + answers.text[0]|length)}} {% else %} Answer not found {% endif %}'
-    metadata: !TemplateMetadata
-      _do_eval: false
-      _do_train: true
-      choices_in_prompt: null
-      metrics: []
-      original_task: false
-    name: adversarial_qa_droberta_9
-    reference: 'Input: CA, Output: offsets of A'
-  907041f6-3261-46bf-b84a-38487fed81a8: !Template
-    answer_choices: null
-    answer_choices_key: null
-    id: 907041f6-3261-46bf-b84a-38487fed81a8
-    jinja: 'My professor gave us an assignment today. I don''t like cheating, but
-      the exercise is easy for humans and frankly, a waste of time for me. Could you
-      do it for me? We have a passage ("{{context}}") and have to answer a question
-      ("{{question}}"). What''s the answer? |||
-
-      {{answers.text[0]}}'
-    metadata: !TemplateMetadata
-      _do_eval: false
-      _do_train: true
-      choices_in_prompt: null
-      metrics: []
-      original_task: true
-    name: adversarial_qa_droberta_6
-    reference: 'Input: QC, Output: A (formulate as an assignment)'
-  a351c42c-7327-4068-b4a3-87ce052cef24: !Template
-    answer_choices: null
-    answer_choices_key: null
-    id: a351c42c-7327-4068-b4a3-87ce052cef24
-    jinja: 'Q: "{{question}}"
-
-
-      C: "{{context}}"
-
-
-      I know the answer to Q is in C. I don''t want the complete answer. I just want
-      the index of the character from where the answer starts (as a hint). |||
-
-      {{answers.answer_start[0] | string}}'
-    metadata: !TemplateMetadata
-      _do_eval: false
-      _do_train: true
-      choices_in_prompt: null
-      metrics: []
-      original_task: true
-    name: adversarial_qa_droberta_8
-    reference: 'Input: QC, Output: beginning offset of A'
-  c27aedc5-8a9b-44b0-8731-d623fa465611: !Template
-    answer_choices: null
-    answer_choices_key: null
-    id: c27aedc5-8a9b-44b0-8731-d623fa465611
+    id: 00755780-f3c0-44b4-b159-8f3873cdb163
     jinja: 'I want to test the ability of students to read a passage and answer questions
       about it. Could you please come up with a good question for the passage "{{context}}"?
       |||
@@ -179,15 +13,35 @@ templates:
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: true
-      choices_in_prompt: null
-      metrics: []
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      - ROUGE
       original_task: false
-    name: adversarial_qa_droberta_4
+    name: generate_question
     reference: 'Input: Context, Output: Question (generate a question)'
-  e45082a1-8887-41d4-a30c-950c024570fa: !Template
+  3b2459cc-6600-443c-abf8-8f60c34cd993: !Template
     answer_choices: null
     answer_choices_key: null
-    id: e45082a1-8887-41d4-a30c-950c024570fa
+    id: 3b2459cc-6600-443c-abf8-8f60c34cd993
+    jinja: 'I know that the answer to the question "{{question}}" is in "{{context}}".
+      Can you tell me what it is? |||
+
+
+      {{answers.text | choice}}'
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: true
+      choices_in_prompt: false
+      metrics:
+      - Squad
+      original_task: true
+    name: tell_what_it_is
+    reference: 'Input: QC, Output: A (rephrase)'
+  5bdb1815-5c6f-49a3-ad1d-367344420703: !Template
+    answer_choices: null
+    answer_choices_key: null
+    id: 5bdb1815-5c6f-49a3-ad1d-367344420703
     jinja: 'Question: "{{question}}"
 
 
@@ -198,29 +52,61 @@ templates:
 
       |||
 
-      {{answers.text[0]}}'
+      {{answers.text | choice}}
+
+
+      '
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: true
-      choices_in_prompt: null
-      metrics: []
+      choices_in_prompt: false
+      metrics:
+      - Squad
       original_task: true
-    name: adversarial_qa_droberta_3
+    name: question_context_answer
     reference: 'Input: QC, Output: Answer (short form)'
-  f3dadda4-7c8e-4be9-a89c-22b3913828f5: !Template
+  a0872cde-2f19-4ae6-919a-868da47bfbc3: !Template
     answer_choices: null
     answer_choices_key: null
-    id: f3dadda4-7c8e-4be9-a89c-22b3913828f5
-    jinja: 'I know that the answer to the question "{{question}}" is in "{{context}}".
-      Can you tell me what it is? |||
+    id: a0872cde-2f19-4ae6-919a-868da47bfbc3
+    jinja: 'Extract the answer to the question from the following context.
 
+      Question: {{question}}
 
-      {{answers.text[0]}}'
+      Context: {{context}}|||
+
+      {{answers.text | choice}}'
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: true
-      choices_in_prompt: null
-      metrics: []
+      choices_in_prompt: false
+      metrics:
+      - Squad
       original_task: true
-    name: adversarial_qa_droberta_2
-    reference: 'Input: QC, Output: A (rephrase)'
+    name: based_on
+    reference: ''
+  a64d5a15-68e2-4d1c-b30a-ca8250c860f3: !Template
+    answer_choices: null
+    answer_choices_key: null
+    id: a64d5a15-68e2-4d1c-b30a-ca8250c860f3
+    jinja: 'Given the following passage
+
+
+      "{{context}}",
+
+
+      answer the following question. Note that the answer is present within the text.
+
+
+      Question: {{question}} |||
+
+      {{answers.text | choice}}'
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: true
+      choices_in_prompt: false
+      metrics:
+      - Squad
+      original_task: true
+    name: answer_the_following_q
+    reference: 'Input: QC, Output: Answer'
