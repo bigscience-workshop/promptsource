@@ -8,16 +8,30 @@ import datasets
 import seqio
 import t5
 import tensorflow as tf
-
+from t5.data.glue_utils import get_glue_metric, get_super_glue_metric
+from t5.evaluation import metrics as mt
 import promptsource.templates
 from promptsource.seqio_tasks import utils
 
 
-# Tasks deemed as clean/useful
-# annotated_tasks = load_annotated_prompts.load_annotated_prompts()
-# CLEAN_TASKS = [t["dataset_subset_template"] for t in annotated_tasks if not t["skip_train"]]
-# CLEAN_EVAL_TASKS = [t["dataset_subset_template"] for t in annotated_tasks if t["do_eval"]]
-# EVAL_METRICS = {t["dataset_subset_template"]: t["metrics"] for t in annotated_tasks if t["do_eval"]}
+GET_METRICS = {
+    "BLEU": mt.bleu,
+    "ROUGE": mt.rouge,
+    "Span Squad": mt.span_squad,
+    "Squad": mt.squad,
+    "Trivia QA": mt.trivia_qa,
+    "Accuracy": mt.accuracy,
+    "Sequence Accuracy": mt.sequence_accuracy,
+    "Pearson Correlation": mt.pearson_corrcoef,
+    "Spearman Correlation": mt.spearman_corrcoef,
+    "MultiRC": mt.multirc_f1_over_all_answers,
+    "AUC": mt.auc,
+    "COQA F1": mt.coqa_f1,
+    "Edit Distance": mt.edit_distance,
+    # "Mean Reciprocal Rank": mt.accuracy,  # NOTE not in T5?
+    'Other': mt.accuracy,
+    # Missing support for mean_multiclass_f1 etc. which need a num_classes parameter
+}
 
 
 def strip_whitespace(output_or_target, example=None, is_target=False):
@@ -62,15 +76,19 @@ def get_tf_dataset(split, shuffle_files, seed, dataset_name, subset_name, templa
 
 
 def add_task(dataset_name, subset_name, template_name, task_name=None, split_mapping=None):
-
     template = all_templates.get_dataset(dataset_name, subset_name)[template_name]
-
     task_name = task_name or utils.get_task_name(dataset_name, subset_name, template_name)
-    # if task_name in CLEAN_EVAL_TASKS:
-    #     metrics = EVAL_METRICS[task_name]
-    # else:
-    # TODO
-    metrics = [t5.evaluation.metrics.sequence_accuracy]
+
+    if dataset_name == "glue":
+        metrics = get_glue_metric(subset_name)
+    elif dataset_name == "super_glue":
+        if subset_name in ("wsc.fixed", "multirc"):
+            # TODO: WSC and MultiRC need special pre/postprocesing
+            metrics = [mt.accuracy]
+        else:
+            metrics = get_super_glue_metric(subset_name)
+    else:
+        metrics = [GET_METRICS[m] for m in template.metadata.metrics]
 
     dataset_splits = utils.get_dataset_splits(dataset_name, subset_name)
     split_mapping = split_mapping or {k: k for k in dataset_splits.keys()}
@@ -171,6 +189,7 @@ for dataset_name, subset_name in all_templates.keys:
             template = dataset[template_name]
             if template.metadata.original_task:
                 eval_mixture.append(DST_name)
+            # TODO use template.metadata.answer_choices or answer_choice_keys here for rank eval
 
 
 # Special case for ANLI, which has weirdly-named splits and rounds that should be subsets
