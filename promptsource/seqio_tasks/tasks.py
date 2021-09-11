@@ -2,6 +2,7 @@ import functools
 import re
 import csv
 import pkg_resources
+from typing import Tuple, List, Dict, Optional
 
 import datasets
 import seqio
@@ -9,8 +10,7 @@ import t5
 import tensorflow as tf
 
 import promptsource.templates
-
-from . import utils
+from promptsource.seqio_tasks import utils
 
 
 # Tasks deemed as clean/useful
@@ -18,12 +18,6 @@ from . import utils
 # CLEAN_TASKS = [t["dataset_subset_template"] for t in annotated_tasks if not t["skip_train"]]
 # CLEAN_EVAL_TASKS = [t["dataset_subset_template"] for t in annotated_tasks if t["do_eval"]]
 # EVAL_METRICS = {t["dataset_subset_template"]: t["metrics"] for t in annotated_tasks if t["do_eval"]}
-
-
-DATASET_BLACKLIST = [
-    # Need to special-case ANLI due to weird split conventions
-    ("anli", None),
-]
 
 
 def strip_whitespace(output_or_target, example=None, is_target=False):
@@ -134,10 +128,10 @@ def add_task(dataset_name, subset_name, template_name, task_name=None, split_map
         )
 
 
-train_sets = []
-eval_sets = []
-train_set_names = []
-eval_set_names = []
+train_sets: List[Dict] = []
+eval_sets:List[Dict] = []
+do_train: List[Tuple[str, Optional[str]]] = []
+do_eval: List[Tuple[str, Optional[str]]] = []
 experiment_path = pkg_resources.resource_filename(__name__, "experiment_D4.csv")
 with open(experiment_path) as exp_file:
     reader = csv.DictReader(exp_file)
@@ -148,37 +142,35 @@ with open(experiment_path) as exp_file:
             row['subset'] = None  # to match promptsource.Template object
         if row['do_train'] == 'TRUE':
             train_sets.append(row)
-            train_set_names.append((row['HF_name'], row['subset']))
+            do_train.append((row['HF_name'], row['subset']))
         if row['do_eval'] == 'TRUE':
             eval_sets.append(row)
-            eval_set_names.append((row['HF_name'], row['subset']))
+            do_eval.append((row['HF_name'], row['subset']))
 
-D4_names = train_set_names + eval_set_names
-print(f'Number of training sets = {len(train_sets)}')
-print(f'Number of evaluation sets = {len(eval_sets)}')
+train_or_eval = do_train + do_eval
+print(f'Number of training datasets = {len(train_sets)}')
+print(f'Number of evaluation datasets = {len(eval_sets)}')
 
 all_templates = promptsource.templates.TemplateCollection()
+all_templates.remove('anli')  # Need to special-case ANLI due to weird split conventions
+train_mixture: List[str] = []  # dataset_subset_template
+eval_mixture: List[str] = []
 for dataset_name, subset_name in all_templates.keys:
-    if (dataset_name, subset_name) not in train_set_names:  # D4_names:
+    if (dataset_name, subset_name) not in train_or_eval:
         all_templates.remove(dataset_name, subset_name)
         continue
-    # dataset = all_templates.get_dataset(dataset_name, subset)
-    # for template_name in dataset.all_template_names:
-    #     template = dataset[template_name]
-        # if dataset_name == 'ropes':
-        #     inspect(template.metadata)
 
-
-
-for dataset_name, subset_name in all_templates.keys:
-
-    if (dataset_name, subset_name) in DATASET_BLACKLIST:
-        continue
-
-    for template_name in all_templates.get_dataset(dataset_name, subset_name).all_template_names:
+    dataset = all_templates.get_dataset(dataset_name, subset_name)
+    for template_name in dataset.all_template_names:
         add_task(dataset_name, subset_name, template_name)
 
-print('Done here')
+        DST_name = utils.get_task_name(dataset_name, subset_name, template_name)
+        if (dataset_name, subset_name) in do_train:
+            train_mixture.append(DST_name)
+        if (dataset_name, subset_name) in do_eval:
+            template = dataset[template_name]
+            if template.metadata.original_task:
+                eval_mixture.append(DST_name)
 
 
 # Special case for ANLI, which has weirdly-named splits and rounds that should be subsets
@@ -192,6 +184,17 @@ for anli_round in ("r1", "r2", "r3"):
             "test": f"test_{anli_round}",
         }
         add_task(dataset_name, subset_name, template_name, task_name, split_mapping)
+        eval_mixture.append(task_name)
+
+# print(train_mixture)
+print(f'Number of training templates = {len(train_mixture)}')
+# print(eval_mixture)
+print(f'Number of evaluation templates = {len(eval_mixture)}')
+# for i in seqio.TaskRegistry.names():
+#     print(i)
+print(f'Number of SeqIO registered templates = {len(seqio.TaskRegistry.names())}')
+print('^ includes non-original task templates which are excluded from the eval mixture')
+# raise SystemExit
 
 
 TASK_BLACKLIST = [
@@ -224,7 +227,7 @@ TASK_BLACKLIST = [
 ]
 
 seqio.MixtureRegistry.add(
-    "all_tasks_combined_max_1m",
+    "all_tasks_combined_max_1m",  # includes non-original task templates which are excluded from the eval mixture
     [task for task in seqio.TaskRegistry.names() if task not in TASK_BLACKLIST],
     default_rate=functools.partial(seqio.mixing_rate_num_examples, maximum=500_000),
 )
@@ -238,20 +241,20 @@ seqio.MixtureRegistry.add(
 
 seqio.MixtureRegistry.add(
     "clean_tasks",
-    [task for task in CLEAN_TASKS if task not in TASK_BLACKLIST],
+    [task for task in train_mixture if task not in TASK_BLACKLIST],
     default_rate=functools.partial(seqio.mixing_rate_num_examples, maximum=500_000),
 )
 
 
 seqio.MixtureRegistry.add(
     "clean_eval_tasks",
-    [task for task in CLEAN_EVAL_TASKS if task not in TASK_BLACKLIST],
+    [task for task in eval_mixture if task not in TASK_BLACKLIST],
     default_rate=functools.partial(seqio.mixing_rate_num_examples, maximum=500_000),
 )
 
 seqio.MixtureRegistry.add(
     "anli_eval_tasks",
-    [task for task in CLEAN_EVAL_TASKS if task.startswith("anli")],
+    [task for task in eval_mixture if task.startswith("anli")],
     default_rate=functools.partial(seqio.mixing_rate_num_examples, maximum=500_000),
 )
 
@@ -267,7 +270,7 @@ seqio.MixtureRegistry.add(
         task
         for task in seqio.TaskRegistry.names()
         if task.endswith("_score_eval")
-        and task.split("_score_eval")[0] in CLEAN_EVAL_TASKS
+        and task.split("_score_eval")[0] in eval_mixture
         and task.split("_score_eval")[0] not in TASK_BLACKLIST
     ],
     default_rate=functools.partial(seqio.mixing_rate_num_examples, maximum=500_000),

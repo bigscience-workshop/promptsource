@@ -255,7 +255,7 @@ class TemplateCollection:
     def __len__(self) -> int:
         return len(self.datasets_templates)
 
-    def remove(self, dataset_name: str, subset_name: str) -> None:
+    def remove(self, dataset_name: str, subset_name: Optional[str] = None) -> None:
         del self.datasets_templates[dataset_name, subset_name]
 
     def _collect_dataset(self) -> Dict[Tuple[str, str], "DatasetTemplates"]:
