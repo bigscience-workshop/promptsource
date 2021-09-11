@@ -29,7 +29,7 @@ GET_METRICS = {
     "COQA F1": mt.coqa_f1,
     "Edit Distance": mt.edit_distance,
     # "Mean Reciprocal Rank": mt.accuracy,  # NOTE not in T5?
-    'Other': mt.accuracy,
+    "Other": mt.accuracy,
     # Missing support for mean_multiclass_f1 etc. which need a num_classes parameter
 }
 
@@ -147,30 +147,30 @@ def add_task(dataset_name, subset_name, template_name, task_name=None, split_map
 
 
 train_sets: List[Dict] = []
-eval_sets:List[Dict] = []
+eval_sets: List[Dict] = []
 do_train: List[Tuple[str, Optional[str]]] = []
 do_eval: List[Tuple[str, Optional[str]]] = []
 experiment_path = pkg_resources.resource_filename(__name__, "experiment_D4.csv")
 with open(experiment_path) as exp_file:
     reader = csv.DictReader(exp_file)
     for row in reader:
-        if row['skip']:
+        if row["skip"]:
             continue
-        if row['subset'] == '':
-            row['subset'] = None  # to match promptsource.Template object
-        if row['do_train'] == 'TRUE':
+        if row["subset"] == "":
+            row["subset"] = None  # to match promptsource.Template object
+        if row["do_train"] == "TRUE":
             train_sets.append(row)
-            do_train.append((row['HF_name'], row['subset']))
-        if row['do_eval'] == 'TRUE':
+            do_train.append((row["HF_name"], row["subset"]))
+        if row["do_eval"] == "TRUE":
             eval_sets.append(row)
-            do_eval.append((row['HF_name'], row['subset']))
+            do_eval.append((row["HF_name"], row["subset"]))
 
 train_or_eval = do_train + do_eval
-print(f'Number of training datasets = {len(train_sets)}')
-print(f'Number of evaluation datasets = {len(eval_sets)}')
+print(f"Number of training datasets = {len(train_sets)}")
+print(f"Number of evaluation datasets = {len(eval_sets)}")
 
 all_templates = promptsource.templates.TemplateCollection()
-all_templates.remove('anli')  # Need to special-case ANLI due to weird split conventions
+all_templates.remove("anli")  # Need to special-case ANLI due to weird split conventions
 train_mixture: List[str] = []  # dataset_subset_template
 eval_mixture: List[str] = []
 for dataset_name, subset_name in all_templates.keys:
@@ -206,13 +206,13 @@ for anli_round in ("r1", "r2", "r3"):
         eval_mixture.append(task_name)
 
 # print(train_mixture)
-print(f'Number of training templates = {len(train_mixture)}')
+print(f"Number of training templates = {len(train_mixture)}")
 # print(eval_mixture)
-print(f'Number of evaluation templates = {len(eval_mixture)}')
+print(f"Number of evaluation templates = {len(eval_mixture)}")
 # for i in seqio.TaskRegistry.names():
 #     print(i)
-print(f'Number of SeqIO registered templates = {len(seqio.TaskRegistry.names())}')
-print('^ includes non-original task templates which are excluded from the eval mixture')
+print(f"Number of SeqIO registered templates = {len(seqio.TaskRegistry.names())}")
+print("^ includes non-original task templates which are excluded from the eval mixture")
 # raise SystemExit
 
 

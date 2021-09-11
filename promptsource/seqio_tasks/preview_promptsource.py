@@ -37,22 +37,22 @@ def preview() -> None:
     with open(experiment_path) as exp_file:
         reader = csv.DictReader(exp_file)
         for row in reader:
-            if row['skip']:
+            if row["skip"]:
                 continue
-            if row['subset'] == '':
-                row['subset'] = None  # to match promptsource.Template object
-            if row['do_train'] == 'TRUE':
+            if row["subset"] == "":
+                row["subset"] = None  # to match promptsource.Template object
+            if row["do_train"] == "TRUE":
                 train_sets.append(row)
-                train_set_names.append((row['HF_name'], row['subset']))
-            if row['do_eval'] == 'TRUE':
+                train_set_names.append((row["HF_name"], row["subset"]))
+            if row["do_eval"] == "TRUE":
                 eval_sets.append(row)
-                eval_set_names.append((row['HF_name'], row['subset']))
+                eval_set_names.append((row["HF_name"], row["subset"]))
 
         # print(f'Number of non-desk-rejected datasets = {len(all_datasets)}')
 
     D4_names = train_set_names + eval_set_names
-    print(f'Number of training sets = {len(train_sets)}')
-    print(f'Number of evaluation sets = {len(eval_sets)}')
+    print(f"Number of training sets = {len(train_sets)}")
+    print(f"Number of evaluation sets = {len(eval_sets)}")
 
     template_collection = TemplateCollection()
     print(type(template_collection))
