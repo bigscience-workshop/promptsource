@@ -81,14 +81,15 @@ WIDTH = 80
 
 
 def show_jinja(t, width=WIDTH):
-    wrap = textwrap.fill(t, width=width, replace_whitespace=False)
-    out = highlight(wrap, DjangoLexer(), HtmlFormatter())
+    wrap = [textwrap.fill(subt, width=width, replace_whitespace=False) for subt in t.split("\n")]
+    wrap = "\n".join(wrap)
+    out = highlight(wrap, DjangoLexer(), HtmlFormatter(lineseparator="<br>"))
     st.write(out, unsafe_allow_html=True)
 
 
 def show_text(t, width=WIDTH):
     wrap = [textwrap.fill(subt, width=width, replace_whitespace=False) for subt in t.split("\n")]
-    wrap = "\n".join(wrap)
+    wrap = "<br>".join(wrap)
     st.write(wrap, unsafe_allow_html=True)
 
 
