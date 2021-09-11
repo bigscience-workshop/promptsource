@@ -1,5 +1,7 @@
 import functools
 import re
+import csv
+import pkg_resources
 
 import datasets
 import seqio
@@ -8,34 +10,17 @@ import tensorflow as tf
 
 import promptsource.templates
 
-from . import load_annotated_prompts, utils
+import utils
 
 
 # Tasks deemed as clean/useful
-annotated_tasks = load_annotated_prompts.load_annotated_prompts()
-CLEAN_TASKS = [t["dataset_subset_template"] for t in annotated_tasks if not t["skip_train"]]
-CLEAN_EVAL_TASKS = [t["dataset_subset_template"] for t in annotated_tasks if t["do_eval"]]
-EVAL_METRICS = {t["dataset_subset_template"]: t["metrics"] for t in annotated_tasks if t["do_eval"]}
+# annotated_tasks = load_annotated_prompts.load_annotated_prompts()
+# CLEAN_TASKS = [t["dataset_subset_template"] for t in annotated_tasks if not t["skip_train"]]
+# CLEAN_EVAL_TASKS = [t["dataset_subset_template"] for t in annotated_tasks if t["do_eval"]]
+# EVAL_METRICS = {t["dataset_subset_template"]: t["metrics"] for t in annotated_tasks if t["do_eval"]}
 
 
-# Datasets that don't work currently...
 DATASET_BLACKLIST = [
-    ("species_800", None),
-    ("drop", None),
-    ("discofuse", "discofuse-sport"),
-    ("discofuse", "discofuse-wikipedia"),
-    ("adversarial_qa", "adversarialQA"),
-    ("tweet_eval", "emotion"),
-    ("tweet_eval", "emoji"),
-    ("tweet_eval", "hate"),
-    ("tweet_eval", "offensive"),
-    ("tweet_eval", "stance_atheism"),
-    ("tweet_eval", "stance_abortion"),
-    ("tweet_eval", "stance_feminist"),
-    ("tweet_eval", "stance_climate"),
-    ("tweet_eval", "sentiment"),
-    ("tweet_eval", "stance_hillary"),
-    ("tweet_eval", "irony"),
     # Need to special-case ANLI due to weird split conventions
     ("anli", None),
 ]
@@ -87,10 +72,11 @@ def add_task(dataset_name, subset_name, template_name, task_name=None, split_map
     template = all_templates.get_dataset(dataset_name, subset_name)[template_name]
 
     task_name = task_name or utils.get_task_name(dataset_name, subset_name, template_name)
-    if task_name in CLEAN_EVAL_TASKS:
-        metrics = EVAL_METRICS[task_name]
-    else:
-        metrics = [t5.evaluation.metrics.sequence_accuracy]
+    # if task_name in CLEAN_EVAL_TASKS:
+    #     metrics = EVAL_METRICS[task_name]
+    # else:
+    # TODO
+    metrics = [t5.evaluation.metrics.sequence_accuracy]
 
     dataset_splits = utils.get_dataset_splits(dataset_name, subset_name)
     split_mapping = split_mapping or {k: k for k in dataset_splits.keys()}
@@ -115,7 +101,7 @@ def add_task(dataset_name, subset_name, template_name, task_name=None, split_map
     preprocessors = [
         seqio.preprocessors.tokenize,
         seqio.preprocessors.append_eos,
-        seqio.CacheDatasetPlaceholder(required=False),
+        # seqio.CacheDatasetPlaceholder(required=False),  # TODO
     ]
 
     # Add train and normal eval tasks
@@ -148,7 +134,41 @@ def add_task(dataset_name, subset_name, template_name, task_name=None, split_map
         )
 
 
+train_sets = []
+eval_sets = []
+train_set_names = []
+eval_set_names = []
+experiment_path = pkg_resources.resource_filename(__name__, "experiment_D4.csv")
+with open(experiment_path) as exp_file:
+    reader = csv.DictReader(exp_file)
+    for row in reader:
+        if row['skip']:
+            continue
+        if row['subset'] == '':
+            row['subset'] = None  # to match promptsource.Template object
+        if row['do_train'] == 'TRUE':
+            train_sets.append(row)
+            train_set_names.append((row['HF_name'], row['subset']))
+        if row['do_eval'] == 'TRUE':
+            eval_sets.append(row)
+            eval_set_names.append((row['HF_name'], row['subset']))
+
+D4_names = train_set_names + eval_set_names
+print(f'Number of training sets = {len(train_sets)}')
+print(f'Number of evaluation sets = {len(eval_sets)}')
+
 all_templates = promptsource.templates.TemplateCollection()
+for dataset_name, subset_name in all_templates.keys:
+    if (dataset_name, subset_name) not in train_set_names:  # D4_names:
+        all_templates.remove(dataset_name, subset_name)
+        continue
+    # dataset = all_templates.get_dataset(dataset_name, subset)
+    # for template_name in dataset.all_template_names:
+    #     template = dataset[template_name]
+        # if dataset_name == 'ropes':
+        #     inspect(template.metadata)
+
+
 
 for dataset_name, subset_name in all_templates.keys:
 
@@ -157,6 +177,8 @@ for dataset_name, subset_name in all_templates.keys:
 
     for template_name in all_templates.get_dataset(dataset_name, subset_name).all_template_names:
         add_task(dataset_name, subset_name, template_name)
+
+print('Done here')
 
 
 # Special case for ANLI, which has weirdly-named splits and rounds that should be subsets
@@ -204,7 +226,7 @@ TASK_BLACKLIST = [
 seqio.MixtureRegistry.add(
     "all_tasks_combined_max_1m",
     [task for task in seqio.TaskRegistry.names() if task not in TASK_BLACKLIST],
-    default_rate=functools.partial(seqio.mixing_rate_num_examples, maximum=1000000),
+    default_rate=functools.partial(seqio.mixing_rate_num_examples, maximum=500_000),
 )
 
 seqio.MixtureRegistry.add(

@@ -252,6 +252,12 @@ class TemplateCollection:
     def keys(self):
         return list(self.datasets_templates.keys())
 
+    def __len__(self) -> int:
+        return len(self.datasets_templates)
+
+    def remove(self, dataset_name: str, subset_name: str) -> None:
+        del self.datasets_templates[dataset_name, subset_name]
+
     def _collect_dataset(self) -> Dict[Tuple[str, str], "DatasetTemplates"]:
         """
         Initialize a DatasetTemplates object for each templates.yaml detected in the templates folder

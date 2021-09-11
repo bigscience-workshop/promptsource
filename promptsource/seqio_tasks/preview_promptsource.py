@@ -1,29 +1,30 @@
 import csv
+from re import template
 from typing import Dict, List
 import pkg_resources
 
 from rich import inspect
 from rich.pretty import pprint
-# from t5.data.glue_utils import get_glue_metric, get_super_glue_metric
-# from t5.evaluation.metrics import accuracy, mean_multiclass_f1, rouge
+from t5.data.glue_utils import get_glue_metric, get_super_glue_metric
+from t5.evaluation.metrics import accuracy, mean_multiclass_f1, rouge
 
 from promptsource.templates import TemplateCollection
 
 
-# NON_GLUE_METRICS = {  # for those with do_eval = True
-#     "anli": [accuracy],
-#     "hans": [accuracy],
-#     "circa_goldstandard1_judgement": [mean_multiclass_f1(num_classes=8), accuracy],
-#     "circa_goldstandard2_judgement": [mean_multiclass_f1(num_classes=5), accuracy],
-#     "mc_taco": [accuracy],
-#     "nq_open": [accuracy],
-#     "qa_srl": [accuracy],
-#     "openbookqa": [accuracy],
-#     "race": [accuracy],
-#     "social_i_qa": [accuracy],
-#     "emo": [mean_multiclass_f1(num_classes=4)],
-#     "xsum": [rouge],
-# }
+NON_GLUE_METRICS = {  # for those with do_eval = True
+    "anli": [accuracy],
+    "hans": [accuracy],
+    "circa_goldstandard1_judgement": [mean_multiclass_f1(num_classes=8), accuracy],
+    "circa_goldstandard2_judgement": [mean_multiclass_f1(num_classes=5), accuracy],
+    "mc_taco": [accuracy],
+    "nq_open": [accuracy],
+    "qa_srl": [accuracy],
+    "openbookqa": [accuracy],
+    "race": [accuracy],
+    "social_i_qa": [accuracy],
+    "emo": [mean_multiclass_f1(num_classes=4)],
+    "xsum": [rouge],
+}
 
 
 def preview() -> None:
@@ -54,24 +55,27 @@ def preview() -> None:
     print(f'Number of evaluation sets = {len(eval_sets)}')
 
     template_collection = TemplateCollection()
-    for dataset_name, subset in template_collection.keys:
-        if (dataset_name, subset) not in train_set_names:  # D4_names:
+    print(type(template_collection))
+    for dataset_name, subset_name in template_collection.keys:
+        if (dataset_name, subset_name) not in train_set_names:  # D4_names:
+            template_collection.remove(dataset_name, subset_name)
             continue
         OG = 0
         non_OG = 0
-        dataset = template_collection.get_dataset(dataset_name, subset)
+        dataset = template_collection.get_dataset(dataset_name, subset_name)
         for template_name in dataset.all_template_names:
             template = dataset[template_name]
             # if dataset_name == 'ropes':
             #     inspect(template.metadata)
-            if template.metadata.original_task is True:
-                OG += 1
-            elif template.metadata.original_task is False:
-                non_OG += 1
-            elif template.metadata.original_task is None:
-                print(dataset_name, 'has not flagged original tasks')
-                continue
-        print(dataset_name, subset, OG, non_OG)
+        #     if template.metadata.original_task is True:
+        #         OG += 1
+        #     elif template.metadata.original_task is False:
+        #         non_OG += 1
+        #     elif template.metadata.original_task is None:
+        #         print(dataset_name, 'has not flagged original tasks')
+        #         continue
+        # print(dataset_name, subset_name, OG, non_OG)
+    print(len(template_collection))
 
 
 if __name__ == "__main__":
