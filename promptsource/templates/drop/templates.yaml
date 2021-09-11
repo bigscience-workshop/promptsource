@@ -10,11 +10,51 @@ templates:
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: false
-      choices_in_prompt: null
-      metrics: []
-      original_task: null
+      choices_in_prompt: false
+      metrics:
+      - Sequence Accuracy
+      - Other
+      original_task: true
     name: Span extraction
     reference: Listing spans answering the questions (generative span extraction)
+  350e0c24-b10c-4156-9053-a0b2d4af4214: !Template
+    answer_choices: null
+    answer_choices_key: null
+    id: 350e0c24-b10c-4156-9053-a0b2d4af4214
+    jinja: 'Question: {{question}}
+
+      Answer based on following passage.
+
+
+      {{passage}}
+
+
+      Answer:
+
+      ||| {{ answers_spans.spans | join(", ") }}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - Sequence Accuracy
+      - Other
+      original_task: true
+    name: reading_comprehenstion_5
+    reference: Reading Comprehension with KB
+  79c0d600-8d49-4628-b1c1-d472fb762fa2: !Template
+    answer_choices: null
+    answer_choices_key: null
+    id: 79c0d600-8d49-4628-b1c1-d472fb762fa2
+    jinja: "I am trying to figure out the answer to the question, \"{{question}}\"\
+      \ I found the following text-snippet has the answer. Can you tell me the answer?\n\
+      \n{{passage}} \n\n||| {{ answers_spans.spans | join(\", \") }}\n"
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - Sequence Accuracy
+      - Other
+      original_task: true
+    name: reading_comprehension_1
+    reference: Reading Comprehension with KB
   ab58cc42-a558-4709-8a73-30194fcf9fa2: !Template
     answer_choices: null
     answer_choices_key: null
@@ -27,8 +67,129 @@ templates:
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: false
-      choices_in_prompt: null
-      metrics: []
-      original_task: null
+      choices_in_prompt: false
+      metrics:
+      - Sequence Accuracy
+      - Other
+      original_task: true
     name: DROP GPT3
     reference: Prompt format from GPT3 - Table G20
+  ad649b92-59ad-44a9-b328-7bbab49b104f: !Template
+    answer_choices: null
+    answer_choices_key: null
+    id: ad649b92-59ad-44a9-b328-7bbab49b104f
+    jinja: 'Generate a question from the following passage that has the answer, {{
+      answers_spans.spans | join(", ") }}
+
+      Passage : {{passage}}
+
+      Question :
+
+      |||
+
+      {{question}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      - ROUGE
+      original_task: false
+    name: generate_question_with_passage_and_answer
+    reference: ''
+  c13b7481-0cd8-4695-b05a-2895a927ec27: !Template
+    answer_choices: null
+    answer_choices_key: null
+    id: c13b7481-0cd8-4695-b05a-2895a927ec27
+    jinja: 'Question: {{question}}
+
+      Answer based on following text snippet.
+
+
+      {{passage}}
+
+
+      Answer:
+
+      ||| {{ answers_spans.spans | join(", ") }}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - Sequence Accuracy
+      - Other
+      original_task: true
+    name: reading_comprehension_4
+    reference: Reading Comprehension with KB
+  e6c83930-0de1-44ee-9d0c-d3b16468c57d: !Template
+    answer_choices: null
+    answer_choices_key: null
+    id: e6c83930-0de1-44ee-9d0c-d3b16468c57d
+    jinja: 'Passage: {{passage}}
+
+      I am trying to figure out the answer to the question from the above passage.  Can
+      you tell me the answer?
+
+      Question: {{question}}
+
+      Answer:
+
+      ||| {{ answers_spans.spans | join(", ") }}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - Sequence Accuracy
+      - Other
+      original_task: true
+    name: reading_comprehension_2
+    reference: Reading Comprehension with KB
+  e9bba528-7782-4f2b-a431-7601f8258628: !Template
+    answer_choices: null
+    answer_choices_key: null
+    id: e9bba528-7782-4f2b-a431-7601f8258628
+    jinja: 'Context: {{passage}}
+
+      I am trying to figure out the answer to the question from the above context.  Can
+      you tell me the answer?
+
+      Question: {{question}}
+
+      Answer:
+
+      ||| {{ answers_spans.spans | join(", ") }}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics: []
+      original_task: true
+    name: reading_comprehension_3
+    reference: Reading Comprehension with KB
+  f3d94b79-5e86-48ab-8bcc-f46e47cd0ac0: !Template
+    answer_choices: null
+    answer_choices_key: null
+    id: f3d94b79-5e86-48ab-8bcc-f46e47cd0ac0
+    jinja: 'Guess a question that has the answer, {{ answers_spans.spans | join(",
+      ") }}
+
+      |||
+
+      {{question}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      - ROUGE
+      original_task: false
+    name: guess_question
+    reference: Guess a question.
+  ff11575c-13d9-42e6-b703-aaad0667cdec: !Template
+    answer_choices: null
+    answer_choices_key: null
+    id: ff11575c-13d9-42e6-b703-aaad0667cdec
+    jinja: "Write a passage based on \n{{ answers_spans.spans | join(\", \") }}\n\
+      |||\n{{passage}}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      - ROUGE
+      original_task: false
+    name: generate_text
+    reference: Given a question generate  a passage
