@@ -10,7 +10,7 @@ import tensorflow as tf
 
 import promptsource.templates
 
-import utils
+from . import utils
 
 
 # Tasks deemed as clean/useful
