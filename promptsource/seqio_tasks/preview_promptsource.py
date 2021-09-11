@@ -1,8 +1,8 @@
 import csv
 from re import template
 from typing import Dict, List
-import pkg_resources
 
+import pkg_resources
 from rich import inspect
 from rich.pretty import pprint
 from t5.data.glue_utils import get_glue_metric, get_super_glue_metric
