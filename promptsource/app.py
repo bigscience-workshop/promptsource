@@ -374,9 +374,9 @@ else:
                 if num_templates > 0:
                     with col2:
                         try:
-                            prompt = template.apply(example, highlight_variables=True)
+                            prompt = template.apply(example, truncate=False, highlight_variables=True)
                         except (TemplateSyntaxError, TypeError):
-                            prompt = template.apply(example, highlight_variables=False)
+                            prompt = template.apply(example, truncate=False, highlight_variables=False)
                         if prompt == [""]:
                             st.write("∅∅∅ *Blank result*")
                         else:
@@ -581,7 +581,10 @@ else:
                 if state.template_name is not None:
                     st.empty()
                     template = dataset_templates[state.template_name]
-                    prompt = template.apply(example)
+                    try:
+                        prompt = template.apply(example, truncate=False, highlight_variables=True)
+                    except (TemplateSyntaxError, TypeError):
+                        prompt = template.apply(example, truncate=False, highlight_variables=False)
                     if prompt == [""]:
                         st.write("∅∅∅ *Blank result*")
                     else:
