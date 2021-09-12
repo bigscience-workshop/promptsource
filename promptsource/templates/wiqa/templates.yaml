@@ -7,7 +7,7 @@ templates:
     jinja: '-  {{ question_para_step[1:] | join("\n- ") }}
 
 
-      Find the first step of the process
+      What might be the first step of the process?
 
 
       |||
@@ -19,10 +19,10 @@ templates:
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: true
-      choices_in_prompt: null
+      choices_in_prompt: false
       metrics: []
       original_task: false
-    name: remove_first_step
+    name: what_might_be_the_first_step_of_the_process
     reference: ''
   360cd99a-2f83-469a-a505-d80808159dd2: !Template
     answer_choices: null
@@ -36,7 +36,7 @@ templates:
       -  {{ process_list[:-1] | join("\n- ") }}
 
 
-      Find the last step of the process
+      What might be the last step of the process?
 
 
       |||
@@ -48,16 +48,16 @@ templates:
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: true
-      choices_in_prompt: null
+      choices_in_prompt: false
       metrics: []
       original_task: false
-    name: remove_last_step
+    name: what_might_be_the_last_step_of_the_process
     reference: ''
   4191b162-9220-46e5-a2f0-0a763eef55a0: !Template
     answer_choices: null
     answer_choices_key: null
     id: 4191b162-9220-46e5-a2f0-0a763eef55a0
-    jinja: 'Find the missing first step of the following process:
+    jinja: 'What is the missing first step of the following process:
 
 
       -  {{ question_para_step[1:] | join("\n- ") }}
@@ -70,10 +70,10 @@ templates:
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: true
-      choices_in_prompt: null
+      choices_in_prompt: false
       metrics: []
       original_task: false
-    name: remove_first_step_bis
+    name: what_is_the_missing_first_step
     reference: ''
   52d69c02-5ff3-4fe7-bcaf-a6b995a15020: !Template
     answer_choices: null
@@ -96,10 +96,10 @@ templates:
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: true
-      choices_in_prompt: null
+      choices_in_prompt: false
       metrics: []
       original_task: false
-    name: remove_last_step_bis
+    name: what_is_the_final_step_of_the_following_process
     reference: ''
   5dfee2c2-9742-4003-8ab6-dfe0ce5a745b: !Template
     answer_choices: null
@@ -122,7 +122,7 @@ templates:
       |||
 
 
-      {{answer_label}}'
+      {{answer_label|replace("_", " ")}}'
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: true
@@ -144,7 +144,8 @@ templates:
       {{question_stem}}
 
 
-      Is the supposed perturbation:
+      Which of the following is the supposed perturbation?
+
 
       - {{"directly impacting a step of the process"}}
 
@@ -153,7 +154,6 @@ templates:
       - {{"not impacting any step of the process"}}
 
 
-      ?
 
       |||
 
@@ -164,10 +164,10 @@ templates:
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: true
-      choices_in_prompt: null
+      choices_in_prompt: true
       metrics: []
       original_task: false
-    name: question_type
+    name: which_of_the_following_is_the_supposed_perturbation
     reference: ''
   6cf2b300-6790-4120-9592-9db63bec221b: !Template
     answer_choices: null
@@ -231,5 +231,5 @@ templates:
       choices_in_prompt: false
       metrics: []
       original_task: false
-    name: impacting_the_process
+    name: does_the_supposed_perturbation_have_an_effect
     reference: ''
