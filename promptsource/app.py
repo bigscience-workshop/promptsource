@@ -1,6 +1,8 @@
 import argparse
 import textwrap
-from multiprocessing import Manager, Pool
+from itertools import repeat
+from multiprocessing import Manager
+from multiprocessing.pool import ThreadPool
 
 import pandas as pd
 import plotly.express as px
@@ -138,11 +140,11 @@ if mode == "Helicopter view":
     all_infos = manager.dict()
     all_datasets = list(set([t[0] for t in template_collection.keys]))
 
-    def get_infos(d_name):
+    def get_infos(d_name, all_infos):
         all_infos[d_name] = get_dataset_infos(d_name)
 
-    pool = Pool(processes=len(all_datasets))
-    pool.map(get_infos, all_datasets)
+    pool = ThreadPool(processes=len(all_datasets))
+    pool.starmap(get_infos, zip(all_datasets, repeat(all_infos)))
     pool.close()
     pool.join()
 
