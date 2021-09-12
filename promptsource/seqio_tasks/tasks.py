@@ -21,10 +21,6 @@ EVAL_METRICS = {t["dataset_subset_template"]: t["metrics"] for t in annotated_ta
 # Datasets that don't work currently...
 DATASET_BLACKLIST = [
     ("species_800", None),
-    ("drop", None),
-    ("discofuse", "discofuse-sport"),
-    ("discofuse", "discofuse-wikipedia"),
-    ("adversarial_qa", "adversarialQA"),
     ("tweet_eval", "emotion"),
     ("tweet_eval", "emoji"),
     ("tweet_eval", "hate"),
