@@ -3,33 +3,40 @@ subset: original
 templates:
   0bb6b603-115e-4ae9-b17b-881fa72b2e81: !Template
     answer_choices: null
-    answer_choices_key: null
+    answer_choices_key: candidates
     id: 0bb6b603-115e-4ae9-b17b-881fa72b2e81
-    jinja: "Information:\n- {{ supports | join(\"\\n- \") }}\n\n{% set question_split\
-      \ = question.split(' ') %}\nQuestion: ({{ question_split[1:] | join(\" \")}},\
-      \ {{ question_split[0] | replace(\"_\", \" \") }}, ?)\n\nCandidate Answers:\
-      \ \n- {{ candidates | join(\"\\n- \") }}\n|||\n{{answer}}"
+    jinja: "Information:\n{% for support in supports %}\n- {{ support }}\n{% endfor\
+      \ %}\n\n{% set question_split = question.split(' ') %}\nWhat object entity has\
+      \ the relation of '{{ question_split[0] | replace(\"_\", \" \")}}' with the\
+      \ subject '{{ question_split[1:] | join(\" \")}}'? \n\nChoices:\n{% for candidate\
+      \ in candidates %}\n- {{ candidate }}\n{% endfor %}\n\n|||\n{{answer}}"
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: true
-      choices_in_prompt: null
-      metrics: []
+      choices_in_prompt: true
+      metrics:
+      - Sequence Accuracy
       original_task: true
-    name: Choose Best Object Candidate
-    reference: Given information and possible object candidates, choose the best object
-      for the fact triple.
+    name: choose_best_object_interrogative_1
+    reference: Given information and subject and relation, choose the best object
+      entity (interrogative instruction).
   23e0d05a-8777-45c4-8692-13f3dc5a40bb: !Template
     answer_choices: null
     answer_choices_key: null
     id: 23e0d05a-8777-45c4-8692-13f3dc5a40bb
     jinja: 'Information:
 
-      - {{ supports | join("\n- ") }}
+      {% for support in supports %}
+
+      - {{ support }}
+
+      {% endfor %}
 
 
       {% set question_split = question.split('' '') %}
 
-      What is the relationship between "{{ question_split[1:] | join(" ")}}" and "{{answer}}"?
+      What is the relationship between ''{{ question_split[1:] | join(" ")}}'' and
+      ''{{answer}}''?
 
 
       |||
@@ -39,24 +46,29 @@ templates:
       _do_eval: false
       _do_train: true
       choices_in_prompt: false
-      metrics: []
+      metrics:
+      - Sequence Accuracy
       original_task: false
-    name: Explain Relation
+    name: explain_relation
     reference: Given information, explain the relation between the subject entity
-      and the object entity in a fact triple.
+      and the object entity.
   2fadafea-f814-4ff1-a3aa-cace9067f31f: !Template
     answer_choices: null
     answer_choices_key: null
     id: 2fadafea-f814-4ff1-a3aa-cace9067f31f
     jinja: 'Information:
 
-      - {{ supports | join("\n- ") }}
+      {% for support in supports %}
+
+      - {{ support }}
+
+      {% endfor %}
 
 
       {% set question_split = question.split('' '') %}
 
-      Question: ({{ question_split[1:] | join(" ")}}, {{ question_split[0] | replace("_",
-      " ") }}, ?)
+      What entity does ''{{ question_split[1:] | join(" ")}}'' has the relation ''{{
+      question_split[0] | replace("_", " ") }}'' with?
 
 
       |||
@@ -65,23 +77,30 @@ templates:
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: true
-      choices_in_prompt: null
-      metrics: []
+      choices_in_prompt: false
+      metrics:
+      - Sequence Accuracy
       original_task: false
-    name: Generate Object Answer
-    reference: Given information, generate the best object entity for the fact triple.
+    name: generate_object
+    reference: Given information, generate the best object entity (without answer
+      choices in prompt).
   40bdb0e7-def9-4829-9a37-a05d354ef7cd: !Template
     answer_choices: null
     answer_choices_key: null
     id: 40bdb0e7-def9-4829-9a37-a05d354ef7cd
     jinja: 'Information:
 
-      - {{ supports | join("\n- ") }}
+      {% for support in supports %}
+
+      - {{ support }}
+
+      {% endfor %}
 
 
       {% set question_split = question.split('' '') %}
 
-      Question: (?, {{ question_split[0] | replace("_", " ") }}, {{answer}})
+      Given the paragraphs above, decide what entity has the relation ''{{ question_split[0]
+      | replace("_", " ") }}'' with ''{{answer}}''.
 
 
       |||
@@ -90,93 +109,200 @@ templates:
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: true
-      choices_in_prompt: null
-      metrics: []
+      choices_in_prompt: false
+      metrics:
+      - Sequence Accuracy
       original_task: false
-    name: Generate Subject Answer
+    name: generate_subject
     reference: Given information, generate the best subject entity for the fact triple.
-  61018021-393f-4d4f-8fba-cda7df7ce240: !Template
+  4836e754-b2c9-4697-b386-6770494dc5f5: !Template
     answer_choices: null
-    answer_choices_key: null
-    id: 61018021-393f-4d4f-8fba-cda7df7ce240
-    jinja: '{% set question_split = question.split('' '') %}
+    answer_choices_key: candidates
+    id: 4836e754-b2c9-4697-b386-6770494dc5f5
+    jinja: 'Information:
 
-      {% if question_split[0]=="place_of_birth" %}
+      {% for support in supports %}
 
-      Information:
+      - {{ support }}
 
-      - {{ supports | join("\n- ") }}
-
-
-      Where was {{ question_split[1:] | join(" ")}} born? Choose from the following:
-
-      - {{ candidates | join("\n- ") }}
-
-      {% elif question_split[0]=="country_of_citizenship" %}
-
-      Information:
-
-      - {{ supports | join("\n- ") }}
+      {% endfor %}
 
 
-      What country is {{ question_split[1:] | join(" ")}} a citizen of? Choose from
-      the following:
+      {% set question_split = question.split('' '') %}
 
-      - {{ candidates | join("\n- ") }}
-
-      {% elif question_split[0]=="place_of_death" %}
-
-      Information:
-
-      - {{ supports | join("\n- ") }}
+      Given the information above, choose from the list below the object entity that
+      exhibits the relation ''{{ question_split[0] | replace("_", " ")}}'' with the
+      subject ''{{ question_split[1:] | join(" ")}}''.
 
 
-      Where did {{ question_split[1:] | join(" ")}} die? Choose from the following:
+      Choices:
 
-      - {{ candidates | join("\n- ") }}
+      {% for candidate in candidates %}
 
-      {% endif %}
+      - {{ candidate }}
+
+      {% endfor %}
+
 
       |||
 
-      {% if question_split[0] in ["place_of_birth", "country_of_citizenship", "place_of_death"]
-      %}
-
-      {{answer}}
-
-      {% endif %}'
+      {{answer}}'
     metadata: !TemplateMetadata
-      _do_eval: false
-      _do_train: true
-      choices_in_prompt: null
-      metrics: []
-      original_task: false
-    name: Indirect Question about Birthplace / Citizenship / Place of Death
-    reference: Ask about place of birth, citizenship, or place of death for the subject
-      entity.
+      choices_in_prompt: true
+      metrics:
+      - Sequence Accuracy
+      original_task: true
+    name: choose_best_object_affirmative_1
+    reference: Given information and subject and relation, choose the best object
+      entity (affirmative instruction).
+  4a1b61f6-c619-4d3d-aec2-f41a8986641c: !Template
+    answer_choices: null
+    answer_choices_key: candidates
+    id: 4a1b61f6-c619-4d3d-aec2-f41a8986641c
+    jinja: 'Information:
+
+      {% for support in supports %}
+
+      - {{ support }}
+
+      {% endfor %}
+
+
+      {% set question_split = question.split('' '') %}
+
+      After reading the paragraphs above, we are interested in knowing the entity
+      with which ''{{ question_split[1:] | join(" ")}}'' exhibits the relationship
+      of ''{{ question_split[0] | replace("_", " ")}}''. Find the answer from the
+      choices below.
+
+
+      Choices:
+
+      {% for candidate in candidates %}
+
+      - {{ candidate }}
+
+      {% endfor %}
+
+
+      |||
+
+      {{answer}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      metrics:
+      - Sequence Accuracy
+      original_task: true
+    name: choose_best_object_affirmative_3
+    reference: Given information and subject and relation, choose the best object
+      entity (affirmative instruction).
   c4675106-0ac5-4bf0-a400-f628daae81db: !Template
     answer_choices: null
     answer_choices_key: null
     id: c4675106-0ac5-4bf0-a400-f628daae81db
     jinja: 'Information:
 
-      - {{ supports | join("\n- ") }}
+      {% for support in supports %}
+
+      - {{ support }}
+
+      {% endfor %}
 
 
       {% set question_split = question.split('' '') %}
 
-      Generate a fact triple for the information above.
+      Given the information, choose the subject and object entities that have the
+      relation of ''{{ question_split[0] | replace("_", " ") }}''.
 
 
       |||
 
-      ({{ question_split[1:] | join(" ") }}, {{ question_split[0] | replace("_", "
-      ") }}, {{answer}})'
+      {{ question_split[1:] | join(" ") }} , {{answer}}'
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: true
-      choices_in_prompt: null
-      metrics: []
+      choices_in_prompt: false
+      metrics:
+      - Sequence Accuracy
       original_task: false
-    name: Generate Fact Triple
-    reference: Given information, generate a fact triple.
+    name: generate_subject_and_object
+    reference: Given information and relation, generate the subject and object.
+  e4dc7abf-d56a-4217-ba7f-7470cd959e8e: !Template
+    answer_choices: null
+    answer_choices_key: candidates
+    id: e4dc7abf-d56a-4217-ba7f-7470cd959e8e
+    jinja: 'Information:
+
+      {% for support in supports %}
+
+      - {{ support }}
+
+      {% endfor %}
+
+
+      {% set question_split = question.split('' '') %}
+
+      After reading the paragraphs above, choose the best answer for the entity that
+      related to ''{{ question_split[1:] | join(" ")}}'' with the relationship of
+      ''{{ question_split[0] | replace("_", " ")}}''.
+
+
+      Choices:
+
+      {% for candidate in candidates %}
+
+      - {{ candidate }}
+
+      {% endfor %}
+
+
+      |||
+
+      {{answer}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      metrics:
+      - Sequence Accuracy
+      original_task: true
+    name: choose_best_object_affirmative_2
+    reference: Given information and subject and relation, choose the best object
+      entity (affirmative instruction).
+  f44936e1-cbde-4d41-b462-6150cce8c1c8: !Template
+    answer_choices: null
+    answer_choices_key: candidates
+    id: f44936e1-cbde-4d41-b462-6150cce8c1c8
+    jinja: 'Information:
+
+      {% for support in supports %}
+
+      - {{ support }}
+
+      {% endfor %}
+
+
+      {% set question_split = question.split('' '') %}
+
+      ''{{ question_split[1:] | join(" ")}}'' is related to which object entity through
+      the relation of ''{{ question_split[0] | replace("_", " ")}}''?
+
+
+      Choices:
+
+      {% for candidate in candidates %}
+
+      - {{ candidate }}
+
+      {% endfor %}
+
+
+      |||
+
+      {{answer}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      metrics:
+      - Sequence Accuracy
+      original_task: true
+    name: choose_best_object_interrogative_2
+    reference: Given information and subject and relation, choose the best object
+      entity (interrogative instruction).

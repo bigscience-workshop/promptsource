@@ -82,7 +82,7 @@ def get_tf_dataset(split, shuffle_files, seed, dataset_name, subset_name, templa
     return utils.hf_dataset_to_tf_dataset(dataset)
 
 
-def add_task(datset_name, subset_name, template_name, task_name=None, split_mapping=None):
+def add_task(dataset_name, subset_name, template_name, task_name=None, split_mapping=None):
 
     template = all_templates.get_dataset(dataset_name, subset_name)[template_name]
 

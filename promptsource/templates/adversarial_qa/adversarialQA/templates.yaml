@@ -13,51 +13,13 @@ templates:
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: false
-      choices_in_prompt: null
-      metrics: []
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      - ROUGE
       original_task: false
-    name: adversarial_qa_4
+    name: generate_question
     reference: 'Input: Context, Output: Question (generate a question)'
-  0e13b79c-850f-45e4-b0b5-f0dc352337c9: !Template
-    answer_choices: null
-    answer_choices_key: null
-    id: 0e13b79c-850f-45e4-b0b5-f0dc352337c9
-    jinja: "I know that the answer to \"{{question}}\" is in \"{{context}}\" somewhere.\
-      \ Can you return the offsets of the answer? \n\nNote: Follow 0-indexing and\
-      \ [inclusive, exclusive) format for range.\n|||\n{{(answers.answer_start[0],\
-      \ answers.answer_start[0]+answers.text[0]|length)}}"
-    metadata: !TemplateMetadata
-      _do_eval: false
-      _do_train: false
-      choices_in_prompt: null
-      metrics: []
-      original_task: true
-    name: adversarial_qa_7
-    reference: 'Input: QC, Output: Offsets'
-  20e9b5b3-c826-4f14-832c-96392b55e7ae: !Template
-    answer_choices: null
-    answer_choices_key: null
-    id: 20e9b5b3-c826-4f14-832c-96392b55e7ae
-    jinja: 'Q: "{{question}}"
-
-
-      C: "{{context}}"
-
-
-      I know the answer to Q is in C. I don''t want the complete answer. I just want
-      the index of the character from where the answer starts (as a hint). |||
-
-      {{answers.answer_start[0]}}
-
-      '
-    metadata: !TemplateMetadata
-      _do_eval: false
-      _do_train: false
-      choices_in_prompt: null
-      metrics: []
-      original_task: true
-    name: adversarial_qa_8
-    reference: 'Input: QC, Output: beginning offset of A'
   3b2459cc-6600-443c-abf8-8f60c34cd998: !Template
     answer_choices: null
     answer_choices_key: null
@@ -66,36 +28,16 @@ templates:
       Can you tell me what it is? |||
 
 
-      {{answers.text[0]}}'
+      {{answers.text | choice}}'
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: false
-      choices_in_prompt: null
-      metrics: []
+      choices_in_prompt: false
+      metrics:
+      - Squad
       original_task: true
-    name: adversarial_qa_2
+    name: tell_what_it_is
     reference: 'Input: QC, Output: A (rephrase)'
-  4aed7f08-2285-4e9c-80f6-4c52dd1e760c: !Template
-    answer_choices: null
-    answer_choices_key: null
-    id: 4aed7f08-2285-4e9c-80f6-4c52dd1e760c
-    jinja: 'I want to make a question paper for students. I''ve crawled paragraphs
-      from Wikipedia and now want to test their reading comprehension prowess. I am
-      lazy; can you output a question-answer pair for the paragraph "{{context}}"?
-      |||
-
-      Question: "{{question}}"
-
-
-      Answer:  "{{answers.text[0]}}"'
-    metadata: !TemplateMetadata
-      _do_eval: false
-      _do_train: false
-      choices_in_prompt: null
-      metrics: []
-      original_task: false
-    name: adversarial_qa_5
-    reference: 'Input: Context, Output: QA (set a question paper)'
   5bdb1815-5c6f-49a3-ad1d-367344420701: !Template
     answer_choices: null
     answer_choices_key: null
@@ -110,53 +52,37 @@ templates:
 
       |||
 
-      {{answers.text[0]}}
+      {{answers.text | choice}}
 
 
       '
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: false
-      choices_in_prompt: null
-      metrics: []
+      choices_in_prompt: false
+      metrics:
+      - Squad
       original_task: true
-    name: adversarial_qa_3
+    name: question_context_answer
     reference: 'Input: QC, Output: Answer (short form)'
-  61cc7fe2-1a85-482a-8be7-a89f3e3ffba1: !Template
+  a0872cde-2f19-4ae6-919a-868da47bfbcb: !Template
     answer_choices: null
     answer_choices_key: null
-    id: 61cc7fe2-1a85-482a-8be7-a89f3e3ffba1
-    jinja: '"{{answers.text[0]}}" is in "{{context}}". But the paragraph is very long
-      and manual counting will take ages. Can you return the starting and ending indices?
-      |||
+    id: a0872cde-2f19-4ae6-919a-868da47bfbcb
+    jinja: 'Extract the answer to the question from the following context.
 
-      {{(answers.answer_start[0], answers.answer_start[0] + answers.text[0]|length)}}'
-    metadata: !TemplateMetadata
-      _do_eval: false
-      _do_train: false
-      choices_in_prompt: null
-      metrics: []
-      original_task: false
-    name: adversarial_qa_9
-    reference: 'Input: CA, Output: offsets'
-  71962fe2-7784-4b8f-9c6c-32d0a2f0b3e2: !Template
-    answer_choices: null
-    answer_choices_key: null
-    id: 71962fe2-7784-4b8f-9c6c-32d0a2f0b3e2
-    jinja: 'My professor gave us an assignment today. I don''t like cheating, but
-      the exercise is easy for humans and frankly, a waste of time for me. Could you
-      do it for me? We have a passage ("{{context}}") and have to answer a question
-      ("{{question}}"). What''s the answer? |||
+      Question: {{question}}
 
-      {{answers.text[0]}}'
+      Context: {{context}}|||
+
+      {{answers.text | choice}}'
     metadata: !TemplateMetadata
-      _do_eval: false
-      _do_train: false
-      choices_in_prompt: null
-      metrics: []
+      choices_in_prompt: false
+      metrics:
+      - Squad
       original_task: true
-    name: adversarial_qa_6
-    reference: 'Input: QC, Output: A (formulate as an assignment)'
+    name: based_on
+    reference: ''
   a64d5a15-68e2-4d1c-b30a-ca8250c860f9: !Template
     answer_choices: null
     answer_choices_key: null
@@ -170,60 +96,15 @@ templates:
       answer the following question. Note that the answer is present within the text.
 
 
-      "{{question}}" |||
+      Question: {{question}} |||
 
-      {{answers.text[0]}}'
+      {{answers.text | choice}}'
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: false
-      choices_in_prompt: null
-      metrics: []
+      choices_in_prompt: false
+      metrics:
+      - Squad
       original_task: true
-    name: adversarial_qa_1
+    name: answer_the_following_q
     reference: 'Input: QC, Output: Answer'
-  cd3c5ecc-2929-4eff-aef3-a4f810633e01: !Template
-    answer_choices: null
-    answer_choices_key: null
-    id: cd3c5ecc-2929-4eff-aef3-a4f810633e01
-    jinja: 'Documentation:
-
-
-      find_answer(text_1, text_2): Finds the answer to question text_1 in context
-      text_2
-
-
-      find_index(text_1, text_2): Finds the starting index of text_1 in text_2
-
-
-      Code:
-
-
-      context = """{{context}}"""
-
-
-      question = """{{question}}"""
-
-
-      {{"answer"}} = find_answer({{"question"}}, {{"context"}})
-
-
-      {{"answer_idx"}} = find_index({{"answer"}}, {{"context"}})
-
-
-      print({{"answer"}})
-
-
-      print({{"answer_idx"}}) |||
-
-      {{answers.text[0]}}
-
-
-      {{answers.answer_start[0]}}'
-    metadata: !TemplateMetadata
-      _do_eval: false
-      _do_train: false
-      choices_in_prompt: null
-      metrics: []
-      original_task: true
-    name: adversarial_qa_10
-    reference: 'Input: Question, Context Output: Answer+Index (Python format)'
