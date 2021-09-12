@@ -5,10 +5,10 @@ super_glue,wsc.fixed,coreference,cls,single sentence,knowledge-? reading compreh
 winograd_wsc,,coreference,ext,,,todo: which subset? add to hackaprompt,GPT,,,,TRUE,,0,,,0,,,,,,,,,,,,,,,,,,,,,
 winogrande,,coreference,ext,,knowledge-? reading comprehension,todo: which HF subsets map to which subsets in the paper?,GPT,,,,TRUE,,0,,,0,,accuracy,,,,,,,,,,,,,,,WinoGrande,qa/multiple-choice qa,,https://arxiv.org/pdf/1907.10641.pdf,Sakaguchi et al. 2020
 glue,cola,grammatical_acceptability,cls,single sentence,,includes semantic acceptability too; to be replaced by blimp,,,,,TRUE,8551,0,,TRUE,0,,matthews_corrcoef,,,,,,,,,,,,,,,glue-cola,cls/other,,https://arxiv.org/pdf/1805.12471.pdf,Warstadt et al. 2019
-blimp,,grammatical_acceptability,cls,,,todo: no prompts yet; collapse subsets,,,,,TRUE,,0,,,0,,,,,,,,,,,,,,,,,,,,,
+blimp,,grammatical_acceptability,cls,,,no prompts yet; collapse subsets,,,,,TRUE,,0,,,0,,,,,,,,,,,,,,,,,,,,,
 super_glue,cb,NLI,cls,sentence pair,knowledge-neutral inference,"""for multi-class F1 we compute the unweighted average of the F1 per class.""",,,,,TRUE,250,0,,TRUE,0,,mean_multiclass_f1;accuracy,,,,,,,,,,,,,,,superglue-cb,cls/nli,,https://semanticsarchive.net/Archive/Tg3ZGI2M/Marneffe.pdf,de Marneffe et al. 2019
 super_glue,rte,NLI,cls,sentence pair,knowledge modest inference,,,,,,TRUE,2490,0,,TRUE,0,,accuracy,,,,,,,,,,,,,,,superglue-rte,cls/nli,,,Dagan et al. 2005; Bar-Haim et al. 2006 Giampiccolo et al. 2007; Bentivogli et al. 2009
-anli,,NLI,cls,sentence pair,knowledge modest inference,"todo: fix split; In addition to accuracy, paper also evaluates on range of relaxed/strict and matched/unmatched settings and reports F scores for different answers",,,,,TRUE,162865,0,,TRUE,0,,accuracy,,,,,,,,,,,,,,,anli,cls/nli,,https://arxiv.org/abs/1910.14599,Nie et al. 2020
+anli,,NLI,cls,sentence pair,knowledge modest inference,"In addition to accuracy, paper also evaluates on range of relaxed/strict and matched/unmatched settings and reports F scores for different answers",,,,,TRUE,162865,0,,TRUE,0,,accuracy,,,,,,,,,,,,,,,anli,cls/nli,,https://arxiv.org/abs/1910.14599,Nie et al. 2020
 hans,,NLI,cls,sentence pair,syntax?,,,,,,TRUE,0,0,,TRUE,0,,accuracy,,,,,,,,,,,,,,,,,,https://arxiv.org/pdf/1902.01007.pdf,McCoy et al. 2019
 glue,mrpc,paraphrase,cls,,paraphrase,semi-novel generalization,,2,,,TRUE,3668,0,TRUE,TRUE,3668,,accuracy;f1_score_with_invalid,,,,,,,,,,,,,,,glue-mrpc,cls/paraphrase,,https://www.microsoft.com/en-us/research/wp-content/uploads/2016/02/I05-50025B15D.pdf,Dolan and Brockett 2005
 glue,qqp,paraphrase,cls,,,revisit: have similar prompts to NLI,,2,,,TRUE,363846,0,TRUE,,363846,,,,,,,,,,,,,,,,,glue-qqp,cls/paraphrase,,,(link)
@@ -33,27 +33,27 @@ quail,,QA_multiple_choice,cls,,,,,1,wait for PR,TRUE,,10246,10246,TRUE,,10246,,,
 quartz,,QA_multiple_choice,cls,,,,,1,TRUE,TRUE,,2696,2696,TRUE,,2696,,,,,,,,,,,,,,,given?,,quartz-with knowledge,qa/multiple-choice qa,,https://aclanthology.org/D19-1608.pdf,Tafjord et al. 2019b
 race,high,QA_multiple_choice,cls,,knowledge-neutral reading comprehension,GPT-hard,GPT,,,,TRUE,62445,0,TRUE,TRUE,62445,,accuracy,,,,,,,,,,,,,neutral,,race-high,qa/multiple-choice qa,,,Lai et al. 2017
 race,middle,QA_multiple_choice,cls,,knowledge-neutral reading comprehension,"revisit: define as comprehension, paragraph level?",GPT,,,,TRUE,25421,0,TRUE,TRUE,25421,,accuracy,,,,,,,,,,,,,neutral,,race-middle,qa/multiple-choice qa,,,Lai et al. 2017
-sciq,,QA_multiple_choice,cls,,,,,1,https://github.com/bigscience-workshop/promptsource/pull/388,TRUE,,11679,11679,TRUE,,11679,,,,,,,,,,,,,,,,,sciq,qa/multiple-choice qa,,,Welbl et al. 2017
+sciq,,QA_multiple_choice,cls,,,,,1,TRUE,TRUE,,11679,11679,TRUE,,11679,,,,,,,,,,,,,,,,,sciq,qa/multiple-choice qa,,,Welbl et al. 2017
 social_i_qa,,QA_multiple_choice,cls,,cultural knowledge,metric differ by prompt: 4-way classification cast as binary ,,1,TRUE,TRUE,TRUE,33410,33410,TRUE,TRUE,33410,,accuracy,,,,,,,,,,,,,,,SIQA,qa/multiple-choice qa,,https://arxiv.org/pdf/1904.09728.pdf,Sap et al. 2019
 super_glue,copa,QA_multiple_choice,cls,,causal cognition,,,,,,TRUE,400,0,TRUE,TRUE,400,,accuracy,,,,,,,,,,,,,modest,,superglue-copa,qa/multiple-choice qa,,,Gordon et al. 2012
 super_glue,boolq,QA_multiple_choice,cls,,knowledge-? reading comprehension,,,,,,TRUE,9427,0,TRUE,TRUE,9427,,accuracy,,,,,,,,,,,,,neutral?,,superglue-boolq,,,,
 super_glue,multirc,QA_multiple_choice,cls,,knowledge-? reading comprehension,F1 over all answer options. See paper p. 259 for defintion,,,,,TRUE,27243,0,TRUE,TRUE,27243,,multirc_f1_over_all_answers;exact_match,,,,,,,,,,,,,neutral?,,superglue-multirc,qa/multiple-choice qa,,https://aclanthology.org/N18-1023.pdf,Khashabi et al. 2018
 wiki_hop,original,QA_multiple_choice,cls,,,,,1,TRUE,TRUE,,43738,43738,TRUE,,43738,,,,,,,,,,,,,,,,,WikiHop (Welbl et al. 2018),multi-hop QA,Wikipedia KB,https://transacl.org/ojs/index.php/tacl/article/viewFile/1325/299,
-wiqa,,QA_multiple_choice,cls,,cause_and_effect,,,1,wait for PR,TRUE,,29808,29808,TRUE,,29808,,,,,,,,,,,,,,,,,wiqa,qa/multiple-choice qa,,,Tandon et al. 2019
+wiqa,,QA_multiple_choice,cls,,cause_and_effect,,,1,TRUE,TRUE,,29808,29808,TRUE,,29808,,,,,,,,,,,,,,,,,wiqa,qa/multiple-choice qa,,,Tandon et al. 2019
 super_glue,record,QA_multiple_choice,ext,,knowledge-? reading comprehension,revisit: QA or coref?,,3,,,TRUE,100730,0,TRUE,TRUE,100730,per_example,squad,,,,,,,,,,,,,,,superglue-record,qa/machine reading comprehension,,,Zhang et al. 2018
 circa,,QA_multiple_choice,cls,,pragmatics,revisit: problematic prompts,,3,,,TRUE,34268,0,,TRUE,0,,mean_multiclass_f1;accuracy,,,,,,,,,,,,,,,circa,cls/other,,https://arxiv.org/pdf/2010.03450.pdf,Louis et al. 2020
 mc_taco,,QA_multiple_choice,cls,,temporal cognition,revisit: variable number of answer_chocies; eval in paper is over set of possible candidates;,,3,,,TRUE,0,0,,TRUE,0,,accuracy,,,,,,,,,,,,,,,mc taco,qa/binary,,https://arxiv.org/pdf/1909.03065.pdf,Zhou et al. 2019
 piqa,,QA_multiple_choice,cls,,physical_cognition,revisit: not just other,GPT,3,,,TRUE,16113,0,TRUE,,16113,,,,,,,,,,,,,,,,,PIQA,Multiple choice,,,Bisk et al. 2020
 amazon_polarity,,sentiment,cls,,,,,1,TRUE,TRUE,,3600000,500000,TRUE,,500000,,,,,,,,,,,,,,,,,amazon polarity,cls/sentiment analysis,,https://cs.stanford.edu/people/jure/pubs/reviews-recsys13.pdf,McAuley and Leskovec 2013
 app_reviews,,sentiment,cls,,,,,1,TRUE,TRUE,,288065,288065,TRUE,,288065,,,,,,,,,,,,,,,,,app reviews,other/regression,,,Missing
-imdb,,sentiment,cls,,,,,1,wait for PR,TRUE,,25000,25000,TRUE,,25000,,,,,,,,,,,,,,,,,imdb,cls/sentiment analysis,,,Maas et al. 2011
+imdb,,sentiment,cls,,no dev set,,,1,https://github.com/bigscience-workshop/promptsource/pull/409#pullrequestreview-752157471,TRUE,,25000,25000,TRUE,,25000,,,,,,,,,,,,,,,,,imdb,cls/sentiment analysis,,,Maas et al. 2011
 rotten_tomatoes,,sentiment,cls,,,,,1,TRUE,TRUE,,8530,8530,TRUE,,8530,,,,,,,,,,,,,,,,,rotten tomatoes,cls/sentiment analysis,,,Pang and Lee 2005
 yelp_review_full,,sentiment,cls,,,no dev set,,1,TRUE,TRUE,,650000,500000,TRUE,,500000,,,,,,,,,,,,,,,,,yelp review full,other/regression,,,Zhang et al. 2015; (link)
 lambada,,story_completion,gen,,,revisit: story or cloze or coref? trivial cloze prompt; training set is just unlabeled corpora; GPT task,GPT,2,,,TRUE,0,0,,TRUE,0,,,,,,,,,,,,,,,,,,,,,
-storycloze,,story_completion,cls,,,todo: not in HF datasets; swag like?,GPT,2,,,TRUE,,0,,TRUE,0,,,,,,,,,,,,,,,,,,,,,
+storycloze,,story_completion,cls,,,todo: not in HF datasets; swag like?,GPT,2,,,,,0,,TRUE,0,,,,,,,,,,,,,,,,,,,,,
 hellaswag,,story_completion,cls,,,,GPT,2,,,TRUE,39905,0,TRUE,,39905,,,,,,,,,,,,,,,,,hellaswag,qa/multiple-choice qa,,,Zellers et al. 2019
 common_gen,,structure_to_text,gen,,,,,1,TRUE,TRUE,,67389,67389,TRUE,,67389,,,,,,,,,,,,,,,,,common gen,other,,,Lin et al. 2020b
-wiki_bio,,structure_to_text,gen,,,,,1,https://github.com/bigscience-workshop/promptsource/pull/388,TRUE,,582659,500000,TRUE,,500000,,,,,,,,,,,,,,,,,wiki bio,cg/other,,,Lebret et al. 2016
+wiki_bio,,structure_to_text,gen,,,,,1,TRUE,TRUE,,582659,500000,TRUE,,500000,,,,,,,,,,,,,,,,,wiki bio,cg/other,,,Lebret et al. 2016
 cnn_dailymail,3.0.0,summarization,gen,,,,,2,TRUE,TRUE,,287113,287113,TRUE,,287113,,,,,,,,,,,,,,,,,,,,,
 gigaword,,summarization,gen,,,,,2,TRUE,TRUE,,3803957,500000,TRUE,,500000,,,,,,,,,,,,,,,,,gigaword,cg/summarization,,,Napoles et al. 2012
 xsum,,summarization,gen,,,,,2,TRUE,TRUE,TRUE,204045,204045,TRUE,TRUE,204045,,rouge,,,,,,,,,,,,,,,xsum,cg/summarization,,https://arxiv.org/pdf/1808.08745.pdf,Narayan et al. 2018
@@ -62,9 +62,9 @@ dbpedia_14,,topic_classification,cls,,,,,1,TRUE,TRUE,,560000,500000,TRUE,,500000
 trec,,topic_classification,cls,,,,,1,TRUE,TRUE,,5452,5452,TRUE,,5452,,,,,,,,,,,,,,,,,trec,cls/other,,https://trec.nist.gov/data/qa.html,Li and Roth 2002; Hovy et al. 2001
 super_glue,wic,word_sense_disambiguation,cls,,lexical_knowledge,,,,,,TRUE,5428,0,TRUE,TRUE,5428,,accuracy,,,,,,,,,,,,,,,superglue-wic,cls/other,,,Pilehvar and Camacho-Collados 2019
 Staging Area,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
-quac,,,,,dialogue,,GPT,,,,,,,,,,,,,,,,,,,,,,,,,,,,,https://arxiv.org/pdf/1808.07036.pdf,
-coqa,,,,,,GPT-easy,GPT,,,,,,,,,,,,,,,,,,,,,,,,,,,,,https://arxiv.org/abs/1808.07042,
-drop,,,,,numerical,"skip for early experiments: nontrivial math; try history_690, it's pretty hard even when I knew the subject",GPT,,,,,,,,,,,,,,,,,,,,,,,,,,DROP ,multi-hop quantitative reasoning; Abstractive QA,Wikipedia crowd,https://aclanthology.org/N19-1246.pdf,Dua et al. 2019
+quac,,,,,dialogue,,GPT,,,,TRUE,,,,,,,,,,,,,,,,,,,,,,,,,https://arxiv.org/pdf/1808.07036.pdf,
+coqa,,,,,,GPT-easy,GPT,,,,TRUE,,,,,,,,,,,,,,,,,,,,,,,,,https://arxiv.org/abs/1808.07042,
+drop,,,,,numerical,"skip for early experiments: nontrivial math; try history_690, it's pretty hard even when I knew the subject",GPT,,,,TRUE,,,,,,,,,,,,,,,,,,,,,,DROP ,multi-hop quantitative reasoning; Abstractive QA,Wikipedia crowd,https://aclanthology.org/N19-1246.pdf,Dua et al. 2019
 duorc,SelfRC,,,,,skip for early experiments: dataset contains prompt-like artifacts,,,,,,60721,,,,,,,,,,,,,,,,,,,,,DuoRC,qa/machine reading comprehension,Wikipedia/IMDB crowd,https://duorc.github.io/,Saha et al. 2018
 duorc,ParaphraseRC,,,,,skip for early experiments: dataset contains prompt-like artifacts,,,,,,69524,,,,,,,,,,,,,,,,,,,,,DuoRC,paraphrased QA,,https://arxiv.org/pdf/1804.07927.pdf,Saha et al. 2018
 definite_pronoun_resolution,,coreference,,,,todo: promptsource download error,,,,,,,,,,,,,,,,,,,,,,,,,,,deﬁnite pronoun resolution,other,,,Rahman and Ng 2012
@@ -79,15 +79,37 @@ MCScript,,,,,,https://aclanthology.org/L18-1564.pdf,Vania,,,,,14191,,,,,,,,,,,,,
 swag,,story_completion,cls,,,revisit whether this should be considered as a variant of NLI,,,,,,73546,0,TRUE,,73546,,,,,,,,,,,,,,,,,swag,qa/multiple-choice qa,,,Zellers et al. 2018
 codah,codah,story_completion,cls,,,a variant of swag revisit whether this should be considered as a variant of NLI,,,,,,2776,0,TRUE,,2776,,,,,,,,,,,,,,,,,codah,qa/multiple-choice qa,,,Chen et al. 2019
 freebase_qa,,QA_closed_book,gen,,,"need to be held out because web_questions is ""supposed to be answerable by Freebase""",,1,,,,20358,0,TRUE,,20358,,,,,,,,,,,,,,,intensive,,freebase qa,qa/closed-book qa,,,Jiang et al. 2019
-emo,,sentiment,cls,,,skip: offensive and ungrammatical text,,1,merged,,,30160,0,TRUE,TRUE,30160,,precision;recall;F1,,,,,,,,,,,,,,skip: offensive and ungrammatical text,emo,cls/emotion,,https://aclanthology.org/S19-2005.pdf,Chatterjee et al. 2019
+fever,v2.0,closed-book qa/fact checking,,,,also in KILT,,,,,,,,,,,,,,,,,,,,,,,,,,skip: awkward prompts as closed-book qa,FEVER,,,,
+hotpot_qa,distractor,,,,,also in KILT,,,,,,,,,,,,,,,,,,,,,,,,,,skip for experiment D3: very long input sequence,Hotpot QA,,,,
+hotpot_qa,fullwiki,,,,,also in KILT,,,,,,,,,,,,,,,,,,,,,,,,,,skip for experiment D3: very long input sequence,Hotpot QA,,,,
+narrativeqa,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,skip for experiment D3: very long input sequence,NarQA,Abstractive QA,,,
+eli5,,,,,possibly knowledge-neutral,train_askh,,,,,,,,,,,,,,,,,,,,,,,,,,skip: HF datasets error the split field is used for subsets,eli5-askh,qa/long-form qa,,https://facebookresearch.github.io/ELI5/explore.html,Fan et al. 2019
+eli5,,,,,possibly knowledge-neutral,train_asks,,,,,,,,,,,,,,,,,,,,,,,,,,skip: HF datasets error the split field is used for subsets,eli5-asks,qa/long-form qa,,,Fan et al. 2019
+eli5,,,,,possibly knowledge-neutral,train_eli5,,,,,,,,,,,,,,,,,,,,,,,,,,skip: HF datasets error the split field is used for subsets,eli5-eli5,qa/long-form qa,,,Fan et al. 2019
+samsum,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,skip: HF datasets error,samsum,cg/summarization,,,Gliwa et al. 2019
+jeopardy,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,promptsource download error,jeopardy,qa/closed-book qa,,,(link)
+newsqa,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,promptsource download error,NewsQA,Extractive QA,,,Trischler et al. 2017
+empathetic_dialogues,,,,,,,CrossFit,,,,,,,,,,,,,,,,,,,,,,,,,no prompt yet,empathetic dialogues,cg/dialogue,,https://arxiv.org/pdf/1811.00207.pdf,Rashkin et al. 2019
+multi_news,,,,,,,CrossFit,,,,,,,,,,,,,,,,,,,,,,,,,no prompt yet,multi news,cg/summarization,,,Fabbri et al. 2019
+proto_qa,,,,,,,CrossFit,,,,,,,,,,,,,,,,,,,,,,,,,no prompt yet,proto qa,other,,,Boratko et al. 2020
+quarel,,,,,logical form,,CrossFit,,,,,,,,,,,,,,,,,,,,,,,,,no prompt yet,quarel,qa/multiple-choice qa,,,Tafjord et al. 2019a
+wiki_auto,,,,,text simplification,revisit: lots of duplicate simplified text,CrossFit,,,,,,,,,,,,,,,,,,,,,,,,,no prompt yet,wiki auto,cls/other,,,Jiang et al. 2020
+kilt_tasks,aidayago2,,,,encyclopedia,,,,,,,,,,,,,,,,,,,,,,,,,,,no prompt yet,kilt ay2,other/entity linking,,,Hoffart et al. 2011
+kilt_tasks,wow,,,,encyclopedia,,,,,,,,,,,,,,,,,,,,,,,,,,,no prompt yet,kilt wow,cg/dialogue,,,Dinan et al. 2019
+lama,conceptnet,,,,encyclopedia,,,,,,,,,,,,,,,,,,,,,,,,,,,no prompt yet,lama-conceptnet,qa/closed-book qa,,,Petroni et al. 2019 2020
+lama,google_re,,,,encyclopedia,,,,,,,,,,,,,,,,,,,,,,,,,,,no prompt yet,lama-google re,qa/closed-book qa,,,Petroni et al. 2019 2020
+lama,squad,,,,encyclopedia,,,,,,,,,,,,,,,,,,,,,,,,,,,no prompt yet,lama-squad,qa/closed-book qa,,,Petroni et al. 2019 2020
+lama,trex,,,,encyclopedia,,,,,,,,,,,,,,,,,,,,,,,,,,,no prompt yet,lama-trex,qa/closed-book qa,,,Petroni et al. 2019 2020
+limit,,physical cognition,,,physical semantic repr.,,,,,,,,,,,,,,,,,,,,,,,,,,,label errors in dataset itself? also no validation set otherwise well motivated by semantic theories,limit,other,,https://aclanthology.org/2020.findings-emnlp.88.pdf,Manotas et al. 2020
+kilt_tasks,fever,,,,encyclopedia,revisit whether this should be considered as a variant of NLI,,,,,,,,,,,,,,,,,,,,,,,,,,temporary skip: prompts available in non-benchmark standalone dataset,kilt fever,cls/fact checking,,,Thorne et al. 2018
+kilt_tasks,hotpotqa,,,,encyclopedia; multi-hop QA,,,,,,,,,,,,,,,,,,,,,,,,,,,temporary skip: prompts available in non-benchmark standalone dataset,kilt hotpotqa,qa/closed-book qa,,,Yang et al. 2018
 Skipped,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+emo,,sentiment,cls,,,skip: offensive and ungrammatical text,,1,merged,,,30160,0,TRUE,TRUE,30160,,precision;recall;F1,,,,,,,,,,,,,,skip: offensive and ungrammatical text,emo,cls/emotion,,https://aclanthology.org/S19-2005.pdf,Chatterjee et al. 2019
 aqua_rat,,,,,nontrivial math,,,,,,,,,,,,,,,,,,,,,,,,,,,skip: nontrivial math,aqua rat,qa/multiple-choice qa,,https://arxiv.org/abs/1705.04146,Ling et al. 2017
 math_qa,,,,,nontrivial math,,,,,,,,,,,,,,,,,,,,,,,,,,,skip: nontrivial math,math qa,qa/multiple-choice qa,,,Amini et al. 2019
 numer_sense,,,,,numerical knowledge,,,,,,,,,,,,,,,,,,,,,,,,,,,skip: closed-book trivia ,numer sense,qa/closed-book qa,,,Lin et al. 2020a
 squad_adversarial,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,validation set only,,,,,
 squadshifts,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,test set only,,,,,
-kilt_tasks,fever,,,,encyclopedia,revisit whether this should be considered as a variant of NLI,,,,,,,,,,,,,,,,,,,,,,,,,,temporary skip: prompts available in non-benchmark standalone dataset,kilt fever,cls/fact checking,,,Thorne et al. 2018
-kilt_tasks,hotpotqa,,,,encyclopedia; multi-hop QA,,,,,,,,,,,,,,,,,,,,,,,,,,,temporary skip: prompts available in non-benchmark standalone dataset,kilt hotpotqa,qa/closed-book qa,,,Yang et al. 2018
 sms_spam,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,skip: unclean corpus and likely harmful content,sms spam,cls/other,,,Almeida et al. 2011
 search_qa,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,skip: seems like a very unclean corpus,search qa,qa/closed-book qa,,,Dunn et al. 2017
 wiki_qa,,closed-book qa,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,skip: revisit: many unfilled templates,wiki qa,cls/other,,https://aclanthology.org/D15-1237.pdf,Yang et al. 2015
@@ -95,6 +117,7 @@ kilt_tasks,trex,,,,encyclopedia,,,,,,,,,,,,,,,,,,,,,,,,,,,skip: non-natural lang
 kilt_tasks,structured_zeroshot,,,,encyclopedia,,,,,,,,,,,,,,,,,,,,,,,,,,,skip: non-natural language,kilt zsre,qa/closed-book qa,,,Levy et al. 2017
 spider,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,skip: non-natural language,spider,cg/other,,,Yu et al. 2018
 wikisql,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,skip: non-natural language,wikisql,cg/other,,,Zhong et al. 2017
+com_qa,,,,,,,CrossFit,,,,,,,,,,,,,,,,,,,,,,,,,skip: non-human language: URL,ComQA (Abujabal et al. 2019),factoid QA w/ paraphrases,snippets WikiAnswers,https://arxiv.org/pdf/1809.09528.pdf,
 climate_fever,,,,,,revisit whether this should be considered as a variant of NLI,,,,,,,,,,,,,,,,,,,,,,,,,,skip: no train set,climate fever,cls/fact checking,,,Diggelmann et al. 2020
 art,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,skip: NLI reserved for generalization studies (although this one is not a traditionally defined NLI),art (abductive nli),other,,https://arxiv.org/pdf/1908.05739.pdf,Bhagavatula et al. 2020
 glue,mnli,classification_NLI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,skip: NLI reserved for generalization studies,glue-mnli,cls/nli,,,Williams et al. 2018
@@ -108,10 +131,6 @@ aeslc,,,,,generation,summarization by email subject line,,,,,,,,,,,,,,,,,,,,,,,,
 onestop_english,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,skip: niche task: classify curriculum diffculty,onestop english,cls/other,,https://aclanthology.org/W18-0535.pdf,Vajjala and Luˇci´c 2018
 mocha,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,skip: model generated text,mocha,other/regression,,,Chen et al. 2020a
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,skip: maybe harmful content from Twitter,emotion,cls/emotion,,,Saravia et al. 2018
-eli5,,,,,possibly knowledge-neutral,train_askh,,,,,,,,,,,,,,,,,,,,,,,,,,skip: HF datasets error the split field is used for subsets,eli5-askh,qa/long-form qa,,https://facebookresearch.github.io/ELI5/explore.html,Fan et al. 2019
-eli5,,,,,possibly knowledge-neutral,train_asks,,,,,,,,,,,,,,,,,,,,,,,,,,skip: HF datasets error the split field is used for subsets,eli5-asks,qa/long-form qa,,,Fan et al. 2019
-eli5,,,,,possibly knowledge-neutral,train_eli5,,,,,,,,,,,,,,,,,,,,,,,,,,skip: HF datasets error the split field is used for subsets,eli5-eli5,qa/long-form qa,,,Fan et al. 2019
-samsum,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,skip: HF datasets error,samsum,cg/summarization,,,Gliwa et al. 2019
 ,,,,,,the authors themselves seem to have renounced their own work,,,,,,,,,,,,,,,,,,,,,,,,,,skip: harmful content,crows pairs,other,,https://github.com/nyu-mll/crows-pairs,Nangia et al. 2020
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,skip: harmful content,ethos-directed vs generalized,cls/hate speech detection,,,Mollas et al. 2020
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,skip: harmful content,ethos-disability,cls/hate speech detection,,,Mollas et al. 2020
@@ -140,10 +159,6 @@ samsum,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,skip: HF datasets error,samsum,cg/summariz
 yelp_polarity,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,skip: duplicate with yelp_review_full,yelp polarity,cls/sentiment analysis,,,Zhang et al. 2015; (link)
 quora,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,skip: duplicate under GLUE,QQP,paraphrase identiﬁcation,social QA,https://quoradata.quora.com/First-Quora-Dataset-Release-Question-Pairs,Iyer et al. 2017
 squad,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,skip: duplicate under Squad 2.0,SQuAD 1.1,Extractive QA,,,
-fever,v2.0,closed-book qa/fact checking,,,,also in KILT,,,,,,,,,,,,,,,,,,,,,,,,,,skip: awkward prompts as closed-book qa,FEVER,,,,
-hotpot_qa,distractor,,,,,also in KILT,,,,,,,,,,,,,,,,,,,,,,,,,,skip for experiment D3: very long input sequence,Hotpot QA,,,,
-hotpot_qa,fullwiki,,,,,also in KILT,,,,,,,,,,,,,,,,,,,,,,,,,,skip for experiment D3: very long input sequence,Hotpot QA,,,,
-narrativeqa,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,skip for experiment D3: very long input sequence,NarQA,Abstractive QA,,,
 yahoo_answers_topics,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,skip for early experiments: unclean corpus,yahoo answers topics,cls/topic,,,(link)
 tab_fact,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,skip for early experiments: tabular data,tab fact,cls/fact checking,,,Chen et al. 2020b
 ,,,,,syntax,,,,,,,,,,,,,,,,,,,,,,,,,,,skip for early experiments: revisit if we want to include a large number of ungrammatical sentences in our training data,blimp-anaphor gender agreement,other/linguistic phenomenon,,,Warstadt et al. 2020
@@ -188,23 +203,6 @@ scicite,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,skip for early experiments: academic doma
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,skip for early experiments: abstract semantic representations,e2e nlg cleaned,other,,,Duˇsek et al. 2020 2019
 glue,sst2,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,revisit: very short and often ill-formed movie reviews,glue-sst2,cls/sentiment analysis,,,Socher et al. 2013
 glue,stsb,fine-grain regression,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,revisit whether to exclude fine-grain regression tasks,glue-stsb,semantic similarity,misc.,,
-,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,promptsource ImportError,Natural Questions,,,,
-jeopardy,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,promptsource download error,jeopardy,qa/closed-book qa,,,(link)
-newsqa,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,promptsource download error,NewsQA,Extractive QA,,,Trischler et al. 2017
-com_qa,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,no prompt yet,ComQA (Abujabal et al. 2019),factoid QA w/ paraphrases,snippets WikiAnswers,https://arxiv.org/pdf/1809.09528.pdf,
-empathetic_dialogues,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,no prompt yet,empathetic dialogues,cg/dialogue,,https://arxiv.org/pdf/1811.00207.pdf,Rashkin et al. 2019
-kilt_tasks,aidayago2,,,,encyclopedia,,,,,,,,,,,,,,,,,,,,,,,,,,,no prompt yet,kilt ay2,other/entity linking,,,Hoffart et al. 2011
-kilt_tasks,nq,,,,encyclopedia; abstractive QA,,,,,,,,,,,,,,,,,,,,,,,,,,,no prompt yet,kilt nq,qa/closed-book qa,,,Kwiatkowski et al. 2019
-kilt_tasks,wow,,,,encyclopedia,,,,,,,,,,,,,,,,,,,,,,,,,,,no prompt yet,kilt wow,cg/dialogue,,,Dinan et al. 2019
-lama,conceptnet,,,,encyclopedia,,,,,,,,,,,,,,,,,,,,,,,,,,,no prompt yet,lama-conceptnet,qa/closed-book qa,,,Petroni et al. 2019 2020
-lama,google_re,,,,encyclopedia,,,,,,,,,,,,,,,,,,,,,,,,,,,no prompt yet,lama-google re,qa/closed-book qa,,,Petroni et al. 2019 2020
-lama,squad,,,,encyclopedia,,,,,,,,,,,,,,,,,,,,,,,,,,,no prompt yet,lama-squad,qa/closed-book qa,,,Petroni et al. 2019 2020
-lama,trex,,,,encyclopedia,,,,,,,,,,,,,,,,,,,,,,,,,,,no prompt yet,lama-trex,qa/closed-book qa,,,Petroni et al. 2019 2020
-multi_news,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,no prompt yet,multi news,cg/summarization,,,Fabbri et al. 2019
-proto_qa,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,no prompt yet,proto qa,other,,,Boratko et al. 2020
-quarel,,,,,logical form,,,,,,,,,,,,,,,,,,,,,,,,,,,no prompt yet,quarel,qa/multiple-choice qa,,,Tafjord et al. 2019a
-wiki_auto,,,,,text simplification,revisit: lots of duplicate simplified text,,,,,,,,,,,,,,,,,,,,,,,,,,no prompt yet,wiki auto,cls/other,,,Jiang et al. 2020
-limit,,physical cognition,,,physical semantic repr.,,,,,,,,,,,,,,,,,,,,,,,,,,,label errors in dataset itself? also no validation set otherwise well motivated by semantic theories,limit,other,,https://aclanthology.org/2020.findings-emnlp.88.pdf,Manotas et al. 2020
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,double check: subset missing from HF datasets,squad-no context,qa/closed-book qa,,,Rajpurkar et al. 2016
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,double check: subset missing from HF datasets,squad-with context,qa/machine reading comprehension,,,Rajpurkar et al. 2016
 ,,,,,,contrast sets,,,,,,,,,,,,,,,,,,,,,,,,,,double check: missing from HF datasets,BoolQ-CS,Binary yes/no,,https://arxiv.org/pdf/2004.02709.pdf,
