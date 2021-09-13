@@ -26,7 +26,7 @@ templates:
     id: 40ef67db-dff3-4e7b-b167-f7e54b400c74
     jinja: "{{ fact1[0]|capitalize }}{{ fact1[1:]|trim|trim('.') }}, and {{fact2[0]|lower\
       \ }}{{ fact2[1:]|trim|trim('.') }}. Given these facts, {{ question[0]|lower\
-      \ }}{{question[1:]|trim('?') }} among the following options:\n{{answer_choices\
+      \ }}{{question[1:]|trim('?') }} among the following options:\n- {{answer_choices\
       \ | join(\"\\n - \") }}\n\n||| \n\n{% for choice in choices.label %} {% if choice\
       \ == answerKey %}{{ answer_choices[loop.index - 1] }}{% endif %}{% endfor %} "
     metadata: !TemplateMetadata
@@ -59,10 +59,10 @@ templates:
     answer_choices_key: '{{choices.text | join("|||")}}'
     id: 604dd379-21f1-4d30-af2f-22f9a8a97ceb
     jinja: "You are presented with the question \"{{ question }}\" and the following\
-      \ answer choices: \n{{answer_choices | join(\"\\n - \") }}\n\nNow knowing that\
-      \ {{ fact1[0]|lower }}{{ fact1[1:]|trim|trim('.') }} and {{fact2[0]|lower }}{{\
-      \ fact2[1:]|trim|trim('.') }}, choose the best answer.\n\n||| \n\n{% for choice\
-      \ in choices.label %} {% if choice == answerKey %}{{ answer_choices[loop.index\
+      \ answer choices: \n- {{answer_choices | join(\"\\n - \") }}\n\nNow knowing\
+      \ that {{ fact1[0]|lower }}{{ fact1[1:]|trim|trim('.') }} and {{fact2[0]|lower\
+      \ }}{{ fact2[1:]|trim|trim('.') }}, choose the best answer.\n\n||| \n\n{% for\
+      \ choice in choices.label %} {% if choice == answerKey %}{{ answer_choices[loop.index\
       \ - 1] }}{% endif %}{% endfor %} "
     metadata: !TemplateMetadata
       choices_in_prompt: true
@@ -94,7 +94,7 @@ templates:
     id: b5b61423-8655-408d-a8e6-81a5eaaac2aa
     jinja: "If {{ combinedfact[0]|lower }}{{ combinedfact[1:]|trim|trim('.') }}, then\
       \ {{ question[0]|lower }}{{question[1:]|trim|trim('?') }}?\n\nAnswer choices:\n\
-      {{answer_choices | join(\"\\n - \") }}\n||| \n\n{% for choice in choices.label\
+      - {{answer_choices | join(\"\\n - \") }}\n||| \n\n{% for choice in choices.label\
       \ %} {% if choice == answerKey %}{{ answer_choices[loop.index - 1] }}{% endif\
       \ %}{% endfor %}  "
     metadata: !TemplateMetadata
@@ -133,7 +133,7 @@ templates:
     jinja: "Fact 1: {{ fact1[0]|capitalize }}{{ fact1[1:]|trim|trim('.') }}.\n\nFact\
       \ 2: {{fact2[0]|capitalize }}{{ fact2[1:]|trim|trim('.') }}.\n\nGiven the two\
       \ facts above, answer the question \"{{ question }}\" with the following options:\
-      \ \n{{answer_choices | join(\"\\n - \") }}\n\n||| \n\n{% for choice in choices.label\
+      \ \n- {{answer_choices | join(\"\\n - \") }}\n\n||| \n\n{% for choice in choices.label\
       \ %} {% if choice == answerKey %}{{ answer_choices[loop.index - 1] }}{% endif\
       \ %}{% endfor %} "
     metadata: !TemplateMetadata
