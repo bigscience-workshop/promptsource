@@ -137,7 +137,7 @@ class Template(yaml.YAMLObject):
         :return: list of strings, or None if get_answer_choices_expr is None
         """
         if self.get_answer_choices_expr() is None:
-            return None
+            return self.get_answer_choices()
 
         jinja = self.answer_choices_key
         rtemplate = env.from_string(jinja)
@@ -174,11 +174,7 @@ class Template(yaml.YAMLObject):
         if "answer_choices" in protected_example:
             raise ValueError("Example contains the restricted key 'answer_choices'.")
 
-        if self.answer_choices is not None:
-            protected_example["answer_choices"] = self.answer_choices
-        elif self.get_answer_choices_list(example) is not None:
-            # TODO: Combine this all into a call to get_answer_choices_list
-            protected_example["answer_choices"] = self.get_answer_choices_list(example)
+        protected_example["answer_choices"] = self.get_answer_choices_list(example)
 
         # Renders the Jinja template
         rendered_example = rtemplate.render(**protected_example)
