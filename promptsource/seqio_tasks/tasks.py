@@ -34,6 +34,8 @@ GET_METRICS = {
     # Missing support for mean_multiclass_f1 etc. which need a num_classes parameter
 }
 
+MAX_EXAMPLES_PER_DATASET = 500_000
+
 
 def strip_whitespace(output_or_target, example=None, is_target=False):
     """Cached tasks from promptsource all have a leading space on the ground-truth targets."""
@@ -148,10 +150,12 @@ def add_task(dataset_name, subset_name, template_name, task_name=None, split_map
         )
 
 
-d4_train: List[Tuple[str, Optional[str]]] = []
-d4_eval: List[Tuple[str, Optional[str]]] = []
-d3_train_gpt: List[Tuple[str, Optional[str]]] = []
-d3_train_sglue: List[Tuple[str, Optional[str]]] = []
+datatset_subset_tuple = Tuple[str, Optional[str]]
+d4_train: List[datatset_subset_tuple] = []
+d4_eval: List[datatset_subset_tuple] = []
+d3_train_gpt: List[datatset_subset_tuple] = []
+d3_train_sglue: List[datatset_subset_tuple] = []
+gsheet: Dict[datatset_subset_tuple, Dict] = {}
 experiment_path = pkg_resources.resource_filename(__name__, "experiment_D4.csv")
 with open(experiment_path) as exp_file:
     reader = csv.DictReader(exp_file)
@@ -165,54 +169,58 @@ with open(experiment_path) as exp_file:
             d4_train.append(dataset_subset)
         if row["do_eval"] == "TRUE":
             d4_eval.append(dataset_subset)
-        if row["D3_do_train"] == "TRUE" and 'GPT' in row["seed_paper"]:
+        if row["D3_do_train"] == "TRUE" and "GPT" in row["seed_paper"]:
             d3_train_gpt.append(dataset_subset)
-        if row["D3_do_train"] == "TRUE" and row["HF_name"] == 'super_glue':
+        if row["D3_do_train"] == "TRUE" and row["HF_name"] == "super_glue":
             d3_train_sglue.append(dataset_subset)
-
+        gsheet[dataset_subset] = row
 all_datasets = d4_train + d4_eval + d3_train_gpt + d3_train_sglue
-# print(f"Number of training datasets = {len(d4_train)}")
-# print(f"Number of evaluation datasets = {len(d4_eval)}")
-print(d3_train_gpt)
-print(len(d3_train_gpt))
-print(d3_train_sglue)
-print(len(d3_train_sglue))
-
 
 all_templates = promptsource.templates.TemplateCollection()
 all_templates.remove("anli")  # Need to special-case ANLI due to weird split conventions
 
-# 4 stages of training/ablation: D4 -> GPT -> SuperGLUE -> ANLI
+# 3 stages of training/ablation: D4 -> GPT -> SuperGLUE
 d4_train_mixture: List[str] = []  # strings are dataset_subset_template
-d3_train_gpt_mixture: List[str] = []
-d3_train_sglue_mixture: List[str] = []
-train_anli_mixture: List[str] = []
+gpt_train_mixture: List[str] = []
+sglue_train_mixture: List[str] = []
 d4_eval_mixture: List[str] = []
+mixture_cap: Dict[str, int] = {}
 for dataset_name, subset_name in all_templates.keys:
     if (dataset_name, subset_name) not in all_datasets:
         all_templates.remove(dataset_name, subset_name)
         continue
 
     dataset = all_templates.get_dataset(dataset_name, subset_name)
+    num_templates = len(dataset.all_template_names)
+    train_size = gsheet[(dataset_name, subset_name)]["train_size"]
+    if train_size == "":
+        train_size = 0
+    else:
+        train_size = int(train_size)
+    train_size = min(train_size, MAX_EXAMPLES_PER_DATASET)
+    cap = train_size // num_templates
     for template_name in dataset.all_template_names:
         add_task(dataset_name, subset_name, template_name)
 
         task_name = utils.get_task_name(dataset_name, subset_name, template_name)
         if (dataset_name, subset_name) in d4_train:
             d4_train_mixture.append(task_name)
+            mixture_cap[task_name] = cap
         if (dataset_name, subset_name) in d3_train_gpt:
-            d3_train_gpt_mixture.append(task_name)
+            gpt_train_mixture.append(task_name)
+            mixture_cap[task_name] = cap
         if (dataset_name, subset_name) in d3_train_sglue:
-            d3_train_sglue_mixture.append(task_name)
+            sglue_train_mixture.append(task_name)
+            mixture_cap[task_name] = cap
         if (dataset_name, subset_name) in d4_eval:
             template = dataset[template_name]
             if template.metadata.original_task:
                 d4_eval_mixture.append(task_name)
             # TODO use template.metadata.answer_choices or answer_choice_keys here for rank eval
 
-
 # Special case for ANLI, which has weirdly-named splits and rounds that should be subsets
 dataset_name, subset_name = ("anli", None)
+dataset = all_templates.get_dataset(dataset_name, subset_name)
 for anli_round in ("r1", "r2", "r3"):
     for template_name in all_templates.get_dataset(dataset_name, subset_name).all_template_names:
         task_name = utils.get_task_name(dataset_name, subset_name, template_name) + f"_{anli_round}"
@@ -225,7 +233,7 @@ for anli_round in ("r1", "r2", "r3"):
 
         template = dataset[template_name]
         if template.metadata.original_task:
-            d4_eval_mixture.append(task_name)
+            d4_eval_mixture.append(task_name)  # TODO or add to ANLI special mixture
         # TODO use template.metadata.answer_choices or answer_choice_keys here for rank eval
 
 
@@ -259,31 +267,30 @@ TASK_BLACKLIST = [
 ]
 
 seqio.MixtureRegistry.add(
-    "all_D4",  # includes non-original task templates which are excluded from the eval mixture
-    [task for task in seqio.TaskRegistry.names() if task not in TASK_BLACKLIST],
-    default_rate=functools.partial(seqio.mixing_rate_num_examples, maximum=500_000),
-)
-
-seqio.MixtureRegistry.add(
-    "all_super_glue_tasks",
-    [task for task in seqio.TaskRegistry.names() if task.startswith("super_glue")],
-    default_rate=seqio.mixing_rate_num_examples,
-)
-
-
-seqio.MixtureRegistry.add(
-    "clean_tasks",
+    "d4_train",
     [task for task in d4_train_mixture if task not in TASK_BLACKLIST],
-    default_rate=functools.partial(seqio.mixing_rate_num_examples, maximum=500_000),
+    default_rate=lambda t: mixture_cap[t],
 )
 
+seqio.MixtureRegistry.add(
+    "gpt_train",
+    [task for task in gpt_train_mixture if task not in TASK_BLACKLIST],
+    default_rate=lambda t: mixture_cap[t],
+)
 
 seqio.MixtureRegistry.add(
-    "clean_eval_tasks",
+    "sglue_train",
+    [task for task in sglue_train_mixture if task not in TASK_BLACKLIST],
+    default_rate=lambda t: mixture_cap[t],
+)
+
+seqio.MixtureRegistry.add(
+    "d4_eval",
     [task for task in d4_eval_mixture if task not in TASK_BLACKLIST],
     default_rate=functools.partial(seqio.mixing_rate_num_examples, maximum=500_000),
-)
+)  # eval mixture does not need to be capped
 
+# TODO mixtures below need to be updated after new rank eval implementation
 seqio.MixtureRegistry.add(
     "anli_eval_tasks",
     [task for task in d4_eval_mixture if task.startswith("anli")],

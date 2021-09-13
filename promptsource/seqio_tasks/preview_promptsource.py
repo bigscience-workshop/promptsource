@@ -1,17 +1,17 @@
 import csv
-from typing import List, Tuple, Optional
+from typing import List, Optional, Tuple
 
 import pkg_resources
-
-from promptsource.templates import TemplateCollection
-
 
 # from rich import inspect
 from rich.pretty import pprint
 
+from promptsource.templates import TemplateCollection
+
 
 def preview() -> None:
     experiment_path = pkg_resources.resource_filename(__name__, "experiment_D4.csv")
+    gsheet = {}
     d4_train: List[Tuple[str, Optional[str]]] = []
     d4_eval: List[Tuple[str, Optional[str]]] = []
     d3_train_gpt: List[Tuple[str, Optional[str]]] = []
@@ -29,20 +29,22 @@ def preview() -> None:
                 d4_train.append(dataset_subset)
             if row["do_eval"] == "TRUE":
                 d4_eval.append(dataset_subset)
-            if row["D3_do_train"] == "TRUE" and 'GPT' in row["seed_paper"]:
+            if row["D3_do_train"] == "TRUE" and "GPT" in row["seed_paper"]:
                 d3_train_gpt.append(dataset_subset)
-            if row["D3_do_train"] == "TRUE" and row["HF_name"] == 'super_glue':
+            if row["D3_do_train"] == "TRUE" and row["HF_name"] == "super_glue":
                 d3_train_sglue.append(dataset_subset)
+            gsheet[dataset_subset] = row
     all_datasets = d4_train + d4_eval + d3_train_gpt + d3_train_sglue
-    print(f'Number of non-desk-rejected datasets = {len(all_datasets)}')
-
-    # print(f"Number of training sets = {len(train_sets)}")
-    # print(f"Number of evaluation sets = {len(eval_sets)}")
+    print(f"Number of non-desk-rejected datasets = {len(all_datasets)}")
+    print(f"Number of training sets = {len(d4_train)}")
+    print(f"Number of evaluation sets = {len(d4_eval)}")
 
     template_collection = TemplateCollection()
+    output = []
     missing_og_flags = []
     for dataset_name, subset_name in template_collection.keys:
-        if (dataset_name, subset_name) not in d4_train:
+        ds_name = (dataset_name, subset_name)
+        if ds_name not in d4_train:
             template_collection.remove(dataset_name, subset_name)
             continue
         OG = 0
@@ -57,14 +59,30 @@ def preview() -> None:
             elif template.metadata.original_task is False:
                 non_OG += 1
             elif template.metadata.original_task is None:
-                missing_og_flags.append(dataset_name + subset_name + template_name)
+                missing_og_flags.append(dataset_name + "/" + template_name)
                 continue
-        print(dataset_name, subset_name, OG, non_OG, sep='\t\t')
+
+        train_size = gsheet[ds_name]["train_size"]
+        if train_size == "":
+            train_size = 0
+        else:
+            train_size = int(train_size)
+
+        adjusted_train_size = train_size // len(dataset.all_template_names)
+
+        output.append(
+            (
+                f"{dataset_name} {subset_name if subset_name else ''}",
+                f"{OG}-{non_OG}",
+                f"{train_size:,}    {adjusted_train_size:,}",
+            )
+        )
+
+    pprint(output)
     print(len(template_collection))
 
-    print('Missing original task flags:')
+    print("Missing original task flags:")
     pprint(missing_og_flags)
-
 
     # # print(d4_train_mixture)
     # print(f"Number of training templates = {len(d4_train_mixture)}")
