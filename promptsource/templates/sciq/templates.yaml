@@ -24,8 +24,15 @@ templates:
     answer_choices_key: '{{distractor1}} ||| {{distractor2}} ||| {{distractor3}} |||
       {{correct_answer}}'
     id: 15b0a989-84e4-4f1c-8ac1-12dbfa2ff42a
-    jinja: "Q: {{question}}\n\n\n Choices:\n\n- {{ answer_choices[0] }}\n\n- {{ answer_choices[1]\
-      \ }}\n\n- {{ answer_choices[2] }}\n\n- {{ answer_choices[3] }}\n\nA:|||{{answer_choices[3]}}"
+    jinja: "{% set order = [[0, 1, 2, 3], [0, 1, 3, 2], [0, 2, 1, 3], [0, 2, 3, 1],\
+      \ [0, 3, 1, 2], [0, 3, 2, 1],\n                             [1, 0, 2, 3], [1,\
+      \ 0, 3, 2], [1, 2, 0, 3], [1, 2, 3, 0], [1, 3, 0, 2], [1, 3, 2, 0],\n      \
+      \                       [2, 1, 0, 3], [2, 1, 0, 2], [2, 0, 1, 3], [2, 0, 3,\
+      \ 1], [2, 3, 1, 0], [2, 3, 0, 1],\n                             [3, 1, 2, 0],\
+      \ [3, 1, 0, 2], [3, 2, 1, 0], [3, 2, 0, 1], [3, 0, 1, 2], [3, 0, 2, 1]] | choice\
+      \ %}\nQ: {{question}}\n\n\n Choices:\n\n- {{ answer_choices[order[0]] }}\n\n\
+      - {{ answer_choices[order[1]] }}\n\n- {{ answer_choices[order[2]] }}\n\n- {{\
+      \ answer_choices[order[3]] }}\n\nA:|||{{answer_choices[3]}}"
     metadata: !TemplateMetadata
       choices_in_prompt: true
       metrics:
@@ -38,10 +45,16 @@ templates:
     answer_choices_key: '{{distractor1}} ||| {{distractor2}} ||| {{distractor3}} |||
       {{correct_answer}}'
     id: 368e29fb-506d-4a4e-ac33-0af8d6e1729b
-    jinja: "Q: {{question}}\n\n\nRead this paragraph and choose the correct option\
-      \ from the provided answers:\n\n{{support}}\n\n Choices:\n\n- {{ answer_choices[0]\
-      \ }}\n\n- {{ answer_choices[1] }}\n\n- {{ answer_choices[2] }}\n\n- {{ answer_choices[3]\
-      \ }}\n\n\nA:|||{{answer_choices[3]}}\n"
+    jinja: "{% set order = [[0, 1, 2, 3], [0, 1, 3, 2], [0, 2, 1, 3], [0, 2, 3, 1],\
+      \ [0, 3, 1, 2], [0, 3, 2, 1],\n                             [1, 0, 2, 3], [1,\
+      \ 0, 3, 2], [1, 2, 0, 3], [1, 2, 3, 0], [1, 3, 0, 2], [1, 3, 2, 0],\n      \
+      \                       [2, 1, 0, 3], [2, 1, 0, 2], [2, 0, 1, 3], [2, 0, 3,\
+      \ 1], [2, 3, 1, 0], [2, 3, 0, 1],\n                             [3, 1, 2, 0],\
+      \ [3, 1, 0, 2], [3, 2, 1, 0], [3, 2, 0, 1], [3, 0, 1, 2], [3, 0, 2, 1]] | choice\
+      \ %}\nQ: {{question}}\n\n\nRead this paragraph and choose the correct option\
+      \ from the provided answers:\n\n{{support}}\n\n Choices:\n\n- {{ answer_choices[order[0]]\
+      \ }}\n\n- {{ answer_choices[order[1]] }}\n\n- {{ answer_choices[order[2]] }}\n\
+      \n- {{ answer_choices[order[3]] }}\n\n\nA:|||{{answer_choices[3]}}\n"
     metadata: !TemplateMetadata
       choices_in_prompt: true
       metrics:
@@ -54,10 +67,16 @@ templates:
     answer_choices_key: '{{distractor1}} ||| {{distractor2}} ||| {{distractor3}} |||
       {{correct_answer}}'
     id: 63c22e8a-7029-4ce3-bd26-6ca6a1541563
-    jinja: "Answer the following question given this paragraph: \n\n{{support}}\n\n\
-      \nQ: {{question}}\n\n Choices:\n\n- {{ answer_choices[0] }}\n\n- {{ answer_choices[1]\
-      \ }}\n\n- {{ answer_choices[2] }}\n\n- {{ answer_choices[3] }}\n\nA:|||{{answer_choices[3]}}\n\
-      \n"
+    jinja: "{% set order = [[0, 1, 2, 3], [0, 1, 3, 2], [0, 2, 1, 3], [0, 2, 3, 1],\
+      \ [0, 3, 1, 2], [0, 3, 2, 1],\n                             [1, 0, 2, 3], [1,\
+      \ 0, 3, 2], [1, 2, 0, 3], [1, 2, 3, 0], [1, 3, 0, 2], [1, 3, 2, 0],\n      \
+      \                       [2, 1, 0, 3], [2, 1, 0, 2], [2, 0, 1, 3], [2, 0, 3,\
+      \ 1], [2, 3, 1, 0], [2, 3, 0, 1],\n                             [3, 1, 2, 0],\
+      \ [3, 1, 0, 2], [3, 2, 1, 0], [3, 2, 0, 1], [3, 0, 1, 2], [3, 0, 2, 1]] | choice\
+      \ %}\nAnswer the following question given this paragraph: \n\n{{support}}\n\n\
+      \nQ: {{question}}\n\n Choices:\n\n- {{ answer_choices[order[0]] }}\n\n- {{ answer_choices[order[1]]\
+      \ }}\n\n- {{ answer_choices[order[2]] }}\n\n- {{ answer_choices[order[3]] }}\n\
+      \nA:|||{{answer_choices[3]}}\n\n"
     metadata: !TemplateMetadata
       choices_in_prompt: true
       metrics:
