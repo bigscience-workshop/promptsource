@@ -1,5 +1,4 @@
 import functools
-import re
 
 import datasets
 import seqio
@@ -42,26 +41,14 @@ def strip_whitespace(output_or_target, example=None, is_target=False):
     return output_or_target.strip()
 
 
-def get_label_strings(template):
-    target = template.jinja.split("|||")[1]
-    label_list_re = r"^([^\{\}]*)\{\{\s*(\[\s*[\"|\'].*[\"|\']\s*\])\s*\[.*\]\s*\}\}([^\{\}]*)$"
-    label_string_match = re.search(label_list_re, target.strip())
-
-    if label_string_match:
-        before_label = label_string_match.group(1)
-        labels = eval(label_string_match.group(2))
-        after_label = label_string_match.group(3)
-        labels = [before_label + label + after_label for label in labels]
-        return labels
-
-
 def maybe_get_class_id_postprocessor(template):
-    labels = get_label_strings(template)
-    if labels is not None:
+    if template.get_fixed_answer_choices_list():
 
         def postprocess_fn(output_or_target, example=None, is_target=False):
             output_or_target = strip_whitespace(output_or_target)
-            return t5.data.postprocessors.string_label_to_class_id(output_or_target, label_classes=labels)
+            return t5.data.postprocessors.string_label_to_class_id(
+                output_or_target, label_classes=template.get_fixed_answer_choices_list()
+            )
 
         return postprocess_fn
 
@@ -125,21 +112,23 @@ def add_task(dataset_name, subset_name, template_name, task_name=None, split_map
     )
 
     # Add rank classification eval task
-    labels = get_label_strings(template)
-    if labels:
+    if template.answer_choices or template.answer_choices_key:
         rank_classification_preprocessor = functools.partial(
             t5.data.preprocessors.rank_classification,
-            inputs_fn=lambda ex: tf.fill((len(labels),), ex["inputs"]),
-            targets_fn=lambda ex: labels,
-            is_correct_fn=lambda ex: tf.equal(labels, tf.strings.strip(ex["targets"])),
+            inputs_fn=lambda ex: tf.fill((len(ex["answer_choices"]),), ex["inputs"]),
+            targets_fn=lambda ex: ex["answer_choices"],
+            is_correct_fn=lambda ex: tf.equal(ex["answer_choices"], tf.strings.strip(ex["targets"])),
             weight_fn=lambda ex: 1.0,
         )
+
+        fixed_choices = template.get_fixed_answer_choices_list()
+        num_classes = len(fixed_choices) if fixed_choices else None
         seqio.TaskRegistry.add(
             task_name + "_score_eval",
             data_source,
             preprocessors=[rank_classification_preprocessor] + preprocessors,
             output_features=output_features,
-            metric_fns=[functools.partial(t5.evaluation.metrics.rank_classification, num_classes=len(labels))],
+            metric_fns=[functools.partial(t5.evaluation.metrics.rank_classification, num_classes=num_classes)],
             postprocess_fn=t5.data.postprocessors.rank_classification,
         )
 
@@ -212,20 +201,20 @@ seqio.MixtureRegistry.add(
 
 seqio.MixtureRegistry.add(
     "clean_tasks",
-    [task for task in CLEAN_TASKS if task not in TASK_BLACKLIST],
+    [task for task in seqio.TaskRegistry.names() if task in CLEAN_TASKS and task not in TASK_BLACKLIST],
     default_rate=functools.partial(seqio.mixing_rate_num_examples, maximum=500_000),
 )
 
 
 seqio.MixtureRegistry.add(
     "clean_eval_tasks",
-    [task for task in CLEAN_EVAL_TASKS if task not in TASK_BLACKLIST],
+    [task for task in seqio.TaskRegistry.names() if task in CLEAN_EVAL_TASKS and task not in TASK_BLACKLIST],
     default_rate=functools.partial(seqio.mixing_rate_num_examples, maximum=500_000),
 )
 
 seqio.MixtureRegistry.add(
     "anli_eval_tasks",
-    [task for task in CLEAN_EVAL_TASKS if task.startswith("anli")],
+    [task for task in seqio.TaskRegistry.names() if task in CLEAN_EVAL_TASKS and task.startswith("anli")],
     default_rate=functools.partial(seqio.mixing_rate_num_examples, maximum=500_000),
 )
 
