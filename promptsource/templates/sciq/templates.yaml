@@ -2,28 +2,30 @@ dataset: sciq
 templates:
   0af52ad2-2b12-4700-b664-cd26d2da6dc1: !Template
     answer_choices: null
-    answer_choices_key: distractor1 ||| distractor2 ||| distractor3 ||| correct_answer
+    answer_choices_key: '{{distractor1}} ||| {{distractor2}} ||| {{distractor3}} |||
+      {{correct_answer}}'
     id: 0af52ad2-2b12-4700-b664-cd26d2da6dc1
     jinja: 'Q: {{question}}
 
 
 
-      A:|||{{correct_answer}}
+      A:|||{{answer_choices[3]}}
 
       '
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
       - Accuracy
-      original_task: false
+      original_task: true
     name: Direct Question (Closed Book)
     reference: ''
   15b0a989-84e4-4f1c-8ac1-12dbfa2ff42a: !Template
     answer_choices: null
-    answer_choices_key: distractor1 ||| distractor2 ||| distractor3 ||| correct_answer
+    answer_choices_key: '{{distractor1}} ||| {{distractor2}} ||| {{distractor3}} |||
+      {{correct_answer}}'
     id: 15b0a989-84e4-4f1c-8ac1-12dbfa2ff42a
-    jinja: "Q: {{question}}\n\n\n Choices:\n\n- {{ distractor1 }}\n\n- {{ distractor2\
-      \ }}\n\n- {{ distractor3 }}\n\n- {{ correct_answer }}\n\nA:|||{{correct_answer}}"
+    jinja: "Q: {{question}}\n\n\n Choices:\n\n- {{ answer_choices[0] }}\n\n- {{ answer_choices[1]\
+      \ }}\n\n- {{ answer_choices[2] }}\n\n- {{ answer_choices[3] }}\n\nA:|||{{answer_choices[3]}}"
     metadata: !TemplateMetadata
       choices_in_prompt: true
       metrics:
@@ -33,12 +35,13 @@ templates:
     reference: Same multiple choice format but without the support text
   368e29fb-506d-4a4e-ac33-0af8d6e1729b: !Template
     answer_choices: null
-    answer_choices_key: distractor1 ||| distractor2 ||| distractor3 ||| correct_answer
+    answer_choices_key: '{{distractor1}} ||| {{distractor2}} ||| {{distractor3}} |||
+      {{correct_answer}}'
     id: 368e29fb-506d-4a4e-ac33-0af8d6e1729b
     jinja: "Q: {{question}}\n\n\nRead this paragraph and choose the correct option\
-      \ from the provided answers:\n\n{{support}}\n\n Choices:\n\n- {{ distractor1\
-      \ }}\n\n- {{ distractor2 }}\n\n- {{ distractor3 }}\n\n- {{ correct_answer }}\n\
-      \n\nA:|||{{correct_answer}}\n"
+      \ from the provided answers:\n\n{{support}}\n\n Choices:\n\n- {{ answer_choices[0]\
+      \ }}\n\n- {{ answer_choices[1] }}\n\n- {{ answer_choices[2] }}\n\n- {{ answer_choices[3]\
+      \ }}\n\n\nA:|||{{answer_choices[3]}}\n"
     metadata: !TemplateMetadata
       choices_in_prompt: true
       metrics:
@@ -48,11 +51,12 @@ templates:
     reference: Multiple choice question format
   63c22e8a-7029-4ce3-bd26-6ca6a1541563: !Template
     answer_choices: null
-    answer_choices_key: distractor1 ||| distractor2 ||| distractor3 ||| correct_answer
+    answer_choices_key: '{{distractor1}} ||| {{distractor2}} ||| {{distractor3}} |||
+      {{correct_answer}}'
     id: 63c22e8a-7029-4ce3-bd26-6ca6a1541563
     jinja: "Answer the following question given this paragraph: \n\n{{support}}\n\n\
-      \nQ: {{question}}\n\n Choices:\n\n- {{ distractor1 }}\n\n- {{ distractor2 }}\n\
-      \n- {{ distractor3 }}\n\n- {{ correct_answer }}\n\nA:|||{{correct_answer}}\n\
+      \nQ: {{question}}\n\n Choices:\n\n- {{ answer_choices[0] }}\n\n- {{ answer_choices[1]\
+      \ }}\n\n- {{ answer_choices[2] }}\n\n- {{ answer_choices[3] }}\n\nA:|||{{answer_choices[3]}}\n\
       \n"
     metadata: !TemplateMetadata
       choices_in_prompt: true
@@ -63,14 +67,15 @@ templates:
     reference: Standard multiple choice format
   d417fcfb-9f00-4186-95d8-e63609495164: !Template
     answer_choices: null
-    answer_choices_key: distractor1 ||| distractor2 ||| distractor3 ||| correct_answer
+    answer_choices_key: '{{distractor1}} ||| {{distractor2}} ||| {{distractor3}} |||
+      {{correct_answer}}'
     id: d417fcfb-9f00-4186-95d8-e63609495164
     jinja: "Answer the following question given this paragraph: \n\n{{support}}\n\n\
-      \nQ: {{question}}\n\n\nA:|||{{correct_answer}}\n"
+      \nQ: {{question}}\n\n\nA:|||{{answer_choices[3]}}\n"
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
       - Accuracy
-      original_task: false
+      original_task: true
     name: Direct Question
     reference: ''
