@@ -9,6 +9,7 @@ import pandas as pd
 import pkg_resources
 import yaml
 from jinja2 import BaseLoader, Environment
+from jinja2.exceptions import UndefinedError
 
 
 # Truncation of jinja template variables
@@ -161,7 +162,7 @@ class Template(yaml.YAMLObject):
         try:
             rendered_choices = rtemplate.render()
             return [answer_choice.strip() for answer_choice in rendered_choices.split("|||")]
-        except ValueError:
+        except UndefinedError:
             return None
 
     def apply(self, example, truncate=True, highlight_variables=False):
