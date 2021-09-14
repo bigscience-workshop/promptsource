@@ -197,8 +197,10 @@ for dataset_name, subset_name in all_templates.keys:
         train_size = 0
     else:
         train_size = int(train_size)
-    train_size = min(train_size, MAX_EXAMPLES_PER_DATASET)
-    cap = train_size // num_templates
+    if train_size > MAX_EXAMPLES_PER_DATASET:
+        cap = MAX_EXAMPLES_PER_DATASET // num_templates
+    else:
+        cap = train_size
     for template_name in dataset.all_template_names:
         add_task(dataset_name, subset_name, template_name)
 
