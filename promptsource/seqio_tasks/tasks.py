@@ -46,7 +46,9 @@ def maybe_get_class_id_postprocessor(template):
 
         def postprocess_fn(output_or_target, example=None, is_target=False):
             output_or_target = strip_whitespace(output_or_target)
-            return t5.data.postprocessors.string_label_to_class_id(output_or_target, label_classes=template.answer_choices)
+            return t5.data.postprocessors.string_label_to_class_id(
+                output_or_target, label_classes=template.answer_choices
+            )
 
         return postprocess_fn
 
