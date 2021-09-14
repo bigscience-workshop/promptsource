@@ -42,12 +42,12 @@ def strip_whitespace(output_or_target, example=None, is_target=False):
 
 
 def maybe_get_class_id_postprocessor(template):
-    if template.answer_choices:
+    if template.get_fixed_answer_choices_list():
 
         def postprocess_fn(output_or_target, example=None, is_target=False):
             output_or_target = strip_whitespace(output_or_target)
             return t5.data.postprocessors.string_label_to_class_id(
-                output_or_target, label_classes=template.answer_choices
+                output_or_target, label_classes=template.get_fixed_answer_choices_list()
             )
 
         return postprocess_fn
@@ -121,7 +121,8 @@ def add_task(dataset_name, subset_name, template_name, task_name=None, split_map
             weight_fn=lambda ex: 1.0,
         )
 
-        num_classes = len(template.answer_choices) if template.answer_choices else None
+        fixed_choices = template.get_fixed_answer_choices_list()
+        num_classes = len(fixed_choices) if fixed_choices else None
         seqio.TaskRegistry.add(
             task_name + "_score_eval",
             data_source,
