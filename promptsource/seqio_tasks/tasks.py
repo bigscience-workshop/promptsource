@@ -281,21 +281,9 @@ seqio.MixtureRegistry.add(
     default_rate=functools.partial(seqio.mixing_rate_num_examples, maximum=500_000),
 )  # eval mixture does not need to be capped
 
-# TODO mixtures below need to be updated after new rank eval implementation
-seqio.MixtureRegistry.add(
-    "anli_eval_tasks",
-    [task for task in d4_eval_mixture if task.startswith("anli")],
-    default_rate=functools.partial(seqio.mixing_rate_num_examples, maximum=500_000),
-)
 
 seqio.MixtureRegistry.add(
-    "score_eval_tasks",
-    [task for task in seqio.TaskRegistry.names() if task.endswith("_score_eval")],
-    default_rate=functools.partial(seqio.mixing_rate_num_examples, maximum=500_000),
-)
-
-seqio.MixtureRegistry.add(
-    "clean_score_eval_tasks",
+    "d4_score_eval",
     [
         task
         for task in seqio.TaskRegistry.names()
