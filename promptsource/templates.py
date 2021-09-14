@@ -136,6 +136,7 @@ class Template(yaml.YAMLObject):
 
         :return: list of strings, or None if get_answer_choices_expr is None
         """
+        # TODO: remove when merging answer_choices and answer_choices_key
         if self.get_answer_choices_expr() is None:
             return self.get_answer_choices()
 
@@ -144,6 +145,24 @@ class Template(yaml.YAMLObject):
         protected_example = self._escape_pipe(example)
         rendered_choices = rtemplate.render(**protected_example)
         return [self._unescape_pipe(answer_choice.strip()) for answer_choice in rendered_choices.split("|||")]
+
+    def get_fixed_answer_choices_list(self):
+        """
+        Returns a list of answer choices that is static across examples, if possible
+
+        :return: list of strings, or None if no static list exists
+        """
+        # TODO: remove when merging answer_choices and answer_choices_key
+        if self.get_answer_choices_expr() is None:
+            return self.get_answer_choices()
+
+        jinja = self.answer_choices_key
+        rtemplate = env.from_string(jinja)
+        try:
+            rendered_choices = rtemplate.render()
+            return [answer_choice.strip() for answer_choice in rendered_choices.split("|||")]
+        except ValueError:
+            return None
 
     def apply(self, example, truncate=True, highlight_variables=False):
         """
