@@ -2,27 +2,27 @@ dataset: hellaswag
 templates:
   00caa8cb-7f67-43bc-9e90-fc1d5d329432: !Template
     answer_choices: null
-    answer_choices_key: endings
+    answer_choices_key: '{{endings | join(" ||| ")}}'
     id: 00caa8cb-7f67-43bc-9e90-fc1d5d329432
     jinja: 'Complete the description with an appropriate ending:
 
       First, {{ ctx_a.lower() }} Then, {{ ctx_b.lower() }} ...
 
 
-      (a) {{ endings[0] }}
+      (a) {{ answer_choices[0] }}
 
 
-      (b) {{ endings[1] }}
+      (b) {{ answer_choices[1] }}
 
 
-      (c) {{ endings[2] }}
+      (c) {{ answer_choices[2] }}
 
 
-      (d) {{ endings[3] }}
+      (d) {{ answer_choices[3] }}
 
       |||
 
-      {{ endings[label | int()] }}'
+      {{ answer_choices[label | int()] }}'
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: true
@@ -47,13 +47,13 @@ templates:
     reference: Generate the topic sentence with only the starting sentence
   1fd44f45-d0e6-41ad-a01f-737f4c53645b: !Template
     answer_choices: null
-    answer_choices_key: endings
+    answer_choices_key: '{{endings | join(" ||| ")}}'
     id: 1fd44f45-d0e6-41ad-a01f-737f4c53645b
     jinja: 'Complete the sentence: {{ctx}}
 
       |||
 
-      {{endings[label | int()]}}'
+      {{answer_choices[label | int()]}}'
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
@@ -78,7 +78,7 @@ templates:
     reference: List the activity label as the topic from the sentence
   52fbd075-46cb-49fb-a41b-00a0f4a60285: !Template
     answer_choices: null
-    answer_choices_key: endings
+    answer_choices_key: '{{endings | join(" ||| ") }}'
     id: 52fbd075-46cb-49fb-a41b-00a0f4a60285
     jinja: '{% set prompts = [
 
@@ -98,20 +98,20 @@ templates:
       {{ctx}}
 
 
-      (a)  {{endings[0]}}
+      (a)  {{answer_choices[0]}}
 
 
-      (b)  {{endings[1]}}
+      (b)  {{answer_choices[1]}}
 
 
-      (c)  {{endings[2]}}
+      (c)  {{answer_choices[2]}}
 
 
-      (d)  {{endings[3]}}
+      (d)  {{answer_choices[3]}}
 
       |||
 
-      {{endings [label | int()]}}'
+      {{answer_choices [label | int()]}}'
     metadata: !TemplateMetadata
       choices_in_prompt: true
       metrics:
@@ -140,30 +140,30 @@ templates:
     reference: 'The template checks if the two contexts are valid continuations. '
   6e9f8d7d-9016-45bc-b997-c42aeb2dc944: !Template
     answer_choices: null
-    answer_choices_key: endings
+    answer_choices_key: '{{endings | join("|||")}}'
     id: 6e9f8d7d-9016-45bc-b997-c42aeb2dc944
     jinja: 'How does this sentence end?
 
       {{ctx}}
 
 
-      (a)  {{endings[0]}}
+      (a)  {{answer_choices[0]}}
 
 
-      (b)  {{endings[1]}}
+      (b)  {{answer_choices[1]}}
 
 
-      (c)  {{endings[2]}}
+      (c)  {{answer_choices[2]}}
 
 
-      (d)  {{endings[3]}}
+      (d)  {{answer_choices[3]}}
 
 
       Hint: the topic of the sentence is {{activity_label}}
 
       |||
 
-      {{endings [label | int()]}}'
+      {{answer_choices [label | int()]}}'
     metadata: !TemplateMetadata
       choices_in_prompt: true
       metrics:

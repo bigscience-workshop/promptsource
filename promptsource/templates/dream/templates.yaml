@@ -18,14 +18,16 @@ templates:
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: true
-      choices_in_prompt: null
-      metrics: []
-      original_task: null
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      - ROUGE
+      original_task: false
     name: generate-last-utterance
     reference: ''
   5c53fe97-b8b9-4c91-bd75-b3f8e056bd01: !Template
     answer_choices: null
-    answer_choices_key: choice
+    answer_choices_key: null
     id: 5c53fe97-b8b9-4c91-bd75-b3f8e056bd01
     jinja: 'Given the question "{{question}}" and the answer "{{answer}}", write a
       conversation that might have happened.
@@ -37,7 +39,9 @@ templates:
       _do_eval: false
       _do_train: true
       choices_in_prompt: false
-      metrics: []
+      metrics:
+      - BLEU
+      - ROUGE
       original_task: false
     name: answer-to-dialogue
     reference: ''
@@ -56,37 +60,42 @@ templates:
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: true
-      choices_in_prompt: null
-      metrics: []
-      original_task: null
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      - ROUGE
+      original_task: false
     name: generate-first-utterance
     reference: ''
   8f962580-1611-4982-b567-05939c5012ff: !Template
     answer_choices: null
-    answer_choices_key: choice
+    answer_choices_key: '{{choice | join("|||")}}'
     id: 8f962580-1611-4982-b567-05939c5012ff
     jinja: "Dialogue:\n\n{{dialogue | join(\"\\n\\n\")}}\n\nQuestion: {{question}}\
-      \ \n\nA. {{choice[0]}}\n\nB. {{choice[1]}}\n\nC. {{choice[2]}}\n|||\n{{answer}}"
+      \ \n\n- {{answer_choices[0]}}\n\n- {{answer_choices[1]}}\n\n- {{answer_choices[2]}}\n\
+      |||\n{{answer}}"
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: true
       choices_in_prompt: true
-      metrics: []
+      metrics:
+      - Accuracy
       original_task: true
     name: baseline
     reference: https://dataset.org/dream/
   d4687975-664d-46ac-b13b-482a35a61ab3: !Template
     answer_choices: null
-    answer_choices_key: choice
+    answer_choices_key: '{{choice | join("|||")}}'
     id: d4687975-664d-46ac-b13b-482a35a61ab3
     jinja: "Read the following conversation and answer the question.\n\n{{dialogue\
-      \ | join(\"\\n\\n\")}}\n\nQuestion: {{question}} \n\n1. {{choice[0]}}\n\n2.\
-      \ {{choice[1]}}\n\n3. {{choice[2]}}\n|||\n{{answer}}"
+      \ | join(\"\\n\\n\")}}\n\nQuestion: {{question}} \n\n- {{answer_choices[0]}}\n\
+      \n- {{answer_choices[1]}}\n\n- {{answer_choices[2]}}\n|||\n{{answer}}"
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: true
       choices_in_prompt: true
-      metrics: []
+      metrics:
+      - Accuracy
       original_task: true
     name: read_the_following_conversation_and_answer_the_question
     reference: ''
