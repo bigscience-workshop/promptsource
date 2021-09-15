@@ -2,74 +2,91 @@ dataset: super_glue
 subset: wsc.fixed
 templates:
   212fb8b1-8436-4f64-8f37-a9094fe029f4: !Template
-    answer_choices: null
+    answer_choices:
+    - 'no'
+    - 'yes'
     answer_choices_key: null
     id: 212fb8b1-8436-4f64-8f37-a9094fe029f4
-    jinja: '{{ text }} In the previous sentence, the pronoun "{{ span2_text.lower()
-      }}" refers to ||| {{ span1_text }}'
+    jinja: '{{ text }} In the previous sentence, does the pronoun "{{ span2_text.lower()
+      }}" refer to {{ span1_text }}? ||| {{ answer_choices[label] }}'
     metadata: !TemplateMetadata
       _do_eval: true
       _do_train: true
-      choices_in_prompt: null
-      metrics: []
+      choices_in_prompt: false
+      metrics:
+      - Accuracy
       original_task: true
-    name: "In the previous sentence, the pronoun refers to\u2026"
+    name: In the previous sentence, does the pronoun refer to
     reference: "Adapted from Perez et al. 2021 and Schick & Sch\xFCtz 2021."
   7482d24f-cf45-4013-b82d-369489fc958b: !Template
-    answer_choices: null
+    answer_choices:
+    - 'no'
+    - 'yes'
     answer_choices_key: null
     id: 7482d24f-cf45-4013-b82d-369489fc958b
-    jinja: '{{ text }} Here, "{{ span2_text.lower() }}" stands for ||| {{ span1_text
-      }}'
+    jinja: '{{ text }} Here, does "{{ span2_text.lower() }}" stand for {{ span1_text
+      }}? ||| {{ answer_choices[label] }}'
     metadata: !TemplateMetadata
       _do_eval: true
       _do_train: true
-      choices_in_prompt: null
-      metrics: []
+      choices_in_prompt: false
+      metrics:
+      - Accuracy
       original_task: true
-    name: "Here, p stands for\u2026"
+    name: Here p stands for
     reference: Not ideal because sometimes the queried pronoun is in the possessive
       case.
   7d377293-d043-4b6c-8ec1-d61eaf14ec67: !Template
-    answer_choices: null
+    answer_choices:
+    - 'no'
+    - 'yes'
     answer_choices_key: null
     id: 7d377293-d043-4b6c-8ec1-d61eaf14ec67
-    jinja: "Passage: {{ text }} \nQuestion: In the passage above, what does the pronoun\
-      \ \"{{ span2_text }}\" refer to? \nAnswer: ||| {{ span1_text }}"
+    jinja: "Passage: {{ text }} \nQuestion: In the passage above, does the pronoun\
+      \ \"{{ span2_text }}\" refer to {{ span1_text }}?\nAnswer: ||| {{ answer_choices[label]\
+      \ }}"
     metadata: !TemplateMetadata
       _do_eval: true
       _do_train: true
-      choices_in_prompt: null
-      metrics: []
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
       original_task: true
-    name: "passage\u2026 what does the pronoun refer to?"
+    name: "passage\u2026 does the pronoun refer to"
     reference: Adapted from Figure G33, p. 59, Brown et al. 2020
   aae24b54-c3a7-4f69-8b77-f6dc115988f8: !Template
-    answer_choices: null
+    answer_choices:
+    - 'false'
+    - 'true'
     answer_choices_key: null
     id: aae24b54-c3a7-4f69-8b77-f6dc115988f8
     jinja: "{{ text }} \nIn the passage above, the pronoun \"{{ span2_text }}\" refers\
-      \ to ||| {{ span1_text }}"
+      \ to {{ span1_text }}. True or false? ||| {{ answer_choices[label] }}"
     metadata: !TemplateMetadata
       _do_eval: true
       _do_train: true
-      choices_in_prompt: null
-      metrics: []
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
       original_task: true
-    name: "in the passage above, the pronoun X refers to\u2026"
+    name: in the passage above, the pronoun refers to
     reference: "Adapted from Perez et al. 2021 and Schick & Sch\xFCtz 2021."
   d88f3e21-42dc-49a5-924d-69b764a14816: !Template
-    answer_choices: null
+    answer_choices:
+    - 'no'
+    - 'yes'
     answer_choices_key: null
     id: d88f3e21-42dc-49a5-924d-69b764a14816
     jinja: "{{ text }} \n{% if span2_text  == \"they\" or span2_text == \"them\" %}\n\
-      Question: Who are \"{{ span2_text.lower() }}\"?\n{% else %}\nQuestion: Who is\
-      \ \"{{ span2_text.lower() }}\"?\n{% endif %}\nAnswer: ||| {{ span1_text }}"
+      Question: Who are \"{{ span2_text.lower() }}\"? {{ span1_text }}?\n{% else %}\n\
+      Question: Who is \"{{ span2_text.lower() }}\"? Is it {{ span1_text }}?\n{% endif\
+      \ %}\nAnswer: ||| {{ answer_choices[label] }}"
     metadata: !TemplateMetadata
       _do_eval: true
       _do_train: true
-      choices_in_prompt: null
-      metrics: []
+      choices_in_prompt: false
+      metrics:
+      - Accuracy
       original_task: true
-    name: "Who is/are\u2026?"
+    name: Who is/are
     reference: I double checked the only plural pronouns in WSC are "they" and "them".
