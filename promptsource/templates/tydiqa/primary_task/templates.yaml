@@ -30,6 +30,21 @@ templates:
       original_task: true
     name: heres_what_I_found
     reference: ''
+  297fc59f-bd92-493b-ae61-3c3adcb46eb3: !Template
+    answer_choices: null
+    answer_choices_key: Yes ||| No ||| None
+    id: 297fc59f-bd92-493b-ae61-3c3adcb46eb3
+    jinja: "{% if language == \"english\" %} \nQuestion: {{question_text}}\nAnswer\
+      \ the question with {{\"Yes\"}} or {{\"No\"}}. If it is not possible then answer\
+      \ {{\"None\"}}.\nHint: {{document_plaintext}}\n|||\n{{annotations.yes_no_answer[0]\
+      \ | capitalize}}\n{% endif %}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - Accuracy
+      original_task: true
+    name: yes_no_none
+    reference: ''
   4b21e3be-fba4-49b7-beb1-a61de26eb0ac: !Template
     answer_choices: null
     answer_choices_key: Yes ||| No
@@ -141,23 +156,6 @@ templates:
       original_task: false
     name: open_domain_qa
     reference: Ask Yes/No question
-  b8af581b-d993-4e53-8d80-96f515eb6ee0: !Template
-    answer_choices: null
-    answer_choices_key: Yes ||| No ||| None
-    id: b8af581b-d993-4e53-8d80-96f515eb6ee0
-    jinja: "{% if language == \"english\" %} \nQuestion: {{question_text}}\nAnswer\
-      \ the question with {{"Yes"}} or {{"No"}}. If it is not possible then answer {{"None"}}. \nHint:\
-      \ {{document_plaintext}}\n||| \n{{annotations.yes_no_answer[0] | capitalize}}\n\
-      {% endif %}"
-    metadata: !TemplateMetadata
-      _do_eval: false
-      _do_train: false
-      choices_in_prompt: false
-      metrics:
-      - Accuracy
-      original_task: true
-    name: yes_no_none
-    reference: Answer Yes/No/None Question.
   e593017f-9bcf-4442-944d-fcdf2edcb4f7: !Template
     answer_choices: null
     answer_choices_key: Yes ||| No
