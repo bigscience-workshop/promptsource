@@ -1,96 +1,68 @@
 dataset: web_questions
 templates:
-  9b42df9f-8cca-4139-b61e-b1a4d2127e9d: !Template
+  427785bc-a8f3-4c86-bd43-e54447a58615: !Template
     answer_choices: null
     answer_choices_key: null
-    id: 9b42df9f-8cca-4139-b61e-b1a4d2127e9d
-    jinja: 'If {% if answers|length > 1 %}"{{ answers[0:-1]|join(''", "'') }}" and
-      "{{ answers[-1] }}" are answers{% else %}"{{answers[0]}}" is an answer{% endif
-      %}, what is the question? ||| {{ question|capitalize }}
-
-      '
+    id: 427785bc-a8f3-4c86-bd43-e54447a58615
+    jinja: 'Give me the correct facts to answer this: {{question}} ||| {{answers |
+      choice}}'
     metadata: !TemplateMetadata
-      _do_eval: false
-      _do_train: true
-      choices_in_prompt: null
-      metrics: []
-      original_task: null
-    name: if-answers-what-question
+      choices_in_prompt: false
+      metrics:
+      - Squad
+      original_task: true
+    name: get_the_answer
     reference: ''
   9f4cd4a4-79e5-40b2-bb0d-f9a86396511a: !Template
     answer_choices: null
     answer_choices_key: null
     id: 9f4cd4a4-79e5-40b2-bb0d-f9a86396511a
-    jinja: '{% set rand_val = range(0,answers|length)|choice %}
-
-      Give me a possible correct answer to the question "{{ question }}" ||| {{ answers[rand_val]
-      }}'
+    jinja: Give me a possible correct answer to the question "{{ question }}" |||
+      {{ answers | choice }}
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: true
-      choices_in_prompt: null
-      metrics: []
-      original_task: false
+      choices_in_prompt: false
+      metrics:
+      - Squad
+      original_task: true
     name: potential-correct-answer
     reference: ''
-  ac5c940c-78eb-4f54-9426-e9e3a0304972: !Template
+  bfed45a7-b36c-440b-8c94-f117cc6c9f34: !Template
     answer_choices: null
     answer_choices_key: null
-    id: ac5c940c-78eb-4f54-9426-e9e3a0304972
-    jinja: What would be a credible question corresponding to the {% if answers|length
-      == 1 %}answer "{{ answers[0] }}"{% else %}answers "{{ answers[0:-1]|join('",
-      "') }}" and "{{ answers[-1] }}"{% endif %}? ||| {{ question|capitalize }}
+    id: bfed45a7-b36c-440b-8c94-f117cc6c9f34
+    jinja: 'What''s the answer to that question: {{question}} ||| {{answers | choice}}'
     metadata: !TemplateMetadata
-      _do_eval: false
-      _do_train: true
-      choices_in_prompt: null
-      metrics: []
-      original_task: null
-    name: credible-question
+      choices_in_prompt: false
+      metrics:
+      - Squad
+      original_task: true
+    name: whats_the_answer
     reference: ''
-  d4b38133-23b6-402f-90dc-8b0acf7963ca: !Template
+  df08956c-035b-4216-af1c-61250617faa4: !Template
     answer_choices: null
     answer_choices_key: null
-    id: d4b38133-23b6-402f-90dc-8b0acf7963ca
-    jinja: 'So I''ve got {% if answers|length > 1 %}{{ answers|length}} possible answers:
-      "{{ answers[0:-1]|join(''", "'') }}" and "{{ answers[-1] }}"{% else %} 1 possible
-      answer: "{{answers[0]}}"{% endif %}. Can you suggest a question? ||| {{ question|capitalize
-      }}'
+    id: df08956c-035b-4216-af1c-61250617faa4
+    jinja: 'Short general knowledge question: {{question}} ||| {{answers | choice}}'
     metadata: !TemplateMetadata
-      _do_eval: false
-      _do_train: true
-      choices_in_prompt: null
-      metrics: []
-      original_task: false
-    name: suggest-question
-    reference: ''
-  d5523864-cc61-4d1b-ac67-80605dc59640: !Template
-    answer_choices: null
-    answer_choices_key: null
-    id: d5523864-cc61-4d1b-ac67-80605dc59640
-    jinja: 'I was asked "{{ question }}" I think it might be: {% if answers|length
-      > 1 %}"{{ answers[0:-1]|join(''", "'') }}" and "{{ answers[-1] }}"{% else %}"{{answers[0]}}"{%
-      endif %}. How many answers did I just give? ||| {{ answers|length }}
-
-      '
-    metadata: !TemplateMetadata
-      _do_eval: false
-      _do_train: true
-      choices_in_prompt: null
-      metrics: []
-      original_task: false
-    name: count-answers
+      choices_in_prompt: false
+      metrics:
+      - Squad
+      original_task: true
+    name: short_general_knowledge_q
     reference: ''
   e5c72a6b-8ab4-4219-9f41-debf7224884c: !Template
     answer_choices: null
     answer_choices_key: null
     id: e5c72a6b-8ab4-4219-9f41-debf7224884c
-    jinja: '{{ question|capitalize }} ||| {{ answers|choice }}'
+    jinja: '{{ question|capitalize }} ||| {{ answers | choice }}'
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: true
-      choices_in_prompt: null
-      metrics: []
-      original_task: false
+      choices_in_prompt: false
+      metrics:
+      - Squad
+      original_task: true
     name: question-answer
     reference: ''
