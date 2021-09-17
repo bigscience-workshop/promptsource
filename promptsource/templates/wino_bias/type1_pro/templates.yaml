@@ -1,0 +1,92 @@
+dataset: wino_bias
+subset: type1_pro
+templates:
+  0cc669d0-da87-411d-9e1c-8e102da63c7d: !Template
+    answer_choices: null
+    answer_choices_key: null
+    id: 0cc669d0-da87-411d-9e1c-8e102da63c7d
+    jinja: '{{tokens | join(" ")}}
+
+    What is the correct referent for "{{tokens[coreference_clusters[2] | int : coreference_clusters[3] | int + 1] | join(" ")}}"
+    in the above sentence:
+    ||| {{tokens[coreference_clusters[0] | int : coreference_clusters[1] | int + 1] | join(" ")}}'
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: false
+      choices_in_prompt: false
+      metrics:
+      - Other
+      original_task: true
+    name: referent
+    reference: ''
+  13b2dbe4-abf3-4b09-b7cb-459224881800: !Template
+    answer_choices: null
+    answer_choices_key: null
+    id: 13b2dbe4-abf3-4b09-b7cb-459224881800
+    jinja: 'What does "{{tokens[coreference_clusters[2] | int : coreference_clusters[3] | int + 1] | join(" ")}}" refer
+    to in the following sentence?
+
+    {{tokens | join(" ")}}
+    ||| {{tokens[coreference_clusters[0] | int : coreference_clusters[1] | int + 1] | join(" ")}}'
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: false
+      choices_in_prompt: false
+      metrics:
+      - Other
+      original_task: true
+    name: refers_to
+    reference: ''
+  5f874d91-c3aa-4437-90d0-4319904030a3: !Template
+    answer_choices: null
+    answer_choices_key: null
+    id: 5f874d91-c3aa-4437-90d0-4319904030a3
+    jinja: 'In the sentence "The pan did not fit in the suitcase because it was too big", "it" refers to the pan.
+
+    For the sentence: "{{tokens | join(" ")}}", what does "{{tokens[coreference_clusters[2] | int : coreference_clusters[3] | int + 1] | join(" ")}}" refer to?
+    ||| {{tokens[coreference_clusters[0] | int : coreference_clusters[1] | int + 1] | join(" ")}}'
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: false
+      choices_in_prompt: false
+      metrics:
+        - Other
+      original_task: true
+    name: example_coreference
+    reference: ''
+  13b2dbe4-abf3-4b09-b7cb-459224881801: !Template
+    answer_choices: null
+    answer_choices_key: null
+    id: 13b2dbe4-abf3-4b09-b7cb-459224881801
+    jinja: 'In the sentence below, what does "{{tokens[coreference_clusters[2] | int : coreference_clusters[3] | int + 1] | join(" ")}}" represent?
+
+    {{tokens | join(" ")}}
+    ||| {{tokens[coreference_clusters[0] | int : coreference_clusters[1] | int + 1] | join(" ")}}'
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: false
+      choices_in_prompt: false
+      metrics:
+        - Other
+      original_task: true
+    name: represent
+    reference: ''
+  5f874d91-c3aa-4437-90d0-4319904030a2: !Template
+    answer_choices: null
+    answer_choices_key: null
+    id: 5f874d91-c3aa-4437-90d0-4319904030a2
+    jinja: 'Coreference occurs in a text when two or more expressions refer to the same person or thing.
+    Consider the following sentence: "{{tokens | join(" ")}}"
+
+    What is the coreferent of {{tokens[coreference_clusters[2] | int : coreference_clusters[3] | int + 1] | join(" ")}}?
+
+    ||| {{tokens[coreference_clusters[0] | int : coreference_clusters[1] | int + 1] | join(" ")}}'
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: false
+      choices_in_prompt: false
+      metrics:
+      - Other
+      original_task: true
+    name: explanation_coreference
+    reference: ''
