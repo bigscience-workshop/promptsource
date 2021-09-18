@@ -33,15 +33,8 @@ def get_dataset_builder(path, conf=None):
     "Get a dataset builder from name and conf."
     module_path = datasets.load.prepare_module(path, dataset=True)
     builder_cls = datasets.load.import_main_class(module_path[0], dataset=True)
-
-    # we have to specify the data_dir field for manually downoaded datasets
-    if "story_cloze" in path:
-        data_dir = "../../story_cloze_files"
-    else:
-        data_dir = None
-
     if conf:
-        builder_instance = builder_cls(name=conf, cache_dir=None, hash=module_path[1], data_dir=data_dir)
+        builder_instance = builder_cls(name=conf, cache_dir=None, hash=module_path[1])
     else:
         builder_instance = builder_cls(cache_dir=None, hash=module_path[1])
     return builder_instance
@@ -51,11 +44,7 @@ def get_dataset(path, conf=None):
     "Get a dataset from name and conf."
     builder_instance = get_dataset_builder(path, conf)
     fail = False
-
-    # don't ignore story_cloze
-    if (
-        builder_instance.manual_download_instructions is None and builder_instance.info.size_in_bytes is not None
-    ) or "story_cloze" in path:
+    if builder_instance.manual_download_instructions is None and builder_instance.info.size_in_bytes is not None:
         builder_instance.download_and_prepare()
         dts = builder_instance.as_dataset()
         dataset = dts
@@ -128,7 +117,6 @@ def filter_english_datasets():
 def list_datasets(template_collection, _priority_filter, _priority_max_templates, _state):
     """Get all the datasets to work with."""
     dataset_list = filter_english_datasets()
-    dataset_list += [f"custom_datasets/{dataset_name}" for dataset_name in CUSTOM_DATASETS]
     count_dict = template_collection.get_templates_count()
     if _priority_filter:
         dataset_list = list(
@@ -147,7 +135,6 @@ def list_datasets(template_collection, _priority_filter, _priority_max_templates
     return dataset_list
 
 
-CUSTOM_DATASETS = ["story_cloze"]
 DATASET_ORDER = dict(
     [
         ("glue", 0),
