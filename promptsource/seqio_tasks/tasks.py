@@ -260,19 +260,19 @@ TASK_BLACKLIST = [
 seqio.MixtureRegistry.add(
     "d4_train",
     [task for task in d4_train_mixture if task not in TASK_BLACKLIST],
-    default_rate=lambda t: mixture_cap[t],
+    default_rate=lambda t: mixture_cap[t.name],
 )
 
 seqio.MixtureRegistry.add(
     "gpt_train",
     [task for task in gpt_train_mixture if task not in TASK_BLACKLIST],
-    default_rate=lambda t: mixture_cap[t],
+    default_rate=lambda t: mixture_cap[t.name],
 )
 
 seqio.MixtureRegistry.add(
     "sglue_train",
     [task for task in sglue_train_mixture if task not in TASK_BLACKLIST],
-    default_rate=lambda t: mixture_cap[t],
+    default_rate=lambda t: mixture_cap[t.name],
 )
 
 seqio.MixtureRegistry.add(
