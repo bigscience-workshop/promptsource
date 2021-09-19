@@ -174,6 +174,7 @@ gpt_train_mixture: List[str] = []
 sglue_train_mixture: List[str] = []
 d4_eval_mixture: List[str] = []
 mixture_cap: Dict[str, int] = {}
+single_original_task: Dict[Tuple[str, str], int] = {}
 for dataset_name, subset_name in all_templates.keys:
     if (dataset_name, subset_name) not in all_datasets:
         all_templates.remove(dataset_name, subset_name)
@@ -193,7 +194,13 @@ for dataset_name, subset_name in all_templates.keys:
     for template_name in dataset.all_template_names:
         add_task(dataset_name, subset_name, template_name)
 
+        template = dataset[template_name]
+
         task_name = utils.get_task_name(dataset_name, subset_name, template_name)
+
+        if (dataset_name, subset_name) not in single_original_task and template.metadata.original_task:
+            single_original_task[(dataset_name, subset_name)] = task_name
+
         if (dataset_name, subset_name) in d4_train:
             d4_train_mixture.append(task_name)
             mixture_cap[task_name] = cap
@@ -204,7 +211,6 @@ for dataset_name, subset_name in all_templates.keys:
             sglue_train_mixture.append(task_name)
             mixture_cap[task_name] = cap
         if (dataset_name, subset_name) in d4_eval:
-            template = dataset[template_name]
             if template.metadata.original_task:
                 d4_eval_mixture.append(task_name)
             # TODO use template.metadata.answer_choices or answer_choice_keys here for rank eval
@@ -292,4 +298,10 @@ seqio.MixtureRegistry.add(
         and task.split("_score_eval")[0] not in TASK_BLACKLIST
     ],
     default_rate=functools.partial(seqio.mixing_rate_num_examples, maximum=500_000),
+)
+
+seqio.MixtureRegistry.add(
+    "d4_train_one_og_prompt",
+    [task for task in single_original_task.values() if task in d4_train_mixture and task not in TASK_BLACKLIST],
+    default_rate=lambda t: mixture_cap[t.name],
 )
