@@ -6,8 +6,8 @@ templates:
     answer_choices_key: '{{ entities | join("|||") }}'
     id: 014b669e-2e3b-40ce-bdde-418966c7d666
     jinja: "{% if ( answers | length ) > 0 %} \n{{ passage }} \n{{ query }} \nWhich\
-      \ one is the \"{{\"@placeholder\"}}\"? {{ entities | join(\", \") }}? ||| {{ answers\
-      \ | choice }}\n{% endif %}"
+      \ one is the \"{{\"@placeholder\"}}\"? {{ entities | join(\", \") }}? ||| {{\
+      \ answers | choice }}\n{% endif %}"
     metadata: !TemplateMetadata
       _do_eval: true
       _do_train: true
@@ -22,10 +22,10 @@ templates:
     answer_choices_key: '{{ entities | join("|||") }}'
     id: 11e27d59-b1f5-43a1-9ccc-17f1c3249173
     jinja: "{% if ( answers | length ) > 0 %} \nThe following document has been corrupted.\
-      \ Tell me what \"{{\"@placeholder\"}}\" is referring to.\n\nDocument: {{ passage }}\
-      \ \n{{ query }} \n|||\n{{ answers | choice }}\n{% endif %}"
+      \ Tell me what \"{{\"@placeholder\"}}\" is referring to.\n\nDocument: {{ passage\
+      \ }} \n{{ query }} \n|||\n{{ answers | choice }}\n{% endif %}"
     metadata: !TemplateMetadata
-      choices_in_prompt: true
+      choices_in_prompt: false
       metrics:
       - Squad
       original_task: true
@@ -36,8 +36,9 @@ templates:
     answer_choices_key: '{{ entities | join("|||") }}'
     id: 441c70e3-095a-44a1-8163-bc3b666b7ea1
     jinja: "{% if ( answers | length ) > 0 %} \n{{ passage }} \n{{ query }} \n\nYou\
-      \ should decide what \"{{\"@placeholder\"}}\" is referring to. Choose between:\n- {{answer_choices\
-      \ | join(\"\\n- \")}}\n|||\n{{ answers | choice }}\n{% endif %}"
+      \ should decide what \"{{\"@placeholder\"}}\" is referring to. Choose between:\n\
+      - {{answer_choices | join(\"\\n- \")}}\n|||\n{{ answers | choice }}\n{% endif\
+      \ %}"
     metadata: !TemplateMetadata
       choices_in_prompt: true
       metrics:
@@ -50,8 +51,8 @@ templates:
     answer_choices_key: '{{ entities | join("|||") }}'
     id: 91555c1c-c1e4-469b-a2a4-fc952ce1a145
     jinja: "{% if ( answers | length ) > 0 %} \n{{ passage }} \n{{ query }} \nIn the\
-      \ question above, the \"{{\"@placeholder\"}}\" stands for ||| {{ answers | choice }}\n\
-      {% endif %}"
+      \ question above, the \"{{\"@placeholder\"}}\" stands for ||| {{ answers | choice\
+      \ }}\n{% endif %}"
     metadata: !TemplateMetadata
       _do_eval: true
       _do_train: true
@@ -66,8 +67,8 @@ templates:
     answer_choices_key: '{{ entities | join("|||") }}'
     id: 99dd38ce-32f3-4d58-93c5-59821002b9cc
     jinja: "{% if ( answers | length ) > 0 %} \n{{ passage }} \n{{ query }} \nWhat\
-      \ could the \"{{\"@placeholder\"}}\" be? {{ entities | join(\", \") }}? ||| {{ answers\
-      \ | choice }}\n{% endif %}"
+      \ could the \"{{\"@placeholder\"}}\" be? {{ entities | join(\", \") }}? |||\
+      \ {{ answers | choice }}\n{% endif %}"
     metadata: !TemplateMetadata
       _do_eval: true
       _do_train: true
