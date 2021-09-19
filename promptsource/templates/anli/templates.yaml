@@ -1,27 +1,38 @@
 dataset: anli
 templates:
-  391acb43-732a-4c09-8c10-e02d226d8854: !Template
+  0cc3ae39-3997-4686-8c93-5d51457efa1f: !Template
     answer_choices:
-    - 'No'
-    - Neutral
-    - 'Yes'
+    - correct
+    - inconclusive
+    - incorrect
     answer_choices_key: null
-    id: 391acb43-732a-4c09-8c10-e02d226d8854
-    jinja: 'Sentence 1: {{premise}}
-
-      Sentence 2: {{hypothesis}}
-
-      Question: Does Sentence 1 contradict Sentence 2? Yes, No, or Neutral? |||
-
-      {{answer_choices[label]}}'
+    id: 0cc3ae39-3997-4686-8c93-5d51457efa1f
+    jinja: '{{premise}} Using only the above description and what you know about the
+      world, "{{hypothesis}}" is definitely correct, incorrect, or inconclusive? |||
+      {{ answer_choices[label] }}'
     metadata: !TemplateMetadata
-      _do_eval: true
-      _do_train: false
-      choices_in_prompt: null
-      metrics: []
-      original_task: false
-    name: does S1 contradict S2?
-    reference: Copied from Victor's prompts for XNLI.
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
+      original_task: true
+    name: MNLI crowdsource
+    reference: Adapted from Williams et al. 2018's instructions to crowdsourcing workers.
+  179eb863-3ece-4e6f-af0f-fcb46d997306: !Template
+    answer_choices:
+    - 'yes'
+    - maybe
+    - 'no'
+    answer_choices_key: null
+    id: 179eb863-3ece-4e6f-af0f-fcb46d997306
+    jinja: 'Given {{premise}} Should we assume that "{{hypothesis}}" is true? Yes,
+      no, or maybe? ||| {{ ["yes", "maybe", "no"][label] }} '
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
+      original_task: true
+    name: should assume
+    reference: Webson & Pavlick 2021
   5459237b-97de-4340-bf7b-2939c3f7ca19: !Template
     answer_choices:
     - 'Yes'
@@ -35,13 +46,11 @@ templates:
       _do_eval: true
       _do_train: false
       choices_in_prompt: true
-      metrics: []
+      metrics:
+      - Accuracy
       original_task: true
-    name: "given\u2026 does it follow that\u2026 "
-    reference: "\"Does it follow that\" could be replaced with \"can we infer that\u2026\
-      \ \", \"is it guaranteed that\u2026\", etc. Ideally there should be a question\
-      \ mark after \"does it follow that {hypothesis}?\", but the hypothesis string\
-      \ often comes with ending punctuations of its own."
+    name: does it follow that
+    reference: v0.1
   620aa3fc-d5eb-46f5-a1ee-4c754527aa97: !Template
     answer_choices:
     - 'True'
@@ -69,55 +78,178 @@ templates:
     - 'No'
     answer_choices_key: null
     id: 9b613182-c6ab-4427-9221-3d68f6d62765
-    jinja: '{{premise}} Based on the previous passage, is it true that {{hypothesis}}
+    jinja: '{{premise}} Based on the previous passage, is it true that "{{hypothesis}}"?
       Yes, no, or maybe? ||| {{ answer_choices[label] }}'
     metadata: !TemplateMetadata
       _do_eval: true
       _do_train: false
       choices_in_prompt: true
-      metrics: []
+      metrics:
+      - Accuracy
       original_task: true
     name: based on the previous passage
     reference: "Adapted from the BoolQ prompts in Schick & Sch\xFCtze 2021."
-  cf55f09b-bc68-439d-a9b2-781263509f99: !Template
+  a850110d-f1a3-49b4-949a-d3bfe9f81344: !Template
+    answer_choices:
+    - 'yes'
+    - maybe
+    - 'no'
+    answer_choices_key: null
+    id: a850110d-f1a3-49b4-949a-d3bfe9f81344
+    jinja: '{{premise}} Are we justified in saying that "{{hypothesis}}"? Yes, no,
+      or maybe? ||| {{ ["yes", "maybe", "no"][label] }} '
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
+      original_task: true
+    name: justified in saying
+    reference: Webson & Pavlick 2021
+  bab86d5a-4f9c-40db-b619-a7b7d5cae681: !Template
+    answer_choices:
+    - 'true'
+    - inconclusive
+    - 'false'
+    answer_choices_key: null
+    id: bab86d5a-4f9c-40db-b619-a7b7d5cae681
+    jinja: 'Take the following as truth: {{premise}}
+
+      Then the following statement: "{{hypothesis}}" is {{"true"}}, {{"inconclusive"}},
+      or  {{"false"}}? ||| {{ answer_choices[label] }}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      metrics: []
+      original_task: true
+    name: take the following as truth
+    reference: Bers et al.
+  bcd90047-3a2b-426b-b065-8a418f1317b8: !Template
+    answer_choices:
+    - 'yes'
+    - maybe
+    - 'no'
+    answer_choices_key: null
+    id: bcd90047-3a2b-426b-b065-8a418f1317b8
+    jinja: 'Given that {{premise}} Therefore, it must be true that "{{hypothesis}}"?
+      Yes, no, or maybe? ||| {{ answer_choices[label] }} '
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
+      original_task: true
+    name: must be true
+    reference: v0.1
+  c4ed37ae-d7d7-4197-a725-ef2152fa3b1f: !Template
+    answer_choices:
+    - 'yes'
+    - maybe
+    - 'no'
+    answer_choices_key: null
+    id: c4ed37ae-d7d7-4197-a725-ef2152fa3b1f
+    jinja: 'Suppose {{premise}} Can we infer that "{{hypothesis}}"? Yes, no, or maybe?
+      ||| {{ ["yes", "maybe", "no"][label] }} '
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
+      original_task: true
+    name: can we infer
+    reference: Webson & Pavlick 2021
+  ca24b93a-6265-462f-b140-e329c03d94fa: !Template
+    answer_choices:
+    - guaranteed
+    - possible
+    - impossible
+    answer_choices_key: null
+    id: ca24b93a-6265-462f-b140-e329c03d94fa
+    jinja: "Assume it is true that {{premise}} \n\nTherefore, \"{{hypothesis}}\" is\
+      \ {{\"guaranteed\"}}, {{\"possible\"}}, or {{\"impossible\"}}? ||| {{ answer_choices[label]\
+      \ }}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
+      original_task: true
+    name: guaranteed/possible/impossible
+    reference: Bers et al.
+  dbc68425-5c42-43ae-9748-70ce8c5a167e: !Template
+    answer_choices:
+    - always
+    - sometimes
+    - never
+    answer_choices_key: null
+    id: dbc68425-5c42-43ae-9748-70ce8c5a167e
+    jinja: Suppose it's true that {{premise}} Then, is "{{hypothesis}}" {{"always"}},
+      {{"sometimes"}}, or {{"never"}} true? ||| {{ answer_choices[label] }}
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
+      original_task: true
+    name: always/sometimes/never
+    reference: Bers et al.
+  e5b7fdd7-fdff-4630-889b-3c7a052e5da0: !Template
+    answer_choices:
+    - 'yes'
+    - maybe
+    - 'no'
+    answer_choices_key: null
+    id: e5b7fdd7-fdff-4630-889b-3c7a052e5da0
+    jinja: "{{premise}} \n\nQuestion: Does this imply that \"{{hypothesis}}\"? Yes,\
+      \ no, or maybe? ||| {{answer_choices[label]}}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
+      original_task: true
+    name: does this imply
+    reference: v0.1
+  e6f32b9c-7e0b-474a-a0d2-e84d20c22aba: !Template
+    answer_choices:
+    - always
+    - sometimes
+    - never
+    answer_choices_key: null
+    id: e6f32b9c-7e0b-474a-a0d2-e84d20c22aba
+    jinja: "{{premise}} \n\nKeeping in mind the above text, consider: {{hypothesis}}\
+      \ Is this {{\"always\"}}, {{\"sometimes\"}}, or {{\"never\"}} correct? ||| {{\
+      \ answer_choices[label] }}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
+      original_task: true
+    name: consider always/sometimes/never
+    reference: Bers et al.
+  ec249357-e672-4e7d-b8b6-d97ed7d090c5: !Template
+    answer_choices:
+    - 'true'
+    - inconclusive
+    - 'false'
+    answer_choices_key: null
+    id: ec249357-e672-4e7d-b8b6-d97ed7d090c5
+    jinja: '{{premise}} Based on that information, is the claim: "{{hypothesis}}"
+      {{"true"}}, {{"inconclusive"}}, or {{"false"}}? ||| {{ answer_choices[label]
+      }}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
+      original_task: true
+    name: claim true/false/inconclusive
+    reference: Bers et al.
+  ffa0a6f0-7186-4ccb-bb35-8b1affb747a0: !Template
     answer_choices:
     - 'Yes'
-    - Neutral
+    - Maybe
     - 'No'
     answer_choices_key: null
-    id: cf55f09b-bc68-439d-a9b2-781263509f99
-    jinja: 'Sentence 1: {{premise}}
-
-      Sentence 2: {{hypothesis}}
-
-      Question: Does Sentence 1 entail Sentence 2? Yes, No, or Neutral? |||
-
-      {{answer_choices[label]}}'
+    id: ffa0a6f0-7186-4ccb-bb35-8b1affb747a0
+    jinja: 'Given {{premise}} Is it guaranteed true that "{{hypothesis}}"? Yes, no,
+      or maybe? ||| {{ answer_choices[label] }} '
     metadata: !TemplateMetadata
-      _do_eval: true
-      _do_train: false
       choices_in_prompt: true
-      metrics: []
+      metrics:
+      - Accuracy
       original_task: true
-    name: does S1 entail S2?
-    reference: Copied from Victor's prompts for XNLI.
-  e0e8b914-c32c-4c85-8b8f-0f61ae79e2b3: !Template
-    answer_choices:
-    - must be true
-    - might be true
-    - must be false
-    answer_choices_key: null
-    id: e0e8b914-c32c-4c85-8b8f-0f61ae79e2b3
-    jinja: Given that {{premise}}, it {{"must be true, might be true, or must be false"}}
-      that {{hypothesis}}? ||| It {{ answer_choices[label] }}.
-    metadata: !TemplateMetadata
-      _do_eval: true
-      _do_train: false
-      choices_in_prompt: true
-      metrics: []
-      original_task: true
-    name: "given\u2026 it must be true that\u2026"
-    reference: 'Maybe a little verbose for a generative model, but anecdotally this
-      is the most natural way of how I say an NLI sentence pair out loud to humans.
-      Caveat: NLI annotations are not meant to be strictly truth-conditional entailment,
-      so "must" is not ideal.'
+    name: guaranteed true
+    reference: Webson & Pavlick 2021
