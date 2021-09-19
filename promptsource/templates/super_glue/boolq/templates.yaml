@@ -23,11 +23,11 @@ templates:
     reference: ''
   492f0f88-4370-46cd-839b-1de37a55aeda: !Template
     answer_choices:
-    - 'False'
-    - 'True'
+    - 'No'
+    - 'Yes'
     answer_choices_key: null
     id: 492f0f88-4370-46cd-839b-1de37a55aeda
-    jinja: "{% if label != -1 %}\n{{ passage }} \nquestion: {{ question }}\nanswer:\
+    jinja: "{% if label != -1 %}\n{{ passage }} \nQuestion: {{ question }}\nAnswer:\
       \ ||| {{ answer_choices[label] }}\n{% endif %}"
     metadata: !TemplateMetadata
       _do_eval: true
@@ -120,8 +120,14 @@ templates:
     - 'Yes'
     answer_choices_key: null
     id: 9a1bf459-8047-437c-9def-f21e960429cc
-    jinja: "{% if label != -1 %}\nBased on the following passage, {{ passage }} \n\
-      {{ question }}? ||| {{ answer_choices[label] }}\n{% endif %}"
+    jinja: '{% if label != -1 %}
+
+      Based on the following passage, {{ question }}? {{ passage }}
+
+
+      ||| {{ answer_choices[label] }}
+
+      {% endif %}'
     metadata: !TemplateMetadata
       _do_eval: true
       _do_train: true
@@ -184,9 +190,7 @@ templates:
       {{passage}}
 
 
-      Q: {{question}}?
-
-      Is "Yes" a valid answer? True or False? ||| {{answer_choices[label]}}
+      Q: {{question}}? True or False? ||| {{answer_choices[label]}}
 
       {% endif %}'
     metadata: !TemplateMetadata
