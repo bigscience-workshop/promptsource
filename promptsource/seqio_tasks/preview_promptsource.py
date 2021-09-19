@@ -56,7 +56,7 @@ def preview() -> None:
             # if dataset_name == 'ropes':
             #     inspect(template.metadata)
             if not template.metadata.metrics:
-                missing_metrics.append(f'{dataset_name}/{subset_name}/{template_name}')
+                missing_metrics.append(f"{dataset_name}/{subset_name}/{template_name}")
 
             if template.metadata.original_task is True:
                 OG += 1
@@ -65,7 +65,6 @@ def preview() -> None:
             elif template.metadata.original_task is None:
                 missing_og_flags.append(dataset_name + "/" + template_name)
                 continue
-
 
         train_size = gsheet[ds_name]["train_size"]
         if train_size == "":
