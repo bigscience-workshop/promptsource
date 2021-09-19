@@ -174,7 +174,7 @@ gpt_train_mixture: List[str] = []
 sglue_train_mixture: List[str] = []
 d4_eval_mixture: List[str] = []
 mixture_cap: Dict[str, int] = {}
-single_original_task: Dict[str, int] = {}
+single_original_task: Dict[tuple[str, str], int] = {}
 for dataset_name, subset_name in all_templates.keys:
     if (dataset_name, subset_name) not in all_datasets:
         all_templates.remove(dataset_name, subset_name)
