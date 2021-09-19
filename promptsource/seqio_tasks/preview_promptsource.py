@@ -42,9 +42,10 @@ def preview() -> None:
     template_collection = TemplateCollection()
     output = []
     missing_og_flags = []
+    missing_metrics = []
     for dataset_name, subset_name in template_collection.keys:
         ds_name = (dataset_name, subset_name)
-        if ds_name not in d4_train:
+        if ds_name not in d4_eval:
             template_collection.remove(dataset_name, subset_name)
             continue
         OG = 0
@@ -54,6 +55,9 @@ def preview() -> None:
             template = dataset[template_name]
             # if dataset_name == 'ropes':
             #     inspect(template.metadata)
+            if not template.metadata.metrics:
+                missing_metrics.append(f'{dataset_name}/{subset_name}/{template_name}')
+
             if template.metadata.original_task is True:
                 OG += 1
             elif template.metadata.original_task is False:
@@ -61,6 +65,7 @@ def preview() -> None:
             elif template.metadata.original_task is None:
                 missing_og_flags.append(dataset_name + "/" + template_name)
                 continue
+
 
         train_size = gsheet[ds_name]["train_size"]
         if train_size == "":
@@ -80,6 +85,9 @@ def preview() -> None:
 
     pprint(output)
     print(len(template_collection))
+
+    print("Missing metrics:")
+    pprint(missing_metrics)
 
     print("Missing original task flags:")
     pprint(missing_og_flags)
