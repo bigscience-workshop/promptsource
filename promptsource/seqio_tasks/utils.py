@@ -67,7 +67,7 @@ def get_dataset_splits(dataset_name, subset_name=None):
     # Once PR 2907 is merged, we can remove this if condition (along with the `custom_datasets` folder)
     # Also see `promptsource.utils.get_dataset_builder`
     if dataset_name == "story_cloze":
-        dataset_name = pkg_resources.resource_filename("promptsource", "custom_datasets/story_cloze")
+        dataset_name = pkg_resources.resource_filename(__name__, "story_cloze")
     info = datasets.get_dataset_infos(dataset_name)
     subset_name = subset_name or list(info.keys())[0]
     return info[subset_name].splits
