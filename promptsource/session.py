@@ -46,7 +46,7 @@ class _SessionState:
     def clear(self):
         """Clear session state and request a rerun."""
         self._state["data"].clear()
-        self._state["session"].request_rerun()
+        self._state["session"].request_rerun(None)
 
     def sync(self):
         """
@@ -65,7 +65,7 @@ class _SessionState:
         elif self._state["hash"] is not None:
             if self._state["hash"] != data_to_bytes:
                 self._state["is_rerun"] = True
-                self._state["session"].request_rerun()
+                self._state["session"].request_rerun(None)
 
         self._state["hash"] = data_to_bytes
 
