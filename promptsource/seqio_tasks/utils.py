@@ -66,6 +66,7 @@ def get_dataset_splits(dataset_name, subset_name=None):
     # story_cloze hasn't been merged yet (https://github.com/huggingface/datasets/pull/2907)
     # This is a temporary fix to be able to do `import promptsource.seqio_tasks`
     # Once PR 2907 is merged, we can remove these lines (along with the `custom_datasets` folder)
+    # Also see `promptsource.utils.get_dataset_builder`
     if dataset_name == "story_cloze":
         dataset_name = os.path.join(Path(__file__).parents[1], "custom_datasets/story_cloze/")
     info = datasets.get_dataset_infos(dataset_name)
