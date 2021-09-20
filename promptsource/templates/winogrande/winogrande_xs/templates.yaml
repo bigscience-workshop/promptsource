@@ -1,13 +1,27 @@
 dataset: winogrande
 subset: winogrande_xs
 templates:
-  6d411e7c-17ba-4a4d-890e-c3939c7d71f8: !Template
+  52b40d2b-7547-44e2-8cc6-eb127ecbb2fe: !Template
+    answer_choices: null
+    answer_choices_key: '{{ option1 }} ||| {{ option2 }}'
+    id: 52b40d2b-7547-44e2-8cc6-eb127ecbb2fe
+    jinja: '{{ sentence }} In the previous sentence, does _ refer to {{ option1 }}
+      or  {{ option2 }}? ||| {% if answer == ''1'' %} {{option1}} {% else %} {{ option2
+      }} {% endif %}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
+      original_task: true
+    name: does underscore refer to
+    reference: ''
+  75072f4d-843b-4ba4-96a5-cd0ea3e7855d: !Template
     answer_choices:
     - 'True'
     - 'False'
     answer_choices_key: null
-    id: 6d411e7c-17ba-4a4d-890e-c3939c7d71f8
-    jinja: 'The _ in the sentence below refers to {{option1}}. Answer True or False!
+    id: 75072f4d-843b-4ba4-96a5-cd0ea3e7855d
+    jinja: 'The _ in the sentence below refers to {{option1}}. True or False?
 
       {{sentence}}|||
 
@@ -18,18 +32,18 @@ templates:
       choices_in_prompt: true
       metrics:
       - Accuracy
-      original_task: true
+      original_task: false
     name: True or False
     reference: ''
-  968ad851-7d51-41d7-9de8-627e684d7edf: !Template
+  8a976d84-efbc-47c0-8e3d-8e3cf89c3e2c: !Template
     answer_choices: null
     answer_choices_key: '{{option1}} ||| {{option2}}'
-    id: 968ad851-7d51-41d7-9de8-627e684d7edf
+    id: 8a976d84-efbc-47c0-8e3d-8e3cf89c3e2c
     jinja: '{{sentence}}
 
-      What does the _ in the above sentence refer to? {{answer_choices[0]}} or {{answer_choices[1]}}|||
-
-      {{answer_choices[answer | int - 1]}}'
+      What does the _ in the above sentence refer to? {{ option1 }} or {{ option2
+      }}? ||| {% if answer == ''1'' %} {{option1}} {% else %} {{ option2 }} {% endif
+      %}'
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: false
@@ -37,14 +51,13 @@ templates:
       metrics:
       - Accuracy
       original_task: true
-    name: sentence_question_answer
+    name: underscore refer to
     reference: ''
-  9c8f09af-9e02-491b-9567-2d2087448aeb: !Template
+  9ee3a3b0-d84f-4d66-bb79-de82ac5040b2: !Template
     answer_choices: null
     answer_choices_key: '{{option1}} ||| {{option2}}'
-    id: 9c8f09af-9e02-491b-9567-2d2087448aeb
-    jinja: 'In the sentence below, does {{answer_choices[0]}} or {{answer_choices[1]}}
-      represent the _ ?
+    id: 9ee3a3b0-d84f-4d66-bb79-de82ac5040b2
+    jinja: 'In the sentence below, does the _ stand for {{answer_choices[0]}} or {{answer_choices[1]}}?
 
       {{sentence}}|||
 
@@ -56,15 +69,15 @@ templates:
       metrics:
       - Accuracy
       original_task: true
-    name: question_sentence_answer
+    name: stand for
     reference: ''
-  dd10be20-0977-49e9-b745-bbfc8b01f7b9: !Template
+  eb63f6df-99d9-4a00-a165-976e93c7271f: !Template
     answer_choices: null
     answer_choices_key: '{{option1}} ||| {{option2}}'
-    id: dd10be20-0977-49e9-b745-bbfc8b01f7b9
+    id: eb63f6df-99d9-4a00-a165-976e93c7271f
     jinja: "{{sentence}}\nReplace the _ in the above sentence with the correct option:\
-      \ \nOption1: {{answer_choices[0]}}\nOption2: {{answer_choices[1]}}\n|||\n{{answer_choices[answer\
-      \ | int - 1]}}"
+      \ \n- {{option1}}\n- {{option2}}\n|||\n{% if answer == '1' %} {{option1}} {%\
+      \ else %} {{ option2 }} {% endif %}"
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: false
@@ -74,21 +87,30 @@ templates:
       original_task: true
     name: Replace
     reference: ''
-  f538cf99-7174-4063-aac3-093f06fc1e67: !Template
+  f87367de-59ca-4859-abe0-26521a77fc67: !Template
     answer_choices: null
     answer_choices_key: '{{option1}} ||| {{option2}}'
-    id: f538cf99-7174-4063-aac3-093f06fc1e67
-    jinja: 'Fill in the _ in the below sentence!
+    id: f87367de-59ca-4859-abe0-26521a77fc67
+    jinja: 'Fill in the _ in the below sentence:
 
-      {{sentence}}|||
+      {{sentence}}
 
-      {{answer_choices[answer | int -1]}}'
+
+      Choices:
+
+      - {{ option1 }}
+
+      - {{ option2 }}
+
+
+      Answer: ||| {% if answer == ''1'' %} {{option1}} {% else %} {{ option2 }} {%
+      endif %}'
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: false
-      choices_in_prompt: false
+      choices_in_prompt: true
       metrics:
       - Accuracy
       original_task: true
-    name: Fill in the blanks
+    name: fill in the blank
     reference: ''
