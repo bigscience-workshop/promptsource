@@ -1,25 +1,6 @@
 dataset: trivia_qa
 subset: rc
 templates:
-  0b4789ce-d7cb-4cdf-8c1f-1ea059cf04e6: !Template
-    answer_choices: null
-    answer_choices_key: null
-    id: 0b4789ce-d7cb-4cdf-8c1f-1ea059cf04e6
-    jinja: "{% if entity_pages.wiki_context |length >0 and answer.aliases %}\n   \
-      \ I am trying to figure out the answer to the question, \"{{question}}\" I found\
-      \ the following text-snippet on Wikipedia and I think it has the answer. Can\
-      \ you tell me the answer?\n\n    {{entity_pages.wiki_context|choice}}\n\n  \
-      \  ||| \n\n    {{answer.aliases|choice}}\n\n{% endif %}"
-    metadata: !TemplateMetadata
-      _do_eval: false
-      _do_train: true
-      choices_in_prompt: false
-      metrics:
-      - Sequence Accuracy
-      - Other
-      original_task: true
-    name: reading_comprehension_1
-    reference: Reading Comprehension with KB
   5946db1a-a068-4a31-a06f-74a7d976cb6d: !Template
     answer_choices: null
     answer_choices_key: null
@@ -57,6 +38,7 @@ templates:
     id: 91d9f950-a25a-4557-a16f-952d74629584
     jinja: "{% if answer.aliases %} \n    Answer the following question.\n    {{question}}\
       \ \n    |||\n    {{answer.aliases|choice}} \n{% endif %}"
+
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: true
@@ -67,25 +49,6 @@ templates:
       original_task: true
     name: question_with_instruction
     reference: Instruction before question.
-  9ef24a64-c598-4ba7-a77f-cb6fd8dcb8ff: !Template
-    answer_choices: null
-    answer_choices_key: null
-    id: 9ef24a64-c598-4ba7-a77f-cb6fd8dcb8ff
-    jinja: "{% if search_results.search_context |length >0 and answer.aliases %}\n\
-      \    \n    I am trying to figure out the answer to the question, \"{{question}}\"\
-      \ I found the following text-snippet on the internet and I think it has the\
-      \ answer. Can you tell me the answer?\n    \n    {{search_results.search_context|choice}}\n\
-      \n    ||| \n\n    {{answer.aliases|choice}}\n\n{% endif %}"
-    metadata: !TemplateMetadata
-      _do_eval: false
-      _do_train: true
-      choices_in_prompt: false
-      metrics:
-      - Sequence Accuracy
-      - Other
-      original_task: true
-    name: reading_comprehension_2
-    reference: Reading Comprehension
   bfec3d73-c024-492f-8878-64fdb6639a29: !Template
     answer_choices: null
     answer_choices_key: null
