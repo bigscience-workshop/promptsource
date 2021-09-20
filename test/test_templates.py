@@ -37,7 +37,8 @@ def test_uuids():
             all_uuids[uuid] = (dataset_name, subset_name)
 
 
-@pytest.mark.parametrize("dataset", template_collection.keys)
+# @pytest.mark.parametrize("dataset", template_collection.keys)
+@pytest.mark.parametrize("dataset", [("story_cloze", "2016")])
 def test_dataset(dataset):
     """
     Validates all the templates in the repository with simple syntactic checks:
