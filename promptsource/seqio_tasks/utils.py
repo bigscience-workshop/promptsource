@@ -1,7 +1,7 @@
-import pkg_resources
 import re
 
 import datasets
+import pkg_resources
 import tensorflow as tf
 
 import promptsource.utils
