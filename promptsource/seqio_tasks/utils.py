@@ -1,4 +1,6 @@
+import os
 import re
+from pathlib import Path
 
 import datasets
 import tensorflow as tf
@@ -60,6 +62,12 @@ def apply_template(dataset, template):
 
 
 def get_dataset_splits(dataset_name, subset_name=None):
+    # `datasets.get_dataset_infos` pulls infos from hf/datasets's master.
+    # story_cloze hasn't been merged yet (https://github.com/huggingface/datasets/pull/2907)
+    # This is a temporary fix to be able to do `import promptsource.seqio_tasks`
+    # Once PR 2907 is merged, we can remove these lines (along with the `custom_datasets` folder)
+    if dataset_name == "story_cloze":
+        dataset_name = os.path.join(Path(__file__).parents[1], "custom_datasets/story_cloze/")
     info = datasets.get_dataset_infos(dataset_name)
     subset_name = subset_name or list(info.keys())[0]
     return info[subset_name].splits
