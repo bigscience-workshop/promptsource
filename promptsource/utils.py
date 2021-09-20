@@ -1,6 +1,7 @@
 # coding=utf-8
 
 import os
+from pathlib import Path
 
 import datasets
 import requests
@@ -39,7 +40,7 @@ def get_dataset_builder(path, conf=None):
     # Once PR 2907 is merged, we can remove this if condition (along with the `custom_datasets` folder)
     # Also see `promptsource.seqio_tasks.utils.get_dataset_splits`
     if path == "story_cloze":
-        path = os.path.join(os.path.dirname(__file__), "custom_datasets/story_cloze/")
+        path = os.path.join(Path(__file__).parents[0], "custom_datasets/story_cloze/")
     module_path = datasets.load.prepare_module(path, dataset=True)
     builder_cls = datasets.load.import_main_class(module_path[0], dataset=True)
     if conf:
