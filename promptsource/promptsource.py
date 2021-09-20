@@ -48,7 +48,9 @@ st.sidebar.title(f"Prompt sourcing 🌸 - {mode}")
 #
 # Adds pygments styles to the page.
 #
-st.markdown("<style>" + HtmlFormatter().get_style_defs(".highlight") + "</style>", unsafe_allow_html=True)
+st.markdown(
+    "<style>" + HtmlFormatter(style="friendly").get_style_defs(".highlight") + "</style>", unsafe_allow_html=True
+)
 
 WIDTH = 80
 

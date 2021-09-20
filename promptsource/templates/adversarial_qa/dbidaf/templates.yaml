@@ -5,14 +5,20 @@ templates:
     answer_choices: null
     answer_choices_key: null
     id: 41f28b31-d0fc-4f20-a0a2-ff21813e298e
-    jinja: 'Extract the answer to the question from the following context.
+    jinja: '{% if metadata.split != "test" %}
+
+      Extract the answer to the question from the following context.
 
       Question: {{question}}
 
       Context: {{context}}|||
 
-      {{answers.text | choice}}'
+      {{answers.text | choice}}
+
+      {% endif %}'
     metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: true
       choices_in_prompt: false
       metrics:
       - Squad
@@ -23,7 +29,9 @@ templates:
     answer_choices: null
     answer_choices_key: null
     id: a64d5a15-68e2-4d1c-b30a-ca8250c860d9
-    jinja: 'Given the following passage
+    jinja: '{% if metadata.split != "test" %}
+
+      Given the following passage
 
 
       "{{context}}",
@@ -34,10 +42,12 @@ templates:
 
       Question: {{question}} |||
 
-      {{answers.text | choice}}'
+      {{answers.text | choice}}
+
+      {% endif %}'
     metadata: !TemplateMetadata
       _do_eval: false
-      _do_train: false
+      _do_train: true
       choices_in_prompt: false
       metrics:
       - Squad
@@ -67,11 +77,15 @@ templates:
     answer_choices: null
     answer_choices_key: null
     id: ce9bc00a-567b-4c4e-aad7-df6f5d5d57bb
-    jinja: 'I know that the answer to the question "{{question}}" is in "{{context}}".
-      Can you tell me what it is? |||
+    jinja: '{% if metadata.split != "test" %}
+
+      I know that the answer to the question "{{question}}" is in "{{context}}". Can
+      you tell me what it is? |||
 
 
-      {{answers.text | choice}}'
+      {{answers.text | choice}}
+
+      {% endif %}'
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: true
@@ -85,7 +99,9 @@ templates:
     answer_choices: null
     answer_choices_key: null
     id: fa185424-6ebe-49b8-b4ed-7632ca33c361
-    jinja: 'Question: "{{question}}"
+    jinja: '{% if metadata.split != "test" %}
+
+      Question: "{{question}}"
 
 
       Context: "{{context}}"
@@ -97,8 +113,7 @@ templates:
 
       {{answers.text | choice}}
 
-
-      '
+      {% endif %}'
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: true

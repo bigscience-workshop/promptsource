@@ -17,12 +17,28 @@ templates:
       original_task: false
     name: guess_question
     reference: Guess a question.
+  7ada9605-6fd1-49a9-a56e-6d778d4a0eb6: !Template
+    answer_choices: null
+    answer_choices_key: null
+    id: 7ada9605-6fd1-49a9-a56e-6d778d4a0eb6
+    jinja: "{% if answer.aliases %} \n    The goal is to predict an English answer\
+      \ string for an input English question. \n    Question : {{question}}\n    Answer\
+      \ : \n    ||| \n    {{answer.aliases|choice}} \n{% endif %}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - Sequence Accuracy
+      - Other
+      original_task: true
+    name: formal_description
+    reference: ''
   91d9f950-a25a-4557-a16f-952d74629584: !Template
     answer_choices: null
     answer_choices_key: null
     id: 91d9f950-a25a-4557-a16f-952d74629584
     jinja: "{% if answer.aliases %} \n    Answer the following question.\n    {{question}}\
       \ \n    |||\n    {{answer.aliases|choice}} \n{% endif %}"
+
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: true

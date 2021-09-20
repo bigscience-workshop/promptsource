@@ -3,13 +3,13 @@ subset: original
 templates:
   0bb6b603-115e-4ae9-b17b-881fa72b2e81: !Template
     answer_choices: null
-    answer_choices_key: candidates
+    answer_choices_key: '{{candidates | join("|||")}}'
     id: 0bb6b603-115e-4ae9-b17b-881fa72b2e81
     jinja: "Information:\n{% for support in supports %}\n- {{ support }}\n{% endfor\
       \ %}\n\n{% set question_split = question.split(' ') %}\nWhat object entity has\
       \ the relation of '{{ question_split[0] | replace(\"_\", \" \")}}' with the\
-      \ subject '{{ question_split[1:] | join(\" \")}}'? \n\nChoices:\n{% for candidate\
-      \ in candidates %}\n- {{ candidate }}\n{% endfor %}\n\n|||\n{{answer}}"
+      \ subject '{{ question_split[1:] | join(\" \")}}'? \n\nChoices:\n- {{answer_choices\
+      \ | join(\"\\n - \") }}\n\n|||\n{{answer}}"
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: true
@@ -117,7 +117,7 @@ templates:
     reference: Given information, generate the best subject entity for the fact triple.
   4836e754-b2c9-4697-b386-6770494dc5f5: !Template
     answer_choices: null
-    answer_choices_key: candidates
+    answer_choices_key: '{{candidates | join("|||")}}'
     id: 4836e754-b2c9-4697-b386-6770494dc5f5
     jinja: 'Information:
 
@@ -137,11 +137,7 @@ templates:
 
       Choices:
 
-      {% for candidate in candidates %}
-
-      - {{ candidate }}
-
-      {% endfor %}
+      - {{answer_choices | join("\n - ") }}
 
 
       |||
@@ -157,7 +153,7 @@ templates:
       entity (affirmative instruction).
   4a1b61f6-c619-4d3d-aec2-f41a8986641c: !Template
     answer_choices: null
-    answer_choices_key: candidates
+    answer_choices_key: '{{candidates | join("|||")}}'
     id: 4a1b61f6-c619-4d3d-aec2-f41a8986641c
     jinja: 'Information:
 
@@ -178,11 +174,7 @@ templates:
 
       Choices:
 
-      {% for candidate in candidates %}
-
-      - {{ candidate }}
-
-      {% endfor %}
+      - {{answer_choices | join("\n - ") }}
 
 
       |||
@@ -229,7 +221,7 @@ templates:
     reference: Given information and relation, generate the subject and object.
   e4dc7abf-d56a-4217-ba7f-7470cd959e8e: !Template
     answer_choices: null
-    answer_choices_key: candidates
+    answer_choices_key: '{{candidates | join("|||")}}'
     id: e4dc7abf-d56a-4217-ba7f-7470cd959e8e
     jinja: 'Information:
 
@@ -249,11 +241,7 @@ templates:
 
       Choices:
 
-      {% for candidate in candidates %}
-
-      - {{ candidate }}
-
-      {% endfor %}
+      - {{answer_choices | join("\n - ") }}
 
 
       |||
@@ -269,7 +257,7 @@ templates:
       entity (affirmative instruction).
   f44936e1-cbde-4d41-b462-6150cce8c1c8: !Template
     answer_choices: null
-    answer_choices_key: candidates
+    answer_choices_key: '{{candidates | join("|||")}}'
     id: f44936e1-cbde-4d41-b462-6150cce8c1c8
     jinja: 'Information:
 
@@ -288,11 +276,7 @@ templates:
 
       Choices:
 
-      {% for candidate in candidates %}
-
-      - {{ candidate }}
-
-      {% endfor %}
+      - {{answer_choices | join("\n - ") }}
 
 
       |||

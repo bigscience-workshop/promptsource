@@ -9,6 +9,7 @@ import pandas as pd
 import pkg_resources
 import yaml
 from jinja2 import BaseLoader, Environment
+from jinja2.exceptions import UndefinedError
 
 
 # Truncation of jinja template variables
@@ -136,14 +137,33 @@ class Template(yaml.YAMLObject):
 
         :return: list of strings, or None if get_answer_choices_expr is None
         """
+        # TODO: remove when merging answer_choices and answer_choices_key
         if self.get_answer_choices_expr() is None:
-            return None
+            return self.get_answer_choices()
 
         jinja = self.answer_choices_key
         rtemplate = env.from_string(jinja)
         protected_example = self._escape_pipe(example)
         rendered_choices = rtemplate.render(**protected_example)
         return [self._unescape_pipe(answer_choice.strip()) for answer_choice in rendered_choices.split("|||")]
+
+    def get_fixed_answer_choices_list(self):
+        """
+        Returns a list of answer choices that is static across examples, if possible
+
+        :return: list of strings, or None if no static list exists
+        """
+        # TODO: remove when merging answer_choices and answer_choices_key
+        if self.get_answer_choices_expr() is None:
+            return self.get_answer_choices()
+
+        jinja = self.answer_choices_key
+        rtemplate = env.from_string(jinja)
+        try:
+            rendered_choices = rtemplate.render()
+            return [answer_choice.strip() for answer_choice in rendered_choices.split("|||")]
+        except UndefinedError:
+            return None
 
     def apply(self, example, truncate=True, highlight_variables=False):
         """
@@ -174,11 +194,7 @@ class Template(yaml.YAMLObject):
         if "answer_choices" in protected_example:
             raise ValueError("Example contains the restricted key 'answer_choices'.")
 
-        if self.answer_choices is not None:
-            protected_example["answer_choices"] = self.answer_choices
-        elif self.get_answer_choices_list(example) is not None:
-            # TODO: Combine this all into a call to get_answer_choices_list
-            protected_example["answer_choices"] = self.get_answer_choices_list(example)
+        protected_example["answer_choices"] = self.get_answer_choices_list(example)
 
         # Renders the Jinja template
         rendered_example = rtemplate.render(**protected_example)
@@ -251,6 +267,12 @@ class TemplateCollection:
     @property
     def keys(self):
         return list(self.datasets_templates.keys())
+
+    def __len__(self) -> int:
+        return len(self.datasets_templates)
+
+    def remove(self, dataset_name: str, subset_name: Optional[str] = None) -> None:
+        del self.datasets_templates[dataset_name, subset_name]
 
     def _collect_dataset(self) -> Dict[Tuple[str, str], "DatasetTemplates"]:
         """

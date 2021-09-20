@@ -20,7 +20,6 @@ template_collection = TemplateCollection()
 
 dataset, _ = get_dataset(dataset_name, subset_name)
 splits = list(dataset.keys())
-dataset = dataset[splits[0]]
 
 dataset_templates = template_collection.get_dataset(dataset_name, subset_name)
 template_list = dataset_templates.all_template_names
@@ -49,26 +48,30 @@ for template_name in template_list:
     print(template.jinja)
     print()
 
-    print_counter = 0
-    for example in dataset:
-        print("\t--------")
-        print("\tExample ", example)
-        print("\t--------")
-        output = template.apply(example)
-        if output[0].strip() == "" or (len(output) > 1 and output[1].strip() == ""):
-            print("\t Blank result")
-            continue
+    for split_name in splits:
+        dataset_split = dataset[split_name]
 
-        xp, yp = output
-        print()
-        print("\tPrompt | X")
-        for line in textwrap.wrap(xp, width=width, replace_whitespace=False):
-            print("\t", line.replace("\n", "\n\t"))
-        print()
-        print("\tY")
-        for line in textwrap.wrap(yp, width=width, replace_whitespace=False):
-            print("\t", line.replace("\n", "\n\t"))
+        print_counter = 0
+        for example in dataset_split:
+            print("\t--------")
+            print("\tSplit ", split_name)
+            print("\tExample ", example)
+            print("\t--------")
+            output = template.apply(example)
+            if output[0].strip() == "" or (len(output) > 1 and output[1].strip() == ""):
+                print("\t Blank result")
+                continue
 
-        print_counter += 1
-        if print_counter >= 10:
-            break
+            xp, yp = output
+            print()
+            print("\tPrompt | X")
+            for line in textwrap.wrap(xp, width=width, replace_whitespace=False):
+                print("\t", line.replace("\n", "\n\t"))
+            print()
+            print("\tY")
+            for line in textwrap.wrap(yp, width=width, replace_whitespace=False):
+                print("\t", line.replace("\n", "\n\t"))
+
+            print_counter += 1
+            if print_counter >= 10:
+                break

@@ -10,210 +10,305 @@ templates:
     - Location
     answer_choices_key: null
     id: 21d04668-c5b3-4418-bbb6-663f1ffdb97c
-    jinja: '{{text}} Answer: ||| {{ answer_choices [label_coarse] }}'
+    jinja: "Categories: {{', '.join(answer_choices)}}\n\nWhat category best describes:\
+      \ {{text}} \nAnswer: ||| {{ answer_choices [label_coarse] }}"
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: false
-      choices_in_prompt: null
-      metrics: []
-      original_task: null
-    name: gao_et_al_2
-    reference: Adapted from Making Pre-trained Language Models Better Few-shot Learners.
-      Tianyu Gao, Adam Fisch, and Danqi Chen. ArXiv 2020. Table E.1.
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
+      original_task: true
+    name: what_category_best_describe
+    reference: ''
   2d4e0add-cfca-4f54-80a2-ddd8e91f9fd6: !Template
-    answer_choices: null
+    answer_choices:
+    - city
+    - country
+    - mountain
+    - state
+    - other location
     answer_choices_key: null
     id: 2d4e0add-cfca-4f54-80a2-ddd8e91f9fd6
-    jinja: "{% if label_coarse == 5 %}\nIs this question asking for {{\"a city, a\
-      \ country, a mountain, a state, or other location\"}}?\n{{text}}\n|||\n{{ [\"\
-      Manner\",\n     \"Creative Piece\",\n     \"Animal\",\n      \"Expression abbreviated\"\
-      ,\n      \"Individual\",\n      \"Group\",\n      \"Title\",\n      \"Defintion\"\
-      ,\n      \"Date\",\n      \"Reason\",\n      \"Event\",\n      \"State\",\n\
-      \      \"Description\",\n      \"Count\",\n      \"Other\",\n      \"Letter\"\
-      ,\n      \"Religion\",\n      \"Food\",\n      \"Country\",\n      \"Color\"\
-      ,\n      \"Term\",\n      \"City\",\n      \"Organ of the body\",\n      \"\
-      Disease or medicine\",\n      \"Mountain\",\n      \"Price\",\n      \"Product\"\
-      ,\n      \"Period\",\n      \"Substance\",\n      \"Sport\",\n      \"Plant\"\
-      ,\n      \"Technique\",\n      \"Size\",\n      \"Instrument\",\n      \"Abbreviation\"\
-      ,\n      \"Speed\",\n      \"Word\",\n      \"Language\",\n      \"Percentage\"\
-      ,\n      \"Code\",\n      \"Distance\",\n      \"Temperature\",\n      \"Symbol\"\
-      ,\n      \"Order\",\n      \"Vehicle\",\n      \"Weight\",\n      \"Currency\"\
-      ] [label_fine] }}\n{% endif %}"
+    jinja: '{% set label_mapping = {21:0, 18:1, 24:2, 11:3, 14:4} %}
+
+      {% if label_coarse == 5 %}
+
+      Is this question asking for {{'', ''.join(answer_choices)}}?
+
+      {{text}}
+
+      |||
+
+      {{ answer_choices [label_mapping[label_fine]] }}
+
+      {% endif %}'
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: true
       choices_in_prompt: true
-      metrics: []
-      original_task: null
+      metrics:
+      - Accuracy
+      original_task: false
     name: fine_grained_LOC
     reference: Fine grained labels with coarse-label `LOC`, context after question
   309bf243-2185-4090-ac66-a24f44d89966: !Template
-    answer_choices: null
+    answer_choices:
+    - code
+    - count
+    - date
+    - distance
+    - price
+    - order
+    - period of time
+    - percentage
+    - speed
+    - temperature
+    - size
+    - weight
+    - other number
     answer_choices_key: null
     id: 309bf243-2185-4090-ac66-a24f44d89966
-    jinja: "{% if label_coarse == 4 %}\n{{text}}\n\nIs this question asking for {{\"\
-      a code, a count, a date, a distance, a price, an order, period of time, a percentage,\
-      \ a speed, a temperature, a size, a weight, or other number\"}}?\n|||\n{{ [\"\
-      Manner\",\n     \"Creative Piece\",\n     \"Animal\",\n      \"Expression abbreviated\"\
-      ,\n      \"Individual\",\n      \"Group\",\n      \"Title\",\n      \"Defintion\"\
-      ,\n      \"Date\",\n      \"Reason\",\n      \"Event\",\n      \"State\",\n\
-      \      \"Description\",\n      \"Count\",\n      \"Other\",\n      \"Letter\"\
-      ,\n      \"Religion\",\n      \"Food\",\n      \"Country\",\n      \"Color\"\
-      ,\n      \"Term\",\n      \"City\",\n      \"Organ of the body\",\n      \"\
-      Disease or medicine\",\n      \"Mountain\",\n      \"Price\",\n      \"Product\"\
-      ,\n      \"Period\",\n      \"Substance\",\n      \"Sport\",\n      \"Plant\"\
-      ,\n      \"Technique\",\n      \"Size\",\n      \"Instrument\",\n      \"Abbreviation\"\
-      ,\n      \"Speed\",\n      \"Word\",\n      \"Language\",\n      \"Percentage\"\
-      ,\n      \"Code\",\n      \"Distance\",\n      \"Temperature\",\n      \"Symbol\"\
-      ,\n      \"Order\",\n      \"Vehicle\",\n      \"Weight\",\n      \"Currency\"\
-      ] [label_fine] }}\n{% endif %}"
+    jinja: '{% set label_mapping = {39:0, 13:1, 8:2, 40:3, 25:4, 43:5, 27:6, 38:7,
+      35:8, 41:9, 32:10, 45:11, 14:12} %}
+
+      {% if label_coarse == 4 %}
+
+      {{text}}
+
+
+      Is this question asking for {{'', ''.join(answer_choices)}}?
+
+      |||
+
+      {{ answer_choices [label_mapping[label_fine]] }}
+
+      {% endif %}'
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: true
       choices_in_prompt: true
-      metrics: []
-      original_task: null
+      metrics:
+      - Accuracy
+      original_task: false
     name: fine_grained_NUM_context_first
     reference: Fine grained labels with coarse-label `NUM`, context provided first
   3aff84f3-e478-4598-abe8-40aa24cec1fa: !Template
-    answer_choices: null
+    answer_choices:
+    - an animal
+    - an organ of the body
+    - a color
+    - creative piece
+    - currency
+    - disease or medicine
+    - event
+    - food
+    - musical instrument
+    - language
+    - letter
+    - plant
+    - product
+    - religion
+    - sport
+    - substance
+    - symbol
+    - technique
+    - term
+    - vehicle
+    - word
+    - other entity
     answer_choices_key: null
     id: 3aff84f3-e478-4598-abe8-40aa24cec1fa
-    jinja: "{% if label_coarse == 1 %}\nIs this question asking for {{\"an animal,\
-      \ an organ of the body, a color, a creative piece, a currency, a disease or\
-      \ medicine, an event, a food, a musical instrument, a language, a letter, a\
-      \ plant, a product, a religion, a sport, a substance, a symbol, a technique,\
-      \ a term, a vehicle, a word, or other entity\"}}?\n{{text}}\n|||\n{{ [\"Manner\"\
-      ,\n     \"Creative Piece\",\n     \"Animal\",\n      \"Expression abbreviated\"\
-      ,\n      \"Individual\",\n      \"Group\",\n      \"Title\",\n      \"Defintion\"\
-      ,\n      \"Date\",\n      \"Reason\",\n      \"Event\",\n      \"State\",\n\
-      \      \"Description\",\n      \"Count\",\n      \"Other\",\n      \"Letter\"\
-      ,\n      \"Religion\",\n      \"Food\",\n      \"Country\",\n      \"Color\"\
-      ,\n      \"Term\",\n      \"City\",\n      \"Organ of the body\",\n      \"\
-      Disease or medicine\",\n      \"Mountain\",\n      \"Price\",\n      \"Product\"\
-      ,\n      \"Period\",\n      \"Substance\",\n      \"Sport\",\n      \"Plant\"\
-      ,\n      \"Technique\",\n      \"Size\",\n      \"Instrument\",\n      \"Abbreviation\"\
-      ,\n      \"Speed\",\n      \"Word\",\n      \"Language\",\n      \"Percentage\"\
-      ,\n      \"Code\",\n      \"Distance\",\n      \"Temperature\",\n      \"Symbol\"\
-      ,\n      \"Order\",\n      \"Vehicle\",\n      \"Weight\",\n      \"Currency\"\
-      ] [label_fine] }}\n{% endif %}"
+    jinja: '{% set label_mapping = {2:0, 22:1, 19:2, 1:3, 46:3, 23:4, 10:5, 17:6,
+      33:7, 37:8, 15:9, 30:10, 26:11, 16:12, 28:13, 42:14, 31:15, 20:16, 44:17, 36:18,
+      14:19} %}
+
+      {% if label_coarse == 1 %}
+
+      Is this question asking for {{'', ''.join(answer_choices)}}?
+
+      {{text}}
+
+      |||
+
+      {{ answer_choices [label_mapping[label_fine]] }}
+
+      {% endif %}'
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: true
       choices_in_prompt: true
-      metrics: []
-      original_task: null
+      metrics:
+      - Accuracy
+      original_task: false
     name: fine_grained_ENTY
     reference: Fine grained labels with coarse-label `ENTY`, context after question
   43a188a2-b6dd-46a7-af2e-81a64b90b92a: !Template
-    answer_choices: null
+    answer_choices:
+    - code
+    - count
+    - date
+    - distance
+    - price
+    - order
+    - period of time
+    - percentage
+    - speed
+    - temperature
+    - size
+    - weight
+    - other number
     answer_choices_key: null
     id: 43a188a2-b6dd-46a7-af2e-81a64b90b92a
-    jinja: "{% if label_coarse == 4 %}\nIs this question asking for {{\"a code, a\
-      \ count, a date, a distance, a price, an order, period of time, a percentage,\
-      \ a speed, a temperature, a size, a weight, or other number\"}}?\n{{text}}\n\
-      |||\n{{ [\"Manner\",\n     \"Creative Piece\",\n     \"Animal\",\n      \"Expression\
-      \ abbreviated\",\n      \"Individual\",\n      \"Group\",\n      \"Title\",\n\
-      \      \"Defintion\",\n      \"Date\",\n      \"Reason\",\n      \"Event\",\n\
-      \      \"State\",\n      \"Description\",\n      \"Count\",\n      \"Other\"\
-      ,\n      \"Letter\",\n      \"Religion\",\n      \"Food\",\n      \"Country\"\
-      ,\n      \"Color\",\n      \"Term\",\n      \"City\",\n      \"Organ of the\
-      \ body\",\n      \"Disease or medicine\",\n      \"Mountain\",\n      \"Price\"\
-      ,\n      \"Product\",\n      \"Period\",\n      \"Substance\",\n      \"Sport\"\
-      ,\n      \"Plant\",\n      \"Technique\",\n      \"Size\",\n      \"Instrument\"\
-      ,\n      \"Abbreviation\",\n      \"Speed\",\n      \"Word\",\n      \"Language\"\
-      ,\n      \"Percentage\",\n      \"Code\",\n      \"Distance\",\n      \"Temperature\"\
-      ,\n      \"Symbol\",\n      \"Order\",\n      \"Vehicle\",\n      \"Weight\"\
-      ,\n      \"Currency\"] [label_fine] }}\n{% endif %}"
+    jinja: '{% set label_mapping = {39:0, 13:1, 8:2, 40:3, 25:4, 43:5, 27:6, 38:7,
+      35:8, 41:9, 32:10, 45:11, 14:12} %}
+
+      {% if label_coarse == 4 %}
+
+      Is this question asking for {{'', ''.join(answer_choices)}}?
+
+      {{text}}
+
+      |||
+
+      {{ answer_choices [label_mapping[label_fine]] }}
+
+      {% endif %}'
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: true
       choices_in_prompt: true
-      metrics: []
-      original_task: null
+      metrics:
+      - Accuracy
+      original_task: false
     name: fine_grained_NUM
-    reference: Fine grained labels with coarse-label `NUM`, context after question
-  457a8f3b-2007-4494-91e4-e52e970d6c0a: !Template
-    answer_choices: null
+    reference: Fine grained labels with coarse-label `NUM`
+  6c391f4f-027b-4425-88de-1dbb6aa706ee: !Template
+    answer_choices:
+    - Description
+    - Entity
+    - Abbreviation
+    - Person
+    - Quantity
+    - Location
     answer_choices_key: null
-    id: 457a8f3b-2007-4494-91e4-e52e970d6c0a
-    jinja: "{% if label_coarse == 1 %}\n{{text}}\n\nIs this question asking for {{\"\
-      an animal, an organ of the body, a color, a creative piece, a currency, a disease\
-      \ or medicine, an event, a food, a musical instrument, a language, a letter,\
-      \ a plant, a product, a religion, a sport, a substance, a symbol, a technique,\
-      \ a term, a vehicle, a word, or other entity\"}}?\n|||\n{{ [\"Manner\",\n  \
-      \   \"Creative Piece\",\n     \"Animal\",\n      \"Expression abbreviated\"\
-      ,\n      \"Individual\",\n      \"Group\",\n      \"Title\",\n      \"Defintion\"\
-      ,\n      \"Date\",\n      \"Reason\",\n      \"Event\",\n      \"State\",\n\
-      \      \"Description\",\n      \"Count\",\n      \"Other\",\n      \"Letter\"\
-      ,\n      \"Religion\",\n      \"Food\",\n      \"Country\",\n      \"Color\"\
-      ,\n      \"Term\",\n      \"City\",\n      \"Organ of the body\",\n      \"\
-      Disease or medicine\",\n      \"Mountain\",\n      \"Price\",\n      \"Product\"\
-      ,\n      \"Period\",\n      \"Substance\",\n      \"Sport\",\n      \"Plant\"\
-      ,\n      \"Technique\",\n      \"Size\",\n      \"Instrument\",\n      \"Abbreviation\"\
-      ,\n      \"Speed\",\n      \"Word\",\n      \"Language\",\n      \"Percentage\"\
-      ,\n      \"Code\",\n      \"Distance\",\n      \"Temperature\",\n      \"Symbol\"\
-      ,\n      \"Order\",\n      \"Vehicle\",\n      \"Weight\",\n      \"Currency\"\
-      ] [label_fine] }}\n{% endif %}"
+    id: 6c391f4f-027b-4425-88de-1dbb6aa706ee
+    jinja: 'Question: {{text}}
+
+
+      Descriptors: {{'', ''.join(answer_choices)}}
+
+
+      Best Descriptor?
+
+      |||
+
+      {{answer_choices[label_coarse]}}'
     metadata: !TemplateMetadata
-      _do_eval: false
-      _do_train: true
       choices_in_prompt: true
-      metrics: []
-      original_task: null
-    name: fine_grained_ENTY_context_first
-    reference: Fine grained labels with coarse-label `ENTY`, context provided first
+      metrics:
+      - Accuracy
+      original_task: true
+    name: pick_the_best_descriptor
+    reference: ''
   71090d59-dd02-4cbd-8032-ad86179b9bd4: !Template
-    answer_choices: null
+    answer_choices:
+    - Manner
+    - Creative Piece
+    - Animal
+    - Expression abbreviated
+    - Individual
+    - Group
+    - Title
+    - Defintion
+    - Date
+    - Reason
+    - Event
+    - State
+    - Description
+    - Count
+    - Other
+    - Letter
+    - Religion
+    - Food
+    - Country
+    - Color
+    - Term
+    - City
+    - Organ of the body
+    - Disease or medicine
+    - Mountain
+    - Price
+    - Product
+    - Period
+    - Substance
+    - Sport
+    - Plant
+    - Technique
+    - Size
+    - Instrument
+    - Abbreviation
+    - Speed
+    - Word
+    - Language
+    - Percentage
+    - Code
+    - Distance
+    - Temperature
+    - Symbol
+    - Order
+    - Vehicle
+    - Weight
+    - Currency
     answer_choices_key: null
     id: 71090d59-dd02-4cbd-8032-ad86179b9bd4
-    jinja: "{{text}}\n\nWhat is this question asking for?\n|||\n{{ [\"Manner\",\n\
-      \     \"Creative Piece\",\n     \"Animal\",\n      \"Expression abbreviated\"\
-      ,\n      \"Individual\",\n      \"Group\",\n      \"Title\",\n      \"Defintion\"\
-      ,\n      \"Date\",\n      \"Reason\",\n      \"Event\",\n      \"State\",\n\
-      \      \"Description\",\n      \"Count\",\n      \"Other\",\n      \"Letter\"\
-      ,\n      \"Religion\",\n      \"Food\",\n      \"Country\",\n      \"Color\"\
-      ,\n      \"Term\",\n      \"City\",\n      \"Organ of the body\",\n      \"\
-      Disease or medicine\",\n      \"Mountain\",\n      \"Price\",\n      \"Product\"\
-      ,\n      \"Period\",\n      \"Substance\",\n      \"Sport\",\n      \"Plant\"\
-      ,\n      \"Technique\",\n      \"Size\",\n      \"Instrument\",\n      \"Abbreviation\"\
-      ,\n      \"Speed\",\n      \"Word\",\n      \"Language\",\n      \"Percentage\"\
-      ,\n      \"Code\",\n      \"Distance\",\n      \"Temperature\",\n      \"Symbol\"\
-      ,\n      \"Order\",\n      \"Vehicle\",\n      \"Weight\",\n      \"Currency\"\
-      ] [label_fine] }}"
+    jinja: '{{text}}
+
+
+      What is this question asking for?
+
+      |||
+
+      {{answer_choices[label_fine] }}'
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: true
       choices_in_prompt: false
-      metrics: []
-      original_task: null
+      metrics:
+      - Accuracy
+      original_task: true
     name: fine_grained_open_context_first
     reference: Fine grained classes without providing choices, context first.
   736b2629-ed57-48ce-a458-4cbc435c499b: !Template
-    answer_choices: null
+    answer_choices:
+    - city
+    - country
+    - mountain
+    - state
+    - other location
     answer_choices_key: null
     id: 736b2629-ed57-48ce-a458-4cbc435c499b
-    jinja: "{% if label_coarse == 5 %}\n{{text}}\n\nIs this question asking for {{\"\
-      a city, a country, a mountain, a state, or other location\"}}?\n|||\n{{ [\"\
-      Manner\",\n     \"Creative Piece\",\n     \"Animal\",\n      \"Expression abbreviated\"\
-      ,\n      \"Individual\",\n      \"Group\",\n      \"Title\",\n      \"Defintion\"\
-      ,\n      \"Date\",\n      \"Reason\",\n      \"Event\",\n      \"State\",\n\
-      \      \"Description\",\n      \"Count\",\n      \"Other\",\n      \"Letter\"\
-      ,\n      \"Religion\",\n      \"Food\",\n      \"Country\",\n      \"Color\"\
-      ,\n      \"Term\",\n      \"City\",\n      \"Organ of the body\",\n      \"\
-      Disease or medicine\",\n      \"Mountain\",\n      \"Price\",\n      \"Product\"\
-      ,\n      \"Period\",\n      \"Substance\",\n      \"Sport\",\n      \"Plant\"\
-      ,\n      \"Technique\",\n      \"Size\",\n      \"Instrument\",\n      \"Abbreviation\"\
-      ,\n      \"Speed\",\n      \"Word\",\n      \"Language\",\n      \"Percentage\"\
-      ,\n      \"Code\",\n      \"Distance\",\n      \"Temperature\",\n      \"Symbol\"\
-      ,\n      \"Order\",\n      \"Vehicle\",\n      \"Weight\",\n      \"Currency\"\
-      ] [label_fine] }}\n{% endif %}"
+    jinja: '{% set label_mapping = {21:0, 18:1, 24:2, 11:3, 14:4} %}
+
+      {% if label_coarse == 5 %}
+
+      {{text}}
+
+
+      Is this question asking for {{'', ''.join(answer_choices)}}?
+
+      |||
+
+      {{ answer_choices [label_mapping[label_fine]] }}
+
+      {% endif %}'
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: true
       choices_in_prompt: true
-      metrics: []
-      original_task: null
+      metrics:
+      - Accuracy
+      original_task: false
     name: fine_grained_LOC_context_first
     reference: Fine grained labels with coarse-label `LOC`, context provided first
   7a3ed4dd-af89-493c-8efb-c67622f63034: !Template
@@ -226,41 +321,46 @@ templates:
     - Location
     answer_choices_key: null
     id: 7a3ed4dd-af89-493c-8efb-c67622f63034
-    jinja: '{{text}} : ||| {{ answer_choices [label_coarse] }}'
+    jinja: "Which category best describes the following question: {{text}} \n\nChoose\
+      \ from the following list: \n{{', '.join(answer_choices)}}\n ||| {{ answer_choices\
+      \ [label_coarse] }}"
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: false
-      choices_in_prompt: null
-      metrics: []
-      original_task: null
-    name: gao_et_al_1
-    reference: Adapted from Making Pre-trained Language Models Better Few-shot Learners.
-      Tianyu Gao, Adam Fisch, and Danqi Chen. ArXiv 2020. Table B.1.
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
+      original_task: true
+    name: which_category_best_describes
+    reference: ''
   7a9e6f3c-1dee-45b0-a315-1badaf59a7b8: !Template
-    answer_choices: null
+    answer_choices:
+    - definition
+    - description
+    - manner of action
+    - reason
     answer_choices_key: null
     id: 7a9e6f3c-1dee-45b0-a315-1badaf59a7b8
-    jinja: "{% if label_coarse == 0 %}\nIs this question asking for {{\"a definition,\
-      \ a description, a manner of action, or a reason\"}}?\n{{text}}\n|||\n{{ [\"\
-      Manner\",\n     \"Creative Piece\",\n     \"Animal\",\n      \"Expression abbreviated\"\
-      ,\n      \"Individual\",\n      \"Group\",\n      \"Title\",\n      \"Defintion\"\
-      ,\n      \"Date\",\n      \"Reason\",\n      \"Event\",\n      \"State\",\n\
-      \      \"Description\",\n      \"Count\",\n      \"Other\",\n      \"Letter\"\
-      ,\n      \"Religion\",\n      \"Food\",\n      \"Country\",\n      \"Color\"\
-      ,\n      \"Term\",\n      \"City\",\n      \"Organ of the body\",\n      \"\
-      Disease or medicine\",\n      \"Mountain\",\n      \"Price\",\n      \"Product\"\
-      ,\n      \"Period\",\n      \"Substance\",\n      \"Sport\",\n      \"Plant\"\
-      ,\n      \"Technique\",\n      \"Size\",\n      \"Instrument\",\n      \"Abbreviation\"\
-      ,\n      \"Speed\",\n      \"Word\",\n      \"Language\",\n      \"Percentage\"\
-      ,\n      \"Code\",\n      \"Distance\",\n      \"Temperature\",\n      \"Symbol\"\
-      ,\n      \"Order\",\n      \"Vehicle\",\n      \"Weight\",\n      \"Currency\"\
-      ] [label_fine] }}\n{% endif %}"
+    jinja: '{% set label_mapping={0:2, 7:1,  12:0, 9:3} %}
+
+      {% if label_coarse == 0 %}
+
+      Is this question asking for {{'', ''.join(answer_choices)}}?
+
+      {{text}}
+
+      |||
+
+      {{ answer_choices[label_mapping[label_fine]] }}
+
+      {% endif %}'
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: true
       choices_in_prompt: true
-      metrics: []
-      original_task: null
+      metrics:
+      - Accuracy
+      original_task: false
     name: fine_grained_DESC
     reference: Fine grained labels with coarse-label `DESC`, context after question
   861d1a48-1113-4f35-b777-2b2f12ab9d5d: !Template
@@ -276,8 +376,7 @@ templates:
     jinja: '{{text}}
 
 
-      Is this asking about {{"a description, an entity, an abbreviation, a person,
-      a quantity, or a location"}}?
+      Is this asking about {{('', '').join(answer_choices)}}?
 
       |||
 
@@ -286,62 +385,45 @@ templates:
       _do_eval: false
       _do_train: true
       choices_in_prompt: true
-      metrics: []
-      original_task: null
+      metrics:
+      - Accuracy
+      original_task: true
     name: trec1
     reference: Context then prompt
   93a06e72-2c15-4f8a-a46c-6a10919c4ea4: !Template
-    answer_choices: null
+    answer_choices:
+    - abbreviation
+    - expression abbreviated
     answer_choices_key: null
     id: 93a06e72-2c15-4f8a-a46c-6a10919c4ea4
-    jinja: "{% if label_coarse == 2 %}\nIs this question asking for an {{\"abbreviation\
-      \ or an expression abbreviated\"}}?\n{{text}}\n|||\n{{ [\"Manner\",\n     \"\
-      Creative Piece\",\n     \"Animal\",\n      \"Expression abbreviated\",\n   \
-      \   \"Individual\",\n      \"Group\",\n      \"Title\",\n      \"Defintion\"\
-      ,\n      \"Date\",\n      \"Reason\",\n      \"Event\",\n      \"State\",\n\
-      \      \"Description\",\n      \"Count\",\n      \"Other\",\n      \"Letter\"\
-      ,\n      \"Religion\",\n      \"Food\",\n      \"Country\",\n      \"Color\"\
-      ,\n      \"Term\",\n      \"City\",\n      \"Organ of the body\",\n      \"\
-      Disease or medicine\",\n      \"Mountain\",\n      \"Price\",\n      \"Product\"\
-      ,\n      \"Period\",\n      \"Substance\",\n      \"Sport\",\n      \"Plant\"\
-      ,\n      \"Technique\",\n      \"Size\",\n      \"Instrument\",\n      \"Abbreviation\"\
-      ,\n      \"Speed\",\n      \"Word\",\n      \"Language\",\n      \"Percentage\"\
-      ,\n      \"Code\",\n      \"Distance\",\n      \"Temperature\",\n      \"Symbol\"\
-      ,\n      \"Order\",\n      \"Vehicle\",\n      \"Weight\",\n      \"Currency\"\
-      ] [label_fine] }}\n{% endif %}"
+    jinja: "{% set label_mapping={34:0, 3:1} %} \n{% if label_coarse == 2 %}\nIs this\
+      \ question asking for an {{', '.join(answer_choices)}}?\n{{text}}\n|||\n{{answer_choices[label_mapping[label_fine]]\
+      \ }}\n{% endif %}"
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: true
       choices_in_prompt: true
-      metrics: []
-      original_task: null
+      metrics:
+      - Accuracy
+      original_task: false
     name: fine_grained_ABBR
     reference: Fine grained labels with coarse-label `ABBR`, context after question
   a0096044-3b4c-4c80-b139-25eac8fe692a: !Template
-    answer_choices: null
+    answer_choices:
+    - abbreviation
+    - expression abbreviated
     answer_choices_key: null
     id: a0096044-3b4c-4c80-b139-25eac8fe692a
-    jinja: "{% if label_coarse == 2 %}\n{{text}}\n\nIs this question asking for an\
-      \ {{\"abbreviation or an expression abbreviated\"}}?\n|||\n{{ [\"Manner\",\n\
-      \     \"Creative Piece\",\n     \"Animal\",\n      \"Expression abbreviated\"\
-      ,\n      \"Individual\",\n      \"Group\",\n      \"Title\",\n      \"Defintion\"\
-      ,\n      \"Date\",\n      \"Reason\",\n      \"Event\",\n      \"State\",\n\
-      \      \"Description\",\n      \"Count\",\n      \"Other\",\n      \"Letter\"\
-      ,\n      \"Religion\",\n      \"Food\",\n      \"Country\",\n      \"Color\"\
-      ,\n      \"Term\",\n      \"City\",\n      \"Organ of the body\",\n      \"\
-      Disease or medicine\",\n      \"Mountain\",\n      \"Price\",\n      \"Product\"\
-      ,\n      \"Period\",\n      \"Substance\",\n      \"Sport\",\n      \"Plant\"\
-      ,\n      \"Technique\",\n      \"Size\",\n      \"Instrument\",\n      \"Abbreviation\"\
-      ,\n      \"Speed\",\n      \"Word\",\n      \"Language\",\n      \"Percentage\"\
-      ,\n      \"Code\",\n      \"Distance\",\n      \"Temperature\",\n      \"Symbol\"\
-      ,\n      \"Order\",\n      \"Vehicle\",\n      \"Weight\",\n      \"Currency\"\
-      ] [label_fine] }}\n{% endif %}"
+    jinja: "{% set label_mapping = {34:0, 3:1} %} \n{% if label_coarse == 2 %}\n{{text}}\n\
+      \nIs this question asking for an {{', '.join(answer_choices)}}?\n|||\n{{ answer_choices\
+      \ [label_mapping[label_fine]] }}\n{% endif %}"
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: true
       choices_in_prompt: true
-      metrics: []
-      original_task: null
+      metrics:
+      - Accuracy
+      original_task: false
     name: fine_grained_ABBR_context_first
     reference: Fine grained labels with coarse-label `ABBR`, context provided first
   aad2def1-b694-40ee-9c26-3d1cf5c577da: !Template
@@ -354,8 +436,7 @@ templates:
     - Location
     answer_choices_key: null
     id: aad2def1-b694-40ee-9c26-3d1cf5c577da
-    jinja: 'Is the following question asking about {{"a description, an entity, an
-      abbreviation, a person, a quantity, or a location"}}?
+    jinja: 'Is the following question asking about {{'', ''.join(answer_choices)}}?
 
 
       {{text}}
@@ -367,114 +448,166 @@ templates:
       _do_eval: false
       _do_train: true
       choices_in_prompt: true
-      metrics: []
-      original_task: null
+      metrics:
+      - Accuracy
+      original_task: true
     name: trec2
     reference: Prompt then context
   bc58ba18-24a5-4553-be0a-2dba60efdad6: !Template
-    answer_choices: null
+    answer_choices:
+    - group
+    - individual
+    - title
+    - description
     answer_choices_key: null
     id: bc58ba18-24a5-4553-be0a-2dba60efdad6
-    jinja: "{% if label_coarse == 3 %}\nIs this question asking for {{\"a group, an\
-      \ individual, a title, or a description\"}}?\n{{text}}\n|||\n{{ [\"Manner\"\
-      ,\n     \"Creative Piece\",\n     \"Animal\",\n      \"Expression abbreviated\"\
-      ,\n      \"Individual\",\n      \"Group\",\n      \"Title\",\n      \"Defintion\"\
-      ,\n      \"Date\",\n      \"Reason\",\n      \"Event\",\n      \"State\",\n\
-      \      \"Description\",\n      \"Count\",\n      \"Other\",\n      \"Letter\"\
-      ,\n      \"Religion\",\n      \"Food\",\n      \"Country\",\n      \"Color\"\
-      ,\n      \"Term\",\n      \"City\",\n      \"Organ of the body\",\n      \"\
-      Disease or medicine\",\n      \"Mountain\",\n      \"Price\",\n      \"Product\"\
-      ,\n      \"Period\",\n      \"Substance\",\n      \"Sport\",\n      \"Plant\"\
-      ,\n      \"Technique\",\n      \"Size\",\n      \"Instrument\",\n      \"Abbreviation\"\
-      ,\n      \"Speed\",\n      \"Word\",\n      \"Language\",\n      \"Percentage\"\
-      ,\n      \"Code\",\n      \"Distance\",\n      \"Temperature\",\n      \"Symbol\"\
-      ,\n      \"Order\",\n      \"Vehicle\",\n      \"Weight\",\n      \"Currency\"\
-      ] [label_fine] }}\n{% endif %}"
+    jinja: '{% set label_mapping = {5:0, 4:1, 6:2, 12:3} %}
+
+      {% if label_coarse == 3 %}
+
+      Is this question asking for {{'', ''.join(answer_choices)}}?
+
+      {{text}}
+
+      |||
+
+      {{ answer_choices[label_mapping[label_fine]] }}
+
+      {% endif %}'
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: true
       choices_in_prompt: true
-      metrics: []
-      original_task: null
+      metrics:
+      - Accuracy
+      original_task: false
     name: fine_grained_HUM
     reference: Fine grained labels with coarse-label `HUM`, context after question
   cfa8fde0-8320-4050-8d6e-7619ab14adea: !Template
-    answer_choices: null
+    answer_choices:
+    - Manner
+    - Creative Piece
+    - Animal
+    - Expression abbreviated
+    - Individual
+    - Group
+    - Title
+    - Defintion
+    - Date
+    - Reason
+    - Event
+    - State
+    - Description
+    - Count
+    - Other
+    - Letter
+    - Religion
+    - Food
+    - Country
+    - Color
+    - Term
+    - City
+    - Organ of the body
+    - Disease or medicine
+    - Mountain
+    - Price
+    - Product
+    - Period
+    - Substance
+    - Sport
+    - Plant
+    - Technique
+    - Size
+    - Instrument
+    - Abbreviation
+    - Speed
+    - Word
+    - Language
+    - Percentage
+    - Code
+    - Distance
+    - Temperature
+    - Symbol
+    - Order
+    - Vehicle
+    - Weight
+    - Currency
     answer_choices_key: null
     id: cfa8fde0-8320-4050-8d6e-7619ab14adea
-    jinja: "What is this question asking for?\n\n{{text}}\n|||\n{{ [\"Manner\",\n\
-      \     \"Creative Piece\",\n     \"Animal\",\n      \"Expression abbreviated\"\
-      ,\n      \"Individual\",\n      \"Group\",\n      \"Title\",\n      \"Defintion\"\
-      ,\n      \"Date\",\n      \"Reason\",\n      \"Event\",\n      \"State\",\n\
-      \      \"Description\",\n      \"Count\",\n      \"Other\",\n      \"Letter\"\
-      ,\n      \"Religion\",\n      \"Food\",\n      \"Country\",\n      \"Color\"\
-      ,\n      \"Term\",\n      \"City\",\n      \"Organ of the body\",\n      \"\
-      Disease or medicine\",\n      \"Mountain\",\n      \"Price\",\n      \"Product\"\
-      ,\n      \"Period\",\n      \"Substance\",\n      \"Sport\",\n      \"Plant\"\
-      ,\n      \"Technique\",\n      \"Size\",\n      \"Instrument\",\n      \"Abbreviation\"\
-      ,\n      \"Speed\",\n      \"Word\",\n      \"Language\",\n      \"Percentage\"\
-      ,\n      \"Code\",\n      \"Distance\",\n      \"Temperature\",\n      \"Symbol\"\
-      ,\n      \"Order\",\n      \"Vehicle\",\n      \"Weight\",\n      \"Currency\"\
-      ] [label_fine] }}"
+    jinja: 'What is this question asking for?
+
+
+      {{text}}
+
+      |||
+
+      {{ answer_choices[label_fine] }}'
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: true
       choices_in_prompt: false
-      metrics: []
-      original_task: null
+      metrics:
+      - Accuracy
+      original_task: true
     name: fine_grained_open
     reference: Fine grained classes without providing choices.
   e98b9294-76b4-4172-a78c-9c6e5fdfe73b: !Template
-    answer_choices: null
+    answer_choices:
+    - group
+    - individual
+    - title
+    - description
     answer_choices_key: null
     id: e98b9294-76b4-4172-a78c-9c6e5fdfe73b
-    jinja: "{% if label_coarse == 3 %}\n{{text}}\n\nIs this question asking for {{\"\
-      a group, an individual, a title, or a description\"}}?\n|||\n{{ [\"Manner\"\
-      ,\n     \"Creative Piece\",\n     \"Animal\",\n      \"Expression abbreviated\"\
-      ,\n      \"Individual\",\n      \"Group\",\n      \"Title\",\n      \"Defintion\"\
-      ,\n      \"Date\",\n      \"Reason\",\n      \"Event\",\n      \"State\",\n\
-      \      \"Description\",\n      \"Count\",\n      \"Other\",\n      \"Letter\"\
-      ,\n      \"Religion\",\n      \"Food\",\n      \"Country\",\n      \"Color\"\
-      ,\n      \"Term\",\n      \"City\",\n      \"Organ of the body\",\n      \"\
-      Disease or medicine\",\n      \"Mountain\",\n      \"Price\",\n      \"Product\"\
-      ,\n      \"Period\",\n      \"Substance\",\n      \"Sport\",\n      \"Plant\"\
-      ,\n      \"Technique\",\n      \"Size\",\n      \"Instrument\",\n      \"Abbreviation\"\
-      ,\n      \"Speed\",\n      \"Word\",\n      \"Language\",\n      \"Percentage\"\
-      ,\n      \"Code\",\n      \"Distance\",\n      \"Temperature\",\n      \"Symbol\"\
-      ,\n      \"Order\",\n      \"Vehicle\",\n      \"Weight\",\n      \"Currency\"\
-      ] [label_fine] }}\n{% endif %}"
+    jinja: '{% set label_mapping = {5:0, 4:1, 6:2, 12:3} %}
+
+      {% if label_coarse == 3 %}
+
+      {{text}}
+
+
+      Is this question asking for {{'', ''.join(answer_choices)}}?
+
+      |||
+
+      {{ answer_choices [label_mapping[label_fine]] }}{% endif %}'
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: true
       choices_in_prompt: true
-      metrics: []
-      original_task: null
+      metrics:
+      - Accuracy
+      original_task: false
     name: fine_grained_HUM_context_first
     reference: Fine grained labels with coarse-label `HUM`, context provided first
   fa588c55-5c69-4fd0-a0b1-edbfa092f710: !Template
-    answer_choices: null
+    answer_choices:
+    - definition
+    - description
+    - manner of action
+    - reason
     answer_choices_key: null
     id: fa588c55-5c69-4fd0-a0b1-edbfa092f710
-    jinja: "{% if label_coarse == 0 %}\n{{text}}\n\nIs this question asking for {{\"\
-      a definition, a description, a manner of action, or a reason\"}}?\n|||\n{{ [\"\
-      Manner\",\n     \"Creative Piece\",\n     \"Animal\",\n      \"Expression abbreviated\"\
-      ,\n      \"Individual\",\n      \"Group\",\n      \"Title\",\n      \"Defintion\"\
-      ,\n      \"Date\",\n      \"Reason\",\n      \"Event\",\n      \"State\",\n\
-      \      \"Description\",\n      \"Count\",\n      \"Other\",\n      \"Letter\"\
-      ,\n      \"Religion\",\n      \"Food\",\n      \"Country\",\n      \"Color\"\
-      ,\n      \"Term\",\n      \"City\",\n      \"Organ of the body\",\n      \"\
-      Disease or medicine\",\n      \"Mountain\",\n      \"Price\",\n      \"Product\"\
-      ,\n      \"Period\",\n      \"Substance\",\n      \"Sport\",\n      \"Plant\"\
-      ,\n      \"Technique\",\n      \"Size\",\n      \"Instrument\",\n      \"Abbreviation\"\
-      ,\n      \"Speed\",\n      \"Word\",\n      \"Language\",\n      \"Percentage\"\
-      ,\n      \"Code\",\n      \"Distance\",\n      \"Temperature\",\n      \"Symbol\"\
-      ,\n      \"Order\",\n      \"Vehicle\",\n      \"Weight\",\n      \"Currency\"\
-      ] [label_fine] }}\n{% endif %}"
+    jinja: '{% set label_mapping={0:2, 7:1,  12:0, 9:3} %}
+
+      {% if label_coarse == 0 %}
+
+      {{text}}
+
+
+      Is this question asking for {{'', ''.join(answer_choices)}}?
+
+      |||
+
+      {{ answer_choices [label_mapping[label_fine]] }}
+
+      {% endif %}'
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: true
-      choices_in_prompt: true
-      metrics: []
-      original_task: null
+      choices_in_prompt: false
+      metrics:
+      - Accuracy
+      original_task: false
     name: fine_grained_DESC_context_first
     reference: Fine grained labels with coarse-label `DESC`, context provided first
