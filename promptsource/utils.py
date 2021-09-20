@@ -1,6 +1,7 @@
 # coding=utf-8
 
 import os
+
 import datasets
 import requests
 
@@ -35,7 +36,7 @@ def get_dataset_builder(path, conf=None):
     # `datasets.load.prepare_module` pulls infos from hf/datasets's master.
     # story_cloze hasn't been merged yet (https://github.com/huggingface/datasets/pull/2907)
     # This is a temporary fix for the tests (more specifically test_templates.py)
-    # Once PR 2907 is merged, we can remove these lines (along with the `custom_datasets` folder)
+    # Once PR 2907 is merged, we can remove this if condition (along with the `custom_datasets` folder)
     # Also see `promptsource.seqio_tasks.utils.get_dataset_splits`
     if path == "story_cloze":
         path = os.path.join(os.path.dirname(__file__), "custom_datasets/story_cloze/")
