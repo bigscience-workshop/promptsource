@@ -282,6 +282,12 @@ seqio.MixtureRegistry.add(
 )
 
 seqio.MixtureRegistry.add(
+    "d4_gpt_sglue_train",
+    [task for task in d4_train_mixture + gpt_train_mixture + sglue_train_mixture if task not in TASK_BLACKLIST],
+    default_rate=lambda t: mixture_cap[t.name],
+)
+
+seqio.MixtureRegistry.add(
     "d4_eval",
     [task for task in d4_eval_mixture if task not in TASK_BLACKLIST],
     default_rate=functools.partial(seqio.mixing_rate_num_examples, maximum=500_000),
