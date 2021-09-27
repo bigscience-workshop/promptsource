@@ -8,8 +8,7 @@ from typing import Dict, List, Optional, Tuple
 import pandas as pd
 import pkg_resources
 import yaml
-from jinja2 import BaseLoader, Environment
-from jinja2.exceptions import UndefinedError
+from jinja2 import BaseLoader, Environment, meta
 
 
 # Truncation of jinja template variables
@@ -158,11 +157,13 @@ class Template(yaml.YAMLObject):
             return self.get_answer_choices()
 
         jinja = self.answer_choices_key
-        rtemplate = env.from_string(jinja)
-        try:
+        parse = env.parse(jinja)
+        variables = meta.find_undeclared_variables(parse)
+        if len(variables) == 0:
+            rtemplate = env.from_string(jinja)
             rendered_choices = rtemplate.render()
             return [answer_choice.strip() for answer_choice in rendered_choices.split("|||")]
-        except UndefinedError:
+        else:
             return None
 
     def apply(self, example, truncate=True, highlight_variables=False):
