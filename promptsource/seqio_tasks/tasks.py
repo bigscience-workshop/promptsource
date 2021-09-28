@@ -313,6 +313,18 @@ seqio.MixtureRegistry.add(
 )
 
 seqio.MixtureRegistry.add(
+    "d4_train_score_eval",
+    [
+        task
+        for task in seqio.TaskRegistry.names()
+        if task.endswith("_score_eval")
+        and task.split("_score_eval")[0] in d4_train_mixture
+        and task.split("_score_eval")[0] not in TASK_BLACKLIST
+    ],
+    default_rate=functools.partial(seqio.mixing_rate_num_examples, maximum=500_000),
+)
+
+seqio.MixtureRegistry.add(
     "d4_train_one_og_prompt",
     [task for task in single_original_task.values() if task in d4_train_mixture and task not in TASK_BLACKLIST],
     default_rate=lambda t: mixture_cap[t.name],
