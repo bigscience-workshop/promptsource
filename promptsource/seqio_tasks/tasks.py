@@ -174,7 +174,8 @@ gpt_train_mixture: List[str] = []
 sglue_train_mixture: List[str] = []
 d4_eval_mixture: List[str] = []
 mixture_cap: Dict[str, int] = {}
-single_original_task: Dict[Tuple[str, str], int] = {}
+single_original_task: Dict[Tuple[str, str], str] = {}
+all_original_tasks: List[str] = []
 for dataset_name, subset_name in all_templates.keys:
     if (dataset_name, subset_name) not in all_datasets:
         all_templates.remove(dataset_name, subset_name)
@@ -200,6 +201,9 @@ for dataset_name, subset_name in all_templates.keys:
 
         if (dataset_name, subset_name) not in single_original_task and template.metadata.original_task:
             single_original_task[(dataset_name, subset_name)] = task_name
+
+        if template.metadata.original_task:
+            all_original_tasks.append(task_name)
 
         if (dataset_name, subset_name) in d4_train:
             d4_train_mixture.append(task_name)
@@ -333,6 +337,36 @@ seqio.MixtureRegistry.add(
     default_rate=functools.partial(seqio.mixing_rate_num_examples, maximum=500_000),
 )
 
+# Train tasks we don't care about evaluating on
+D4_TRAIN_SKIP_EVAL = [
+    "paws_labeled_final",
+    "adversarial_qa_dbidaf",
+    "adversarial_qa_dbert",
+    "duorc_ParaphraseRC",
+    "dream",
+    "amazon_polarity",
+    "app_reviews",
+    "imdb",
+    "wiki_bio",
+    "gigaword",
+    "multi_news",
+    "samsum",
+    "dbpedia_14",
+    "trec",
+]
+
+seqio.MixtureRegistry.add(
+    "d4_train_eval",
+    [
+        task
+        for task in d4_train_mixture
+        if task not in TASK_BLACKLIST
+        and not any([skip in task for skip in D4_TRAIN_SKIP_EVAL])
+        and task in all_original_tasks
+    ],
+    default_rate=lambda t: mixture_cap[t.name],
+)
+
 seqio.MixtureRegistry.add(
     "d4_train_score_eval",
     [
@@ -342,6 +376,8 @@ seqio.MixtureRegistry.add(
         and task.split("_score_eval")[0] in d4_train_mixture
         and task.split("_score_eval")[0] not in TASK_BLACKLIST
         and task not in D4_TRAIN_SCORE_EVAL_TASK_BLACKLIST
+        and not any([skip in task for skip in D4_TRAIN_SKIP_EVAL])
+        and task.split("_score_eval")[0] in all_original_tasks
     ],
     default_rate=functools.partial(seqio.mixing_rate_num_examples, maximum=500_000),
 )
