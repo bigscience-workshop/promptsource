@@ -37,7 +37,11 @@ def apply_template(dataset, template):
         ex = promptsource.utils.removeHyphen(ex)
         inputs_and_targets = template.apply(ex)
         answer_choices = template.get_answer_choices_list(ex)
-        if len(inputs_and_targets) == 2:
+        result_length = len(inputs_and_targets)
+        if result_length == 1:
+            inputs = inputs_and_targets[0]
+            ex = {"inputs": inputs, "targets": "<NO LABEL>"}
+        elif result_length == 2:
             inputs, targets = inputs_and_targets
             ex = {"inputs": inputs, "targets": targets}
         # When template results in an empty example, template.apply returns [""]
