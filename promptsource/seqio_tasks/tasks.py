@@ -377,7 +377,7 @@ seqio.MixtureRegistry.add(
         and task.split("_score_eval")[0] not in TASK_BLACKLIST
         and task not in D4_TRAIN_SCORE_EVAL_TASK_BLACKLIST
         and not any([skip in task for skip in D4_TRAIN_SKIP_EVAL])
-        and task in all_original_tasks
+        and task.split("_score_eval")[0] in all_original_tasks
     ],
     default_rate=functools.partial(seqio.mixing_rate_num_examples, maximum=500_000),
 )
