@@ -339,7 +339,7 @@ seqio.MixtureRegistry.add(
 
 # Train tasks we don't care about evaluating on
 D4_TRAIN_SKIP_EVAL = [
-    "glue_qqp",
+    "paws_labeled_final",
     "adversarial_qa_dbidaf",
     "adversarial_qa_dbert",
     "duorc_ParaphraseRC",
