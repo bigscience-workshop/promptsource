@@ -387,3 +387,9 @@ seqio.MixtureRegistry.add(
     [task for task in single_original_task.values() if task in d4_train_mixture and task not in TASK_BLACKLIST],
     default_rate=lambda t: mixture_cap[t.name],
 )
+
+seqio.MixtureRegistry.add(
+    "d4_train_all_og_prompts",
+    [task for task in all_original_tasks if task in d4_train_mixture and task not in TASK_BLACKLIST],
+    default_rate=lambda t: mixture_cap[t.name],
+)
