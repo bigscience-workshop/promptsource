@@ -14,7 +14,7 @@ templates:
 
       |||
 
-      {{answer_choices[label]}}'
+      {% if label != -1 %}{{answer_choices[label]}}{% endif %}'
     metadata: !TemplateMetadata
       choices_in_prompt: true
       metrics:
@@ -29,7 +29,8 @@ templates:
     answer_choices_key: null
     id: 42d47df9-09de-4691-8e49-7cfadd636cdd
     jinja: "{{ paragraph }}\nBased on the previous passage, {{ question }} \nIs \"\
-      {{ answer }}\" a correct answer? ||| {{ answer_choices[label] }}"
+      {{ answer }}\" a correct answer? ||| {% if label != -1 %}{{ answer_choices[label]\
+      \ }}{% endif %}"
     metadata: !TemplateMetadata
       _do_eval: true
       _do_train: true
@@ -52,7 +53,7 @@ templates:
 
       |||
 
-      {{answer_choices[label]}}'
+      {% if label != -1 %}{{answer_choices[label]}}{% endif %}'
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
@@ -67,7 +68,7 @@ templates:
     answer_choices_key: null
     id: 4fc9e1ea-7451-4dba-a2cb-ce870e35ef8b
     jinja: "{{ paragraph }}\n{{ question }} \nWould it be good to answer \"{{ answer\
-      \ }}\"? ||| {{ answer_choices[label] }}"
+      \ }}\"? ||| {% if label != -1 %}{{ answer_choices[label] }}{% endif %}"
     metadata: !TemplateMetadata
       _do_eval: true
       _do_train: true
@@ -83,8 +84,8 @@ templates:
     - 'Yes'
     answer_choices_key: null
     id: 59a2d847-27f3-4002-a125-cf9a291b3098
-    jinja: "{{ paragraph }}\nQuestion: {{ question }} \nIs it {{ answer }}? ||| {{\
-      \ answer_choices[label] }}"
+    jinja: "{{ paragraph }}\nQuestion: {{ question }} \nIs it {{ answer }}? ||| {%\
+      \ if label != -1 %}{{ answer_choices[label] }}{% endif %}"
     metadata: !TemplateMetadata
       _do_eval: true
       _do_train: true
@@ -107,7 +108,7 @@ templates:
 
       |||
 
-      {{answer_choices[label]}}'
+      {% if label != -1 %}{{answer_choices[label]}}{% endif %}'
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
@@ -122,7 +123,7 @@ templates:
     answer_choices_key: null
     id: 7d878b89-2774-429a-82fb-ac801379e3ae
     jinja: "{{ paragraph }}\nQuestion: {{ question }} \nIs the correct answer {{ answer\
-      \ }}? ||| {{ answer_choices[label] }}"
+      \ }}? ||| {% if label != -1 %}{{ answer_choices[label] }}{% endif %}"
     metadata: !TemplateMetadata
       _do_eval: true
       _do_train: true
@@ -145,7 +146,7 @@ templates:
 
       |||
 
-      {{answer_choices[label]}}'
+      {% if label != -1 %}{{answer_choices[label]}}{% endif %}'
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
@@ -166,7 +167,7 @@ templates:
 
       |||
 
-      {{answer_choices[label]}}'
+      {% if label != -1 %}{{answer_choices[label]}}{% endif %}'
     metadata: !TemplateMetadata
       choices_in_prompt: true
       metrics:
@@ -181,7 +182,8 @@ templates:
     answer_choices_key: null
     id: d2d78b88-8845-45b5-935a-6451da00b285
     jinja: "{{ paragraph }}\n{{ question }} \nI was going to say \"{{ answer }}\"\
-      . Does that sound right? ||| {{ answer_choices[label] }}"
+      . Does that sound right? ||| {% if label != -1 %}{{ answer_choices[label] }}{%\
+      \ endif %}"
     metadata: !TemplateMetadata
       _do_eval: true
       _do_train: true
