@@ -8,8 +8,8 @@ templates:
     answer_choices_key: null
     id: 2b52a83c-0021-41fe-b44c-5aaa076d71a2
     jinja: '{{premise}} Using only the above description and what you know about the
-      world, is "{{hypothesis}}" definitely correct? Yes or no? ||| {{ answer_choices[label]
-      }}'
+      world, is "{{hypothesis}}" definitely correct? Yes or no? ||| {% if label != -1 %}{{ answer_choices[label]
+      }}{% endif %}'
     metadata: !TemplateMetadata
       choices_in_prompt: true
       metrics:
@@ -24,7 +24,7 @@ templates:
     answer_choices_key: null
     id: 2d0d63da-ffcf-4f6e-941a-b8da922be43e
     jinja: 'Given {{premise}} Is it guaranteed true that "{{hypothesis}}"? Yes or
-      no? ||| {{ answer_choices[label] }} '
+      no? ||| {% if label != -1 %}{{ answer_choices[label] }}{% endif %}'
     metadata: !TemplateMetadata
       choices_in_prompt: true
       metrics:
@@ -39,7 +39,7 @@ templates:
     answer_choices_key: null
     id: 4163e6f1-1a83-4c73-b867-02eb7ac80316
     jinja: 'Suppose {{premise}} Can we infer that "{{hypothesis}}"? Yes or no? |||
-      {{ answer_choices[label] }} '
+      {% if label != -1 %}{{ answer_choices[label] }}{% endif %}'
     metadata: !TemplateMetadata
       choices_in_prompt: true
       metrics:
@@ -55,7 +55,7 @@ templates:
     id: 8fb1c6aa-20e9-438c-bece-c6af1c746449
     jinja: '{{premise}}
 
-      Question: {{hypothesis}} True or False? ||| {{ answer_choices[label] }}'
+      Question: {{hypothesis}} True or False? ||| {% if label != -1 %}{{ answer_choices[label] }}{% endif %}'
     metadata: !TemplateMetadata
       _do_eval: true
       _do_train: false
@@ -72,7 +72,7 @@ templates:
     answer_choices_key: null
     id: 9e078fb4-505b-413c-bb5e-3cd16ddcf5d7
     jinja: "{{premise}} \n\nQuestion: Does this imply that \"{{hypothesis}}\"? Yes\
-      \ or no? ||| {{answer_choices[label]}}"
+      \ or no? ||| {% if label != -1 %}{{answer_choices[label]}}{% endif %}"
     metadata: !TemplateMetadata
       choices_in_prompt: true
       metrics:
@@ -87,7 +87,7 @@ templates:
     answer_choices_key: null
     id: b8dc85c6-28b6-4340-979a-8e77c2a0dde8
     jinja: 'Given {{premise}} Should we assume that "{{hypothesis}}" is true? Yes
-      or no? ||| {{ answer_choices[label] }} '
+      or no? ||| {% if label != -1 %}{{ answer_choices[label] }}{% endif %}'
     metadata: !TemplateMetadata
       choices_in_prompt: true
       metrics:
@@ -102,7 +102,7 @@ templates:
     answer_choices_key: null
     id: e2fb58f2-b1f2-4aef-b74b-c4ee1c571fff
     jinja: Given that {{premise}} Does it follow that {{hypothesis}} Yes or no? |||
-      {{ answer_choices[label] }}
+      {% if label != -1 %}{{ answer_choices[label] }}{% endif %}
     metadata: !TemplateMetadata
       _do_eval: true
       _do_train: false
@@ -119,7 +119,7 @@ templates:
     answer_choices_key: null
     id: ed1f4b75-8826-4852-9bd6-aedf368678f5
     jinja: '{{premise}} Based on the previous passage, is it true that "{{hypothesis}}"?
-      Yes or no? ||| {{ answer_choices[label] }}'
+      Yes or no? ||| {% if label != -1 %}{{ answer_choices[label] }}{% endif %}'
     metadata: !TemplateMetadata
       _do_eval: true
       _do_train: false
@@ -136,7 +136,7 @@ templates:
     answer_choices_key: null
     id: ee0ce095-122a-4509-bf0b-33d1495295f7
     jinja: '{{premise}} Are we justified in saying that "{{hypothesis}}"? Yes or no?
-      ||| {{ answer_choices[label] }} '
+      ||| {% if label != -1 %}{{ answer_choices[label] }}{% endif %}'
     metadata: !TemplateMetadata
       choices_in_prompt: true
       metrics:
@@ -151,7 +151,7 @@ templates:
     answer_choices_key: null
     id: fb4f8144-37f5-4977-88da-37a5d0bfd0e8
     jinja: 'Given that {{premise}} Therefore, it must be true that "{{hypothesis}}"?
-      Yes or no? ||| {{ answer_choices[label] }} '
+      Yes or no? ||| {% if label != -1 %}{{ answer_choices[label] }}{% endif %}'
     metadata: !TemplateMetadata
       choices_in_prompt: true
       metrics:
