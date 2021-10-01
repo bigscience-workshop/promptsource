@@ -8,7 +8,7 @@ templates:
     answer_choices_key: null
     id: 212fb8b1-8436-4f64-8f37-a9094fe029f4
     jinja: '{{ text }} In the previous sentence, does the pronoun "{{ span2_text.lower()
-      }}" refer to {{ span1_text }}? Yes or no? ||| {{ answer_choices[label] }}'
+      }}" refer to {{ span1_text }}? Yes or no? ||| {% if label != -1 %}{{ answer_choices[label] }}{% endif %}'
     metadata: !TemplateMetadata
       _do_eval: true
       _do_train: true
@@ -25,7 +25,7 @@ templates:
     answer_choices_key: null
     id: 23361c5d-b67f-4c2a-9da7-16301c55d0e1
     jinja: '{{ text }} Here, by "{{ span2_text }}" they mean "{{ span1_text }}". Yes
-      or no? ||| {{ answer_choices[label] }}'
+      or no? ||| {% if label != -1 %}{{ answer_choices[label] }}{% endif %}'
     metadata: !TemplateMetadata
       choices_in_prompt: true
       metrics:
@@ -40,8 +40,8 @@ templates:
     answer_choices_key: null
     id: 2f17f18b-6daa-44ef-a2dd-dddaf04aec0e
     jinja: "{{ text }} \n\nIn other words, {{ text.split(\" \")[span2_index:] | join(\"\
-      \ \") | replace(span2_text, span1_text) }} True or false? ||| {{ answer_choices[label]\
-      \ }}"
+      \ \") | replace(span2_text, span1_text) }} True or false? ||| {% if label != -1 %}{{ answer_choices[label]\
+      \ }}{% endif %}"
     metadata: !TemplateMetadata
       choices_in_prompt: true
       metrics:
@@ -56,8 +56,8 @@ templates:
     answer_choices_key: null
     id: 4b3e29cc-ccb8-4e4c-a845-4935ca29cf34
     jinja: '{{ text }} I think they mean "{{ text.split(" ")[span2_index:] | join("
-      ") | replace(span2_text, span1_text) }}" Yes or no? ||| {{ answer_choices[label]
-      }}'
+      ") | replace(span2_text, span1_text) }}" Yes or no? ||| {% if label != -1 %}{{ answer_choices[label]
+      }}{% endif %}'
     metadata: !TemplateMetadata
       choices_in_prompt: true
       metrics:
@@ -72,7 +72,7 @@ templates:
     answer_choices_key: null
     id: 7482d24f-cf45-4013-b82d-369489fc958b
     jinja: '{{ text }} Here, does "{{ span2_text.lower() }}" stand for {{ span1_text
-      }}? Yes or no? ||| {{ answer_choices[label] }}'
+      }}? Yes or no? ||| {% if label != -1 %}{{ answer_choices[label] }}{% endif %}'
     metadata: !TemplateMetadata
       _do_eval: true
       _do_train: true
@@ -89,8 +89,8 @@ templates:
     answer_choices_key: null
     id: 7d377293-d043-4b6c-8ec1-d61eaf14ec67
     jinja: "Passage: {{ text }} \n\nQuestion: In the passage above, does the pronoun\
-      \ \"{{ span2_text }}\" refer to {{ span1_text }}?\n\nAnswer: ||| {{ answer_choices[label]\
-      \ }}"
+      \ \"{{ span2_text }}\" refer to {{ span1_text }}?\n\nAnswer: ||| {% if label != -1 %}{{ answer_choices[label]\
+      \ }}{% endif %}"
     metadata: !TemplateMetadata
       _do_eval: true
       _do_train: true
@@ -107,8 +107,8 @@ templates:
     answer_choices_key: null
     id: 809eacd0-2f6c-4e3a-b52a-57c783879d36
     jinja: '{{ text }} In the previous sentence, can the pronoun "{{ span2_text }}"
-      be replaced with "{{ span1_text }}"? Yes or no? ||| {{ answer_choices[label]
-      }}'
+      be replaced with "{{ span1_text }}"? Yes or no? ||| {% if label != -1 %}{{ answer_choices[label]
+      }}{% endif %}'
     metadata: !TemplateMetadata
       choices_in_prompt: true
       metrics:
@@ -125,7 +125,7 @@ templates:
     jinja: "Context: {{ text }} \n\n{% if span2_text.lower()  == \"they\" or span2_text.lower()\
       \ == \"them\" %}\nQuestion: \"{{ span2_text }}\" are {{ span1_text }}. True\
       \ or false?\n{% else %}\nQuestion: \"{{ span2_text }}\" is {{ span1_text }}.\
-      \ True or false?\n{% endif %}\n\nAnswer: ||| {{ answer_choices[label] }}"
+      \ True or false?\n{% endif %}\n\nAnswer: ||| {% if label != -1 %}{{ answer_choices[label] }}{% endif %}"
     metadata: !TemplateMetadata
       choices_in_prompt: true
       metrics:
@@ -140,7 +140,7 @@ templates:
     answer_choices_key: null
     id: aae24b54-c3a7-4f69-8b77-f6dc115988f8
     jinja: "{{ text }} \nIn the passage above, the pronoun \"{{ span2_text }}\" refers\
-      \ to {{ span1_text }}. True or false? ||| {{ answer_choices[label] }}"
+      \ to {{ span1_text }}. True or false? ||| {% if label != -1 %}{{ answer_choices[label] }}{% endif %}"
     metadata: !TemplateMetadata
       _do_eval: true
       _do_train: true
@@ -159,7 +159,7 @@ templates:
     jinja: "{{ text }} \n{% if span2_text.lower()  == \"they\" or span2_text.lower()\
       \ == \"them\" %}\nQuestion: Who are \"{{ span2_text.lower() }}\"? {{ span1_text\
       \ }}?\n{% else %}\nQuestion: Who is \"{{ span2_text.lower() }}\"? Is it {{ span1_text\
-      \ }}?\n{% endif %}\nAnswer: ||| {{ answer_choices[label] }}"
+      \ }}?\n{% endif %}\nAnswer: ||| {% if label != -1 %}{{ answer_choices[label] }}{% endif %}"
     metadata: !TemplateMetadata
       _do_eval: true
       _do_train: true
