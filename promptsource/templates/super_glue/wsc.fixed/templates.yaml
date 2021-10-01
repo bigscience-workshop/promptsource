@@ -8,7 +8,8 @@ templates:
     answer_choices_key: null
     id: 212fb8b1-8436-4f64-8f37-a9094fe029f4
     jinja: '{{ text }} In the previous sentence, does the pronoun "{{ span2_text.lower()
-      }}" refer to {{ span1_text }}? Yes or no? ||| {% if label != -1 %}{{ answer_choices[label] }}{% endif %}'
+      }}" refer to {{ span1_text }}? Yes or no? ||| {% if label != -1 %}{{ answer_choices[label]
+      }}{% endif %}'
     metadata: !TemplateMetadata
       _do_eval: true
       _do_train: true
@@ -40,8 +41,8 @@ templates:
     answer_choices_key: null
     id: 2f17f18b-6daa-44ef-a2dd-dddaf04aec0e
     jinja: "{{ text }} \n\nIn other words, {{ text.split(\" \")[span2_index:] | join(\"\
-      \ \") | replace(span2_text, span1_text) }} True or false? ||| {% if label != -1 %}{{ answer_choices[label]\
-      \ }}{% endif %}"
+      \ \") | replace(span2_text, span1_text) }} True or false? ||| {% if label !=\
+      \ -1 %}{{ answer_choices[label] }}{% endif %}"
     metadata: !TemplateMetadata
       choices_in_prompt: true
       metrics:
@@ -56,8 +57,8 @@ templates:
     answer_choices_key: null
     id: 4b3e29cc-ccb8-4e4c-a845-4935ca29cf34
     jinja: '{{ text }} I think they mean "{{ text.split(" ")[span2_index:] | join("
-      ") | replace(span2_text, span1_text) }}" Yes or no? ||| {% if label != -1 %}{{ answer_choices[label]
-      }}{% endif %}'
+      ") | replace(span2_text, span1_text) }}" Yes or no? ||| {% if label != -1 %}{{
+      answer_choices[label] }}{% endif %}'
     metadata: !TemplateMetadata
       choices_in_prompt: true
       metrics:
@@ -89,8 +90,8 @@ templates:
     answer_choices_key: null
     id: 7d377293-d043-4b6c-8ec1-d61eaf14ec67
     jinja: "Passage: {{ text }} \n\nQuestion: In the passage above, does the pronoun\
-      \ \"{{ span2_text }}\" refer to {{ span1_text }}?\n\nAnswer: ||| {% if label != -1 %}{{ answer_choices[label]\
-      \ }}{% endif %}"
+      \ \"{{ span2_text }}\" refer to {{ span1_text }}?\n\nAnswer: ||| {% if label\
+      \ != -1 %}{{ answer_choices[label] }}{% endif %}"
     metadata: !TemplateMetadata
       _do_eval: true
       _do_train: true
@@ -125,7 +126,8 @@ templates:
     jinja: "Context: {{ text }} \n\n{% if span2_text.lower()  == \"they\" or span2_text.lower()\
       \ == \"them\" %}\nQuestion: \"{{ span2_text }}\" are {{ span1_text }}. True\
       \ or false?\n{% else %}\nQuestion: \"{{ span2_text }}\" is {{ span1_text }}.\
-      \ True or false?\n{% endif %}\n\nAnswer: ||| {% if label != -1 %}{{ answer_choices[label] }}{% endif %}"
+      \ True or false?\n{% endif %}\n\nAnswer: ||| {% if label != -1 %}{{ answer_choices[label]\
+      \ }}{% endif %}"
     metadata: !TemplateMetadata
       choices_in_prompt: true
       metrics:
@@ -140,7 +142,8 @@ templates:
     answer_choices_key: null
     id: aae24b54-c3a7-4f69-8b77-f6dc115988f8
     jinja: "{{ text }} \nIn the passage above, the pronoun \"{{ span2_text }}\" refers\
-      \ to {{ span1_text }}. True or false? ||| {% if label != -1 %}{{ answer_choices[label] }}{% endif %}"
+      \ to {{ span1_text }}. True or false? ||| {% if label != -1 %}{{ answer_choices[label]\
+      \ }}{% endif %}"
     metadata: !TemplateMetadata
       _do_eval: true
       _do_train: true
@@ -157,9 +160,10 @@ templates:
     answer_choices_key: null
     id: d88f3e21-42dc-49a5-924d-69b764a14816
     jinja: "{{ text }} \n{% if span2_text.lower()  == \"they\" or span2_text.lower()\
-      \ == \"them\" %}\nQuestion: Who are \"{{ span2_text.lower() }}\"? {{ span1_text\
-      \ }}?\n{% else %}\nQuestion: Who is \"{{ span2_text.lower() }}\"? Is it {{ span1_text\
-      \ }}?\n{% endif %}\nAnswer: ||| {% if label != -1 %}{{ answer_choices[label] }}{% endif %}"
+      \ == \"them\" %}\nQuestion: Who or what are \"{{ span2_text.lower() }}\"? {{\
+      \ span1_text }}?\n{% else %}\nQuestion: Who or what is \"{{ span2_text.lower()\
+      \ }}\"? Is it {{ span1_text }}?\n{% endif %}\nAnswer: ||| {% if label != -1\
+      \ %}{{ answer_choices[label] }}{% endif %}"
     metadata: !TemplateMetadata
       _do_eval: true
       _do_train: true
@@ -167,5 +171,5 @@ templates:
       metrics:
       - Accuracy
       original_task: true
-    name: Who is/are
+    name: Who or what is/are
     reference: I double checked the only plural pronouns in WSC are "they" and "them".
