@@ -202,7 +202,7 @@ class Template(yaml.YAMLObject):
 
         # Splits on the separator, and then replaces back any occurrences of the
         # separator in the original example
-        return [self._unescape_pipe(part) for part in rendered_example.split("|||")]
+        return [self._unescape_pipe(part).strip() for part in rendered_example.split("|||")]
 
     pipe_protector = "3ed2dface8203c4c9dfb1a5dc58e41e0"
 

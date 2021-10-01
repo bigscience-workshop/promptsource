@@ -39,7 +39,10 @@ def apply_template(dataset, template):
         answer_choices = template.get_answer_choices_list(ex)
         if len(inputs_and_targets) == 2:
             inputs, targets = inputs_and_targets
-            ex = {"inputs": inputs, "targets": targets}
+            if targets == "":
+                ex = {"inputs": inputs, "targets": "<NO LABEL>"}
+            else:
+                ex = {"inputs": inputs, "targets": targets}
         # When template results in an empty example, template.apply returns [""]
         # Also, if the template gets split wrong, len can be > 2
         # We will filter these out later

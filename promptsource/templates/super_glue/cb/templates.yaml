@@ -9,7 +9,7 @@ templates:
     answer_choices_key: null
     id: 2e76cd0f-68ca-4f03-83ed-11cf15b25a84
     jinja: 'Suppose {{premise}} Can we infer that "{{hypothesis}}"? Yes, no, or maybe?
-      ||| {{ answer_choices[label] }} '
+      ||| {% if label !=-1 %}{{ answer_choices[label] }}{% endif %} '
     metadata: !TemplateMetadata
       choices_in_prompt: true
       metrics:
@@ -25,7 +25,8 @@ templates:
     answer_choices_key: null
     id: 358860fd-61ad-45fd-92a6-a72ca9107ebc
     jinja: '{{premise}} Based on the previous passage, is it true that "{{hypothesis}}"?
-      Yes, no, or maybe? ||| {{ answer_choices[label] }}'
+      Yes, no, or maybe? ||| {% if label !=-1 %}{{ answer_choices[label] }}{% endif
+      %}'
     metadata: !TemplateMetadata
       _do_eval: true
       _do_train: false
@@ -43,8 +44,8 @@ templates:
     answer_choices_key: null
     id: 3f43a599-ffdb-490e-8952-c0ce41dd4621
     jinja: '{{premise}} Based on that information, is the claim: "{{hypothesis}}"
-      {{"true"}}, {{"false"}}, or {{"inconclusive"}}? ||| {{ answer_choices[label]
-      }}'
+      {{"true"}}, {{"false"}}, or {{"inconclusive"}}? ||| {% if label !=-1 %}{{ answer_choices[label]
+      }}{% endif %}'
     metadata: !TemplateMetadata
       choices_in_prompt: true
       metrics:
@@ -60,7 +61,7 @@ templates:
     answer_choices_key: null
     id: 404eed25-558a-4d39-9515-7de46d60d4e0
     jinja: Given that {{premise}} Does it follow that {{hypothesis}} Yes, no, or maybe?
-      ||| {{ answer_choices[label] }}
+      ||| {% if label !=-1 %}{{ answer_choices[label] }}{% endif %}
     metadata: !TemplateMetadata
       _do_eval: true
       _do_train: false
@@ -78,7 +79,7 @@ templates:
     answer_choices_key: null
     id: 5c9b1fa9-93f0-4f82-b9e3-e0967e4d7260
     jinja: '{{premise}} Are we justified in saying that "{{hypothesis}}"? Yes, no,
-      or maybe? ||| {{ answer_choices[label] }} '
+      or maybe? ||| {% if label !=-1 %}{{ answer_choices[label] }}{% endif %}'
     metadata: !TemplateMetadata
       choices_in_prompt: true
       metrics:
@@ -94,7 +95,8 @@ templates:
     answer_choices_key: null
     id: 6b0c6191-183d-4731-8050-ab17c909335c
     jinja: Suppose it's true that {{premise}} Then, is "{{hypothesis}}" {{"always"}},
-      {{"sometimes"}}, or {{"never"}} true? ||| {{ answer_choices[label] }}
+      {{"sometimes"}}, or {{"never"}} true? ||| {% if label !=-1 %}{{ answer_choices[label]
+      }}{% endif %}
     metadata: !TemplateMetadata
       choices_in_prompt: true
       metrics:
@@ -111,8 +113,8 @@ templates:
     id: 75db2bc2-3caa-4956-9653-13c7dd6255df
     jinja: '{{premise}}
 
-      Question: {{hypothesis}} True, False, or Neither? ||| {{ answer_choices[label]
-      }}'
+      Question: {{hypothesis}} True, False, or Neither? ||| {% if label !=-1 %}{{
+      answer_choices[label] }}{% endif %}'
     metadata: !TemplateMetadata
       _do_eval: true
       _do_train: false
@@ -131,8 +133,8 @@ templates:
     answer_choices_key: null
     id: 87237a07-7cce-470a-80ac-3e5e3a5283ba
     jinja: "{{premise}} \n\nKeeping in mind the above text, consider: {{hypothesis}}\
-      \ Is this {{\"always\"}}, {{\"sometimes\"}}, or {{\"never\"}} correct? ||| {{\
-      \ answer_choices[label] }}"
+      \ Is this {{\"always\"}}, {{\"sometimes\"}}, or {{\"never\"}} correct? ||| {%\
+      \ if label !=-1 %}{{ answer_choices[label] }}{% endif %}"
     metadata: !TemplateMetadata
       choices_in_prompt: true
       metrics:
@@ -147,8 +149,8 @@ templates:
     - Maybe
     answer_choices_key: null
     id: 8798b8a4-1f59-4c72-9c1b-3e3044a7462a
-    jinja: 'Given {{premise}} Is it guaranteed true that "{{hypothesis}}"? Yes, no,
-      or maybe? ||| {{ answer_choices[label] }} '
+    jinja: Given {{premise}} Is it guaranteed true that "{{hypothesis}}"? Yes, no,
+      or maybe? ||| {% if label !=-1 %}{{ answer_choices[label] }}{% endif %}
     metadata: !TemplateMetadata
       choices_in_prompt: true
       metrics:
@@ -163,8 +165,9 @@ templates:
     - Maybe
     answer_choices_key: null
     id: 8e3b8d3d-1362-47dc-922a-82c03f965989
-    jinja: 'Given that {{premise}} Therefore, it must be true that "{{hypothesis}}"?
-      Yes, no, or maybe? ||| {{ answer_choices[label] }} '
+    jinja: Given that {{premise}} Therefore, it must be true that "{{hypothesis}}"?
+      Yes, no, or maybe? ||| {% if label !=-1 %}{{ answer_choices[label] }}{% endif
+      %}
     metadata: !TemplateMetadata
       choices_in_prompt: true
       metrics:
@@ -180,8 +183,8 @@ templates:
     answer_choices_key: null
     id: 90ab1002-093c-4e54-b48f-626655e36b65
     jinja: "Assume it is true that {{premise}} \n\nTherefore, \"{{hypothesis}}\" is\
-      \ {{\"guaranteed\"}}, {{\"possible\"}}, or {{\"impossible\"}}? ||| {{ answer_choices[label]\
-      \ }}"
+      \ {{\"guaranteed\"}}, {{\"possible\"}}, or {{\"impossible\"}}? ||| {% if label\
+      \ !=-1 %}{{ answer_choices[label] }}{% endif %}"
     metadata: !TemplateMetadata
       choices_in_prompt: true
       metrics:
@@ -197,7 +200,7 @@ templates:
     answer_choices_key: null
     id: a485d120-6eef-4ff6-8684-42df1639b101
     jinja: "{{premise}} \n\nQuestion: Does this imply that \"{{hypothesis}}\"? Yes,\
-      \ no, or maybe? ||| {{answer_choices[label]}}"
+      \ no, or maybe? ||| {% if label !=-1 %}{{answer_choices[label]}}{% endif %}"
     metadata: !TemplateMetadata
       choices_in_prompt: true
       metrics:
@@ -214,7 +217,7 @@ templates:
     id: bee62bfa-5307-4e1c-97b2-2ad2f7bcb179
     jinja: '{{premise}} Using only the above description and what you know about the
       world, "{{hypothesis}}" is definitely correct, incorrect, or inconclusive? |||
-      {{ answer_choices[label] }}'
+      {% if label !=-1 %}{{ answer_choices[label] }}{% endif %}'
     metadata: !TemplateMetadata
       choices_in_prompt: true
       metrics:
@@ -229,8 +232,8 @@ templates:
     - Maybe
     answer_choices_key: null
     id: e503b148-8e6c-43b5-9ed6-312794c54d9b
-    jinja: 'Given {{premise}} Should we assume that "{{hypothesis}}" is true? Yes,
-      no, or maybe? ||| {{ answer_choices[label] }} '
+    jinja: Given {{premise}} Should we assume that "{{hypothesis}}" is true? Yes,
+      no, or maybe? ||| {% if label !=-1 %}{{ answer_choices[label] }}{% endif %}
     metadata: !TemplateMetadata
       choices_in_prompt: true
       metrics:
@@ -248,7 +251,8 @@ templates:
     jinja: 'Take the following as truth: {{premise}}
 
       Then the following statement: "{{hypothesis}}" is {{"true"}}, {{"false"}}, or
-      {{"inconclusive"}}? ||| {{ answer_choices[label] }}'
+      {{"inconclusive"}}? ||| {% if label !=-1 %}{{ answer_choices[label] }}{% endif
+      %}'
     metadata: !TemplateMetadata
       choices_in_prompt: true
       metrics:
