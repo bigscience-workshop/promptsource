@@ -95,7 +95,11 @@ def render_features(features):
 
 
 def filter_english_datasets():
-    """Filter English datasets based on language tags in metadata"""
+    """
+    Filter English datasets based on language tags in metadata.
+
+    Also includes the datasets of any users listed in INCLUDED_USERS
+    """
     english_datasets = []
 
     response = requests.get("https://huggingface.co/api/datasets?full=true")
@@ -106,6 +110,9 @@ def filter_english_datasets():
 
         is_community_dataset = "/" in dataset_name
         if is_community_dataset:
+            user = dataset_name.split("/")[0]
+            if user in INCLUDED_USERS:
+                english_datasets.append(dataset_name)
             continue
 
         if "card_data" not in dataset:
@@ -141,6 +148,15 @@ def list_datasets(template_collection, _priority_filter, _priority_max_templates
     else:
         dataset_list.sort(key=lambda x: DATASET_ORDER.get(x, 1000))
     return dataset_list
+
+
+"""
+These are users whose datasets should be included in the results returned by
+filter_english_datasets (regardless of their metadata)
+"""
+INCLUDED_USERS = (
+    "Zaid",
+)
 
 
 DATASET_ORDER = dict(
