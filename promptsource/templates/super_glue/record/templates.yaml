@@ -31,6 +31,41 @@ templates:
       original_task: true
     name: corrupted
     reference: ''
+  147656b2-2dad-4028-96c4-f19d57cd1344: !Template
+    answer_choices: null
+    answer_choices_key: '{% for entity in entities[:-1] %} {{ query | replace("@placeholder",
+      entity) }} ||| {% endfor %} {{ query | replace("@placeholder", entities[-1])
+      }}'
+    id: 147656b2-2dad-4028-96c4-f19d57cd1344
+    jinja: "Summary:\n\n- {{ passage.split(\"@highlight\")[1:] | join(\"\\n- \") }}\
+      \ \n\nArticle:\n\n{{ passage.split(\"@highlight\")[0] }}\n ||| {% if ( answers\
+      \ | length ) > 0 %}{{ query | replace(\"@placeholder\", answers[0]) }} {% endif\
+      \ %}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - Accuracy
+      original_task: true
+    name: Summary first (continuation choices)
+    reference: ''
+  24c267d4-359e-40a9-83d2-bff904d63b09: !Template
+    answer_choices: null
+    answer_choices_key: '{% for entity in entities[:-1] %} {{ query | replace("@placeholder",
+      entity) }} ||| {% endfor %} {{ query | replace("@placeholder", entities[-1])
+      }}'
+    id: 24c267d4-359e-40a9-83d2-bff904d63b09
+    jinja: "Summary:\n\n- {{ passage.split(\"@highlight\")[1:] | join(\"\\n- \") }}\
+      \ \n\nArticle:\n\n{{ passage.split(\"@highlight\")[0] }}\n\nNow that you've\
+      \ read the article, please write a new sentence to add to it.\n\n ||| {% if\
+      \ ( answers | length ) > 0 %}{{ query | replace(\"@placeholder\", answers[0])\
+      \ }} {% endif %}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - Accuracy
+      original_task: true
+    name: Add sentence after after (continuation choices)
+    reference: ''
   441c70e3-095a-44a1-8163-bc3b666b7ea1: !Template
     answer_choices: null
     answer_choices_key: '{{ entities | join("|||") }}'
@@ -44,6 +79,39 @@ templates:
       - Squad
       original_task: true
     name: choose_between
+    reference: ''
+  64013fb3-1afd-4e5a-8777-b164ca3b8e18: !Template
+    answer_choices: null
+    answer_choices_key: '{% for entity in entities[:-1] %} {{ query | replace("@placeholder",
+      entity) }} ||| {% endfor %} {{ query | replace("@placeholder", entities[-1])
+      }}'
+    id: 64013fb3-1afd-4e5a-8777-b164ca3b8e18
+    jinja: "{{ passage.split(\"@highlight\")[0] }}\n\nSummary:\n\n- {{ passage.split(\"\
+      @highlight\")[1:] | join(\"\\n- \") }} \n\n ||| {% if ( answers | length ) >\
+      \ 0 %}- {{ query | replace(\"@placeholder\", answers[0]) }} {% endif %}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - Accuracy
+      original_task: true
+    name: GPT-3 style summary only (continuation choices)
+    reference: Brown et al. 2020
+  90fc9ecb-c706-4c03-bb7e-4fe9fcd777f6: !Template
+    answer_choices: null
+    answer_choices_key: '{% for entity in entities[:-1] %} {{ query | replace("@placeholder",
+      entity) }} ||| {% endfor %} {{ query | replace("@placeholder", entities[-1])
+      }}'
+    id: 90fc9ecb-c706-4c03-bb7e-4fe9fcd777f6
+    jinja: "Article:\n\n{{ passage.split(\"@highlight\")[0] }}\n\nHighlights:\n\n\
+      {{ passage.split(\"@highlight\")[1:] | join(\"\\n\") }} \n\n ||| {% if ( answers\
+      \ | length ) > 0 %}{{ query | replace(\"@placeholder\", answers[0]) }} {% endif\
+      \ %}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - Accuracy
+      original_task: false
+    name: GPT-3 style with labels without hyphens (continuation choices)
     reference: ''
   91555c1c-c1e4-469b-a2a4-fc952ce1a145: !Template
     answer_choices: null
@@ -60,6 +128,39 @@ templates:
       - Squad
       original_task: true
     name: In the question above, the placeholder stands for
+    reference: ''
+  94577b75-2eac-4eae-b367-3b413c4188c6: !Template
+    answer_choices: null
+    answer_choices_key: '{% for entity in entities[:-1] %} {{ query | replace("@placeholder",
+      entity) }} ||| {% endfor %} {{ query | replace("@placeholder", entities[-1])
+      }}'
+    id: 94577b75-2eac-4eae-b367-3b413c4188c6
+    jinja: "After reading the article, write another sentence to add to it.\n{{ passage\
+      \ | replace(\"@highlight\", \"\\n- \") }} \n ||| {% if ( answers | length )\
+      \ > 0 %}- {{ query | replace(\"@placeholder\", answers[0]) }} {% endif %}\n"
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - Accuracy
+      original_task: true
+    name: Add sentence after (continuation choices)
+    reference: ''
+  9579b54e-4f0f-4e43-8907-af57112cc857: !Template
+    answer_choices: null
+    answer_choices_key: '{% for entity in entities[:-1] %} {{ query | replace("@placeholder",
+      entity) }} ||| {% endfor %} {{ query | replace("@placeholder", entities[-1])
+      }}'
+    id: 9579b54e-4f0f-4e43-8907-af57112cc857
+    jinja: "Please read the following news article and write another sentence to add\
+      \ to it.\n\n{{ passage | replace(\"@highlight\", \"\\n- \") }} \n ||| {% if\
+      \ ( answers | length ) > 0 %}{{ query | replace(\"@placeholder\", answers[0])\
+      \ }} {% endif %}\n"
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - Accuracy
+      original_task: true
+    name: News article (continuation choices)
     reference: ''
   99dd38ce-32f3-4d58-93c5-59821002b9cc: !Template
     answer_choices: null
@@ -119,6 +220,23 @@ templates:
       original_task: true
     name: "the placeholder refers to\u2026"
     reference: ''
+  a99a92e0-e1ee-4ec3-a38a-3be4303ba017: !Template
+    answer_choices: null
+    answer_choices_key: '{% for entity in entities[:-1] %} {{ query | replace("@placeholder",
+      entity) }} ||| {% endfor %} {{ query | replace("@placeholder", entities[-1])
+      }}'
+    id: a99a92e0-e1ee-4ec3-a38a-3be4303ba017
+    jinja: "{{ passage.split(\"@highlight\")[0] }}\n\nHighlights:\n\n- {{ passage.split(\"\
+      @highlight\")[1:] | join(\"\\n- \") }} \n\nPlease write an additional highlight.\n\
+      \ ||| {% if ( answers | length ) > 0 %}- {{ query | replace(\"@placeholder\"\
+      , answers[0]) }} {% endif %}\n"
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - Accuracy
+      original_task: true
+    name: New highlight (continuation choices)
+    reference: ''
   d3fce74e-0d9d-404a-a009-9ebbf5794c2c: !Template
     answer_choices: null
     answer_choices_key: '{{entities | join("|||")}}'
@@ -168,6 +286,39 @@ templates:
       original_task: true
     name: pick_one_option
     reference: ''
+  df8d0822-2cad-42de-8191-687ae47f6098: !Template
+    answer_choices: null
+    answer_choices_key: '{% for entity in entities[:-1] %} {{ query | replace("@placeholder",
+      entity) }} ||| {% endfor %} {{ query | replace("@placeholder", entities[-1])
+      }}'
+    id: df8d0822-2cad-42de-8191-687ae47f6098
+    jinja: "{{ passage | replace(\"@highlight\", \"\\n- \") }} \n ||| {% if ( answers\
+      \ | length ) > 0 %}- {{ query | replace(\"@placeholder\", answers[0]) }} {%\
+      \ endif %}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - Accuracy
+      original_task: true
+    name: GPT-3 style (continuation choices)
+    reference: Brown et al. 2020
+  dfa3052f-ede8-42c2-b99a-bc5762c4fdc6: !Template
+    answer_choices: null
+    answer_choices_key: '{% for entity in entities[:-1] %} {{ query | replace("@placeholder",
+      entity) }} ||| {% endfor %} {{ query | replace("@placeholder", entities[-1])
+      }}'
+    id: dfa3052f-ede8-42c2-b99a-bc5762c4fdc6
+    jinja: "Article:\n\n{{ passage.split(\"@highlight\")[0] }}\n\nHighlights:\n\n\
+      - {{ passage.split(\"@highlight\")[1:] | join(\"\\n- \") }} \n\n ||| {% if (\
+      \ answers | length ) > 0 %}- {{ query | replace(\"@placeholder\", answers[0])\
+      \ }} {% endif %}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - Accuracy
+      original_task: false
+    name: GPT-3 style with labels (continuation choices)
+    reference: Brown et al. 2020
   e68d13c5-df75-4de0-b59e-f2eaf4af6ce7: !Template
     answer_choices: null
     answer_choices_key: '{{ entities | join("|||") }}'
@@ -184,3 +335,19 @@ templates:
       original_task: true
     name: "Can you figure out\u2026"
     reference: ''
+  f7a92707-c531-42cb-81b4-063976e013cb: !Template
+    answer_choices: null
+    answer_choices_key: '{% for entity in entities[:-1] %} {{ query | replace("@placeholder",
+      entity) }} ||| {% endfor %} {{ query | replace("@placeholder", entities[-1])
+      }}'
+    id: f7a92707-c531-42cb-81b4-063976e013cb
+    jinja: "{{ passage | replace(\"@highlight\", \"\\n\") }} \n ||| {% if ( answers\
+      \ | length ) > 0 %}{{ query | replace(\"@placeholder\", answers[0]) }} {% endif\
+      \ %}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - Accuracy
+      original_task: true
+    name: GPT-3 style without hyphens (continuation choices)
+    reference: Brown et al. 2020
