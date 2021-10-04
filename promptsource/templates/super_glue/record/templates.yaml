@@ -39,8 +39,8 @@ templates:
     id: 147656b2-2dad-4028-96c4-f19d57cd1344
     jinja: "Summary:\n\n- {{ passage.split(\"@highlight\")[1:] | join(\"\\n- \") }}\
       \ \n\nArticle:\n\n{{ passage.split(\"@highlight\")[0] }}\n ||| {% if ( answers\
-      \ | length ) > 0 %}{{ query | replace(\"@placeholder\", answers[0]) }} {% endif\
-      \ %}"
+      \ | length ) > 0 %}{{ query | replace(\"@placeholder\", answers | choice) }}\
+      \ {% endif %}"
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
@@ -56,8 +56,8 @@ templates:
     id: 24c267d4-359e-40a9-83d2-bff904d63b09
     jinja: "Summary:\n\n- {{ passage.split(\"@highlight\")[1:] | join(\"\\n- \") }}\
       \ \n\nArticle:\n\n{{ passage.split(\"@highlight\")[0] }}\n\nNow that you've\
-      \ read the article, please write a new sentence to add to it.\n\n ||| {% if\
-      \ ( answers | length ) > 0 %}{{ query | replace(\"@placeholder\", answers[0])\
+      \ read the article, please write a new sentence to add to it.\n\n||| {% if (\
+      \ answers | length ) > 0 %}{{ query | replace(\"@placeholder\", answers | choice)\
       \ }} {% endif %}"
     metadata: !TemplateMetadata
       choices_in_prompt: false
@@ -82,13 +82,13 @@ templates:
     reference: ''
   64013fb3-1afd-4e5a-8777-b164ca3b8e18: !Template
     answer_choices: null
-    answer_choices_key: '{% for entity in entities[:-1] %} {{ query | replace("@placeholder",
-      entity) }} ||| {% endfor %} {{ query | replace("@placeholder", entities[-1])
+    answer_choices_key: '{% for entity in entities[:-1] %} - {{ query | replace("@placeholder",
+      entity) }} ||| {% endfor %} - {{ query | replace("@placeholder", entities[-1])
       }}'
     id: 64013fb3-1afd-4e5a-8777-b164ca3b8e18
     jinja: "{{ passage.split(\"@highlight\")[0] }}\n\nSummary:\n\n- {{ passage.split(\"\
       @highlight\")[1:] | join(\"\\n- \") }} \n\n ||| {% if ( answers | length ) >\
-      \ 0 %}- {{ query | replace(\"@placeholder\", answers[0]) }} {% endif %}"
+      \ 0 %}- {{ query | replace(\"@placeholder\", answers | choice) }} {% endif %}"
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
@@ -104,8 +104,8 @@ templates:
     id: 90fc9ecb-c706-4c03-bb7e-4fe9fcd777f6
     jinja: "Article:\n\n{{ passage.split(\"@highlight\")[0] }}\n\nHighlights:\n\n\
       {{ passage.split(\"@highlight\")[1:] | join(\"\\n\") }} \n\n ||| {% if ( answers\
-      \ | length ) > 0 %}{{ query | replace(\"@placeholder\", answers[0]) }} {% endif\
-      \ %}"
+      \ | length ) > 0 %}{{ query | replace(\"@placeholder\", answers | choice) }}\
+      \ {% endif %}"
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
@@ -135,9 +135,15 @@ templates:
       entity) }} ||| {% endfor %} {{ query | replace("@placeholder", entities[-1])
       }}'
     id: 94577b75-2eac-4eae-b367-3b413c4188c6
-    jinja: "After reading the article, write another sentence to add to it.\n{{ passage\
-      \ | replace(\"@highlight\", \"\\n- \") }} \n ||| {% if ( answers | length )\
-      \ > 0 %}- {{ query | replace(\"@placeholder\", answers[0]) }} {% endif %}\n"
+    jinja: 'After reading the article, write another sentence to add to it.
+
+      {{ passage | replace("@highlight", "\n- ") }}
+
+
+      ||| {% if ( answers | length ) > 0 %}{{ query | replace("@placeholder", answers
+      | choice) }}{% endif %}
+
+      '
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
@@ -153,8 +159,8 @@ templates:
     id: 9579b54e-4f0f-4e43-8907-af57112cc857
     jinja: "Please read the following news article and write another sentence to add\
       \ to it.\n\n{{ passage | replace(\"@highlight\", \"\\n- \") }} \n ||| {% if\
-      \ ( answers | length ) > 0 %}{{ query | replace(\"@placeholder\", answers[0])\
-      \ }} {% endif %}\n"
+      \ ( answers | length ) > 0 %}{{ query | replace(\"@placeholder\", answers |\
+      \ choice) }} {% endif %}\n"
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
@@ -222,14 +228,14 @@ templates:
     reference: ''
   a99a92e0-e1ee-4ec3-a38a-3be4303ba017: !Template
     answer_choices: null
-    answer_choices_key: '{% for entity in entities[:-1] %} {{ query | replace("@placeholder",
-      entity) }} ||| {% endfor %} {{ query | replace("@placeholder", entities[-1])
+    answer_choices_key: '{% for entity in entities[:-1] %} - {{ query | replace("@placeholder",
+      entity) }} ||| {% endfor %} - {{ query | replace("@placeholder", entities[-1])
       }}'
     id: a99a92e0-e1ee-4ec3-a38a-3be4303ba017
     jinja: "{{ passage.split(\"@highlight\")[0] }}\n\nHighlights:\n\n- {{ passage.split(\"\
       @highlight\")[1:] | join(\"\\n- \") }} \n\nPlease write an additional highlight.\n\
       \ ||| {% if ( answers | length ) > 0 %}- {{ query | replace(\"@placeholder\"\
-      , answers[0]) }} {% endif %}\n"
+      , answers | choice) }} {% endif %}\n"
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
@@ -288,13 +294,13 @@ templates:
     reference: ''
   df8d0822-2cad-42de-8191-687ae47f6098: !Template
     answer_choices: null
-    answer_choices_key: '{% for entity in entities[:-1] %} {{ query | replace("@placeholder",
-      entity) }} ||| {% endfor %} {{ query | replace("@placeholder", entities[-1])
+    answer_choices_key: '{% for entity in entities[:-1] %} - {{ query | replace("@placeholder",
+      entity) }} ||| {% endfor %} - {{ query | replace("@placeholder", entities[-1])
       }}'
     id: df8d0822-2cad-42de-8191-687ae47f6098
-    jinja: "{{ passage | replace(\"@highlight\", \"\\n- \") }} \n ||| {% if ( answers\
-      \ | length ) > 0 %}- {{ query | replace(\"@placeholder\", answers[0]) }} {%\
-      \ endif %}"
+    jinja: "{{ passage | replace(\"@highlight\", \"\\n- \") }} \n\n ||| {% if ( answers\
+      \ | length ) > 0 %}- {{ query | replace(\"@placeholder\", answers | choice)\
+      \ }} {% endif %}"
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
@@ -304,14 +310,14 @@ templates:
     reference: Brown et al. 2020
   dfa3052f-ede8-42c2-b99a-bc5762c4fdc6: !Template
     answer_choices: null
-    answer_choices_key: '{% for entity in entities[:-1] %} {{ query | replace("@placeholder",
-      entity) }} ||| {% endfor %} {{ query | replace("@placeholder", entities[-1])
+    answer_choices_key: '{% for entity in entities[:-1] %} - {{ query | replace("@placeholder",
+      entity) }} ||| {% endfor %} - {{ query | replace("@placeholder", entities[-1])
       }}'
     id: dfa3052f-ede8-42c2-b99a-bc5762c4fdc6
     jinja: "Article:\n\n{{ passage.split(\"@highlight\")[0] }}\n\nHighlights:\n\n\
       - {{ passage.split(\"@highlight\")[1:] | join(\"\\n- \") }} \n\n ||| {% if (\
-      \ answers | length ) > 0 %}- {{ query | replace(\"@placeholder\", answers[0])\
-      \ }} {% endif %}"
+      \ answers | length ) > 0 %}- {{ query | replace(\"@placeholder\", answers |\
+      \ choice) }} {% endif %}"
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
@@ -342,8 +348,8 @@ templates:
       }}'
     id: f7a92707-c531-42cb-81b4-063976e013cb
     jinja: "{{ passage | replace(\"@highlight\", \"\\n\") }} \n ||| {% if ( answers\
-      \ | length ) > 0 %}{{ query | replace(\"@placeholder\", answers[0]) }} {% endif\
-      \ %}"
+      \ | length ) > 0 %}{{ query | replace(\"@placeholder\", answers | choice) }}\
+      \ {% endif %}"
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
