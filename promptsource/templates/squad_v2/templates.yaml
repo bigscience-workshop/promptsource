@@ -30,7 +30,7 @@ templates:
       {{answers.text[0]}}
 
       {% endif %}'
-    metadata: !TemplateMetadata
+    metadata: &id001 !TemplateMetadata
       _do_eval: false
       _do_train: true
       choices_in_prompt: false
@@ -45,8 +45,8 @@ templates:
     id: 189dcc58-fd13-4771-ad03-7879a61c7ab7
     jinja: '{% if answers.text != [] %}
 
-      Determine the question that you might have asked to get back the following answer for the given
-      context
+      Determine the question that you might have asked to get back the following answer
+      for the given context
 
       Context: {{context}};
 
@@ -217,7 +217,7 @@ templates:
       {{answers.text[0]}}
 
       {% endif %}'
-    metadata: !TemplateMetadata
+    metadata: &id002 !TemplateMetadata
       _do_eval: false
       _do_train: true
       choices_in_prompt: false
@@ -227,6 +227,41 @@ templates:
     name: Questions with Context - Without Prompt Keywords
     reference: Given context and question, give answer. No keywords to delineate context
       and question is given.
+  b14c9843-fd56-42ff-817d-39e41963c847: !Template
+    answer_choices: null
+    answer_choices_key: null
+    id: b14c9843-fd56-42ff-817d-39e41963c847
+    jinja: '{% set seq = [
+
+      ''Answer the question depending on the context.'',
+
+      ''What is the answer?'',
+
+      ] %}
+
+
+      {{ seq | choice }}
+
+      Context: {{context}};
+
+      Question: {{question}};
+
+      If you can''t find the answer, please respond "unanswerable".
+
+      Answer: |||
+
+      {% if answers.text == [] %}
+
+      unanswerable
+
+      {% else %}
+
+      {{answers.text[0]}}
+
+      {% endif %}'
+    metadata: *id001
+    name: Questions with Context +unanswerable
+    reference: Given context and question, give answer
   d768c181-1c9b-40c3-aa01-fc78c3b29875: !Template
     answer_choices: null
     answer_choices_key: null
@@ -248,6 +283,49 @@ templates:
       original_task: false
     name: Trivia
     reference: Given input and directly outputs answer.
+  e1630107-8f5d-44ce-8ccd-6fa80da80328: !Template
+    answer_choices: null
+    answer_choices_key: null
+    id: e1630107-8f5d-44ce-8ccd-6fa80da80328
+    jinja: '{% set seq = [
+
+      ''Can you tell me '',
+
+      ''Please tell me '',
+
+      ''Tell me '',
+
+      ''From the passage, '',
+
+      ''I want to know '',
+
+      ''I want to ask '',
+
+      ''What is the answer to: '',
+
+      ''Find the answer to: '',
+
+      ''Answer: '',
+
+      '''',
+
+      ] %}
+
+      {{context}} {{ seq | choice }}{{question}} If you can''t find the answer, please respond "unanswerable". |||
+
+      {% if answers.text == [] %}
+
+      unanswerable
+
+      {% else %}
+
+      {{answers.text[0]}}
+
+      {% endif %}'
+    metadata: *id002
+    name: Questions with Context - Without Prompt Keywords +unanswerable
+    reference: Given context and question, give answer. No keywords to delineate context
+      and question is given.
   e2e41877-4794-4ff9-9f92-a2a85105e2a7: !Template
     answer_choices:
     - 'yes'
