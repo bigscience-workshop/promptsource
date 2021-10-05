@@ -3,6 +3,7 @@
 import datasets
 import pkg_resources
 import requests
+from metadata import INCLUDED_USERS
 
 
 def removeHyphen(example):
@@ -148,13 +149,6 @@ def list_datasets(template_collection, _priority_filter, _priority_max_templates
     else:
         dataset_list.sort(key=lambda x: DATASET_ORDER.get(x, 1000))
     return dataset_list
-
-
-"""
-These are users whose datasets should be included in the results returned by
-filter_english_datasets (regardless of their metadata)
-"""
-INCLUDED_USERS = {"Zaid"}
 
 
 DATASET_ORDER = dict(
