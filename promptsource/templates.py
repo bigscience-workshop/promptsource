@@ -4,12 +4,13 @@ import uuid
 from collections import Counter, defaultdict
 from shutil import rmtree
 from typing import Dict, List, Optional, Tuple
-from promptsource.utils import INCLUDED_USERS
 
 import pandas as pd
 import pkg_resources
 import yaml
 from jinja2 import BaseLoader, Environment, meta
+
+from promptsource.utils import INCLUDED_USERS
 
 
 # Truncation of jinja template variables
@@ -304,7 +305,6 @@ class TemplateCollection:
                 # This is a subfolder, and its name corresponds to the subset name
                 output[(dataset, filename)] = DatasetTemplates(dataset_name=dataset, subset_name=filename)
         return output
-
 
     def get_dataset(self, dataset_name: str, subset_name: Optional[str] = None) -> "DatasetTemplates":
         """
