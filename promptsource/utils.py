@@ -154,7 +154,7 @@ def list_datasets(template_collection, _priority_filter, _priority_max_templates
 These are users whose datasets should be included in the results returned by
 filter_english_datasets (regardless of their metadata)
 """
-INCLUDED_USERS = {"Zaid"}
+INCLUDED_USERS = {"Zaid"} 
 
 
 DATASET_ORDER = dict(
