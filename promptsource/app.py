@@ -9,9 +9,17 @@ from jinja2 import TemplateSyntaxError
 from pygments import highlight
 from pygments.formatters import HtmlFormatter
 from pygments.lexers import DjangoLexer
+
 from promptsource.session import _get_state
 from promptsource.templates import Template, TemplateCollection
-from promptsource.utils import get_dataset, get_dataset_confs, list_datasets, removeHyphen, renameDatasetColumn, render_features
+from promptsource.utils import (
+    get_dataset,
+    get_dataset_confs,
+    list_datasets,
+    removeHyphen,
+    renameDatasetColumn,
+    render_features,
+)
 
 
 #
