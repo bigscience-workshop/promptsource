@@ -4,7 +4,7 @@ import datasets
 import pkg_resources
 import requests
 
-from .metadata import INCLUDED_USERS
+from promptsource.templates import INCLUDED_USERS
 
 
 def removeHyphen(example):
