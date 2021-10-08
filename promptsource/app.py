@@ -1,6 +1,6 @@
 import argparse
 import textwrap
-from multiprocessing import Manager, Pool
+from multiprocessing import Manager, Pool, cpu_count
 
 import pandas as pd
 import plotly.express as px
@@ -133,7 +133,7 @@ if mode == "Helicopter view":
     def get_infos(d_name):
         all_infos[d_name] = get_dataset_infos(d_name)
 
-    pool = Pool(processes=len(all_datasets))
+    pool = Pool(processes=cpu_count())
     pool.map(get_infos, all_datasets)
     pool.close()
     pool.join()
@@ -146,12 +146,18 @@ if mode == "Helicopter view":
             all_infos[dataset_name] = infos
         else:
             infos = all_infos[dataset_name]
-        if subset_name is None:
-            subset_infos = infos[list(infos.keys())[0]]
-        else:
-            subset_infos = infos[subset_name]
+        if infos:
+            if subset_name is None:
+                subset_infos = infos[list(infos.keys())[0]]
+            else:
+                subset_infos = infos[subset_name]
 
-        split_sizes = {k: v.num_examples for k, v in subset_infos.splits.items()}
+            split_sizes = {k: v.num_examples for k, v in subset_infos.splits.items()}
+        else:
+            # Zaid/coqa_expanded and Zaid/quac_expanded don't have dataset_infos.json
+            # so infos is an empty dic, and `infos[list(infos.keys())[0]]` raises an error
+            # For simplicity, just filling `split_sizes` with nothing, so the displayed split sizes will be 0.
+            split_sizes = {}
 
         # Collect template counts, original task counts and names
         dataset_templates = template_collection.get_dataset(dataset_name, subset_name)
