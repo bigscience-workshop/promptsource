@@ -199,8 +199,6 @@ else:
     #
     # Loads dataset information
     #
-    
-    
 
     dataset_list = list_datasets(
         template_collection,

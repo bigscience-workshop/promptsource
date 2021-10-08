@@ -134,7 +134,7 @@ def filter_english_datasets():
 def list_datasets(template_collection, _state):
     """Get all the datasets to work with."""
     dataset_list = filter_english_datasets()
-    
+
     dataset_list.sort(key=lambda x: DATASET_ORDER.get(x, 1000))
     return dataset_list
 
