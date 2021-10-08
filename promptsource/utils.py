@@ -1,6 +1,7 @@
 # coding=utf-8
 
 import datasets
+import pkg_resources
 import requests
 
 
@@ -31,12 +32,19 @@ def renameDatasetColumn(dataset):
 
 def get_dataset_builder(path, conf=None):
     "Get a dataset builder from name and conf."
+    # `datasets.load.prepare_module` pulls infos from hf/datasets's master.
+    # story_cloze hasn't been merged yet (https://github.com/huggingface/datasets/pull/2907)
+    # This is a temporary fix for the tests (more specifically test_templates.py)
+    # Once PR 2907 is merged, we can remove this if condition (along with the `custom_datasets` folder)
+    # Also see `promptsource.seqio_tasks.utils.get_dataset_splits`
+    if path == "story_cloze":
+        path = pkg_resources.resource_filename("promptsource", "custom_datasets/story_cloze")
     module_path = datasets.load.prepare_module(path, dataset=True)
     builder_cls = datasets.load.import_main_class(module_path[0], dataset=True)
     if conf:
-        builder_instance = builder_cls(name=conf, cache_dir=None)
+        builder_instance = builder_cls(name=conf, cache_dir=None, hash=module_path[1])
     else:
-        builder_instance = builder_cls(cache_dir=None)
+        builder_instance = builder_cls(cache_dir=None, hash=module_path[1])
     return builder_instance
 
 
@@ -87,7 +95,11 @@ def render_features(features):
 
 
 def filter_english_datasets():
-    """Filter English datasets based on language tags in metadata"""
+    """
+    Filter English datasets based on language tags in metadata.
+
+    Also includes the datasets of any users listed in INCLUDED_USERS
+    """
     english_datasets = []
 
     response = requests.get("https://huggingface.co/api/datasets?full=true")
@@ -98,6 +110,9 @@ def filter_english_datasets():
 
         is_community_dataset = "/" in dataset_name
         if is_community_dataset:
+            user = dataset_name.split("/")[0]
+            if user in INCLUDED_USERS:
+                english_datasets.append(dataset_name)
             continue
 
         if "card_data" not in dataset:
@@ -133,6 +148,13 @@ def list_datasets(template_collection, _priority_filter, _priority_max_templates
     else:
         dataset_list.sort(key=lambda x: DATASET_ORDER.get(x, 1000))
     return dataset_list
+
+
+"""
+These are users whose datasets should be included in the results returned by
+filter_english_datasets (regardless of their metadata)
+"""
+INCLUDED_USERS = ("Zaid",)
 
 
 DATASET_ORDER = dict(

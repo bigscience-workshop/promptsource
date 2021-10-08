@@ -1,0 +1,337 @@
+dataset: e2e_nlg_cleaned
+templates:
+  0f54b6e2-42c0-45ec-8ea2-2e6204388f76: !Template
+    answer_choices: null
+    answer_choices_key: null
+    id: 0f54b6e2-42c0-45ec-8ea2-2e6204388f76
+    jinja: 'Combine all of the following data into a concise and grammatically correct
+      sentence:
+
+      {% for feature in meaning_representation.split("]") %}
+
+      {% set key = feature.split("[")[0].replace(",","") %}
+
+      {% set value = feature.replace(",","").replace(key+"[", '''''''') %}
+
+      {% if value != "" %}
+
+      {{key}} : {{value}}
+
+      {% endif %}
+
+      {%- endfor %}
+
+      ||| {{human_reference}}'
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: false
+      choices_in_prompt: null
+      metrics: []
+      original_task: true
+    name: e2e_basic_3
+    reference: ''
+  14db0e7a-f7d1-4bd0-bfb3-f611be608c4a: !Template
+    answer_choices: null
+    answer_choices_key: null
+    id: 14db0e7a-f7d1-4bd0-bfb3-f611be608c4a
+    jinja: '{% set vars = {''key'':"eatType", ''value'':""} %}
+
+      {% for feature in meaning_representation.split("]") if vars[''key'']  in feature
+      %}
+
+      {% set temp = vars.update({''value'':feature.replace(",","").replace(vars[''key'']+"[",
+      '''')}) %}
+
+      {%- endfor %}
+
+      {% if vars["value"]|length > 0 %}
+
+      {{human_reference}} What type of dinery is the passage talking about?  ||| {{vars[''value'']}}
+
+      {% endif %}
+
+
+      '
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: false
+      choices_in_prompt: null
+      metrics: []
+      original_task: false
+    name: eat_type_1
+    reference: ''
+  18f74817-9f8c-4fd5-bc00-6e0016a40dcc: !Template
+    answer_choices: null
+    answer_choices_key: null
+    id: 18f74817-9f8c-4fd5-bc00-6e0016a40dcc
+    jinja: '{% set vars = {''key'':"food", ''value'':""} %}
+
+      {% for feature in meaning_representation.split("]") if vars[''key'']  in feature
+      %}
+
+      {% set temp = vars.update({''value'':feature.replace(",","").replace(vars[''key'']+"[",
+      '''')}) %}
+
+      {%- endfor %}
+
+      {% if vars["value"]|length > 0 %}
+
+      {{human_reference}} From the passage given above, what type of food do you think
+      is served at this dinery?  ||| {{vars[''value'']}}
+
+      {% endif %}
+
+
+      '
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: false
+      choices_in_prompt: null
+      metrics: []
+      original_task: false
+    name: food_1
+    reference: ''
+  1acabbc3-c9b9-4624-a684-29faeccff46f: !Template
+    answer_choices: null
+    answer_choices_key: null
+    id: 1acabbc3-c9b9-4624-a684-29faeccff46f
+    jinja: 'Given the following data about a dinery:
+
+      {% for feature in meaning_representation.split("]") %}
+
+      {% set key = feature.split("[")[0].replace(",","") %}
+
+      {% set value = feature.replace(",","").replace(key+"[", '''''''') %}
+
+      {% if value != "" %}
+
+      {{key}} : {{value}}
+
+      {% endif %}
+
+      {%- endfor %}
+
+      Generate a sentence about this dinery. ||| {{human_reference}}'
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: false
+      choices_in_prompt: null
+      metrics: []
+      original_task: true
+    name: e2e_basic_2
+    reference: ''
+  418c7942-06e8-48a7-b5f4-9f15bb874edf: !Template
+    answer_choices: null
+    answer_choices_key: null
+    id: 418c7942-06e8-48a7-b5f4-9f15bb874edf
+    jinja: '{% set vars = {''key'':"area", ''value'':""} %}
+
+      {% for feature in meaning_representation.split("]") if vars[''key'']  in feature
+      %}
+
+      {% set temp = vars.update({''value'':feature.replace(",","").replace(vars[''key'']+"[",
+      '''')}) %}
+
+      {%- endfor %}
+
+      {% if vars["value"]|length > 0 %}
+
+      {{human_reference}} From the passage given above, where is the location of the
+      diner?  ||| {{vars[''value'']}}
+
+      {% endif %}
+
+
+      '
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: false
+      choices_in_prompt: null
+      metrics: []
+      original_task: false
+    name: area_1
+    reference: ''
+  51666217-46cf-4950-bf63-108ed16e074c: !Template
+    answer_choices: null
+    answer_choices_key: null
+    id: 51666217-46cf-4950-bf63-108ed16e074c
+    jinja: '{% set vars = {''key'':"familyFriendly", ''value'':""} %}
+
+      {% for feature in meaning_representation.split("]") if vars[''key'']  in feature
+      %}
+
+      {% set temp = vars.update({''value'':feature.replace(",","").replace(vars[''key'']+"[",
+      '''')}) %}
+
+      {%- endfor %}
+
+      {% if vars["value"]|length > 0 %}
+
+      {{human_reference}} Is the dinery from the passage family friendly?  ||| {{vars[''value'']}}
+
+      {% endif %}
+
+
+      '
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: false
+      choices_in_prompt: null
+      metrics: []
+      original_task: false
+    name: family_1
+    reference: ''
+  6e5f3eff-fab1-4c33-a296-5ac662754e87: !Template
+    answer_choices: null
+    answer_choices_key: null
+    id: 6e5f3eff-fab1-4c33-a296-5ac662754e87
+    jinja: '{% set vars = {''key'':"near", ''value'':""} %}
+
+      {% for feature in meaning_representation.split("]") if vars[''key'']  in feature
+      %}
+
+      {% set temp = vars.update({''value'':feature.replace(",","").replace(vars[''key'']+"[",
+      '''')}) %}
+
+      {%- endfor %}
+
+      {% if vars["value"]|length > 0 %}
+
+      {{human_reference}} Name the landmark that is close to this dinery according
+      to the passage.  ||| {{vars[''value'']}}
+
+      {% endif %}
+
+
+      '
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: false
+      choices_in_prompt: null
+      metrics: []
+      original_task: false
+    name: near_1
+    reference: ''
+  711bcf63-be82-4937-bdef-0c379d20bb74: !Template
+    answer_choices: null
+    answer_choices_key: null
+    id: 711bcf63-be82-4937-bdef-0c379d20bb74
+    jinja: 'How would we create a sentence out of the following data: {{meaning_representation}}
+      ?
+
+      ||| {{human_reference}}'
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: false
+      choices_in_prompt: null
+      metrics: []
+      original_task: true
+    name: e2e_basic_4
+    reference: ''
+  83992c17-745f-4940-b626-b01a85ba66c1: !Template
+    answer_choices: null
+    answer_choices_key: null
+    id: 83992c17-745f-4940-b626-b01a85ba66c1
+    jinja: '{% set vars = {''key'':"name", ''value'':""} %}
+
+      {% for feature in meaning_representation.split("]") if vars[''key'']  in feature
+      %}
+
+      {% set temp = vars.update({''value'':feature.replace(",","").replace(vars[''key'']+"[",
+      '''')}) %}
+
+      {%- endfor %}
+
+      {% if vars["value"]|length > 0 %}
+
+      {{human_reference}} From the passage given above, what is the name of the dinery?  |||
+      {{vars[''value'']}}
+
+      {% endif %}
+
+
+      '
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: false
+      choices_in_prompt: null
+      metrics: []
+      original_task: false
+    name: name_1
+    reference: ''
+  b67da63d-f220-4b9f-ae82-b4addf0c7573: !Template
+    answer_choices: null
+    answer_choices_key: null
+    id: b67da63d-f220-4b9f-ae82-b4addf0c7573
+    jinja: '{% set vars = {''key'':"customer rating", ''value'':""} %}
+
+      {% for feature in meaning_representation.split("]") if vars[''key'']  in feature
+      %}
+
+      {% set temp = vars.update({''value'':feature.replace(",","").replace(vars[''key'']+"[",
+      '''')}) %}
+
+      {%- endfor %}
+
+      {% if vars["value"]|length > 0 %}
+
+      {{human_reference}} According to this passage, what is the rating given to this
+      dinery?  ||| {{vars[''value'']}}
+
+      {% endif %}
+
+
+      '
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: false
+      choices_in_prompt: null
+      metrics: []
+      original_task: false
+    name: rating_1
+    reference: ''
+  bdecbb5a-d3e8-46f3-9ea8-22025bc59e3b: !Template
+    answer_choices: null
+    answer_choices_key: null
+    id: bdecbb5a-d3e8-46f3-9ea8-22025bc59e3b
+    jinja: 'Given the following data: {{meaning_representation}} Generate a sentence
+      about this dinery. ||| {{human_reference}}'
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: false
+      choices_in_prompt: null
+      metrics: []
+      original_task: true
+    name: e2e_basic_1
+    reference: ''
+  f9089a30-1c6c-4a43-a5eb-586b1dcd72f2: !Template
+    answer_choices: null
+    answer_choices_key: null
+    id: f9089a30-1c6c-4a43-a5eb-586b1dcd72f2
+    jinja: '{% set vars = {''key'':"priceRange", ''value'':""} %}
+
+      {% for feature in meaning_representation.split("]") if vars[''key'']  in feature
+      %}
+
+      {% set temp = vars.update({''value'':feature.replace(",","").replace(vars[''key'']+"[",
+      '''')}) %}
+
+      {%- endfor %}
+
+      {% if vars["value"]|length > 0 %}
+
+      {{human_reference}} According to the passage, how much would one have to pay
+      to eat here?  ||| {{vars[''value'']}}
+
+      {% endif %}
+
+
+      '
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: false
+      choices_in_prompt: null
+      metrics: []
+      original_task: false
+    name: price_range_1
+    reference: ''

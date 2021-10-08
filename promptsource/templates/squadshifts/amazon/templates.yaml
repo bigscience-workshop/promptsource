@@ -1,0 +1,334 @@
+dataset: squadshifts
+subset: amazon
+templates:
+  0b69eb58-0ad7-45b4-baf2-f3abac775fe2: !Template
+    answer_choices: null
+    answer_choices_key: null
+    id: 0b69eb58-0ad7-45b4-baf2-f3abac775fe2
+    jinja: 'Generate a title for the following short passage:
+
+
+      {{context}} |||
+
+      {{title|replace("_"," ")}}
+
+      '
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: false
+      choices_in_prompt: null
+      metrics: []
+      original_task: false
+    name: title
+    reference: ''
+  129b0f6f-3c65-4e7c-97c2-ef30cf92f417: !Template
+    answer_choices: null
+    answer_choices_key: null
+    id: 129b0f6f-3c65-4e7c-97c2-ef30cf92f417
+    jinja: "Question: {{question}}\n\nAnswer: \n|||\n{{answers['text'] | most_frequent\
+      \ | choice}}"
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: false
+      choices_in_prompt: null
+      metrics: []
+      original_task: false
+    name: cbqa question answer
+    reference: ''
+  258731f1-2101-4178-b30f-571336fbef78: !Template
+    answer_choices: null
+    answer_choices_key: null
+    id: 258731f1-2101-4178-b30f-571336fbef78
+    jinja: 'For the following passage-question pair, list all possible wrong answers
+      (pitfalls) test-takers may choose:
+
+
+      {{context}}
+
+      {{question}} |||
+
+      {{answers["text"]|join(", ")}}'
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: false
+      choices_in_prompt: null
+      metrics: []
+      original_task: true
+    name: possible_pitfalls
+    reference: ''
+  3c6bb901-c615-478f-904b-29122208e8bf: !Template
+    answer_choices: null
+    answer_choices_key: null
+    id: 3c6bb901-c615-478f-904b-29122208e8bf
+    jinja: 'After reading the following paragraph, please answer this question: {{question}}
+
+
+      {{context}}
+
+
+      |||
+
+      {{answers[''text''] | most_frequent | choice}}'
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: false
+      choices_in_prompt: null
+      metrics: []
+      original_task: true
+    name: after
+    reference: ''
+  4c9c3a3c-da8c-42aa-a605-3063122c32eb: !Template
+    answer_choices: null
+    answer_choices_key: null
+    id: 4c9c3a3c-da8c-42aa-a605-3063122c32eb
+    jinja: '{{question}}
+
+
+      |||
+
+
+      {{answers[''text''] | most_frequent | choice}}'
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: false
+      choices_in_prompt: null
+      metrics: []
+      original_task: false
+    name: cbqa
+    reference: ''
+  5cce68fe-de8c-40ed-b1f5-d70ce78859df: !Template
+    answer_choices: null
+    answer_choices_key: null
+    id: 5cce68fe-de8c-40ed-b1f5-d70ce78859df
+    jinja: 'Generate a possible question for the following short passage:
+
+
+      {{context}} |||
+
+      {{question}}'
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: false
+      choices_in_prompt: null
+      metrics: []
+      original_task: false
+    name: possible_qn
+    reference: ''
+  7ff63436-6cff-4963-b208-2002151daad7: !Template
+    answer_choices: null
+    answer_choices_key: null
+    id: 7ff63436-6cff-4963-b208-2002151daad7
+    jinja: 'List all possible non-answers that have a lot of words in common with
+      the following context-question pair:
+
+
+      {{context}}
+
+      {{question}} |||
+
+      {{answers["text"]|join('', '')}}
+
+      '
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: false
+      choices_in_prompt: null
+      metrics: []
+      original_task: true
+    name: incorrect_answers
+    reference: ''
+  952fccbc-c318-455b-97a5-e72070d7fbe3: !Template
+    answer_choices: null
+    answer_choices_key: null
+    id: 952fccbc-c318-455b-97a5-e72070d7fbe3
+    jinja: 'I''m creating a final exam for my reading class. Can you please come up
+      with a good question to quiz how well students have read the following text
+      snippet?
+
+
+      {{context}}
+
+
+      |||
+
+
+      {{question}}'
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: false
+      choices_in_prompt: null
+      metrics: []
+      original_task: null
+    name: exam creation help
+    reference: ''
+  969cb982-3751-451f-a211-79c754a8d638: !Template
+    answer_choices: null
+    answer_choices_key: null
+    id: 969cb982-3751-451f-a211-79c754a8d638
+    jinja: 'Please come up with a good question to test reading comprehension about
+      the following paragraph:
+
+
+      {{context}}
+
+
+      |||
+
+
+      {{question}}'
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: false
+      choices_in_prompt: null
+      metrics: []
+      original_task: null
+    name: generate question
+    reference: ''
+  b9296bf2-fb8c-4918-b118-d987aa92db3c: !Template
+    answer_choices: null
+    answer_choices_key: null
+    id: b9296bf2-fb8c-4918-b118-d987aa92db3c
+    jinja: 'Count the characters up until "{{answers["text"][0]}}" appears in the
+      following chunk of text.
+
+
+      {{context}}
+
+
+      |||
+
+
+      {{answers["answer_start"][0]}}'
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: false
+      choices_in_prompt: null
+      metrics: []
+      original_task: null
+    name: count letters
+    reference: ''
+  bc766330-9e98-4d10-be7d-bca0393308cb: !Template
+    answer_choices: null
+    answer_choices_key: null
+    id: bc766330-9e98-4d10-be7d-bca0393308cb
+    jinja: 'I''m working on the final exam for my class and am trying to figure out
+      the answer to the question "{{question}}" I found the following info on Wikipedia
+      and I think it has the answer. Can you tell me the answer?
+
+
+      {{context}}
+
+
+      |||
+
+      {{answers[''text''] | most_frequent | choice}}'
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: false
+      choices_in_prompt: null
+      metrics: []
+      original_task: false
+    name: exam
+    reference: ''
+  dff1c9a3-0ef5-4f5e-8630-8f41e297f4c7: !Template
+    answer_choices: null
+    answer_choices_key: null
+    id: dff1c9a3-0ef5-4f5e-8630-8f41e297f4c7
+    jinja: 'At what character does the text "{{answers["text"][0]}}" start in the
+      following paragraph?
+
+
+      {{context}}
+
+
+      |||
+
+      {{answers["answer_start"][0]}}'
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: false
+      choices_in_prompt: null
+      metrics: []
+      original_task: false
+    name: find text
+    reference: ''
+  e68c1bd0-1bcf-4ee1-89f1-01f2fb76ddfc: !Template
+    answer_choices: null
+    answer_choices_key: null
+    id: e68c1bd0-1bcf-4ee1-89f1-01f2fb76ddfc
+    jinja: '{{["Question", "Problem"]  | choice}} {{range(1, 12) | choice}}: {{question}}
+
+
+      Hint: {{context}}
+
+
+      |||
+
+      {{answers["text"] | most_frequent | choice}}'
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: false
+      choices_in_prompt: null
+      metrics: []
+      original_task: false
+    name: question/hint
+    reference: ''
+  e77c3f2d-a53b-4086-b236-14c63fc327e9: !Template
+    answer_choices: null
+    answer_choices_key: null
+    id: e77c3f2d-a53b-4086-b236-14c63fc327e9
+    jinja: "Q: {{question}}\n\nA: \n|||\n{{answers['text'] | most_frequent | choice}}"
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: false
+      choices_in_prompt: null
+      metrics: []
+      original_task: false
+    name: cbqa qa
+    reference: ''
+  f3187941-53ef-4285-b5bd-deaf1ef81001: !Template
+    answer_choices: null
+    answer_choices_key: null
+    id: f3187941-53ef-4285-b5bd-deaf1ef81001
+    jinja: 'Use the following non-answers to generate a possible short passage-question
+      pair:
+
+      {{answers["text"]|join('', '')}} |||
+
+      {{context}}
+
+      {{question}}
+
+      '
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: false
+      choices_in_prompt: null
+      metrics: []
+      original_task: false
+    name: answers_question
+    reference: ''
+  f8e5918c-d9e2-40cc-93f3-65c7ed11bf09: !Template
+    answer_choices: null
+    answer_choices_key: null
+    id: f8e5918c-d9e2-40cc-93f3-65c7ed11bf09
+    jinja: 'I''ve always wondered: {{question}}
+
+
+      I searched Wikipedia and this is what I found. What''s the answer?
+
+
+      {{context}}
+
+
+      |||
+
+      {{answers[''text''] | most_frequent | choice}}'
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: false
+      choices_in_prompt: null
+      metrics: []
+      original_task: false
+    name: wondered
+    reference: ''

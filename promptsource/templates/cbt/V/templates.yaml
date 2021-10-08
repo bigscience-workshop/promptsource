@@ -1,0 +1,54 @@
+dataset: cbt
+subset: V
+templates:
+  08820238-5bb3-4c7c-98bb-ec3d81e432e7: !Template
+    answer_choices: null
+    answer_choices_key: null
+    id: 08820238-5bb3-4c7c-98bb-ec3d81e432e7
+    jinja: 'Write the next sentence of this story: {{sentences | join('''')}}
+
+      |||
+
+      {{ question.replace("XXXXX", answer) }}'
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: false
+      choices_in_prompt: null
+      metrics: []
+      original_task: null
+    name: next_sentence_generation
+    reference: Generate the next sentence given the story.
+  63bfa7b6-b566-4693-848c-e05cd7a12a03: !Template
+    answer_choices: null
+    answer_choices_key: null
+    id: 63bfa7b6-b566-4693-848c-e05cd7a12a03
+    jinja: 'Read the passage and fill in the XXXXX:
+
+      {{ sentences | join('''') }} {{question}}
+
+      |||
+
+      {{ answer }}'
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: false
+      choices_in_prompt: null
+      metrics: []
+      original_task: null
+    name: answer_prediction
+    reference: Fill in the blank without options.
+  a2e38459-90d9-4292-9d96-491ad7d4e3db: !Template
+    answer_choices: null
+    answer_choices_key: null
+    id: a2e38459-90d9-4292-9d96-491ad7d4e3db
+    jinja: "Which of the following options replaces XXXXX the best?\n{{ options |\
+      \ join (\", \") }}\nin this story: \n{{sentences | join ('')}} {{question}}\n\
+      |||\n{{ answer }}"
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: false
+      choices_in_prompt: null
+      metrics: []
+      original_task: null
+    name: multi_choice
+    reference: Given the sentences, fill the blanks using the options.

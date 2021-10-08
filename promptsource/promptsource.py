@@ -1,15 +1,17 @@
 import textwrap
+from multiprocessing import Manager, Pool
 
 import pandas as pd
+import plotly.express as px
 import streamlit as st
+from datasets import get_dataset_infos
 from jinja2 import TemplateSyntaxError
 from pygments import highlight
 from pygments.formatters import HtmlFormatter
 from pygments.lexers import DjangoLexer
 from session import _get_state
-from utils import get_dataset, get_dataset_confs, list_datasets, removeHyphen, renameDatasetColumn, render_features
-
 from templates import Template, TemplateCollection
+from utils import get_dataset, get_dataset_confs, list_datasets, removeHyphen, renameDatasetColumn, render_features
 
 
 #
@@ -46,7 +48,9 @@ st.sidebar.title(f"Prompt sourcing 🌸 - {mode}")
 #
 # Adds pygments styles to the page.
 #
-st.markdown("<style>" + HtmlFormatter().get_style_defs(".highlight") + "</style>", unsafe_allow_html=True)
+st.markdown(
+    "<style>" + HtmlFormatter(style="friendly").get_style_defs(".highlight") + "</style>", unsafe_allow_html=True
+)
 
 WIDTH = 80
 
@@ -92,21 +96,51 @@ if mode == "Helicopter view":
     st.write(f"## Number of *prompted datasets*: `{nb_prompted_datasets}`")
     nb_prompts = sum(counts.values())
     st.write(f"## Number of *prompts*: `{nb_prompts}`")
-    st.markdown("***")
 
     #
     # Metrics per dataset/subset
     #
-    st.write("Details per dataset")
+    # Download dataset infos (multiprocessing download)
+    manager = Manager()
+    all_infos = manager.dict()
+    all_datasets = list(set([t[0] for t in template_collection.keys]))
+
+    def get_infos(d_name):
+        all_infos[d_name] = get_dataset_infos(d_name)
+
+    pool = Pool(processes=len(all_datasets))
+    pool.map(get_infos, all_datasets)
+    pool.close()
+    pool.join()
+
     results = []
     for (dataset_name, subset_name) in template_collection.keys:
+        # Collect split sizes (train, validation and test)
+        if dataset_name not in all_infos:
+            infos = get_dataset_infos(dataset_name)
+            all_infos[dataset_name] = infos
+        else:
+            infos = all_infos[dataset_name]
+        if subset_name is None:
+            subset_infos = infos[list(infos.keys())[0]]
+        else:
+            subset_infos = infos[subset_name]
+
+        split_sizes = {k: v.num_examples for k, v in subset_infos.splits.items()}
+
+        # Collect template counts, original task counts and names
         dataset_templates = template_collection.get_dataset(dataset_name, subset_name)
         results.append(
             {
                 "Dataset name": dataset_name,
                 "Subset name": "" if subset_name is None else subset_name,
+                "Train size": split_sizes["train"] if "train" in split_sizes else 0,
+                "Validation size": split_sizes["validation"] if "validation" in split_sizes else 0,
+                "Test size": split_sizes["test"] if "test" in split_sizes else 0,
                 "Number of templates": len(dataset_templates),
-                "Number of task templates": sum([t.get_task_template() for t in dataset_templates.templates.values()]),
+                "Number of original task templates": sum(
+                    [bool(t.metadata.original_task) for t in dataset_templates.templates.values()]
+                ),
                 "Template names": [t.name for t in dataset_templates.templates.values()],
                 # TODO: template name is not very informative... refine that
             }
@@ -114,6 +148,37 @@ if mode == "Helicopter view":
     results_df = pd.DataFrame(results)
     results_df.sort_values(["Number of templates"], inplace=True, ascending=False)
     results_df.reset_index(drop=True, inplace=True)
+
+    nb_training_instances = results_df["Train size"].sum()
+    st.write(f"## Number of *training instances*: `{nb_training_instances}`")
+
+    plot_df = results_df[["Dataset name", "Subset name", "Train size", "Number of templates"]].copy()
+    plot_df["Name"] = plot_df["Dataset name"] + " - " + plot_df["Subset name"]
+    plot_df.sort_values(["Train size"], inplace=True, ascending=False)
+    fig = px.bar(
+        plot_df,
+        x="Name",
+        y="Train size",
+        hover_data=["Dataset name", "Subset name", "Number of templates"],
+        log_y=True,
+        title="Number of training instances per data(sub)set - y-axis is in logscale",
+    )
+    fig.update_xaxes(visible=False, showticklabels=False)
+    st.plotly_chart(fig, use_container_width=True)
+    st.write(
+        f"- Top 3 training subsets account for `{100*plot_df[:3]['Train size'].sum()/nb_training_instances:.2f}%` of the training instances."
+    )
+    biggest_training_subset = plot_df.iloc[0]
+    st.write(
+        f"- Biggest training subset is *{biggest_training_subset['Name']}* with `{biggest_training_subset['Train size']}` instances"
+    )
+    smallest_training_subset = plot_df[plot_df["Train size"] > 0].iloc[-1]
+    st.write(
+        f"- Smallest training subset is *{smallest_training_subset['Name']}* with `{smallest_training_subset['Train size']}` instances"
+    )
+
+    st.markdown("***")
+    st.write("Details per dataset")
     st.table(results_df)
 
 else:
@@ -235,7 +300,8 @@ else:
             st.sidebar.write(example)
 
         st.sidebar.subheader("Dataset Schema")
-        st.sidebar.write(render_features(dataset.features))
+        rendered_features = render_features(dataset.features)
+        st.sidebar.write(rendered_features)
 
         #
         # Display dataset information
@@ -271,8 +337,19 @@ else:
                 st.text(template.name)
                 st.markdown("##### Reference")
                 st.text(template.reference)
-                st.markdown("##### Task Template? ")
-                st.text(template.get_task_template())
+                st.markdown("##### Original Task? ")
+                st.text(template.metadata.original_task)
+                st.markdown("##### Choices in prompt? ")
+                st.text(template.metadata.choices_in_prompt)
+                st.markdown("##### Metrics")
+                st.text(", ".join(template.metadata.metrics) if template.metadata.metrics else None)
+                st.markdown("##### Answer Choices")
+                st.text(", ".join(template.answer_choices) if template.answer_choices is not None else None)
+                st.markdown("##### Answer Choices Key")
+                if template.get_answer_choices_expr() is not None:
+                    show_jinja(template.get_answer_choices_expr())
+                else:
+                    st.text(None)
                 st.markdown("##### Jinja")
                 splitted_template = template.jinja.split("|||")
                 st.markdown("###### Prompt + X")
@@ -290,7 +367,7 @@ else:
                     continue
                 example = dataset[ex_idx]
                 example = removeHyphen(example)
-                col1, _, col2 = st.beta_columns([12, 1, 12])
+                col1, _, col2 = st.columns([12, 1, 12])
                 with col1:
                     st.write(example)
                 if num_templates > 0:
@@ -314,7 +391,7 @@ else:
             #
             # Create a new template or select an existing one
             #
-            col1a, col1b, _, col2 = st.beta_columns([9, 9, 1, 6])
+            col1a, col1b, _, col2 = st.columns([9, 9, 1, 6])
 
             # current_templates_key and state.templates_key are keys for the templates object
             current_templates_key = (dataset_key, conf_option.name if conf_option else None)
@@ -351,7 +428,7 @@ else:
                 else:
                     state.new_template_name = None
 
-            with col1b, st.beta_expander("or Select Template", expanded=True):
+            with col1b, st.expander("or Select Template", expanded=True):
                 dataset_templates = template_collection.get_dataset(*state.templates_key)
                 template_list = dataset_templates.all_template_names
                 if state.template_name:
@@ -375,7 +452,7 @@ else:
             \n- **Implicit situation or contextualization**: how explicit is the query? For instance, *Given this review, would you buy this product?* is an indirect way to ask whether the review is positive.
             """
 
-            col1, _, _ = st.beta_columns([18, 1, 6])
+            col1, _, _ = st.columns([18, 1, 6])
             with col1:
                 if state.template_name is not None:
                     show_text(variety_guideline)
@@ -383,7 +460,7 @@ else:
             #
             # Edit the created or selected template
             #
-            col1, _, col2 = st.beta_columns([18, 1, 6])
+            col1, _, col2 = st.columns([18, 1, 6])
             with col1:
                 if state.template_name is not None:
                     template = dataset_templates[state.template_name]
@@ -397,13 +474,75 @@ else:
                             help="Short description of the template and/or paper reference for the template.",
                             value=template.reference,
                         )
-                        state.task_template = st.checkbox(
-                            "Task Template?",
-                            value=template.get_task_template(),
-                            help="Task templates correspond one-to-one with the original task.",
+
+                        # Metadata
+                        state.metadata = template.metadata
+                        state.metadata.original_task = st.checkbox(
+                            "Original Task?",
+                            value=template.metadata.original_task,
+                            help="Template asks model to perform the original task designed for this dataset.",
                         )
+                        state.metadata.choices_in_prompt = st.checkbox(
+                            "Choices in Prompt?",
+                            value=template.metadata.choices_in_prompt,
+                            help="Template explicitly lists choices in the prompt for the output.",
+                        )
+
+                        # Metrics from here:
+                        # https://github.com/google-research/text-to-text-transfer-transformer/blob/4b580f23968c2139be7fb1cd53b22c7a7f686cdf/t5/evaluation/metrics.py
+                        metrics_choices = [
+                            "BLEU",
+                            "ROUGE",
+                            "Span Squad",
+                            "Squad",
+                            "Trivia QA",
+                            "Accuracy",
+                            "Sequence Accuracy",
+                            "Pearson Correlation",
+                            "Spearman Correlation",
+                            "MultiRC",
+                            "AUC",
+                            "COQA F1",
+                            "Edit Distance",
+                        ]
+                        # Add mean reciprocal rank
+                        metrics_choices.append("Mean Reciprocal Rank")
+                        # Add generic other
+                        metrics_choices.append("Other")
+                        # Sort alphabetically
+                        metrics_choices = sorted(metrics_choices)
+                        state.metadata.metrics = st.multiselect(
+                            "Metrics",
+                            metrics_choices,
+                            default=template.metadata.metrics,
+                            help="Select all metrics that are commonly used (or should "
+                            "be used if a new task) to evaluate this template.",
+                        )
+
+                        # Answer choices
+                        state.answer_choices = st.text_input(
+                            "Answer Choices",
+                            value=" ||| ".join(template.answer_choices) if template.answer_choices is not None else "",
+                            help="A ||| separated list of possible outputs (or leave blank). "
+                            + "Value is available in Jinja in a list called answer_choices.",
+                        )
+
+                        # Answer choices key
+                        if template.get_answer_choices_expr() is not None:
+                            answer_choices_key = template.get_answer_choices_expr()
+                        else:
+                            answer_choices_key = ""
+                        state.answer_choices_key = st.text_input(
+                            "Answer Choices Key",
+                            value=answer_choices_key,
+                            help="A Jinja expression for computing answer choices. "
+                            "Separate choices with a triple bar (|||).",
+                        )
+
+                        # Jinja
                         state.jinja = st.text_area("Template", height=40, value=template.jinja)
 
+                        # Submit form
                         if st.form_submit_button("Save"):
                             if (
                                 updated_template_name in dataset_templates.all_template_names
@@ -416,12 +555,23 @@ else:
                             elif updated_template_name == "":
                                 st.error("Need to provide a template name.")
                             else:
+                                # Parses state.answer_choices and state.answer_choices_key
+                                updated_answer_choices = [x.strip() for x in state.answer_choices.split("|||")]
+                                if len(updated_answer_choices) == 0 or len(updated_answer_choices) == 1:
+                                    updated_answer_choices = None
+                                if state.answer_choices_key == "":
+                                    updated_answer_choices_key = None
+                                else:
+                                    updated_answer_choices_key = state.answer_choices_key
+
                                 dataset_templates.update_template(
                                     state.template_name,
                                     updated_template_name,
                                     state.jinja,
                                     state.reference,
-                                    state.task_template,
+                                    state.metadata,
+                                    updated_answer_choices,
+                                    updated_answer_choices_key,
                                 )
                                 # Update the state as well
                                 state.template_name = updated_template_name

@@ -1,0 +1,178 @@
+dataset: subjqa
+subset: grocery
+templates:
+  255dd1c5-3129-4f69-ae4f-3f2b47be926d: !Template
+    answer_choices: null
+    answer_choices_key: null
+    id: 255dd1c5-3129-4f69-ae4f-3f2b47be926d
+    jinja: 'Possible categories:
+
+      - {{ ["books", "electronics", "grocery", "movies", "restaurants", "tripadvisor"]  |
+      join("\n- ") }}
+
+
+      Context:
+
+      {{context}}
+
+
+      Which of the category corresponds to the context?
+
+
+      |||
+
+
+      {{domain}}'
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: false
+      choices_in_prompt: null
+      metrics: []
+      original_task: false
+    name: domain_q
+    reference: ''
+  4857a5ed-9df9-417b-ac6e-504604ab7e37: !Template
+    answer_choices: null
+    answer_choices_key: null
+    id: 4857a5ed-9df9-417b-ac6e-504604ab7e37
+    jinja: 'Question:
+
+      {{question}}
+
+
+      On a scale of 1 to 5 (1 being the most subjective), how subjective is the question?
+
+
+      |||
+
+
+      {{question_subj_level}}'
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: false
+      choices_in_prompt: null
+      metrics: []
+      original_task: false
+    name: q_subj_score
+    reference: ''
+  5173e70e-7396-4932-95b6-3b740058a6bc: !Template
+    answer_choices: null
+    answer_choices_key: null
+    id: 5173e70e-7396-4932-95b6-3b740058a6bc
+    jinja: 'Context:
+
+      {{context}}
+
+
+      Question:
+
+      {{question}}
+
+
+      How would you rate the subjectivity of the question (on a 1 to 5 scale with
+      1 being the most subjective)?
+
+
+      |||
+
+
+      {{question_subj_level}}'
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: false
+      choices_in_prompt: null
+      metrics: []
+      original_task: false
+    name: q_subj_score_with_context
+    reference: ''
+  90b561d0-307f-49aa-a642-bbbad543f498: !Template
+    answer_choices: null
+    answer_choices_key: null
+    id: 90b561d0-307f-49aa-a642-bbbad543f498
+    jinja: '{{question}}
+
+
+      Answer using extracts from the following context. If you can''t find an answer,
+      return {{"Unanswerable"}}
+
+
+      Context:
+
+      {{context}}
+
+
+      |||
+
+      {% if (answers["text"]  | length) == 0 %}
+
+      {{ "Unanswerable" }}
+
+      {% else %}
+
+      {{answers["text"] | join(" \n ")}}
+
+      {% endif %}'
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: false
+      choices_in_prompt: null
+      metrics: []
+      original_task: true
+    name: answer_q_with_context_after
+    reference: ''
+  c6ef2acd-f32f-49f5-9803-5017412f739d: !Template
+    answer_choices: null
+    answer_choices_key: null
+    id: c6ef2acd-f32f-49f5-9803-5017412f739d
+    jinja: 'Context:
+
+      {{context}}
+
+
+      Answer the following question with extracts from the context: {{question}}
+
+
+      |||
+
+      {% if (answers["text"]  | length) == 0 %}
+
+      {{ "Unanswerable" }}
+
+      {% else %}
+
+      {{answers["text"] | join(" \n ")}}
+
+      {% endif %}'
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: false
+      choices_in_prompt: null
+      metrics: []
+      original_task: true
+    name: answer_q_with_context_first
+    reference: ''
+  f19ac17f-ed79-4f64-9f7b-511d9f4e4c6b: !Template
+    answer_choices: null
+    answer_choices_key: null
+    id: f19ac17f-ed79-4f64-9f7b-511d9f4e4c6b
+    jinja: 'Context:
+
+      {{context}}
+
+
+      Which of {{"books, electronics, grocery, movies, restaurants or tripadvisor"}}
+      corresponds to the context?
+
+
+      |||
+
+
+      {{domain}}'
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: false
+      choices_in_prompt: null
+      metrics: []
+      original_task: false
+    name: domain_q_v2
+    reference: ''

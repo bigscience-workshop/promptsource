@@ -1,0 +1,244 @@
+dataset: ncbi_disease
+templates:
+  04458e59-37f1-48dc-bb20-823e836a8c44: !Template
+    answer_choices: null
+    answer_choices_key: null
+    id: 04458e59-37f1-48dc-bb20-823e836a8c44
+    jinja: 'What are the diseases mentioned in the following text?
+
+      {{ tokens | join(" ") | replace(" .", ".") | replace(" ,", ",") | replace("
+      ;", ";") | replace(" :", ":") | replace(" -", "-") }}
+
+      |||
+
+      {% set diseases = {"list": [], "disease_started": False} %}
+
+      {% set disease_token = ""  %}
+
+      {% for ner_tag in ner_tags %}
+
+      {% if ner_tag > 0 %}
+
+      {{ diseases.update({"disease_started": True}) |default("", True)}}
+
+      {% set disease_token = tokens[loop.index - 1]  %}
+
+      {{ diseases.list.append(" ") |default("", True)}}
+
+      {{ diseases.list.append((disease_token[0]|upper) + disease_token[1:] if ner_tag
+      == 1 else disease_token) |default("", True)}}
+
+      {% elif diseases.disease_started %}
+
+      {{ diseases.update({"disease_started": False}) |default("", True)}}
+
+      {{ diseases.list.append(",") |default("", True)}}
+
+      {% endif %}
+
+      {% endfor %}
+
+      {{diseases.list | join | trim(",") if (diseases.list | length) > 0 else "No
+      diseases found!"}}'
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: false
+      choices_in_prompt: null
+      metrics: []
+      original_task: false
+    name: simple_question_asking_response_as_text
+    reference: Simple question asking for the diseases present in a text, the response
+      is a text
+  04960166-100e-4615-a644-b62283336636: !Template
+    answer_choices: null
+    answer_choices_key: null
+    id: 04960166-100e-4615-a644-b62283336636
+    jinja: 'What are the token indexes corresponding to diseases mentioned in the
+      following text?
+
+      {{ tokens | join(" ") | replace(" .", ".") | replace(" ,", ",") | replace("
+      ;", ";") | replace(" :", ":") | replace(" -", "-") }}
+
+      |||
+
+      {% set vars = {''no_disease'': True} %}
+
+      {% for ner_tag in ner_tags %}
+
+      {% if ner_tag > 0 %}
+
+      {{ vars.update({''no_disease'': False}) | default("", True) }}
+
+      - {{(loop.index - 1)}}
+
+      {% endif %}
+
+      {% endfor %}
+
+
+      {% if vars.no_disease %}
+
+      There are no disease tokens in the text.
+
+      {% endif %}'
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: false
+      choices_in_prompt: null
+      metrics: []
+      original_task: false
+    name: simple_question_asking_token_indexes_list
+    reference: A simple question asking which token indexes are speaking about a disease
+  5a693a8f-07a2-4d88-ab3a-337b1029d9a2: !Template
+    answer_choices: null
+    answer_choices_key: null
+    id: 5a693a8f-07a2-4d88-ab3a-337b1029d9a2
+    jinja: 'Are there diseases mentioned in the following text?
+
+      {{ tokens | join(" ") | replace(" .", ".") | replace(" ,", ",") | replace("
+      ;", ";") | replace(" :", ":") | replace(" -", "-") }}
+
+      |||
+
+      {% set vars = {''no_disease'': True} %}
+
+      {% for ner_tag in ner_tags %}
+
+      {% if ner_tag > 0 %}
+
+      {{ vars.update({''no_disease'': False}) | default("", True) }}
+
+      {% endif %}
+
+      {% endfor %}
+
+
+      {{"No there aren''t!" if vars.no_disease else "Yes there are!"}}'
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: false
+      choices_in_prompt: null
+      metrics: []
+      original_task: false
+    name: question_asking_diseases_presence
+    reference: Ask for disease presence in the text
+  f4cad387-e558-4087-854f-0991f7aafca8: !Template
+    answer_choices: null
+    answer_choices_key: null
+    id: f4cad387-e558-4087-854f-0991f7aafca8
+    jinja: '{{ tokens | join(" ") | replace(" .", ".") | replace(" ,", ",") | replace("
+      ;", ";") | replace(" :", ":") | replace(" -", "-") }}
+
+      What are the diseases mentioned in the previous text?
+
+      |||
+
+      {% set diseases = {"list": [], "disease_started": False} %}
+
+      {% set disease_token = ""  %}
+
+      {% for ner_tag in ner_tags %}
+
+      {% if ner_tag > 0 %}
+
+      {{ diseases.update({"disease_started": True}) |default("", True)}}
+
+      {% set disease_token = tokens[loop.index - 1]  %}
+
+      {{ diseases.list.append(" ") |default("", True)}}
+
+      {{ diseases.list.append((disease_token[0]|upper) + disease_token[1:] if ner_tag
+      == 1 else disease_token) |default("", True)}}
+
+      {% elif diseases.disease_started %}
+
+      {{ diseases.update({"disease_started": False}) |default("", True)}}
+
+      {{ diseases.list.append(",") |default("", True)}}
+
+      {% endif %}
+
+      {% endfor %}
+
+      {{diseases.list | join | trim(",") if (diseases.list | length) > 0 else "No
+      diseases found!"}}'
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: false
+      choices_in_prompt: null
+      metrics: []
+      original_task: false
+    name: simple_question_asking_response_as_text_after_text
+    reference: Simple question asking response as a text, posing the question after
+  f8e9cf13-7914-4257-abda-f9e98d7ec7f9: !Template
+    answer_choices: null
+    answer_choices_key: null
+    id: f8e9cf13-7914-4257-abda-f9e98d7ec7f9
+    jinja: 'What are the diseases mentioned in the following text?
+
+      {{ tokens | join(" ") | replace(" .", ".") | replace(" ,", ",") | replace("
+      ;", ";") | replace(" :", ":") | replace(" -", "-") }}
+
+      |||
+
+      {% set vars = {''no_disease'': True} %}
+
+      {% for ner_tag in ner_tags %}
+
+      {% if ner_tag > 0 %}
+
+      {{ vars.update({''no_disease'': False}) | default("", True) }}
+
+      - {{tokens[loop.index - 1] }}
+
+      {% endif %}
+
+      {% endfor %}
+
+
+      {% if vars.no_disease %}
+
+      There are no diseases in the text.
+
+      {% endif %}'
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: false
+      choices_in_prompt: null
+      metrics: []
+      original_task: false
+    name: simple_question_asking_word_list
+    reference: A question for listing the words that compose a disease entity
+  f91d18a6-6581-4379-8b46-06a9ef44b401: !Template
+    answer_choices: null
+    answer_choices_key: null
+    id: f91d18a6-6581-4379-8b46-06a9ef44b401
+    jinja: '{{ tokens | join(" ") | replace(" .", ".") | replace(" ,", ",") | replace("
+      ;", ";") | replace(" :", ":") | replace(" -", "-") }}
+
+      Are there diseases mentioned in the previous text?
+
+      |||
+
+      {% set vars = {''no_disease'': True} %}
+
+      {% for ner_tag in ner_tags %}
+
+      {% if ner_tag > 0 %}
+
+      {{ vars.update({''no_disease'': False}) | default("", True) }}
+
+      {% endif %}
+
+      {% endfor %}
+
+
+      {{"No there aren''t!" if vars.no_disease else "Yes there are!"}}'
+    metadata: !TemplateMetadata
+      _do_eval: false
+      _do_train: false
+      choices_in_prompt: null
+      metrics: []
+      original_task: false
+    name: question_asking_diseases_presence_after_text
+    reference: Asking for disease presence after the text
