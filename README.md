@@ -11,7 +11,7 @@ WIP
 ## Running
 From the root directory of the repo, you can launch the editor with
 ```
-streamlit run promptsource/promptsource.py
+streamlit run promptsource/app.py
 ```
 
 There are 3 modes in the app:
@@ -24,7 +24,7 @@ There are 3 modes in the app:
 ## Running (read-only)
 To host a public streamlit app, launch it with
 ```bash
-streamlit run promptsource/promptsource.py -- -r
+streamlit run promptsource/app.py -- -r
 ```
 
 ## Contributing

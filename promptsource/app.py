@@ -25,8 +25,8 @@ from promptsource.utils import (
 # add an argument for read-only
 # At the moment, streamlit does not handle python script arguments gracefully.
 # Thus, for read-only mode, you have to type one of the below two:
-# streamlit run promptsource/promptsource.py -- -r
-# streamlit run promptsource/promptsource.py -- --read-only
+# streamlit run promptsource/app.py -- -r
+# streamlit run promptsource/app.py -- --read-only
 # Check https://github.com/streamlit/streamlit/issues/337 for more information.
 parser = argparse.ArgumentParser(description='run promptsource.py with args')
 parser.add_argument('-r', '--read-only', action='store_true', 
