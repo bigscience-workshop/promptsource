@@ -29,7 +29,7 @@ from promptsource.utils import (
 # streamlit run promptsource/app.py -- -r
 # streamlit run promptsource/app.py -- --read-only
 # Check https://github.com/streamlit/streamlit/issues/337 for more information.
-parser = argparse.ArgumentParser(description="run promptsource.py with args")
+parser = argparse.ArgumentParser(description="run app.py with args")
 parser.add_argument("-r", "--read-only", action="store_true", help="whether to run it as read-only mode")
 
 args = parser.parse_args()
