@@ -38,7 +38,7 @@ if args.read_only:
     side_bar_title_prefix = "Promptsource (Read only)"
 else:
     select_options = ["Helicopter view", "Prompted dataset viewer", "Sourcing"]
-    side_bar_title_prefix = "Prompt sourcing"
+    side_bar_title_prefix = "Promptsource"
 
 #
 # Helper functions for datasets library
