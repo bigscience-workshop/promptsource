@@ -4,6 +4,8 @@ import datasets
 import pkg_resources
 import requests
 
+from promptsource.templates import INCLUDED_USERS
+
 
 def removeHyphen(example):
     example_clean = {}
@@ -135,13 +137,6 @@ def list_datasets(template_collection, _state):
     
     dataset_list.sort(key=lambda x: DATASET_ORDER.get(x, 1000))
     return dataset_list
-
-
-"""
-These are users whose datasets should be included in the results returned by
-filter_english_datasets (regardless of their metadata)
-"""
-INCLUDED_USERS = ("Zaid",)
 
 
 DATASET_ORDER = dict(

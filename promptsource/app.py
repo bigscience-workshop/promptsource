@@ -9,9 +9,17 @@ from jinja2 import TemplateSyntaxError
 from pygments import highlight
 from pygments.formatters import HtmlFormatter
 from pygments.lexers import DjangoLexer
-from session import _get_state
-from templates import Template, TemplateCollection
-from utils import get_dataset, get_dataset_confs, list_datasets, removeHyphen, renameDatasetColumn, render_features
+
+from promptsource.session import _get_state
+from promptsource.templates import Template, TemplateCollection
+from promptsource.utils import (
+    get_dataset,
+    get_dataset_confs,
+    list_datasets,
+    removeHyphen,
+    renameDatasetColumn,
+    render_features,
+)
 
 
 #
@@ -36,7 +44,7 @@ state = _get_state()
 #
 # Initial page setup
 #
-st.set_page_config(layout="wide")
+st.set_page_config(page_title="Promptsource", layout="wide")
 mode = st.sidebar.selectbox(
     label="Choose a mode",
     options=["Helicopter view", "Prompted dataset viewer", "Sourcing"],
