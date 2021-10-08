@@ -43,9 +43,6 @@ Is this a piece of news regarding {{"world politics"}}, {{"sports"}}, {{"busines
 
 For more information, read the [Contribution guidelines](CONTRIBUTING.md).
 
-## Other documentation
-- Experimental context: [Experiment D](https://docs.google.com/document/d/1ar9cTRs9ZWxMkW-_9jF1ZtfY-u8IK_sO5QOtq1qnC2I/edit?usp=sharing)
-- Prompting interface: [design doc](https://docs.google.com/document/d/1IQzrrAAMPS0XAn_ArOq2hyEDCVfeB7AfcvLUqgSnWxQ/)
 ## Known Issues
 
 **Warning or Error about Darwin on OS X:** Try downgrading PyArrow to 3.0.0.
