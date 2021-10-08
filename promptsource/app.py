@@ -1,3 +1,4 @@
+import argparse
 import textwrap
 from multiprocessing import Manager, Pool
 
@@ -22,10 +23,26 @@ from promptsource.utils import (
 )
 
 
+# add an argument for read-only
+# At the moment, streamlit does not handle python script arguments gracefully.
+# Thus, for read-only mode, you have to type one of the below two:
+# streamlit run promptsource/app.py -- -r
+# streamlit run promptsource/app.py -- --read-only
+# Check https://github.com/streamlit/streamlit/issues/337 for more information.
+parser = argparse.ArgumentParser(description="run app.py with args")
+parser.add_argument("-r", "--read-only", action="store_true", help="whether to run it as read-only mode")
+
+args = parser.parse_args()
+if args.read_only:
+    select_options = ["Helicopter view", "Prompted dataset viewer"]
+    side_bar_title_prefix = "Promptsource (Read only)"
+else:
+    select_options = ["Helicopter view", "Prompted dataset viewer", "Sourcing"]
+    side_bar_title_prefix = "Promptsource"
+
 #
 # Helper functions for datasets library
 #
-
 get_dataset = st.cache(allow_output_mutation=True)(get_dataset)
 get_dataset_confs = st.cache(get_dataset_confs)
 
@@ -47,11 +64,11 @@ state = _get_state()
 st.set_page_config(page_title="Promptsource", layout="wide")
 mode = st.sidebar.selectbox(
     label="Choose a mode",
-    options=["Helicopter view", "Prompted dataset viewer", "Sourcing"],
+    options=select_options,
     index=0,
     key="mode_select",
 )
-st.sidebar.title(f"Prompt sourcing 🌸 - {mode}")
+st.sidebar.title(f"{side_bar_title_prefix} 🌸 - {mode}")
 
 #
 # Adds pygments styles to the page.
