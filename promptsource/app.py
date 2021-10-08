@@ -1,3 +1,4 @@
+import argparse
 import textwrap
 from multiprocessing import Manager, Pool
 
@@ -9,15 +10,39 @@ from jinja2 import TemplateSyntaxError
 from pygments import highlight
 from pygments.formatters import HtmlFormatter
 from pygments.lexers import DjangoLexer
-from session import _get_state
-from templates import Template, TemplateCollection
-from utils import get_dataset, get_dataset_confs, list_datasets, removeHyphen, renameDatasetColumn, render_features
 
+from promptsource.session import _get_state
+from promptsource.templates import Template, TemplateCollection
+from promptsource.utils import (
+    get_dataset,
+    get_dataset_confs,
+    list_datasets,
+    removeHyphen,
+    renameDatasetColumn,
+    render_features,
+)
+
+
+# add an argument for read-only
+# At the moment, streamlit does not handle python script arguments gracefully.
+# Thus, for read-only mode, you have to type one of the below two:
+# streamlit run promptsource/app.py -- -r
+# streamlit run promptsource/app.py -- --read-only
+# Check https://github.com/streamlit/streamlit/issues/337 for more information.
+parser = argparse.ArgumentParser(description="run app.py with args")
+parser.add_argument("-r", "--read-only", action="store_true", help="whether to run it as read-only mode")
+
+args = parser.parse_args()
+if args.read_only:
+    select_options = ["Helicopter view", "Prompted dataset viewer"]
+    side_bar_title_prefix = "Promptsource (Read only)"
+else:
+    select_options = ["Helicopter view", "Prompted dataset viewer", "Sourcing"]
+    side_bar_title_prefix = "Promptsource"
 
 #
 # Helper functions for datasets library
 #
-
 get_dataset = st.cache(allow_output_mutation=True)(get_dataset)
 get_dataset_confs = st.cache(get_dataset_confs)
 
@@ -36,14 +61,14 @@ state = _get_state()
 #
 # Initial page setup
 #
-st.set_page_config(layout="wide")
+st.set_page_config(page_title="Promptsource", layout="wide")
 mode = st.sidebar.selectbox(
     label="Choose a mode",
-    options=["Helicopter view", "Prompted dataset viewer", "Sourcing"],
+    options=select_options,
     index=0,
     key="mode_select",
 )
-st.sidebar.title(f"Prompt sourcing 🌸 - {mode}")
+st.sidebar.title(f"{side_bar_title_prefix} 🌸 - {mode}")
 
 #
 # Adds pygments styles to the page.
@@ -367,7 +392,7 @@ else:
                     continue
                 example = dataset[ex_idx]
                 example = removeHyphen(example)
-                col1, _, col2 = st.beta_columns([12, 1, 12])
+                col1, _, col2 = st.columns([12, 1, 12])
                 with col1:
                     st.write(example)
                 if num_templates > 0:
@@ -391,7 +416,7 @@ else:
             #
             # Create a new template or select an existing one
             #
-            col1a, col1b, _, col2 = st.beta_columns([9, 9, 1, 6])
+            col1a, col1b, _, col2 = st.columns([9, 9, 1, 6])
 
             # current_templates_key and state.templates_key are keys for the templates object
             current_templates_key = (dataset_key, conf_option.name if conf_option else None)
@@ -428,7 +453,7 @@ else:
                 else:
                     state.new_template_name = None
 
-            with col1b, st.beta_expander("or Select Template", expanded=True):
+            with col1b, st.expander("or Select Template", expanded=True):
                 dataset_templates = template_collection.get_dataset(*state.templates_key)
                 template_list = dataset_templates.all_template_names
                 if state.template_name:
@@ -452,7 +477,7 @@ else:
             \n- **Implicit situation or contextualization**: how explicit is the query? For instance, *Given this review, would you buy this product?* is an indirect way to ask whether the review is positive.
             """
 
-            col1, _, _ = st.beta_columns([18, 1, 6])
+            col1, _, _ = st.columns([18, 1, 6])
             with col1:
                 if state.template_name is not None:
                     show_text(variety_guideline)
@@ -460,7 +485,7 @@ else:
             #
             # Edit the created or selected template
             #
-            col1, _, col2 = st.beta_columns([18, 1, 6])
+            col1, _, col2 = st.columns([18, 1, 6])
             with col1:
                 if state.template_name is not None:
                     template = dataset_templates[state.template_name]

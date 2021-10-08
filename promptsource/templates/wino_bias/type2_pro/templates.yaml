@@ -1,51 +1,49 @@
 dataset: wino_bias
 subset: type2_pro
 templates:
-  0a913970-e353-49f1-b8e5-99b69926ddfc: !Template
+  165a421e-6a90-4a7a-8ec5-06ae904ab46f: !Template
     answer_choices: null
     answer_choices_key: null
-    id: 0a913970-e353-49f1-b8e5-99b69926ddfc
-    jinja: 'Coreference occurs in a text when two or more expressions refer to the
-      same person or thing. Consider the following sentence: "{{tokens | join(" ")}}"
+    id: 165a421e-6a90-4a7a-8ec5-06ae904ab46f
+    jinja: '{% set pronoun = tokens[coreference_clusters[2] | int : coreference_clusters[3]
+      | int + 1] | join(" ") %}
 
-      What is the coreferent of {{tokens[coreference_clusters[2] | int : coreference_clusters[3]
-      | int + 1] | join(" ")}}?
+      {% set referent = tokens[coreference_clusters[0] | int : coreference_clusters[1]
+      | int + 1] | join(" ") %}
 
-      ||| {{tokens[coreference_clusters[0] | int : coreference_clusters[1] | int +
-      1] | join(" ")}}'
+      {{tokens | join(" ")}}
+
+      {% if pronoun.lower()  == "they" or pronoun.lower() == "them" %}
+
+      Question: Who or what are "{{ pronoun }}"?
+
+      {% else %}
+
+      Question: Who or what is "{{ pronoun }}"?
+
+      {% endif %}
+
+      Answer: ||| {{ referent }}'
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
       - Other
       original_task: true
-    name: explanation_coreference
+    name: Who or what is/are
     reference: ''
-  53abcf82-70dc-4628-a9ad-d2dab6ff0668: !Template
+  25066e95-3782-44fc-949e-3620edd24a22: !Template
     answer_choices: null
     answer_choices_key: null
-    id: 53abcf82-70dc-4628-a9ad-d2dab6ff0668
-    jinja: 'In the sentence "The pan did not fit in the suitcase because it was too
-      big", "it" refers to the pan.
+    id: 25066e95-3782-44fc-949e-3620edd24a22
+    jinja: '{% set pronoun = tokens[coreference_clusters[2] | int : coreference_clusters[3]
+      | int + 1] | join(" ") %}
 
-      For the sentence: "{{tokens | join(" ")}}", what does "{{tokens[coreference_clusters[2]
-      | int : coreference_clusters[3] | int + 1] | join(" ")}}" refer to? ||| {{tokens[coreference_clusters[0]
-      | int : coreference_clusters[1] | int + 1] | join(" ")}}'
-    metadata: !TemplateMetadata
-      choices_in_prompt: false
-      metrics:
-      - Other
-      original_task: true
-    name: example_coreference
-    reference: ''
-  70d0a940-fbf6-4ba9-a6e9-3a84202833b5: !Template
-    answer_choices: null
-    answer_choices_key: null
-    id: 70d0a940-fbf6-4ba9-a6e9-3a84202833b5
-    jinja: 'What does "{{tokens[coreference_clusters[2] | int : coreference_clusters[3]
-      | int + 1] | join(" ")}}" refer to in the following sentence?
+      {% set referent = tokens[coreference_clusters[0] | int : coreference_clusters[1]
+      | int + 1] | join(" ") %}
 
-      {{tokens | join(" ")}} ||| {{tokens[coreference_clusters[0] | int : coreference_clusters[1]
-      | int + 1] | join(" ")}}'
+      What does "{{ pronoun }}" refer to in the following sentence?
+
+      {{tokens | join(" ")}} ||| {{referent}}'
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
@@ -53,15 +51,19 @@ templates:
       original_task: true
     name: refers_to
     reference: ''
-  916b9675-858d-4ac1-910b-6e6229b3d7a2: !Template
+  793c09af-1ec7-492a-ab65-392b0b17d807: !Template
     answer_choices: null
     answer_choices_key: null
-    id: 916b9675-858d-4ac1-910b-6e6229b3d7a2
-    jinja: 'In the sentence below, what does "{{tokens[coreference_clusters[2] | int
-      : coreference_clusters[3] | int + 1] | join(" ")}}" represent?
+    id: 793c09af-1ec7-492a-ab65-392b0b17d807
+    jinja: '{% set pronoun = tokens[coreference_clusters[2] | int : coreference_clusters[3]
+      | int + 1] | join(" ") %}
 
-      {{tokens | join(" ")}} ||| {{tokens[coreference_clusters[0] | int : coreference_clusters[1]
-      | int + 1] | join(" ")}}'
+      {% set referent = tokens[coreference_clusters[0] | int : coreference_clusters[1]
+      | int + 1] | join(" ") %}
+
+      In the sentence below, what does "{{pronoun}}" represent?
+
+      {{tokens | join(" ")}} ||| {{referent}}'
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
@@ -69,19 +71,89 @@ templates:
       original_task: true
     name: represent
     reference: ''
-  e7ce15bd-9590-47a5-820a-3472dfe85746: !Template
+  83446f7f-07ae-4b88-8aff-3eda1183dd7b: !Template
     answer_choices: null
     answer_choices_key: null
-    id: e7ce15bd-9590-47a5-820a-3472dfe85746
-    jinja: '{{tokens | join(" ")}}
+    id: 83446f7f-07ae-4b88-8aff-3eda1183dd7b
+    jinja: '{% set pronoun = tokens[coreference_clusters[2] | int : coreference_clusters[3]
+      | int + 1] | join(" ") %}
 
-      What is the correct referent for "{{tokens[coreference_clusters[2] | int : coreference_clusters[3]
-      | int + 1] | join(" ")}}" in the above sentence: ||| {{tokens[coreference_clusters[0]
-      | int : coreference_clusters[1] | int + 1] | join(" ")}}'
+      {% set referent = tokens[coreference_clusters[0] | int : coreference_clusters[1]
+      | int + 1] | join(" ") %}
+
+      {{tokens | join(" ")}}
+
+      In the previous sentence, the pronoun "{{ pronoun }}" can be replaced with |||
+      {{ referent }}'
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
       - Other
       original_task: true
-    name: referent
+    name: replaced with
     reference: ''
+  85a90e9b-a6ef-4e25-9577-f26f14350099: !Template
+    answer_choices: null
+    answer_choices_key: null
+    id: 85a90e9b-a6ef-4e25-9577-f26f14350099
+    jinja: '{% set pronoun = tokens[coreference_clusters[2] | int : coreference_clusters[3]
+      | int + 1] | join(" ") %}
+
+      {% set referent = tokens[coreference_clusters[0] | int : coreference_clusters[1]
+      | int + 1] | join(" ") %}
+
+      {{tokens | join(" ")}}
+
+      Here, by "{{ pronoun }}" they mean ||| {{ referent }}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - Other
+      original_task: true
+    name: by p they mean
+    reference: ''
+  ace9b776-df88-4895-b1e1-6821c5fcef72: !Template
+    answer_choices: null
+    answer_choices_key: null
+    id: ace9b776-df88-4895-b1e1-6821c5fcef72
+    jinja: '{% set pronoun = tokens[coreference_clusters[2] | int : coreference_clusters[3]
+      | int + 1] | join(" ") %}
+
+      {% set referent = tokens[coreference_clusters[0] | int : coreference_clusters[1]
+      | int + 1] | join(" ") %}
+
+      {{tokens | join(" ")}}
+
+      Here, what does "{{ pronoun }}" stand for? ||| {{ referent }}'
+    metadata: !TemplateMetadata
+      _do_eval: true
+      _do_train: true
+      choices_in_prompt: false
+      metrics:
+      - Other
+      original_task: true
+    name: What does p stand for
+    reference: ''
+  af0b86f2-2fc6-4237-89da-d6d7dd2d9a40: !Template
+    answer_choices: null
+    answer_choices_key: null
+    id: af0b86f2-2fc6-4237-89da-d6d7dd2d9a40
+    jinja: '{% set pronoun = tokens[coreference_clusters[2] | int : coreference_clusters[3]
+      | int + 1] | join(" ") %}
+
+      {% set referent = tokens[coreference_clusters[0] | int : coreference_clusters[1]
+      | int + 1] | join(" ") %}
+
+      {{tokens | join(" ")}}
+
+      In the passage above, the pronoun "{{ pronoun }}" refers to ||| {{ referent
+      }}'
+    metadata: !TemplateMetadata
+      _do_eval: true
+      _do_train: true
+      choices_in_prompt: false
+      metrics:
+      - Other
+      original_task: true
+    name: the pronoun refers to
+    reference: "Adapted from Perez et al. 2021 and Schick & Sch\xFCtz 2021."

@@ -23,6 +23,10 @@ env = Environment(loader=BaseLoader)
 # Allow the python function zip()
 env.globals.update(zip=zip)
 
+# These are users whose datasets should be included in the results returned by
+# filter_english_datasets (regardless of their metadata)
+INCLUDED_USERS = {"Zaid"}
+
 
 def highlight(input):
     return "<span style='color: #F08080'>" + input + "</span>"
@@ -263,7 +267,7 @@ class TemplateCollection:
     def __init__(self):
 
         # Dict of all the DatasetTemplates, key is the tuple (dataset_name, subset_name)
-        self.datasets_templates: Dict[(str, Optional[str]), DatasetTemplates] = self._collect_dataset()
+        self.datasets_templates: Dict[(str, Optional[str]), DatasetTemplates] = self._collect_datasets()
 
     @property
     def keys(self):
@@ -275,7 +279,7 @@ class TemplateCollection:
     def remove(self, dataset_name: str, subset_name: Optional[str] = None) -> None:
         del self.datasets_templates[dataset_name, subset_name]
 
-    def _collect_dataset(self) -> Dict[Tuple[str, str], "DatasetTemplates"]:
+    def _collect_datasets(self) -> Dict[Tuple[str, str], "DatasetTemplates"]:
         """
         Initialize a DatasetTemplates object for each templates.yaml detected in the templates folder
 
@@ -286,13 +290,22 @@ class TemplateCollection:
 
         output = {}  # format is {(dataset_name, subset_name): DatasetsTemplates}
         for dataset in dataset_folders:
-            for filename in os.listdir(os.path.join(TEMPLATES_FOLDER_PATH, dataset)):
-                if filename.endswith(".yaml"):
-                    # If there is no sub-folder, there is no subset for this dataset
-                    output[(dataset, None)] = DatasetTemplates(dataset)
-                else:
-                    # This is a subfolder, and its name corresponds to the subset name
-                    output[(dataset, filename)] = DatasetTemplates(dataset_name=dataset, subset_name=filename)
+            if dataset in INCLUDED_USERS:
+                for filename in os.listdir(os.path.join(TEMPLATES_FOLDER_PATH, dataset)):
+                    output = {**output, **self._collect_dataset(dataset + "/" + filename)}
+            else:
+                output = {**output, **self._collect_dataset(dataset)}
+        return output
+
+    def _collect_dataset(self, dataset):
+        output = {}  # format is {(dataset_name, subset_name): DatasetsTemplates}
+        for filename in os.listdir(os.path.join(TEMPLATES_FOLDER_PATH, dataset)):
+            if filename.endswith(".yaml"):
+                # If there is no sub-folder, there is no subset for this dataset
+                output[(dataset, None)] = DatasetTemplates(dataset)
+            else:
+                # This is a subfolder, and its name corresponds to the subset name
+                output[(dataset, filename)] = DatasetTemplates(dataset_name=dataset, subset_name=filename)
         return output
 
     def get_dataset(self, dataset_name: str, subset_name: Optional[str] = None) -> "DatasetTemplates":
