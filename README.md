@@ -21,6 +21,12 @@ There are 3 modes in the app:
 
 <img src="assets/promptsource_app.png" width="800">
 
+## Running (read-only)
+To host a public streamlit app, launch it with
+```bash
+streamlit run promptsource/promptsource.py -- -r
+```
+
 ## Contributing
 Join the **Hackaprompt** and help writing templates!
 
