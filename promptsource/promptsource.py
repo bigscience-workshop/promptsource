@@ -191,27 +191,11 @@ else:
     #
     # Loads dataset information
     #
-    if mode == "Prompted dataset viewer":
-        priority_filter = False
-        priority_max_templates = None
-    else:  # mode = Sourcing
-        priority_filter = st.sidebar.checkbox(
-            "Filter Priority Datasets", help="This filter surfaces datasets with less than X prompts."
-        )
-        if priority_filter:
-            priority_max_templates = st.sidebar.number_input(
-                "Max no of templates per dataset", min_value=1, max_value=50, value=2, step=1
-            )
-        else:
-            # Clear working priority dataset retained in the
-            # priority list with more than priority_max_templates
-            state.working_priority_ds = None
-            priority_max_templates = None
+    
+    
 
     dataset_list = list_datasets(
         template_collection,
-        priority_filter,
-        priority_max_templates,
         state,
     )
 
@@ -225,12 +209,6 @@ else:
         index=12,  # AG_NEWS
         help="Select the dataset to work on.",
     )
-
-    if mode == "Sourcing":
-        # On dataset change, clear working priority dataset
-        # retained in the priority list with more than priority_max_templates
-        if dataset_key != state.working_priority_ds:
-            state.working_priority_ds = None
 
     #
     # If a particular dataset is selected, loads dataset and template information
@@ -422,9 +400,6 @@ else:
                         dataset_templates.add_template(template)
                         reset_template_state()
                         state.template_name = new_template_name
-                        # Keep the current working dataset in priority list
-                        if priority_filter:
-                            state.working_priority_ds = dataset_key
                 else:
                     state.new_template_name = None
 

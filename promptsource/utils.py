@@ -129,24 +129,11 @@ def filter_english_datasets():
     return sorted(english_datasets)
 
 
-def list_datasets(template_collection, _priority_filter, _priority_max_templates, _state):
+def list_datasets(template_collection, _state):
     """Get all the datasets to work with."""
     dataset_list = filter_english_datasets()
-    count_dict = template_collection.get_templates_count()
-    if _priority_filter:
-        dataset_list = list(
-            set(dataset_list)
-            - set(
-                list(
-                    d
-                    for d in count_dict
-                    if count_dict[d] > _priority_max_templates and d != _state.working_priority_ds
-                )
-            )
-        )
-        dataset_list.sort()
-    else:
-        dataset_list.sort(key=lambda x: DATASET_ORDER.get(x, 1000))
+    
+    dataset_list.sort(key=lambda x: DATASET_ORDER.get(x, 1000))
     return dataset_list
 
 
