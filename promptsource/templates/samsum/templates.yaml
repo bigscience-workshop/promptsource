@@ -10,9 +10,10 @@ templates:
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: false
-      choices_in_prompt: null
-      metrics: []
-      original_task: null
+      choices_in_prompt: false
+      metrics:
+      - ROUGE
+      original_task: true
     name: 'Summarize this dialogue:'
     reference: ''
   182a251f-2f76-4b36-8d2e-417f8d43f729: !Template
@@ -21,18 +22,17 @@ templates:
     id: 182a251f-2f76-4b36-8d2e-417f8d43f729
     jinja: '{{dialogue}}
 
-      ===
-
-      Given the above dialogue, write a summary. Summary: |||
+      Given the above dialogue, write a summary. |||
 
       {{summary}}'
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: false
-      choices_in_prompt: null
-      metrics: []
-      original_task: null
-    name: Write a summary
+      choices_in_prompt: false
+      metrics:
+      - ROUGE
+      original_task: true
+    name: Given the above dialogue write a summary
     reference: ''
   72eda731-894d-4260-9113-9e492822f80e: !Template
     answer_choices: null
@@ -44,42 +44,71 @@ templates:
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: false
-      choices_in_prompt: null
-      metrics: []
-      original_task: null
+      choices_in_prompt: false
+      metrics:
+      - ROUGE
+      original_task: true
     name: 'Summarize:'
+    reference: ''
+  7bd51f5b-5bac-429e-b8f9-dd6782b92a59: !Template
+    answer_choices: null
+    answer_choices_key: null
+    id: 7bd51f5b-5bac-429e-b8f9-dd6782b92a59
+    jinja: '{{dialogue}}
+
+      To sum up this dialog:
+
+      |||{{summary}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - ROUGE
+      original_task: true
+    name: To sum up this dialog
     reference: ''
   8d829dcb-ea64-457d-b025-f16e31c2834a: !Template
     answer_choices: null
     answer_choices_key: null
     id: 8d829dcb-ea64-457d-b025-f16e31c2834a
-    jinja: '{{dialogue}}
+    jinja: 'Generate a summary for this dialogue:
 
-      ===
-
-      Generate a summary for this dialogue:
+      {{dialogue}}
 
       |||{{summary}}'
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: false
-      choices_in_prompt: null
-      metrics: []
-      original_task: null
+      choices_in_prompt: false
+      metrics:
+      - ROUGE
+      original_task: true
     name: Generate a summary for this dialogue
     reference: ''
   9f571a72-6813-4307-9aae-753ca0f737c5: !Template
     answer_choices: null
     answer_choices_key: null
     id: 9f571a72-6813-4307-9aae-753ca0f737c5
-    jinja: 'Write a dialogue. Summary: {{summary}} |||
+    jinja: 'Write a dialogue that matches this summary: {{summary}} |||
 
       {{dialogue}}'
     metadata: !TemplateMetadata
       _do_eval: false
       _do_train: false
-      choices_in_prompt: null
-      metrics: []
-      original_task: null
-    name: Write a dialogue given summary
+      choices_in_prompt: false
+      metrics:
+      - ROUGE
+      original_task: false
+    name: Write a dialogue that match this summary
+    reference: ''
+  bd891653-49b6-40bb-968f-8e6632c75659: !Template
+    answer_choices: null
+    answer_choices_key: null
+    id: bd891653-49b6-40bb-968f-8e6632c75659
+    jinja: "Sum up the following dialogue: \n{{dialogue}}\n|||{{summary}}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - ROUGE
+      original_task: true
+    name: Sum up the following dialogue
     reference: ''

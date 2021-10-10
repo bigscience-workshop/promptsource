@@ -1,6 +1,7 @@
 import re
 
 import datasets
+import pkg_resources
 import tensorflow as tf
 
 import promptsource.utils
@@ -35,14 +36,23 @@ def apply_template(dataset, template):
     def map_fn(ex):
         ex = promptsource.utils.removeHyphen(ex)
         inputs_and_targets = template.apply(ex)
+        answer_choices = template.get_answer_choices_list(ex)
         if len(inputs_and_targets) == 2:
             inputs, targets = inputs_and_targets
-            return {"inputs": inputs, "targets": targets}
+            if targets == "":
+                ex = {"inputs": inputs, "targets": "<NO LABEL>"}
+            else:
+                ex = {"inputs": inputs, "targets": targets}
         # When template results in an empty example, template.apply returns [""]
         # Also, if the template gets split wrong, len can be > 2
         # We will filter these out later
         else:
-            return {"inputs": "", "targets": ""}
+            ex = {"inputs": "", "targets": ""}
+
+        if answer_choices:
+            ex["answer_choices"] = answer_choices
+
+        return ex
 
     def filter_fn(ex):
         return len(ex["inputs"]) > 0 and len(ex["targets"]) > 0
@@ -50,10 +60,17 @@ def apply_template(dataset, template):
     original_columns = dataset.column_names
     dataset = dataset.map(map_fn).filter(filter_fn)
     # map keeps original columns, remove them
-    return dataset.remove_columns(set(original_columns) - {"inputs", "targets"})
+    return dataset.remove_columns(set(original_columns) - {"inputs", "targets", "answer_choices"})
 
 
 def get_dataset_splits(dataset_name, subset_name=None):
+    # `datasets.get_dataset_infos` pulls infos from hf/datasets's master.
+    # story_cloze hasn't been merged yet (https://github.com/huggingface/datasets/pull/2907)
+    # This is a temporary fix to be able to do `import promptsource.seqio_tasks`
+    # Once PR 2907 is merged, we can remove this if condition (along with the `custom_datasets` folder)
+    # Also see `promptsource.utils.get_dataset_builder`
+    if dataset_name == "story_cloze":
+        dataset_name = pkg_resources.resource_filename("promptsource", "custom_datasets/story_cloze")
     info = datasets.get_dataset_infos(dataset_name)
     subset_name = subset_name or list(info.keys())[0]
     return info[subset_name].splits

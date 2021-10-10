@@ -48,7 +48,7 @@ def exclude_bad_prompts(prompt: Dict) -> bool:
 
 
 def load_annotated_prompts() -> List[Dict]:
-    annotated_csv_path = pkg_resources.resource_filename(__name__, "dataset_subset_template.csv")
+    annotated_csv_path = pkg_resources.resource_filename(__name__, "experiment_D3.csv")
     with open(annotated_csv_path) as in_file:
         reader = csv.DictReader(in_file)
         all_tasks = [row for row in reader]

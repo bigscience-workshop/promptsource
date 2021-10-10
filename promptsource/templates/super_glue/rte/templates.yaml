@@ -1,123 +1,161 @@
 dataset: super_glue
 subset: rte
 templates:
-  0583671e-b717-4353-a0d4-ea1e4ac56429: !Template
+  2b52a83c-0021-41fe-b44c-5aaa076d71a2: !Template
     answer_choices:
     - 'Yes'
     - 'No'
     answer_choices_key: null
-    id: 0583671e-b717-4353-a0d4-ea1e4ac56429
-    jinja: Given that {{premise}} Does it follow that "{{hypothesis}}"? ||| {{ answer_choices[label]
-      }}
+    id: 2b52a83c-0021-41fe-b44c-5aaa076d71a2
+    jinja: '{{premise}} Using only the above description and what you know about the
+      world, is "{{hypothesis}}" definitely correct? Yes or no? ||| {% if label != -1 %}{{ answer_choices[label]
+      }}{% endif %}'
     metadata: !TemplateMetadata
-      _do_eval: true
-      _do_train: false
-      choices_in_prompt: false
-      metrics: []
-      original_task: true
-    name: "given\u2026 does it follow that\u2026 "
-    reference: ''
-  1abaa658-e7f0-4e54-b7ad-312ba009d544: !Template
-    answer_choices:
-    - 'Yes'
-    - 'No'
-    answer_choices_key: null
-    id: 1abaa658-e7f0-4e54-b7ad-312ba009d544
-    jinja: 'Sentence 1: {{premise}}
-
-      Sentence 2: {{hypothesis}}
-
-      Question: Does Sentence 1 entail Sentence 2? Yes or no? |||
-
-      {{answer_choices[label]}}'
-    metadata: !TemplateMetadata
-      _do_eval: true
-      _do_train: false
       choices_in_prompt: true
-      metrics: []
+      metrics:
+      - Accuracy
       original_task: true
-    name: does S1 entail S2?
-    reference: Adapted from Victor's prompts for XNLI.
-  1bf2eee4-448b-48df-98e0-dee86edf7b96: !Template
+    name: MNLI crowdsource
+    reference: Adapted from Williams et al. 2018's instructions to crowdsourcing workers.
+  2d0d63da-ffcf-4f6e-941a-b8da922be43e: !Template
     answer_choices:
     - 'Yes'
     - 'No'
     answer_choices_key: null
-    id: 1bf2eee4-448b-48df-98e0-dee86edf7b96
-    jinja: '{{premise}} Therefore, we are licensed to say that "{{hypothesis}}", right?
-      ||| {{ answer_choices[label] }}'
+    id: 2d0d63da-ffcf-4f6e-941a-b8da922be43e
+    jinja: 'Given {{premise}} Is it guaranteed true that "{{hypothesis}}"? Yes or
+      no? ||| {% if label != -1 %}{{ answer_choices[label] }}{% endif %}'
     metadata: !TemplateMetadata
-      _do_eval: true
-      _do_train: false
-      choices_in_prompt: false
-      metrics: []
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
       original_task: true
-    name: "\u2026 Therefore, we're licensed to say that\u2026"
-    reference: ''
-  2721e378-68b2-40e6-be7e-fc2783b16042: !Template
+    name: guaranteed true
+    reference: Webson & Pavlick 2021
+  4163e6f1-1a83-4c73-b867-02eb7ac80316: !Template
+    answer_choices:
+    - 'Yes'
+    - 'No'
+    answer_choices_key: null
+    id: 4163e6f1-1a83-4c73-b867-02eb7ac80316
+    jinja: 'Suppose {{premise}} Can we infer that "{{hypothesis}}"? Yes or no? |||
+      {% if label != -1 %}{{ answer_choices[label] }}{% endif %}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
+      original_task: true
+    name: can we infer
+    reference: Webson & Pavlick 2021
+  8fb1c6aa-20e9-438c-bece-c6af1c746449: !Template
     answer_choices:
     - 'True'
     - 'False'
     answer_choices_key: null
-    id: 2721e378-68b2-40e6-be7e-fc2783b16042
+    id: 8fb1c6aa-20e9-438c-bece-c6af1c746449
     jinja: '{{premise}}
 
-      Question: {{hypothesis}} True or False? ||| {{ answer_choices[label] }}'
+      Question: {{hypothesis}} True or False? ||| {% if label != -1 %}{{ answer_choices[label] }}{% endif %}'
     metadata: !TemplateMetadata
       _do_eval: true
       _do_train: false
       choices_in_prompt: true
-      metrics: []
+      metrics:
+      - Accuracy
       original_task: true
     name: GPT-3 style
-    reference: Same as reported in Figure G31 of the GPT-3 paper, although I'm not
-      sure about phrasing the not_entailment label (could be either neutral and contradiction)
-      simply as "False".
-  325dbe5c-167d-4b17-95db-1d93d8806782: !Template
+    reference: Same as reported in Figure G31 of the GPT-3 paper.
+  9e078fb4-505b-413c-bb5e-3cd16ddcf5d7: !Template
     answer_choices:
     - 'Yes'
     - 'No'
     answer_choices_key: null
-    id: 325dbe5c-167d-4b17-95db-1d93d8806782
-    jinja: Suppose {{premise}} Can we infer that {{hypothesis}}? ||| {{ answer_choices[label]
-      }}
+    id: 9e078fb4-505b-413c-bb5e-3cd16ddcf5d7
+    jinja: "{{premise}} \n\nQuestion: Does this imply that \"{{hypothesis}}\"? Yes\
+      \ or no? ||| {% if label != -1 %}{{answer_choices[label]}}{% endif %}"
     metadata: !TemplateMetadata
-      _do_eval: true
-      _do_train: false
-      choices_in_prompt: false
-      metrics: []
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
       original_task: true
-    name: "Suppose\u2026 Can we infer that\u2026"
-    reference: ''
-  4aac6388-3e90-4d06-be90-68fc31a89fa4: !Template
+    name: does this imply
+    reference: v0.1
+  b8dc85c6-28b6-4340-979a-8e77c2a0dde8: !Template
     answer_choices:
     - 'Yes'
     - 'No'
     answer_choices_key: null
-    id: 4aac6388-3e90-4d06-be90-68fc31a89fa4
-    jinja: '{{premise}} Does the previous passage support the claim that "{{hypothesis}}"?
-      ||| {{ answer_choices[label] }}'
+    id: b8dc85c6-28b6-4340-979a-8e77c2a0dde8
+    jinja: 'Given {{premise}} Should we assume that "{{hypothesis}}" is true? Yes
+      or no? ||| {% if label != -1 %}{{ answer_choices[label] }}{% endif %}'
     metadata: !TemplateMetadata
-      _do_eval: true
-      _do_train: false
-      choices_in_prompt: false
-      metrics: []
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
       original_task: true
-    name: "\u2026does the previous passage support the claim that"
-    reference: ''
-  ad3361d7-505f-4b5d-93dd-e426394a3943: !Template
+    name: should assume
+    reference: Webson & Pavlick 2021
+  e2fb58f2-b1f2-4aef-b74b-c4ee1c571fff: !Template
     answer_choices:
     - 'Yes'
     - 'No'
     answer_choices_key: null
-    id: ad3361d7-505f-4b5d-93dd-e426394a3943
-    jinja: '{{premise}} Based on the previous passage, is it true that {{hypothesis}}?
-      ||| {{ answer_choices[label] }}'
+    id: e2fb58f2-b1f2-4aef-b74b-c4ee1c571fff
+    jinja: Given that {{premise}} Does it follow that {{hypothesis}} Yes or no? |||
+      {% if label != -1 %}{{ answer_choices[label] }}{% endif %}
     metadata: !TemplateMetadata
       _do_eval: true
       _do_train: false
-      choices_in_prompt: false
-      metrics: []
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
+      original_task: true
+    name: does it follow that
+    reference: v0.1
+  ed1f4b75-8826-4852-9bd6-aedf368678f5: !Template
+    answer_choices:
+    - 'Yes'
+    - 'No'
+    answer_choices_key: null
+    id: ed1f4b75-8826-4852-9bd6-aedf368678f5
+    jinja: '{{premise}} Based on the previous passage, is it true that "{{hypothesis}}"?
+      Yes or no? ||| {% if label != -1 %}{{ answer_choices[label] }}{% endif %}'
+    metadata: !TemplateMetadata
+      _do_eval: true
+      _do_train: false
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
       original_task: true
     name: based on the previous passage
     reference: "Adapted from the BoolQ prompts in Schick & Sch\xFCtze 2021."
+  ee0ce095-122a-4509-bf0b-33d1495295f7: !Template
+    answer_choices:
+    - 'Yes'
+    - 'No'
+    answer_choices_key: null
+    id: ee0ce095-122a-4509-bf0b-33d1495295f7
+    jinja: '{{premise}} Are we justified in saying that "{{hypothesis}}"? Yes or no?
+      ||| {% if label != -1 %}{{ answer_choices[label] }}{% endif %}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
+      original_task: true
+    name: justified in saying
+    reference: Webson & Pavlick 2021
+  fb4f8144-37f5-4977-88da-37a5d0bfd0e8: !Template
+    answer_choices:
+    - 'Yes'
+    - 'No'
+    answer_choices_key: null
+    id: fb4f8144-37f5-4977-88da-37a5d0bfd0e8
+    jinja: 'Given that {{premise}} Therefore, it must be true that "{{hypothesis}}"?
+      Yes or no? ||| {% if label != -1 %}{{ answer_choices[label] }}{% endif %}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
+      original_task: true
+    name: must be true
+    reference: v0.1
