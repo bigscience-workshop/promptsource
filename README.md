@@ -11,7 +11,7 @@ WIP
 ## Running
 From the root directory of the repo, you can launch the editor with
 ```
-streamlit run promptsource/promptsource.py
+streamlit run promptsource/app.py
 ```
 
 There are 3 modes in the app:
@@ -20,6 +20,12 @@ There are 3 modes in the app:
 - **Sourcing**: write new prompts
 
 <img src="assets/promptsource_app.png" width="800">
+
+## Running (read-only)
+To host a public streamlit app, launch it with
+```bash
+streamlit run promptsource/app.py -- -r
+```
 
 ## Contributing
 Join the **Hackaprompt** and help writing templates!
