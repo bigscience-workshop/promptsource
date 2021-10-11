@@ -109,8 +109,8 @@ except FileNotFoundError:
 if mode == "Helicopter view":
     st.title("High level metrics")
     st.write(
-        "If you want to take ownership for prompting a specific dataset, "
-        + "put your name in [this spreadsheet](https://docs.google.com/spreadsheets/d/10SBt96nXutB49H52PV2Lvne7F1NvVr_WZLXD8_Z0JMw/edit?usp=sharing)."
+        "If you want to contribute, please refer to the instructions in "
+        + "[Contributing](https://github.com/bigscience-workshop/promptsource/blob/main/CONTRIBUTING.md)."
     )
 
     #
