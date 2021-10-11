@@ -163,7 +163,11 @@ with open(experiment_path) as exp_file:
             d3_train_gpt.append(dataset_subset)
         if row["D3_do_train"] == "TRUE" and row["HF_name"] == "super_glue":
             d3_train_sglue.append(dataset_subset)
-        if row["do_eval"] == "TRUE" and row["task_by_convention"] == "bias_and_fairness" and row["HF_name"] != "winogender":
+        if (
+            row["do_eval"] == "TRUE"
+            and row["task_by_convention"] == "bias_and_fairness"
+            and row["HF_name"] != "winogender"
+        ):
             bias_fairness_eval.append(dataset_subset)
         gsheet[dataset_subset] = row
 all_datasets = d4_train + d4_eval + d3_train_gpt + d3_train_sglue + bias_fairness_eval
@@ -411,8 +415,7 @@ seqio.MixtureRegistry.add(
     [
         task
         for task in seqio.TaskRegistry.names()
-        if task.endswith("_score_eval")
-        and task.split("_score_eval")[0] in bias_fairness_eval_mixture
+        if task.endswith("_score_eval") and task.split("_score_eval")[0] in bias_fairness_eval_mixture
     ],
     default_rate=functools.partial(seqio.mixing_rate_num_examples, maximum=500_000),
 )
