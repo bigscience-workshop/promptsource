@@ -28,8 +28,6 @@ streamlit run promptsource/app.py -- -r
 ```
 
 ## Contributing
-Join the **Hackaprompt** and help writing templates!
-
 Contribution guidelines and step-by-step *HOW TO* are described [here](CONTRIBUTING.md).
 
 ## Writing Templates

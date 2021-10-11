@@ -109,8 +109,8 @@ except FileNotFoundError:
 if mode == "Helicopter view":
     st.title("High level metrics")
     st.write(
-        "If you want to prompt a new dataset or add more prompts to an old dataset, "
-        + "open an issue [promptsource](https://github.com/bigscience-workshop/promptsource/issues)."
+        "If you want to contribute, please refer to the instructions in "
+        + "[Contributing](https://github.com/bigscience-workshop/promptsource/blob/main/CONTRIBUTING.md)."
     )
 
     #
