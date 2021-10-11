@@ -144,6 +144,7 @@ d4_train: List[datatset_subset_tuple] = []
 d4_eval: List[datatset_subset_tuple] = []
 d3_train_gpt: List[datatset_subset_tuple] = []
 d3_train_sglue: List[datatset_subset_tuple] = []
+bias_fairness_eval: List[datatset_subset_tuple] = []
 gsheet: Dict[datatset_subset_tuple, Dict] = {}
 experiment_path = pkg_resources.resource_filename(__name__, "experiment_D4.csv")
 with open(experiment_path) as exp_file:
@@ -162,8 +163,10 @@ with open(experiment_path) as exp_file:
             d3_train_gpt.append(dataset_subset)
         if row["D3_do_train"] == "TRUE" and row["HF_name"] == "super_glue":
             d3_train_sglue.append(dataset_subset)
+        if row["do_eval"] == "TRUE" and row["task_by_convention"] == "bias_and_fairness" and row["HF_name"] != "winogender":
+            bias_fairness_eval.append(dataset_subset)
         gsheet[dataset_subset] = row
-all_datasets = d4_train + d4_eval + d3_train_gpt + d3_train_sglue
+all_datasets = d4_train + d4_eval + d3_train_gpt + d3_train_sglue + bias_fairness_eval
 
 all_templates = promptsource.templates.TemplateCollection()
 all_templates.remove("anli")  # Need to special-case ANLI due to weird split conventions
@@ -173,6 +176,7 @@ d4_train_mixture: List[str] = []  # strings are dataset_subset_template
 gpt_train_mixture: List[str] = []
 sglue_train_mixture: List[str] = []
 d4_eval_mixture: List[str] = []
+bias_fairness_eval_mixture: List[str] = []
 mixture_cap: Dict[str, int] = {}
 single_original_task: Dict[Tuple[str, str], str] = {}
 all_original_tasks: List[str] = []
@@ -218,6 +222,8 @@ for dataset_name, subset_name in all_templates.keys:
             if template.metadata.original_task:
                 d4_eval_mixture.append(task_name)
             # TODO use template.metadata.answer_choices or answer_choice_keys here for rank eval
+        if (dataset_name, subset_name) in bias_fairness_eval:
+            bias_fairness_eval_mixture.append(task_name)
 
 # Special case for ANLI, which has weirdly-named splits and rounds that should be subsets
 dataset_name, subset_name = ("anli", None)
@@ -392,4 +398,21 @@ seqio.MixtureRegistry.add(
     "d4_train_all_og_prompts",
     [task for task in all_original_tasks if task in d4_train_mixture and task not in TASK_BLACKLIST],
     default_rate=lambda t: mixture_cap[t.name],
+)
+
+seqio.MixtureRegistry.add(
+    "bias_fairness_eval",
+    bias_fairness_eval_mixture,
+    default_rate=functools.partial(seqio.mixing_rate_num_examples, maximum=500_000),
+)
+
+seqio.MixtureRegistry.add(
+    "bias_fairness_eval_score_eval",
+    [
+        task
+        for task in seqio.TaskRegistry.names()
+        if task.endswith("_score_eval")
+        and task.split("_score_eval")[0] in bias_fairness_eval_mixture
+    ],
+    default_rate=functools.partial(seqio.mixing_rate_num_examples, maximum=500_000),
 )
