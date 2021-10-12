@@ -86,10 +86,13 @@ def show_jinja(t, width=WIDTH):
     st.write(out, unsafe_allow_html=True)
 
 
-def show_text(t, width=WIDTH):
+def show_text(t, width=WIDTH, with_markdown=False):
     wrap = [textwrap.fill(subt, width=width, replace_whitespace=False) for subt in t.split("\n")]
     wrap = "\n".join(wrap)
-    st.write(wrap, unsafe_allow_html=True)
+    if with_markdown:
+        st.write(wrap, unsafe_allow_html=True)
+    else:
+        st.text(wrap)
 
 
 #
@@ -397,10 +400,10 @@ else:
                     st.write(example)
                 if num_templates > 0:
                     with col2:
-                        try:
-                            prompt = template.apply(example, highlight_variables=True)
-                        except (TemplateSyntaxError, TypeError):
-                            prompt = template.apply(example, highlight_variables=False)
+                        # try:
+                        #     prompt = template.apply(example, highlight_variables=True)
+                        # except (TemplateSyntaxError, TypeError):
+                        prompt = template.apply(example, highlight_variables=False)
                         if prompt == [""]:
                             st.write("∅∅∅ *Blank result*")
                         else:
@@ -480,7 +483,7 @@ else:
             col1, _, _ = st.columns([18, 1, 6])
             with col1:
                 if state.template_name is not None:
-                    show_text(variety_guideline)
+                    show_text(variety_guideline, with_markdown=True)
 
             #
             # Edit the created or selected template
