@@ -57,7 +57,7 @@ def get_dataset(path, conf=None):
         builder_instance.download_and_prepare()
         return builder_instance.as_dataset()
     else:
-        return builder_instance.as_dataset()
+        return datasets.load_dataset(path, conf)
 
 
 def get_dataset_confs(path):
