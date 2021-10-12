@@ -6,7 +6,6 @@ import pandas as pd
 import plotly.express as px
 import streamlit as st
 from datasets import get_dataset_infos
-from jinja2 import TemplateSyntaxError
 from pygments import highlight
 from pygments.formatters import HtmlFormatter
 from pygments.lexers import DjangoLexer
