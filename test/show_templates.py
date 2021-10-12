@@ -18,7 +18,7 @@ dataset_name = path[2]
 subset_name = path[3] if len(path) == 5 else ""
 template_collection = TemplateCollection()
 
-dataset, _ = get_dataset(dataset_name, subset_name)
+dataset = get_dataset(dataset_name, subset_name)
 splits = list(dataset.keys())
 
 dataset_templates = template_collection.get_dataset(dataset_name, subset_name)
