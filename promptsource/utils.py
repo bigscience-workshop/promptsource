@@ -59,8 +59,11 @@ def get_dataset(path, conf=None):
         dts = builder_instance.as_dataset()
         dataset = dts
     else:
-        dataset = builder_instance
-        fail = True
+        try:
+            dataset = datasets.load_dataset(path, conf)
+        except:
+            dataset = builder_instance
+            fail = True
     return dataset, fail
 
 
