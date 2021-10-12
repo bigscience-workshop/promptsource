@@ -229,7 +229,7 @@ else:
         "Dataset",
         dataset_list,
         key="dataset_select",
-        index=12,  # AG_NEWS
+        index=4,  # AG_NEWS
         help="Select the dataset to work on.",
     )
 
