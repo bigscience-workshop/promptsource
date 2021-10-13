@@ -1,6 +1,6 @@
 import argparse
 import textwrap
-from multiprocessing import Manager, Pool, cpu_count
+from multiprocessing import Manager, Pool
 
 import pandas as pd
 import plotly.express as px
@@ -133,7 +133,7 @@ if mode == "Helicopter view":
     def get_infos(d_name):
         all_infos[d_name] = get_dataset_infos(d_name)
 
-    pool = Pool(processes=cpu_count())
+    pool = Pool(processes=len(all_datasets))
     pool.map(get_infos, all_datasets)
     pool.close()
     pool.join()
