@@ -399,9 +399,6 @@ else:
                     st.write(example)
                 if num_templates > 0:
                     with col2:
-                        # try:
-                        #     prompt = template.apply(example, highlight_variables=True)
-                        # except (TemplateSyntaxError, TypeError):
                         prompt = template.apply(example, highlight_variables=False)
                         if prompt == [""]:
                             st.write("∅∅∅ *Blank result*")
