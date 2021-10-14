@@ -489,11 +489,9 @@ else:
                         metrics_choices = [
                             "BLEU",
                             "ROUGE",
-                            "Span Squad",
                             "Squad",
                             "Trivia QA",
                             "Accuracy",
-                            "Sequence Accuracy",
                             "Pearson Correlation",
                             "Spearman Correlation",
                             "MultiRC",
