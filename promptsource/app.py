@@ -146,12 +146,18 @@ if mode == "Helicopter view":
             all_infos[dataset_name] = infos
         else:
             infos = all_infos[dataset_name]
-        if subset_name is None:
-            subset_infos = infos[list(infos.keys())[0]]
-        else:
-            subset_infos = infos[subset_name]
+        if infos:
+            if subset_name is None:
+                subset_infos = infos[list(infos.keys())[0]]
+            else:
+                subset_infos = infos[subset_name]
 
-        split_sizes = {k: v.num_examples for k, v in subset_infos.splits.items()}
+            split_sizes = {k: v.num_examples for k, v in subset_infos.splits.items()}
+        else:
+            # Zaid/coqa_expanded and Zaid/quac_expanded don't have dataset_infos.json
+            # so infos is an empty dic, and `infos[list(infos.keys())[0]]` raises an error
+            # For simplicity, just filling `split_sizes` with nothing, so the displayed split sizes will be 0.
+            split_sizes = {}
 
         # Collect template counts, original task counts and names
         dataset_templates = template_collection.get_dataset(dataset_name, subset_name)
@@ -246,13 +252,7 @@ else:
         if len(configs) > 0:
             conf_option = st.sidebar.selectbox("Subset", configs, index=0, format_func=lambda a: a.name)
 
-        dataset, failed = get_dataset(dataset_key, str(conf_option.name) if conf_option else None)
-        if failed:
-            if dataset.manual_download_instructions is not None:
-                st.error(f"Dataset {dataset_key} requires manual download. Please skip for the moment.")
-            else:
-                st.error(f"Loading dataset {dataset_key} failed.\n{dataset}. Please skip for the moment.")
-
+        dataset = get_dataset(dataset_key, str(conf_option.name) if conf_option else None)
         splits = list(dataset.keys())
         index = 0
         if "train" in splits:
@@ -368,7 +368,7 @@ else:
                     continue
                 example = dataset[ex_idx]
                 example = removeHyphen(example)
-                col1, _, col2 = st.columns([12, 1, 12])
+                col1, _, col2 = st.beta_columns([12, 1, 12])
                 with col1:
                     st.write(example)
                 if num_templates > 0:
@@ -392,7 +392,7 @@ else:
             #
             # Create a new template or select an existing one
             #
-            col1a, col1b, _, col2 = st.columns([9, 9, 1, 6])
+            col1a, col1b, _, col2 = st.beta_columns([9, 9, 1, 6])
 
             # current_templates_key and state.templates_key are keys for the templates object
             current_templates_key = (dataset_key, conf_option.name if conf_option else None)
@@ -426,7 +426,7 @@ else:
                 else:
                     state.new_template_name = None
 
-            with col1b, st.expander("or Select Template", expanded=True):
+            with col1b, st.beta_expander("or Select Template", expanded=True):
                 dataset_templates = template_collection.get_dataset(*state.templates_key)
                 template_list = dataset_templates.all_template_names
                 if state.template_name:
@@ -450,7 +450,7 @@ else:
             \n- **Implicit situation or contextualization**: how explicit is the query? For instance, *Given this review, would you buy this product?* is an indirect way to ask whether the review is positive.
             """
 
-            col1, _, _ = st.columns([18, 1, 6])
+            col1, _, _ = st.beta_columns([18, 1, 6])
             with col1:
                 if state.template_name is not None:
                     show_text(variety_guideline)
@@ -458,7 +458,7 @@ else:
             #
             # Edit the created or selected template
             #
-            col1, _, col2 = st.columns([18, 1, 6])
+            col1, _, col2 = st.beta_columns([18, 1, 6])
             with col1:
                 if state.template_name is not None:
                     template = dataset_templates[state.template_name]

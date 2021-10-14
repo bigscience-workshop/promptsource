@@ -67,8 +67,10 @@ def test_dataset(dataset):
             else:
                 raise e
 
-    features = builder_instance.info.features.keys()
-    features = set([feature.replace("-", "_") for feature in features])
+    has_features = builder_instance.info.features is not None
+    if has_features:
+        features = builder_instance.info.features.keys()
+        features = set([feature.replace("-", "_") for feature in features])
 
     # Initializes sets for checking uniqueness among templates
     template_name_set = set()
@@ -89,7 +91,7 @@ def test_dataset(dataset):
 
         variables = meta.find_undeclared_variables(parse)
         for variable in variables:
-            if variable not in features and variable != "answer_choices":
+            if has_features and variable not in features and variable != "answer_choices":
                 raise ValueError(f"Template for dataset {dataset_name}/{subset_name} "
                                  f"with uuid {template.get_id()} has unrecognized variable {variable}.")
 
