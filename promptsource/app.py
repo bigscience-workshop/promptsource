@@ -227,6 +227,7 @@ else:
         template_collection,
         state,
     )
+    ag_news_index = dataset_list.index("ag_news")
 
     #
     # Select a dataset - starts with ag_news
@@ -235,7 +236,7 @@ else:
         "Dataset",
         dataset_list,
         key="dataset_select",
-        index=4,  # AG_NEWS
+        index=ag_news_index,
         help="Select the dataset to work on.",
     )
 
