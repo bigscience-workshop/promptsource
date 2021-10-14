@@ -9,7 +9,7 @@ setup(
     url='https://github.com/bigscience-workshop/promptsource.git',
     author='Multiple Authors',
     author_email='xxx',
-    python_requires='>=3.7',
+    python_requires='==3.7',
     classifiers=[
         'Development Status :: 2 - Pre-Alpha',
         'Intended Audience :: Developers',

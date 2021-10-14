@@ -6,7 +6,7 @@ WIP
 ## Setup
 1. Download the repo
 2. Navigate to root directory of the repo
-3. Install requirements with `pip install -r requirements.txt`
+3. Install requirements with `pip install -r requirements.txt` in a Python 3.7 environment
 
 ## Running
 From the root directory of the repo, you can launch the editor with
@@ -50,3 +50,5 @@ For more information, read the [Contribution guidelines](CONTRIBUTING.md).
 ## Known Issues
 
 **Warning or Error about Darwin on OS X:** Try downgrading PyArrow to 3.0.0.
+
+**ConnectionRefusedError: [Errno 61] Connection refused:** Happens occasionally. Try restarting the app.
