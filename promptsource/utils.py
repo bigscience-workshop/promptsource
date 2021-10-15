@@ -1,7 +1,6 @@
 # coding=utf-8
 
 import datasets
-import pkg_resources
 import requests
 
 from promptsource.templates import INCLUDED_USERS
