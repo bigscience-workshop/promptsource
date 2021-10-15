@@ -360,10 +360,10 @@ else:
                 st.markdown("##### Jinja template")
                 splitted_template = template.jinja.split("|||")
                 st.markdown("###### Input template")
-                show_jinja(splitted_template[0])
+                show_jinja(splitted_template[0].strip())
                 if len(splitted_template) > 1:
                     st.markdown("###### Target template")
-                    show_jinja(splitted_template[1])
+                    show_jinja(splitted_template[1].strip())
                 st.markdown("***")
 
             #
