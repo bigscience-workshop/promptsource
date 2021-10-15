@@ -1,7 +1,7 @@
 import argparse
 import textwrap
 
-from promptsource.templates import TemplateCollection
+from promptsource.templates import TemplateCollection, INCLUDED_USERS
 from promptsource.utils import get_dataset
 
 
@@ -14,8 +14,13 @@ if "templates.yaml" not in args.dataset_path:
 
 path = args.dataset_path.split("/")
 
-dataset_name = path[2]
-subset_name = path[3] if len(path) == 5 else ""
+if path[2] in INCLUDED_USERS:
+    dataset_name = path[2] + path[3]
+    subset_name = path[4] if len(path) == 6 else ""
+else:
+    dataset_name = path[2]
+    subset_name = path[3] if len(path) == 5 else ""
+
 template_collection = TemplateCollection()
 
 dataset = get_dataset(dataset_name, subset_name)
