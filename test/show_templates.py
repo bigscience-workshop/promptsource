@@ -15,7 +15,7 @@ if "templates.yaml" not in args.dataset_path:
 path = args.dataset_path.split("/")
 
 if path[2] in INCLUDED_USERS:
-    dataset_name = path[2] + path[3]
+    dataset_name = path[2] + "/" + path[3]
     subset_name = path[4] if len(path) == 6 else ""
 else:
     dataset_name = path[2]
