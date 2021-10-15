@@ -61,6 +61,10 @@ state = _get_state()
 # Initial page setup
 #
 st.set_page_config(page_title="Promptsource", layout="wide")
+st.sidebar.markdown(
+    "<center><h3><a href='https://github.com/bigscience-workshop/promptsource'>💻Github - Promptsource</h3></a></center>",
+    unsafe_allow_html=True,
+)
 mode = st.sidebar.selectbox(
     label="Choose a mode",
     options=select_options,
@@ -166,33 +170,32 @@ if mode == "Helicopter view":
         results.append(
             {
                 "Dataset name": dataset_name,
-                "Subset name": "" if subset_name is None else subset_name,
+                "Subset name": "∅" if subset_name is None else subset_name,
                 "Train size": split_sizes["train"] if "train" in split_sizes else 0,
                 "Validation size": split_sizes["validation"] if "validation" in split_sizes else 0,
                 "Test size": split_sizes["test"] if "test" in split_sizes else 0,
-                "Number of templates": len(dataset_templates),
-                "Number of original task templates": sum(
+                "Number of prompts": len(dataset_templates),
+                "Number of original task prompts": sum(
                     [bool(t.metadata.original_task) for t in dataset_templates.templates.values()]
                 ),
-                "Template names": [t.name for t in dataset_templates.templates.values()],
-                # TODO: template name is not very informative... refine that
+                "Prompt names": [t.name for t in dataset_templates.templates.values()],
             }
         )
     results_df = pd.DataFrame(results)
-    results_df.sort_values(["Number of templates"], inplace=True, ascending=False)
+    results_df.sort_values(["Number of prompts"], inplace=True, ascending=False)
     results_df.reset_index(drop=True, inplace=True)
 
     nb_training_instances = results_df["Train size"].sum()
     st.write(f"## Number of *training instances*: `{nb_training_instances}`")
 
-    plot_df = results_df[["Dataset name", "Subset name", "Train size", "Number of templates"]].copy()
+    plot_df = results_df[["Dataset name", "Subset name", "Train size", "Number of prompts"]].copy()
     plot_df["Name"] = plot_df["Dataset name"] + " - " + plot_df["Subset name"]
     plot_df.sort_values(["Train size"], inplace=True, ascending=False)
     fig = px.bar(
         plot_df,
         x="Name",
         y="Train size",
-        hover_data=["Dataset name", "Subset name", "Number of templates"],
+        hover_data=["Dataset name", "Subset name", "Number of prompts"],
         log_y=True,
         title="Number of training instances per data(sub)set - y-axis is in logscale",
     )
@@ -269,7 +272,7 @@ else:
         template_list = dataset_templates.all_template_names
         num_templates = len(template_list)
         st.sidebar.write(
-            "No of Templates created for "
+            "No of prompts created for "
             + f"`{dataset_key + (('/' + conf_option.name) if conf_option else '')}`"
             + f": **{str(num_templates)}**"
         )
@@ -277,11 +280,11 @@ else:
         if mode == "Prompted dataset viewer":
             if num_templates > 0:
                 template_name = st.sidebar.selectbox(
-                    "Template name",
+                    "Prompt name",
                     template_list,
                     key="template_select",
                     index=0,
-                    help="Select the template to visualize.",
+                    help="Select the prompt to visualize.",
                 )
 
             step = 50
@@ -354,12 +357,12 @@ else:
                     show_jinja(template.get_answer_choices_expr())
                 else:
                     st.text(None)
-                st.markdown("##### Jinja")
+                st.markdown("##### Jinja template")
                 splitted_template = template.jinja.split("|||")
-                st.markdown("###### Prompt + X")
+                st.markdown("###### Input template")
                 show_jinja(splitted_template[0])
                 if len(splitted_template) > 1:
-                    st.markdown("###### Y")
+                    st.markdown("###### Target template")
                     show_jinja(splitted_template[1])
                 st.markdown("***")
 
@@ -380,14 +383,14 @@ else:
                         if prompt == [""]:
                             st.write("∅∅∅ *Blank result*")
                         else:
-                            st.write("Prompt + X")
+                            st.write("Input")
                             show_text(prompt[0])
                             if len(prompt) > 1:
-                                st.write("Y")
+                                st.write("Target")
                                 show_text(prompt[1])
                 st.markdown("***")
         else:  # mode = Sourcing
-            st.markdown("## Template Creator")
+            st.markdown("## Prompt Creator")
 
             #
             # Create a new template or select an existing one
@@ -404,7 +407,7 @@ else:
 
             with col1a, st.form("new_template_form"):
                 new_template_name = st.text_input(
-                    "Create a New Template",
+                    "Create a New Prompt",
                     key="new_template",
                     value="",
                     help="Enter name and hit enter to create a new template.",
@@ -417,7 +420,7 @@ else:
                             f"for dataset {state.templates_key}."
                         )
                     elif new_template_name == "":
-                        st.error("Need to provide a template name.")
+                        st.error("Need to provide a prompt name.")
                     else:
                         template = Template(new_template_name, "", "")
                         dataset_templates.add_template(template)
@@ -426,7 +429,7 @@ else:
                 else:
                     state.new_template_name = None
 
-            with col1b, st.beta_expander("or Select Template", expanded=True):
+            with col1b, st.beta_expander("or Select Prompt", expanded=True):
                 dataset_templates = template_collection.get_dataset(*state.templates_key)
                 template_list = dataset_templates.all_template_names
                 if state.template_name:
@@ -551,7 +554,7 @@ else:
                                     f"for dataset {state.templates_key}."
                                 )
                             elif updated_template_name == "":
-                                st.error("Need to provide a template name.")
+                                st.error("Need to provide a prompt name.")
                             else:
                                 # Parses state.answer_choices and state.answer_choices_key
                                 updated_answer_choices = [x.strip() for x in state.answer_choices.split("|||")]
@@ -585,10 +588,10 @@ else:
                     if prompt == [""]:
                         st.write("∅∅∅ *Blank result*")
                     else:
-                        st.write("Prompt + X")
+                        st.write("Input")
                         show_text(prompt[0], width=40)
                         if len(prompt) > 1:
-                            st.write("Y")
+                            st.write("Target")
                             show_text(prompt[1], width=40)
 
 
