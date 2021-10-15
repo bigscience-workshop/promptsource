@@ -34,13 +34,6 @@ def renameDatasetColumn(dataset):
 
 def get_dataset_builder(path, conf=None):
     "Get a dataset builder from name and conf."
-    # `datasets.load.prepare_module` pulls infos from hf/datasets's master.
-    # story_cloze hasn't been merged yet (https://github.com/huggingface/datasets/pull/2907)
-    # This is a temporary fix for the tests (more specifically test_templates.py)
-    # Once PR 2907 is merged, we can remove this if condition (along with the `custom_datasets` folder)
-    # Also see `promptsource.seqio_tasks.utils.get_dataset_splits`
-    if path == "story_cloze":
-        path = pkg_resources.resource_filename("promptsource", "custom_datasets/story_cloze")
     module_path = datasets.load.prepare_module(path, dataset=True)
     builder_cls = datasets.load.import_main_class(module_path[0], dataset=True)
     if conf:
