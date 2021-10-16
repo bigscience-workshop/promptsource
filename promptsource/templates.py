@@ -125,7 +125,10 @@ class Template(yaml.YAMLObject):
 
         :return: list of strings, or None if get_answer_choices_expr is None
         """
-        jinja = self.answer_choices
+        jinja = self.get_answer_choices_expr()
+        if jinja is None:
+            return None
+
         rtemplate = env.from_string(jinja)
         protected_example = self._escape_pipe(example)
         rendered_choices = rtemplate.render(**protected_example)
@@ -137,7 +140,10 @@ class Template(yaml.YAMLObject):
 
         :return: list of strings, or None if no static list exists
         """
-        jinja = self.answer_choices
+        jinja = self.get_answer_choices_expr()
+        if jinja is None:
+            return None
+
         parse = env.parse(jinja)
         variables = meta.find_undeclared_variables(parse)
         if len(variables) == 0:
