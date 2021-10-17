@@ -27,23 +27,39 @@ To host a public streamlit app, launch it with
 streamlit run promptsource/app.py -- -r
 ```
 
+## Prompting an Example:
+You can use Promptsource with [Datasets](https://huggingface.co/docs/datasets/) to create
+prompted examples:
+```python
+# Get an example
+from datasets import load_dataset
+dataset = load_dataset("ag_news")
+example = dataset["train"][0]
+
+# Prompt it
+from promptsource.templates import TemplateCollection
+# Get all the prompts
+collection = TemplateCollection()
+# Get all the AG News prompts
+ag_news_prompts = collection.get_dataset("ag_news")
+# Select a prompt by name
+prompt = ag_news_prompts["classify_question_first"]
+
+result = prompt.apply(example)
+print("INPUT: ", result[0])
+print("TARGET: ", result[1])
+```
+
 ## Contributing
 Contribution guidelines and step-by-step *HOW TO* are described [here](CONTRIBUTING.md).
 
-## Writing Templates
-A prompt template is expressed in [Jinja](https://jinja.palletsprojects.com/en/3.0.x/).
+## Writing Prompts
+A prompt is expressed in [Jinja](https://jinja.palletsprojects.com/en/3.0.x/).
 
 It is rendered using an example from the corresponding Hugging Face datasets library
-(a dictionary). The separator ||| should appear once to divide the template into prompt
-and output. Generally, the prompt should provide information on the desired behavior,
+(a dictionary). The separator ||| should appear once to divide the template into input
+and target. Generally, the prompt should provide information on the desired behavior,
 e.g., text passage and instructions, and the output should be a desired response.
-
-Here's an example for [AG News](https://huggingface.co/datasets/ag_news):
-```jinja
-{{text}}
-Is this a piece of news regarding {{"world politics"}}, {{"sports"}}, {{"business"}}, or {{"science and technology"}}? |||
-{{ ["World politics", "Sports", "Business", "Science and technology"][label] }}
-```
 
 For more information, read the [Contribution guidelines](CONTRIBUTING.md).
 
