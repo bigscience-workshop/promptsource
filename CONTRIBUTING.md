@@ -114,7 +114,7 @@ In addition to the template itself, you can fill out several other fields in the
 reference in the "Prompt Reference" section. You can also add a description of
 what your template does.
 * **Original Task?** The checkbox should be checked if the template requires solving a
-task that the underlying dataset is used to study. For example, a prompt that asks a
+task that the underlying dataset is used to study. For example, a template that asks a
 question from a question answering dataset would be an original task template, but one that asks
 to generate a question for a given answer would not.
 * **Choices in Template?** The checkbox should be checked if the input explicitly indicates
