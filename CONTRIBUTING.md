@@ -19,7 +19,7 @@ prompt.
 [README](https://github.com/bigscience-workshop/promptsource/blob/main/README.md).
 1. **Examine the dataset.** Select or type the dataset into the dropdown in the app.
 If the dataset has subsets (subsets are not the same as splits), you can select
-which one to work on. Note that templates are subset-specific. You can find
+which one to work on. Note that prompts are subset-specific. You can find
 out background information on the dataset by reading the information in the
 app. The dataset is a collection of examples, and each example is a Python
 dictionary. The sidebar will tell you the schema that each example has.
