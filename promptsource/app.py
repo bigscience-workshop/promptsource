@@ -105,7 +105,7 @@ try:
     template_collection = TemplateCollection()
 except FileNotFoundError:
     st.error(
-        "Unable to find the templates folder!\n\n"
+        "Unable to find the prompt folder!\n\n"
         "We expect the folder to be in the working directory. "
         "You might need to restart the app in the root directory of the repo."
     )
@@ -339,14 +339,14 @@ else:
             #
             if num_templates > 0:
                 template = dataset_templates[template_name]
-                st.subheader("Template")
+                st.subheader("Prompt")
                 st.markdown("##### Name")
                 st.text(template.name)
                 st.markdown("##### Reference")
                 st.text(template.reference)
                 st.markdown("##### Original Task? ")
                 st.text(template.metadata.original_task)
-                st.markdown("##### Choices in prompt? ")
+                st.markdown("##### Choices in template? ")
                 st.text(template.metadata.choices_in_prompt)
                 st.markdown("##### Metrics")
                 st.text(", ".join(template.metadata.metrics) if template.metadata.metrics else None)
@@ -410,13 +410,13 @@ else:
                     "Create a New Prompt",
                     key="new_template",
                     value="",
-                    help="Enter name and hit enter to create a new template.",
+                    help="Enter name and hit enter to create a new prompt.",
                 )
                 new_template_submitted = st.form_submit_button("Create")
                 if new_template_submitted:
                     if new_template_name in dataset_templates.all_template_names:
                         st.error(
-                            f"A template with the name {new_template_name} already exists "
+                            f"A prompt with the name {new_template_name} already exists "
                             f"for dataset {state.templates_key}."
                         )
                     elif new_template_name == "":
@@ -437,10 +437,10 @@ else:
                 else:
                     index = 0
                 state.template_name = st.selectbox(
-                    "", template_list, key="template_select", index=index, help="Select the template to work on."
+                    "", template_list, key="template_select", index=index, help="Select the prompt to work on."
                 )
 
-                if st.button("Delete Template", key="delete_template"):
+                if st.button("Delete Prompt", key="delete_prompt"):
                     dataset_templates.remove_template(state.template_name)
                     reset_template_state()
 
@@ -471,8 +471,8 @@ else:
                     with st.form("edit_template_form"):
                         updated_template_name = st.text_input("Name", value=template.name)
                         state.reference = st.text_input(
-                            "Template Reference",
-                            help="Short description of the template and/or paper reference for the template.",
+                            "Prompt Reference",
+                            help="Short description of the prompt and/or paper reference for the prompt.",
                             value=template.reference,
                         )
 
@@ -481,12 +481,12 @@ else:
                         state.metadata.original_task = st.checkbox(
                             "Original Task?",
                             value=template.metadata.original_task,
-                            help="Template asks model to perform the original task designed for this dataset.",
+                            help="Prompt asks model to perform the original task designed for this dataset.",
                         )
                         state.metadata.choices_in_prompt = st.checkbox(
-                            "Choices in Prompt?",
+                            "Choices in Template?",
                             value=template.metadata.choices_in_prompt,
-                            help="Template explicitly lists choices in the prompt for the output.",
+                            help="Prompt explicitly lists choices in the template for the output.",
                         )
 
                         # Metrics from here:
@@ -517,7 +517,7 @@ else:
                             metrics_choices,
                             default=template.metadata.metrics,
                             help="Select all metrics that are commonly used (or should "
-                            "be used if a new task) to evaluate this template.",
+                            "be used if a new task) to evaluate this prompt.",
                         )
 
                         # Answer choices
@@ -550,7 +550,7 @@ else:
                                 and updated_template_name != state.template_name
                             ):
                                 st.error(
-                                    f"A template with the name {updated_template_name} already exists "
+                                    f"A prompt with the name {updated_template_name} already exists "
                                     f"for dataset {state.templates_key}."
                                 )
                             elif updated_template_name == "":
