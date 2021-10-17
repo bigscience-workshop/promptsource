@@ -5,7 +5,7 @@ One of the best ways to contribute is by writing prompts!
 ### What are Prompts?
 
 A prompt consists of a template(input template and target template, along with collection of associated metadata. A template is a piece of code written in a templating language called
-[Jinja](https://jinja.palletsprojects.com/en/3.0.x/). A prompt defines
+[Jinja](https://jinja.palletsprojects.com/en/3.0.x/). A template defines
 a function that maps an example from a dataset in the
 [Hugging Face datasets library](https://huggingface.co/datasets) to two strings of
 text. The first is called the _input_ which provides all information that
