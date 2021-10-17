@@ -2,7 +2,7 @@
 
 One of the best ways to contribute is by writing prompts!
 
-### What are Templates?
+### What are Prompts?
 
 A prompts is a piece of code written in a templating language called
 [Jinja](https://jinja.palletsprojects.com/en/3.0.x/). A prompt defines
