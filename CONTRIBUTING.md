@@ -157,7 +157,7 @@ It should not contain any extra text such as “The answer is…” (unless that
 in `answer_choices`.
 * **Formatting multple-choice questions.** If the output should match the name of the choice
 (e.g., “World News”), then it should list the choices either as part of a grammatical question
-or a list with the marker for each (e.g, dashes). If the output should indicate the choice from
+or a list with the marker for each (e.g, dashes). If the target should indicate the choice from
 the list (e.g., “A,” “Explanation 1,” etc.), then it should list the choices with the indicator
 before each one.
 * **Choosing input and target pairs.** Lots of datasets have multiple columns that can be
