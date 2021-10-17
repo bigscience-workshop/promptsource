@@ -117,7 +117,7 @@ what your template does.
 task that the underlying dataset is used to study. For example, a prompt that asks a
 question from a question answering dataset would be a task template, but one that asks
 to generate a question for a given answer would not.
-* **Choices in Prompt?** The checkbox should be checked if the input explicitly indicates
+* **Choices in Template?** The checkbox should be checked if the input explicitly indicates
 the options for the possible outputs (regardless of whether `answer_choices` is used).
 * **Metrics.** Use the multiselect widget to select all metrics commonly used to evaluate
 this task. Choose “Other” if there is one that is not included in the list.
