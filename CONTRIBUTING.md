@@ -109,7 +109,7 @@ it has the answer. Can you tell me the answer?
 ```
 
 ## Options
-In addition to the prompt itself, you can fill out several other fields in the app.
+In addition to the template itself, you can fill out several other fields in the app.
 * **Prompt Reference.** If your template was inspired by a paper, note the
 reference in the "Prompt Reference" section. You can also add a description of
 what your template does.
