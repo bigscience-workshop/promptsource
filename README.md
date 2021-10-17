@@ -55,7 +55,7 @@ A prompt is expressed in [Jinja](https://jinja.palletsprojects.com/en/3.0.x/).
 
 It is rendered using an example from the corresponding Hugging Face datasets library
 (a dictionary). The separator ||| should appear once to divide the template into prompt
-and output. Generally, the prompt should provide information on the desired behavior,
+and target. Generally, the prompt should provide information on the desired behavior,
 e.g., text passage and instructions, and the output should be a desired response.
 
 For more information, read the [Contribution guidelines](CONTRIBUTING.md).
