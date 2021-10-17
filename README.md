@@ -41,7 +41,7 @@ from promptsource import TemplateCollection
 # Get all the prompts
 collection = TemplateCollection()
 # Get all the AG News prompts
-ag_news_prompts = collection.get_templates("ag_news", None)
+ag_news_prompts = collection.get_templates("ag_news")
 # Select a prompt by name
 prompt = ag_news_prompts["classify_question_first"]
 print(prompt.apply(example))
