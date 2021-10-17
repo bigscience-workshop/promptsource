@@ -98,11 +98,14 @@ You can leave binary options like yes/no, true/false, etc. unprotected.
 
 Finally, remember that a prompt must produce two strings: an input and a target.
 To separate these two pieces, use three vertical bars `|||`.
-So, a complete prompt for AG News could be:
+So, a complete prompt for Squad could be:
 ```jinja2
-{{text}}
-Is this a piece of news regarding {{"world politics"}}, {{"sports"}}, {{"business"}}, or {{"science and technology"}}? |||
-{{ ["World politics", "Sports", "Business", "Science and technology"][label] }}
+I'm working on the final exam for my class and am trying to figure out the answer
+to the question "{{question}}" I found the following info on Wikipedia and I think
+it has the answer. Can you tell me the answer?
+{{context}}
+|||
+{{answers["text"][0]}}'
 ```
 
 ## Options
@@ -113,7 +116,22 @@ what your template does.
 * **Original Task?** The checkbox should be checked if the template requires solving a task that the underlying dataset is used to study. For example, a prompt that asks a question from a question answering dataset would be a task template, but one that asks to generate a question for a given answer would not.
 * **Choices in Prompt?** The checkbox should be checked if the input explicitly indicates the options for the possible outputs (regardless of whether `answer_choices` is used).
 * **Metrics.** Use the multiselect widget to select all metrics commonly used to evaluate this task. Choose “Other” if there is one that is not included in the list.
-* **Answer Choices.**  If the prompt has a small set of possible outputs (e.g., Yes/No, class labels, entailment judgements, etc.), then the prompt should define and use answer choices as follows. This allows evaluation to consider just the possible choices for scoring model outputs. The answer choices field is a Jinja expression that should produce a `|||` separated list of all 
+* **Answer Choices.**  If the prompt has a small set of possible outputs (e.g., Yes/No, class labels, entailment judgements, etc.), then the prompt should define and use answer choices as follows. This allows evaluation to consider just the possible targets for scoring model outputs. The answer choices field is a Jinja expression that should produce a `|||` separated list of all possible targets. If the choices don't change from example to example, then you can just list them. For example, AG News is
+```jinja2
+World News ||| Sports ||| Business ||| Science and Technology
+```
+Note that whitespace is stripped from the ends of the choices. If answer choices are set, then they are also available to Jinja in the prompt itself in the form of a list called `answer_choices`. You should use this list in both input and target templates so that the resulting inputs and targets match the answer choices field exactly. For example, a prompt for AG News could use `answer_choices` like this:
+```jinja2
+{{text}} Which of the following sections of a newspaper would
+this article likely appear in? {{answer_choices[0]}}, {{answer_choices[1]}},
+{{answer_choices[2]}}, or {{answer_choices[3]}}?
+|||
+{{ answer_choices[label] }}
+```
+Since Answer Choices is a Jinja expression that has access to the example, it can also be used to extract example-specific choices from the underlying data. For example, in AI2 ARC, we could use
+```jinja2
+{{choices.text | join("|||")}}
+```
 
 ## Best Practices
 
