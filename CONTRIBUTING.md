@@ -96,7 +96,7 @@ The choices are {{"a"}}, {{"b"}}, and {{"c"}}.
 ```
 You can leave binary options like yes/no, true/false, etc. unprotected.
 
-Finally, remember that a prompt must produce two strings: an input and a target.
+Finally, remember that a template must produce two strings: an input and a target.
 To separate these two pieces, use three vertical bars `|||`.
 So, a complete prompt for Squad could be:
 ```jinja2
