@@ -62,7 +62,7 @@ state = _get_state()
 #
 st.set_page_config(page_title="Promptsource", layout="wide")
 st.sidebar.markdown(
-    "<center><h3><a href='https://github.com/bigscience-workshop/promptsource'>💻Github - Promptsource</h3></a></center>",
+    "<center><a href='https://github.com/bigscience-workshop/promptsource'>💻Github - Promptsource\n\n</a></center>",
     unsafe_allow_html=True,
 )
 mode = st.sidebar.selectbox(
