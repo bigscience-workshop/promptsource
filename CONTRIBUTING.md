@@ -1,66 +1,58 @@
 # Contributing
 
-One of the best ways to contribute is by writing templates!
+One of the best ways to contribute is by writing prompts!
 
 ### What are Templates?
 
-A template is a piece of code written in a templating language called
-[Jinja](https://jinja.palletsprojects.com/en/3.0.x/). A template defines
+A prompts is a piece of code written in a templating language called
+[Jinja](https://jinja.palletsprojects.com/en/3.0.x/). A prompt defines
 a function that maps an example from a dataset in the
 [Hugging Face datasets library](https://huggingface.co/datasets) to two strings of
-text. The first is called the _prompt_ which provides all information that
+text. The first is called the _input_ which provides all information that
 will be available to solve a task, such as the instruction and the context.
-The second piece is called the _output_, which is the desired response to the
+The second piece is called the _target_, which is the desired response to the
 prompt.
 
-### Quick-Start Guide to Writing Templates
+### Quick-Start Guide to Writing Prompts
 
 1. **Set up the app.** Fork the app and set up using the
 [README](https://github.com/bigscience-workshop/promptsource/blob/main/README.md).
-1. **Select a dataset.** Go to the tracking spreadsheet
-[here](https://docs.google.com/spreadsheets/d/10SBt96nXutB49H52PV2Lvne7F1NvVr_WZLXD8_Z0JMw/)
-and find an unclaimed one. Put your name under "Who's Prompting it?" and
-mark it yellow to show it's in progress.
 1. **Examine the dataset.** Select or type the dataset into the dropdown in the app.
 If the dataset has subsets (subsets are not the same as splits), you can select
 which one to work on. Note that templates are subset-specific. You can find
 out background information on the dataset by reading the information in the
 app. The dataset is a collection of examples, and each example is a Python
 dictionary. The sidebar will tell you the schema that each example has.
-1. **Start a new template**. Enter a name for your first template and hit "Create."
-You can always update the name later. If you want to cancel the template, select
-"Delete Template."
-1. **Write the template**. In the box labeled "Template," enter a Jinja expression.
-See the [getting started guide](#getting-started-using-jinja-to-write-templates)
+1. **Start a new prompt**. Enter a name for your first prompt and hit "Create."
+You can always update the name later. If you want to cancel the prompt, select
+"Delete Prompt."
+1. **Write the prompt**. In the box labeled "Template," enter a Jinja expression.
+See the [getting started guide](#getting-started-using-jinja-to-write-prompts)
 and [cookbook](#jinja-cookbook) for details on how to write templates.
 1. **Add a reference.** If your template was inspired by a paper, note the
-reference in the "Template Reference" section. You can also add a description of
+reference in the "Prompt Reference" section. You can also add a description of
 what your template does.
-1. **Save the template**. Hit the "Save" button. The output of the template
+1. **Save the prompt**. Hit the "Save" button. The output of the prompt
 applied to the current example will appear in the right sidebar.
-1. **Verify the template**. Check that you didn't miss any case by scrolling
+1. **Verify the prompt**. Check that you didn't miss any case by scrolling
 through a handful of examples of the prompted dataset using the
 "Prompted dataset viewer" mode.
-1. **Write between 5 and 10 templates**. Repeat the steps 4 to 8 to create between 5
+1. **Write between 5 and 10 prompts**. Repeat the steps 4 to 8 to create between 5
 and 10 (more if you want!) templates per dataset/subset. Feel free to introduce
 a mix of formats, some that follow the templates listed in the [best practices](#best-practices)
 and some that are more diverse in the format and the formulation. 
-1. **Duplicate the template(s).** If the dataset you have chosen bear the same
+1. **Duplicate the prompts(s).** If the dataset you have chosen bear the same
 format as other datasets (for instance, `MNLI` and `SNLI` have identical formats),
-you can simply claim these datasets and duplicate the templates you have written
-to these additional datasets. The most straighforward way to do it is to copy-paste
-the `templates.yaml` file in right subfolder (the `templates` folder is broken down by dataset/subset).
-Please make sure you adapt the `dataset` and `subset` keys in the yaml file. You don't need to wory
-about the `id` as it is unique for a given dataset/subset.
+you can simply duplicate the prompts you have written to these additional datasets.
 1. **Upload the template(s).** Submit a PR using the instructions
-[here](#uploading-templates).
+[here](#uploading-prompts).
 
-## Getting Started Using Jinja to Write Templates
+## Getting Started Using Jinja to Write Prompts
 
 Here is a quick crash course on using [Jinja](https://jinja.palletsprojects.com/en/3.0.x/)
 to write templates. More advanced usage is in the [cookbook](#jinja-cookbook).
 
-Generally, in a template, you'll want to use a mix of hard-coded data that is
+Generally, in a prompt, you'll want to use a mix of hard-coded data that is
 task-specific and stays the same across examples, and commands that tailor the
 prompt and output to a specific example.
 
@@ -239,7 +231,7 @@ the label might be unknown, so the pieces are wrapped in if statements.
 Second, notice that the choices `Yes or No` are not escaped. Yes/no, true/false
 are choices that do not need to be escaped (unlike categories).
 
-## Uploading Templates
+## Uploading Prompts
 
 Once you save or modify a template, the corresponding file inside the `templates`
 directory in the repo will be modified. To upload it, follow these steps:
