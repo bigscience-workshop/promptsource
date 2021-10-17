@@ -1,7 +1,12 @@
 # PromptSource
-Toolkit for collecting and applying templates of prompting instances.
+Promptsource is a toolkit for collecting and applying prompts to NLP datasets.
 
-WIP
+Promptsource uses a simple templating language to programatically map an example of a dataset into a text input and a text target.
+
+Promptsource contains a growing collection of prompts (which we call **P3**: **P**ublic **P**ool of **P**rompts). As of October 18th, there are ~2'000 prompts for 170+ datasets in P3.
+Feel free to use these prompts as they are (you'll find citation details [here](##Citation)).
+
+Note that a subset of the prompts are still *Work in Progress*. You'll find the list of the prompts which will potentially be modified in the near future [here](WIP.md). Modifications will in majority consist of metadata collection, but in some cases, will impact the templates themselves. To facilitate traceability, Promptsource is currently pinned at version `0.1.0`.
 
 ## Setup
 1. Download the repo
@@ -9,7 +14,9 @@ WIP
 3. Install requirements with `pip install -r requirements.txt` in a Python 3.7 environment
 
 ## Running
-From the root directory of the repo, you can launch the editor with
+You can browse through existing prompts on the [hosted versiond of Promptsource](https://bigscience.huggingface.co/promptsource).
+
+If you want to launch a local version (in particular to write propmts, from the root directory of the repo, launch the editor with:
 ```
 streamlit run promptsource/app.py
 ```
@@ -68,3 +75,14 @@ For more information, read the [Contribution guidelines](CONTRIBUTING.md).
 **Warning or Error about Darwin on OS X:** Try downgrading PyArrow to 3.0.0.
 
 **ConnectionRefusedError: [Errno 61] Connection refused:** Happens occasionally. Try restarting the app.
+
+## Development structure
+
+Promptsource was developed as part of the [BigScience project for open research 🌸](https://bigscience.huggingface.co/), a year-long initiative targeting the study of large models and datasets. The goal of the project is to research language models in a public environment outside large technology companies. The project has 600 researchers from 50 countries and more than 250 institutions.
+
+## Citation
+
+If you want to cite this P3 or Promptsource, you can use this bibtex:
+```bibtex
+TODO
+```
