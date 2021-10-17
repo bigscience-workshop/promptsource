@@ -348,8 +348,6 @@ else:
                 st.markdown("##### Metrics")
                 st.text(", ".join(template.metadata.metrics) if template.metadata.metrics else None)
                 st.markdown("##### Answer Choices")
-                st.text(", ".join(template.answer_choices) if template.answer_choices is not None else None)
-                st.markdown("##### Answer Choices Key")
                 if template.get_answer_choices_expr() is not None:
                     show_jinja(template.get_answer_choices_expr())
                 else:
@@ -491,11 +489,9 @@ else:
                         metrics_choices = [
                             "BLEU",
                             "ROUGE",
-                            "Span Squad",
                             "Squad",
                             "Trivia QA",
                             "Accuracy",
-                            "Sequence Accuracy",
                             "Pearson Correlation",
                             "Spearman Correlation",
                             "MultiRC",
@@ -518,21 +514,13 @@ else:
                         )
 
                         # Answer choices
+                        if template.get_answer_choices_expr() is not None:
+                            answer_choices = template.get_answer_choices_expr()
+                        else:
+                            answer_choices = ""
                         state.answer_choices = st.text_input(
                             "Answer Choices",
-                            value=" ||| ".join(template.answer_choices) if template.answer_choices is not None else "",
-                            help="A ||| separated list of possible outputs (or leave blank). "
-                            + "Value is available in Jinja in a list called answer_choices.",
-                        )
-
-                        # Answer choices key
-                        if template.get_answer_choices_expr() is not None:
-                            answer_choices_key = template.get_answer_choices_expr()
-                        else:
-                            answer_choices_key = ""
-                        state.answer_choices_key = st.text_input(
-                            "Answer Choices Key",
-                            value=answer_choices_key,
+                            value=answer_choices,
                             help="A Jinja expression for computing answer choices. "
                             "Separate choices with a triple bar (|||).",
                         )
@@ -553,14 +541,11 @@ else:
                             elif updated_template_name == "":
                                 st.error("Need to provide a template name.")
                             else:
-                                # Parses state.answer_choices and state.answer_choices_key
-                                updated_answer_choices = [x.strip() for x in state.answer_choices.split("|||")]
-                                if len(updated_answer_choices) == 0 or len(updated_answer_choices) == 1:
+                                # Parses state.answer_choices
+                                if state.answer_choices == "":
                                     updated_answer_choices = None
-                                if state.answer_choices_key == "":
-                                    updated_answer_choices_key = None
                                 else:
-                                    updated_answer_choices_key = state.answer_choices_key
+                                    updated_answer_choices = state.answer_choices
 
                                 dataset_templates.update_template(
                                     state.template_name,
@@ -569,7 +554,6 @@ else:
                                     state.reference,
                                     state.metadata,
                                     updated_answer_choices,
-                                    updated_answer_choices_key,
                                 )
                                 # Update the state as well
                                 state.template_name = updated_template_name
