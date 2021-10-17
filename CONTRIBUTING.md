@@ -49,7 +49,7 @@ you can simply duplicate the prompts you have written to these additional datase
 Here is a quick crash course on using [Jinja](https://jinja.palletsprojects.com/en/3.0.x/)
 to write templates. More advanced usage is in the [cookbook](#jinja-cookbook).
 
-Generally, in a prompt, you'll want to use a mix of hard-coded data that is
+Generally, in a template, you'll want to use a mix of hard-coded data that is
 task-specific and stays the same across examples, and commands that tailor the
 input and target to a specific example.
 
