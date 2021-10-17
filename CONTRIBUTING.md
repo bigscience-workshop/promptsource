@@ -98,7 +98,7 @@ You can leave binary options like yes/no, true/false, etc. unprotected.
 
 Finally, remember that a template must produce two strings: an input and a target.
 To separate these two pieces, use three vertical bars `|||`.
-So, a complete prompt for Squad could be:
+So, a complete template for Squad could be:
 ```jinja2
 I'm working on the final exam for my class and am trying to figure out the answer
 to the question "{{question}}" I found the following info on Wikipedia and I think
