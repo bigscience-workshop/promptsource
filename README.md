@@ -3,7 +3,7 @@ Promptsource is a toolkit for collecting and applying prompts to NLP datasets.
 
 Promptsource uses a simple templating language to programatically map an example of a dataset into a text input and a text target.
 
-Promptsource is a growing collection of prompts (which we call **P3**: **P**ublic **P**ool of **P**rompts). As of October 18th, there are ~2'000 prompts for 170+ datasets in P3.
+Promptsource contains a growing collection of prompts (which we call **P3**: **P**ublic **P**ool of **P**rompts). As of October 18th, there are ~2'000 prompts for 170+ datasets in P3.
 Feel free to use these prompts as they are (you'll find citation details [here](##Citation)).
 
 Note that a subset of the prompts are still *Work in Progress*. You'll find the list of the prompts which will potentially be modified in the near future [here](WIP.md). Modifications will in majority consist of metadata collection, but in some cases, will impact the templates themselves. To facilitate traceability, Promptsource is currently pinned at version `0.1.0`.
