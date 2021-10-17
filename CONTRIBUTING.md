@@ -113,14 +113,28 @@ In addition to the prompt itself, you can fill out several other fields in the a
 * **Prompt Reference.** If your template was inspired by a paper, note the
 reference in the "Prompt Reference" section. You can also add a description of
 what your template does.
-* **Original Task?** The checkbox should be checked if the template requires solving a task that the underlying dataset is used to study. For example, a prompt that asks a question from a question answering dataset would be a task template, but one that asks to generate a question for a given answer would not.
-* **Choices in Prompt?** The checkbox should be checked if the input explicitly indicates the options for the possible outputs (regardless of whether `answer_choices` is used).
-* **Metrics.** Use the multiselect widget to select all metrics commonly used to evaluate this task. Choose “Other” if there is one that is not included in the list.
-* **Answer Choices.**  If the prompt has a small set of possible outputs (e.g., Yes/No, class labels, entailment judgements, etc.), then the prompt should define and use answer choices as follows. This allows evaluation to consider just the possible targets for scoring model outputs. The answer choices field is a Jinja expression that should produce a `|||` separated list of all possible targets. If the choices don't change from example to example, then you can just list them. For example, AG News is
+* **Original Task?** The checkbox should be checked if the template requires solving a
+task that the underlying dataset is used to study. For example, a prompt that asks a
+question from a question answering dataset would be a task template, but one that asks
+to generate a question for a given answer would not.
+* **Choices in Prompt?** The checkbox should be checked if the input explicitly indicates
+the options for the possible outputs (regardless of whether `answer_choices` is used).
+* **Metrics.** Use the multiselect widget to select all metrics commonly used to evaluate
+this task. Choose “Other” if there is one that is not included in the list.
+* **Answer Choices.**  If the prompt has a small set of possible outputs (e.g., Yes/No,
+class labels, entailment judgements, etc.), then the prompt should define and use answer
+choices as follows. This allows evaluation to consider just the possible targets for
+scoring model outputs. The answer choices field is a Jinja expression that should produce
+a `|||` separated list of all possible targets. If the choices don't change from example
+to example, then you can just list them. For example, AG News is
 ```jinja2
 World News ||| Sports ||| Business ||| Science and Technology
 ```
-Note that whitespace is stripped from the ends of the choices. If answer choices are set, then they are also available to Jinja in the prompt itself in the form of a list called `answer_choices`. You should use this list in both input and target templates so that the resulting inputs and targets match the answer choices field exactly. For example, a prompt for AG News could use `answer_choices` like this:
+Note that whitespace is stripped from the ends of the choices. If answer choices are set,
+then they are also available to Jinja in the prompt itself in the form of a list called
+`answer_choices`. You should use this list in both input and target templates so that the
+resulting inputs and targets match the answer choices field exactly. For example, a prompt
+for AG News could use `answer_choices` like this:
 ```jinja2
 {{text}} Which of the following sections of a newspaper would
 this article likely appear in? {{answer_choices[0]}}, {{answer_choices[1]}},
@@ -128,27 +142,36 @@ this article likely appear in? {{answer_choices[0]}}, {{answer_choices[1]}},
 |||
 {{ answer_choices[label] }}
 ```
-Since Answer Choices is a Jinja expression that has access to the example, it can also be used to extract example-specific choices from the underlying data. For example, in AI2 ARC, we could use
+Since Answer Choices is a Jinja expression that has access to the example, it can also be used
+to extract example-specific choices from the underlying data. For example, in AI2 ARC, we could
+use
 ```jinja2
 {{choices.text | join("|||")}}
 ```
 
 ## Best Practices
 
-* **Writing output templates.** The output template should only contain the answer to the task. It should not contain any extra text such as “The answer is…” (unless that extra text is also in `answer_choices`). If `answer_choices` is populated, the output should only contain the values in `answer_choices`.
-* **Formatting multple-choice questions.** If the output should match the name of the choice (e.g., “World News”), then it should list the choices either as part of a grammatical question or a list with the marker for each (e.g, dashes). If the output should indicate the choice from the list (e.g., “A,” “Explanation 1,” etc.), then it should list the choices with the indicator before each one.
+* **Writing output templates.** The output template should only contain the answer to the task.
+It should not contain any extra text such as “The answer is…” (unless that extra text is also in
+`answer_choices`). If `answer_choices` is populated, the output should only contain the values
+in `answer_choices`.
+* **Formatting multple-choice questions.** If the output should match the name of the choice
+(e.g., “World News”), then it should list the choices either as part of a grammatical question
+or a list with the marker for each (e.g, dashes). If the output should indicate the choice from
+the list (e.g., “A,” “Explanation 1,” etc.), then it should list the choices with the indicator
+before each one.
 * **Choosing input and target pairs.** Lots of datasets have multiple columns that can be
 combined to form different (input, target) pairs i.e. different "tasks". Don't hesitate to
 introduce some diversity by prompting a given dataset into multiple tasks and provide some
 description in the "Template Reference" text box. An example is given
 in the already prompted `movie_rationales`.
-* **Filtering templates.** If a template is applied to an example and produces an
-empty string, that template/example pair will be skipped. (Either the entire output
+* **Filtering prompts.** If a prompt is applied to an example and produces an
+empty string, that prompt/example pair will be skipped. (Either the entire target
 is whitespace or the text on either side of the separator `|||` is whitespace.
-You can therefore create templates that only apply to a subset of the examples by
+You can therefore create prompts that only apply to a subset of the examples by
 wrapping them in Jinja if statements. For example, in the `TREC` dataset, there
 are fine-grained categories that are only applicable to certain coarse-grained categories.
-We can capture this with the following template:
+We can capture this with the following prompt:
 ```jinja2
 {% if label_coarse == 0 %}
 Is this question asking for a {{"definition"}}, a {{"description"}}, a {{"manner of action"}}, or a {{"reason"}}?
@@ -189,6 +212,9 @@ Determine the relation between the following two sentences. The relations are en
 {{premise}}
 {{hypothesis}} ||| {{label}}
 ```
+* **Setting variables.** You might want to use the Jinja expression `{% set %}` to define a variable. If you do,
+do it at the beginning of the prompt, outside any conditional statements, so that the automatic prompt checks
+recognize that the variable is defined.
 
 ## More Examples
 
