@@ -59,7 +59,7 @@ following "template" will produce the same text every time:
 This is just literal text that will be printed the same way every time.
 ```
 
-To make your prompt do something more interesting, you'll need to use Jinja
+To make your template do something more interesting, you'll need to use Jinja
 expressions. Jinja expressions are surrounded by curly braces `{` and `}`.
 One common thing you'll want to do is access information in the dataset example.
 When applied to an example, you can access any value in the example dictionary
