@@ -32,19 +32,22 @@ You can use Promptsource with [Datasets](https://huggingface.co/docs/datasets/) 
 prompted examples:
 ```python
 # Get an example
-import datasets
+from datasets import load_dataset
 dataset = load_dataset("ag_news")
-example = dataset["Train"][0]
+example = dataset["train"][0]
 
 # Prompt it
-from promptsource import TemplateCollection
+from promptsource.templates import TemplateCollection
 # Get all the prompts
 collection = TemplateCollection()
 # Get all the AG News prompts
-ag_news_prompts = collection.get_templates("ag_news")
+ag_news_prompts = collection.get_dataset("ag_news")
 # Select a prompt by name
 prompt = ag_news_prompts["classify_question_first"]
-print(prompt.apply(example))
+
+result = prompt.apply(example)
+print("INPUT: ", result[0])
+print("TARGET: ", result[1])
 ```
 
 ## Contributing
