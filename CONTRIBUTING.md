@@ -86,7 +86,7 @@ The label for this example is {{
 }}.
 ```
 
-Note that some things in a prompt are particular to the task, and should not be
+Note that some things in a template are particular to the task, and should not be
 modified by downstream steps that try to increase the diversity of the prompts.
 A common example is listing label names in the prompt to provide choices. Anything
 that should not be modified by data augmentation should be surrounded by double
