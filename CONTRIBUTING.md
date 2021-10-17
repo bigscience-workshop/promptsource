@@ -35,7 +35,7 @@ applied to the current example will appear in the right sidebar.
 through a handful of examples of the prompted dataset using the
 "Prompted dataset viewer" mode.
 1. **Write between 5 and 10 prompts**. Repeat the steps 4 to 8 to create between 5
-and 10 (more if you want!) templates per dataset/subset. Feel free to introduce
+and 10 (more if you want!) prompts per dataset/subset. Feel free to introduce
 a mix of formats, some that follow the templates listed in the [best practices](#best-practices)
 and some that are more diverse in the format and the formulation. 
 1. **Duplicate the prompts(s).** If the dataset you have chosen bear the same
