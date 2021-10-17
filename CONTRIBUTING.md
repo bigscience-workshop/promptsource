@@ -151,7 +151,7 @@ use
 
 ## Best Practices
 
-* **Writing output templates.** The output template should only contain the answer to the task.
+* **Writing target templates.** The target template should only contain the answer to the task.
 It should not contain any extra text such as “The answer is…” (unless that extra text is also in
 `answer_choices`). If `answer_choices` is populated, the output should only contain the values
 in `answer_choices`.
