@@ -84,5 +84,12 @@ Promptsource was developed as part of the [BigScience project for open research 
 
 If you want to cite this P3 or Promptsource, you can use this bibtex:
 ```bibtex
-TODO
+@misc{sanh2021multitask,
+      title={Multitask Prompted Training Enables Zero-Shot Task Generalization}, 
+      author={Victor Sanh and Albert Webson and Colin Raffel and Stephen H. Bach and Lintang Sutawika and Zaid Alyafeai and Antoine Chaffin and Arnaud Stiegler and Teven Le Scao and Arun Raja and Manan Dey and M Saiful Bari and Canwen Xu and Urmish Thakker and Shanya Sharma Sharma and Eliza Szczechla and Taewoon Kim and Gunjan Chhablani and Nihal Nayak and Debajyoti Datta and Jonathan Chang and Mike Tian-Jian Jiang and Han Wang and Matteo Manica and Sheng Shen and Zheng Xin Yong and Harshit Pandey and Rachel Bawden and Thomas Wang and Trishala Neeraj and Jos Rozen and Abheesht Sharma and Andrea Santilli and Thibault Fevry and Jason Alan Fries and Ryan Teehan and Stella Biderman and Leo Gao and Tali Bers and Thomas Wolf and Alexander M. Rush},
+      year={2021},
+      eprint={2110.08207},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG}
+}
 ```
