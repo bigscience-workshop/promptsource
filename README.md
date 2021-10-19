@@ -14,7 +14,7 @@ Note that a subset of the prompts are still *Work in Progress*. You'll find the 
 3. Install requirements with `pip install -r requirements.txt` in a Python 3.7 environment
 
 ## Running
-You can browse through existing prompts on the [hosted versiond of Promptsource](https://bigscience.huggingface.co/promptsource).
+You can browse through existing prompts on the [hosted version of Promptsource](https://bigscience.huggingface.co/promptsource).
 
 If you want to launch a local version (in particular to write propmts, from the root directory of the repo, launch the editor with:
 ```
