@@ -1,6 +1,6 @@
 # Which prompts are finalized?
 
-A subset of the prompts in P3 are still *Work in Progress*. For information, we provide the lists of the datasets for which prompts have been finalized and datasetsf for which prompts are suceptible to be modified in the near future. Modifications will in majority consist of metadata collection, but in some cases, will impact the templates themselves.
+A subset of the prompts in P3 are still *Work in Progress*. For information, we provide the lists of the datasets for which prompts have been finalized and datasets for which prompts are suceptible to be modified in the near future. Modifications will in majority consist of metadata collection, but in some cases, will impact the templates themselves.
 
 To facilitate traceability, Promptsource is currently pinned at version `0.1.0`.
 
