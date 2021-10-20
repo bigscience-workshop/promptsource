@@ -8,6 +8,8 @@ Feel free to use these prompts as they are (you'll find citation details [here](
 
 Note that a subset of the prompts are still *Work in Progress*. You'll find the list of the prompts which will potentially be modified in the near future [here](WIP.md). Modifications will in majority consist of metadata collection, but in some cases, will impact the templates themselves. To facilitate traceability, Promptsource is currently pinned at version `0.1.0`.
 
+Propmtsource and P3 were originally developed as part of the paper [Multitask Prompted Training Enables Zero-Shot Task Generalization](https://arxiv.org/abs/2110.08207). We release T0* (pronounce "T Zero"), a series of model trained on P3. Checkpoints are available [here](https://huggingface.co/bigscience/T0pp). In particular, we recommend using T0++ (pronounce "T Zero Plus Plus") as it leads (on average) to the best performances on a variety of NLP tasks
+
 ## Setup
 1. Download the repo
 2. Navigate to root directory of the repo
