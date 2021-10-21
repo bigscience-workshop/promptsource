@@ -47,19 +47,28 @@ dataset = load_dataset("ag_news")
 example = dataset["train"][0]
 
 # Prompt it
-from promptsource.templates import TemplateCollection
-# Get all the prompts
-collection = TemplateCollection()
+from promptsource.templates import DatasetTemplates
 # Get all the AG News prompts
-ag_news_prompts = collection.get_dataset("ag_news")
+ag_news_prompts = DatasetTemplates('ag_news')
 # Select a prompt by name
 prompt = ag_news_prompts["classify_question_first"]
-
+# apply the prompt on the example 
 result = prompt.apply(example)
 print("INPUT: ", result[0])
 print("TARGET: ", result[1])
 ```
 
+You can show all the available datasets and their associated prompts
+
+```python
+from promptsource.templates import TemplateCollection
+
+# Get all the prompts
+collection = TemplateCollection()
+
+# return a dict where the key is the pair (dataset name, subset name) and the value is an object of DatasetTemplates
+print(collection.datasets_templates)
+```
 ## Contributing
 Contribution guidelines and step-by-step *HOW TO* are described [here](CONTRIBUTING.md).
 
