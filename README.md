@@ -14,6 +14,7 @@ Propmtsource and P3 were originally developed as part of the paper [Multitask Pr
 1. Download the repo
 2. Navigate to root directory of the repo
 3. Install requirements with `pip install -r requirements.txt` in a Python 3.7 environment
+4. Run `pip install -e .` to install the `promptsource` module
 
 ## Running
 You can browse through existing prompts on the [hosted version of Promptsource](https://bigscience.huggingface.co/promptsource).
