@@ -52,13 +52,13 @@ from promptsource.templates import DatasetTemplates
 ag_news_prompts = DatasetTemplates('ag_news')
 # Select a prompt by name
 prompt = ag_news_prompts["classify_question_first"]
-# apply the prompt on the example 
+# Apply the prompt on the example 
 result = prompt.apply(example)
 print("INPUT: ", result[0])
 print("TARGET: ", result[1])
 ```
 
-You can show all the available datasets and their associated prompts
+You can collect all the available datasets and their associated prompts
 
 ```python
 from promptsource.templates import TemplateCollection
@@ -66,7 +66,8 @@ from promptsource.templates import TemplateCollection
 # Get all the prompts
 collection = TemplateCollection()
 
-# return a dict where the key is the pair (dataset name, subset name) and the value is an object of DatasetTemplates
+# Return a dict where the key is the pair (dataset name, subset name)
+# and the value is an instance of DatasetTemplates
 print(collection.datasets_templates)
 ```
 ## Contributing
