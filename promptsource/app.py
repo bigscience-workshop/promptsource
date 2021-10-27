@@ -21,6 +21,9 @@ from promptsource.utils import (
     render_features,
 )
 
+import platform, multiprocessing
+if platform.system() == "Darwin":
+    multiprocessing.set_start_method('spawn', force=True)
 
 # add an argument for read-only
 # At the moment, streamlit does not handle python script arguments gracefully.
