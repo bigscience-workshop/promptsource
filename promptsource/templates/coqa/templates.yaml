@@ -1,18 +1,54 @@
 dataset: coqa
 templates:
-  530616d3-1cc8-4faa-a855-4b21e0da9ec9: !Template
+  24a93895-5478-4f3c-b2a0-b7b4afc54859: !Template
     answer_choices: null
-    id: 530616d3-1cc8-4faa-a855-4b21e0da9ec9
-    jinja: "Answer the question based on the information contained in the passage.\n\
-      Q: {{questions[0]}} \n\nPassage: {{story}}\n\nA: ||| {{answers[\"input_text\"\
-      ][0]}}"
+    id: 24a93895-5478-4f3c-b2a0-b7b4afc54859
+    jinja: '{% set num_questions = range(0, questions|length)| choice %}
+
+      Answer the last question based on the hint.
+
+      {% for index in range(0, num_questions) %}
+
+      Q: {{questions[index]}}
+
+
+      A:{{answers["input_text"][index]}}
+
+      {%endfor %}
+
+
+      Q: {{questions[num_questions]}}
+
+
+      Hint: {{story}}
+
+
+      A:|||
+
+      {{answers["input_text"][num_questions]}}
+
+      '
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
-      - Other
+      - COQA F1
+      original_task: true
+    name: choice_num_question
+    reference: The template has a random number of QA pairs and asks to generate the
+      answer for the next question
+  530616d3-1cc8-4faa-a855-4b21e0da9ec9: !Template
+    answer_choices: null
+    id: 530616d3-1cc8-4faa-a855-4b21e0da9ec9
+    jinja: "{% set index = range(0, questions|length) | choice %}\nAnswer the question\
+      \ based on the information contained in the passage.\nQ: {{questions[index]}}\
+      \ \n\nPassage: {{story}}\n\nA: ||| {{answers[\"input_text\"][index]}}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - COQA F1
       original_task: false
-    name: first_qa_turn
-    reference: 'Metric: variant of SQuAD (Section 6.1 of the paper)'
+    name: generate_answer_using_question_passage
+    reference: ''
   7c0e2256-961c-48e9-bc08-6c270cc68b4a: !Template
     answer_choices: null
     id: 7c0e2256-961c-48e9-bc08-6c270cc68b4a
@@ -42,10 +78,26 @@ templates:
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
-      - Other
+      - COQA F1
       original_task: true
     name: last_qa_turn
     reference: 'Metric: variant of SQuAD (Section 6.1 of the paper)'
+  9adffdbe-e258-45e4-887a-1ef6dcf3bd75: !Template
+    answer_choices: null
+    id: 9adffdbe-e258-45e4-887a-1ef6dcf3bd75
+    jinja: "{% set num_questions = range(0, questions|length)| choice %}\n\nYou need\
+      \ to complete the conversation with an answer. You are allowed to use the passage\
+      \ and previously answered questions to complete the conversation. \n\nPassage:\
+      \ {{story}}\n\n{% for index in range(0, num_questions) %}\nQ: {{questions[index]}}\n\
+      \nA:{{answers[\"input_text\"][index]}}\n{% endfor %}\n\nQ: {{questions[num_questions]}}\n\
+      \nA:|||\n{{answers[\"input_text\"][num_questions]}}\n"
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - COQA F1
+      original_task: true
+    name: choice_num_question_reverse_variant
+    reference: Similar to choice_num_question_reverse
   a22e8bf1-f5af-43eb-b38c-002462261da2: !Template
     answer_choices: null
     id: a22e8bf1-f5af-43eb-b38c-002462261da2
@@ -71,25 +123,52 @@ templates:
       - ROUGE
       original_task: false
     name: generate_dialogue
-    reference: ''
-  cb53f12f-e781-4a92-bbb0-fbef19bd2d29: !Template
+    reference: 'Given a passage, the template asks to generate question-answer pairs '
+  b397607b-21c5-4066-bc29-cfaa7c48d405: !Template
     answer_choices: null
-    id: cb53f12f-e781-4a92-bbb0-fbef19bd2d29
-    jinja: 'In the passage below, extract the part which answers the question:
-
-
-      Q: {{questions[0]}}
-
-      Passage: {{story}} |||
-
-      {{story[answers["answer_start"][0] : answers["answer_end"][0] ]}}'
+    id: b397607b-21c5-4066-bc29-cfaa7c48d405
+    jinja: "{% set num_questions = range(0, questions|length)| choice %}\n\nPassage:\
+      \ {{story}}\n\nCan you complete the conversation based on the passage? \n{%\
+      \ for index in range(0, num_questions) %}\nQ: {{questions[index]}}\n\nA:{{answers[\"\
+      input_text\"][index]}}\n{% endfor %}\n\nQ: {{questions[num_questions]}}\n\n\
+      A:|||\n{{answers[\"input_text\"][num_questions]}}\n"
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
-      - Squad
+      - COQA F1
+      original_task: true
+    name: choice_num_question_reverse
+    reference: Similar to choice num questions. The template is prompted with the
+      passage rather than the questions.
+  cb53f12f-e781-4a92-bbb0-fbef19bd2d29: !Template
+    answer_choices: null
+    id: cb53f12f-e781-4a92-bbb0-fbef19bd2d29
+    jinja: '{% set index = range(0, questions|length) | choice %}
+
+      In the passage below, extract the part which answers the question:
+
+
+      Q: {{questions[index]}}
+
+      Passage: {{story}} |||
+
+      {% if answers["answer_start"][index] < 0 %}
+
+      unknown
+
+      {% else %}
+
+      {{story[answers["answer_start"][index] : answers["answer_end"][index] ]}}
+
+      {% endif %}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - COQA F1
       original_task: false
-    name: extract_answer_first_qa_turn
-    reference: ''
+    name: extract_answer_qa
+    reference: 'The template randomly chooses a question from the list of questions
+      and extracts the answer from the passage. "unknown" if unanswerable. '
   dc05f09a-0b2b-4448-9226-45dcc4cf52e6: !Template
     answer_choices: null
     id: dc05f09a-0b2b-4448-9226-45dcc4cf52e6
@@ -101,7 +180,24 @@ templates:
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
-      - Other
-      original_task: true
+      - COQA F1
+      original_task: false
     name: missing_answer
-    reference: 'Metric: variant of SQuAD (Section 6.1 of the paper)'
+    reference: The template asks the model to answer a question without an answer
+  f7358ab2-3afc-4d95-b255-d9417ecc6f55: !Template
+    answer_choices: null
+    id: f7358ab2-3afc-4d95-b255-d9417ecc6f55
+    jinja: "{% set num_questions = range(0, questions|length)| choice %}\nHere is\
+      \ a conversation between a robot and a human. \nCan you answer the last question\
+      \ based on the conversation? \n{% for index in range(0, num_questions) %}\n\
+      Q: {{questions[index]}}\n\nA:{{answers[\"input_text\"][index]}}\n{%endfor %}\n\
+      \nQ: {{questions[num_questions]}}\n\nHint: {{story}}\n\nA:|||\n{{answers[\"\
+      input_text\"][num_questions]}}\n"
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - COQA F1
+      original_task: true
+    name: choice_num_question_variant
+    reference: 'This a variant on the choice num questions. The prompt provides detailed
+      instructions. '
