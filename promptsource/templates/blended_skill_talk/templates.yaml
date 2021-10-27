@@ -9,13 +9,15 @@ templates:
       \ %}\nA: {{message_f}}\n\nB: {{message_g}}\n{% endfor %} \n\nA: {{free_messages[-1]}}\n\
       \nB: \n|||\n{{guided_messages[-1]}}"
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      - ROUGE
       original_task: false
     name: guess-last-utterance
     reference: ''
   58f4e068-26fa-4843-a1d6-54bde324e780: !Template
-    answer_choices: null
+    answer_choices: Yes, they are. ||| No, they are not.
     id: 58f4e068-26fa-4843-a1d6-54bde324e780
     jinja: "Two people are having a conversation. Are the utterances in the correct\
       \ order?\n{% if range(0, 2) | choice %}\nA: {{previous_utterance[0]}}\n\nB:\
@@ -26,8 +28,11 @@ templates:
       \ {{message_f}}\n\nB: {{message_g}}\n{% endfor %} \n\n|||\nNo, they are not.\n\
       {% endif %}"
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
+      choices_in_prompt: false
+      metrics:
+      - Accuracy
+      - BLEU
+      - ROUGE
       original_task: false
     name: guess-correct-order
     reference: ''
@@ -39,8 +44,10 @@ templates:
       \ message_g in zip(free_messages, guided_messages) %}\nPerson A: {{message_f}}\n\
       \nPerson B: {{message_g}}\n{% endfor %} \n|||\n{{previous_utterance[0]}}\n"
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      - ROUGE
       original_task: false
     name: guess-first-utterance
     reference: ''
