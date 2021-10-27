@@ -12,13 +12,15 @@ templates:
 
       {{simplifications | choice}}'
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      - ROUGE
       original_task: true
     name: simplification
     reference: ''
   da3fb228-7383-497f-936c-9bcbcd0d057b: !Template
-    answer_choices: null
+    answer_choices: Text A ||| Text B
     id: da3fb228-7383-497f-936c-9bcbcd0d057b
     jinja: 'Read the below two texts and answer the question.
 
@@ -54,8 +56,9 @@ templates:
 
       {% endif %} '
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
       original_task: false
     name: choose-verbose
     reference: ''
@@ -71,13 +74,15 @@ templates:
 
       {{original}}'
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      - Squad
       original_task: false
     name: make-verbose
     reference: ''
   ec70cd03-8282-4e45-957f-927c60254ad4: !Template
-    answer_choices: null
+    answer_choices: Text A ||| Text B
     id: ec70cd03-8282-4e45-957f-927c60254ad4
     jinja: '{% if range(0,2) | choice %}
 
@@ -111,8 +116,9 @@ templates:
 
       {% endif %} '
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
       original_task: false
     name: choose-simplification
     reference: ''
