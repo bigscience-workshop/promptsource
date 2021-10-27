@@ -1,62 +1,9 @@
 dataset: squadshifts
 subset: nyt
 templates:
-  60995116-53af-456f-ac20-858b83fa9ba6: !Template
+  00201c79-e310-4fb0-b4c1-d0ec0f126bf1: !Template
     answer_choices: null
-    id: 60995116-53af-456f-ac20-858b83fa9ba6
-    jinja: 'After reading the following paragraph, please answer this question: {{question}}
-
-
-      {{context}}
-
-
-      |||
-
-      {{answers[''text''] | most_frequent | choice}}'
-    metadata: !TemplateMetadata
-      choices_in_prompt: false
-      metrics:
-      - Squad
-      original_task: true
-    name: after
-    reference: First question, then answer
-  694f0a21-4cc2-4485-88e6-e5b1ceb9a341: !Template
-    answer_choices: null
-    id: 694f0a21-4cc2-4485-88e6-e5b1ceb9a341
-    jinja: "Question: {{question}}\n\nAnswer: \n|||\n{{answers['text'] | most_frequent\
-      \ | choice}}"
-    metadata: !TemplateMetadata
-      choices_in_prompt: false
-      metrics:
-      - ROUGE
-      - BLEU
-      original_task: false
-    name: cbqa_question_answer
-    reference: Minimal closed book question answering  template with a prefix
-  a5691e58-f2cc-41eb-8308-c7046856f72f: !Template
-    answer_choices: null
-    id: a5691e58-f2cc-41eb-8308-c7046856f72f
-    jinja: 'Use the following non-answers to generate a possible short passage-question
-      pair:
-
-      {{answers["text"]|join('', '')}} |||
-
-      {{context}}
-
-      {{question}}
-
-      '
-    metadata: !TemplateMetadata
-      choices_in_prompt: false
-      metrics:
-      - BLEU
-      - ROUGE
-      original_task: false
-    name: answers_question
-    reference: Generate a question-passage pair from the answer
-  bc874f68-ce23-43cd-9683-5574c9ef01cb: !Template
-    answer_choices: null
-    id: bc874f68-ce23-43cd-9683-5574c9ef01cb
+    id: 00201c79-e310-4fb0-b4c1-d0ec0f126bf1
     jinja: 'I''ve always wondered: {{question}}
 
 
@@ -76,29 +23,82 @@ templates:
       original_task: true
     name: wondered
     reference: 'Original task prompt '
-  bfa571de-6076-44c2-b23b-8b2a404b180d: !Template
+  2d8ca3d9-2e79-4fc2-a720-918a70e2cf2c: !Template
     answer_choices: null
-    id: bfa571de-6076-44c2-b23b-8b2a404b180d
-    jinja: '{{["Question", "Problem"]  | choice}} {{range(1, 12) | choice}}: {{question}}
+    id: 2d8ca3d9-2e79-4fc2-a720-918a70e2cf2c
+    jinja: 'Generate a title for the following short passage:
 
 
-      Hint: {{context}}
+      {{context}} |||
+
+      {{title|replace("_"," ")}}
+
+      '
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      - ROUGE
+      original_task: false
+    name: title
+    reference: Pormpt generates the title of the short passage
+  2e618671-1bb3-4943-b16c-cbef60b0c3e2: !Template
+    answer_choices: null
+    id: 2e618671-1bb3-4943-b16c-cbef60b0c3e2
+    jinja: 'Use the following non-answers to generate a possible short passage-question
+      pair:
+
+      {{answers["text"]|join('', '')}} |||
+
+      {{context}}
+
+      {{question}}
+
+      '
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      - ROUGE
+      original_task: false
+    name: answers_question
+    reference: Generate a question-passage pair from the answer
+  6336eed0-3ecd-4007-8ad3-f6e615570fdf: !Template
+    answer_choices: null
+    id: 6336eed0-3ecd-4007-8ad3-f6e615570fdf
+    jinja: 'I''m working on the final exam for my class and am trying to figure out
+      the answer to the question "{{question}}" I found the following info on New York Times
+      and I think it has the answer. Can you tell me the answer?
+
+
+      {{context}}
 
 
       |||
 
-      {{answers["text"] | most_frequent | choice}}'
+      {{answers[''text''] | most_frequent | choice}}'
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
       - Squad
       original_task: true
-    name: question_num_hint_answer
-    reference: 'The prompt has a prefix of question or problem and chooses a random
-      number followed the actual question. '
-  caec82a4-f845-4e10-aad4-19111c9884c1: !Template
+    name: exam
+    reference: 'Exam style prompt '
+  68ef7980-7c81-4768-a9d1-7d4fbbdb7a39: !Template
     answer_choices: null
-    id: caec82a4-f845-4e10-aad4-19111c9884c1
+    id: 68ef7980-7c81-4768-a9d1-7d4fbbdb7a39
+    jinja: "{{context}}\n\nWith the help of the passage, please answer the following\
+      \ question: \n{{question}} |||\n{{answers[\"text\"]|choice}}\n"
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - Squad
+      original_task: true
+    name: pick_one_answer
+    reference: The prompt randomly picks one correct answer
+  69e4dc24-544f-410f-a821-6270d57b9da7: !Template
+    answer_choices: null
+    id: 69e4dc24-544f-410f-a821-6270d57b9da7
     jinja: 'I''m creating a final exam for my reading class. Can you please come up
       with a good question to quiz how well students have read the following text
       snippet?
@@ -119,40 +119,27 @@ templates:
       original_task: false
     name: exam_creation_help
     reference: 'Question generation '
-  d760501f-7726-48ec-9d86-46c10ce408d3: !Template
+  6ccc816f-a773-430a-af26-c0f99a9366e0: !Template
     answer_choices: null
-    id: d760501f-7726-48ec-9d86-46c10ce408d3
-    jinja: 'Generate a title for the following short passage:
+    id: 6ccc816f-a773-430a-af26-c0f99a9366e0
+    jinja: '{{["Question", "Problem"]  | choice}} {{range(1, 12) | choice}}: {{question}}
 
 
-      {{context}} |||
+      Hint: {{context}}
 
-      {{title|replace("_"," ")}}
 
-      '
-    metadata: !TemplateMetadata
-      choices_in_prompt: false
-      metrics:
-      - BLEU
-      - ROUGE
-      original_task: false
-    name: title
-    reference: Pormpt generates the title of the short passage
-  e5b77630-c87c-47b5-9544-5a68cd6b5a93: !Template
-    answer_choices: null
-    id: e5b77630-c87c-47b5-9544-5a68cd6b5a93
-    jinja: "{{context}}\n\nWith the help of the passage, please answer the following\
-      \ question: \n{{question}} |||\n{{answers[\"text\"]|choice}}\n"
+      |||
+
+      {{answers["text"] | most_frequent | choice}}'
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
       - Squad
       original_task: true
-    name: pick_one_answer
-    reference: The prompt randomly picks one correct answer
-  f372bda7-8ac7-4b7f-a777-37c6cdc18f34: !Template
+    name: question_num_hint_answer
+  711539f5-f199-4201-89a2-e4ea569726e1: !Template
     answer_choices: null
-    id: f372bda7-8ac7-4b7f-a777-37c6cdc18f34
+    id: 711539f5-f199-4201-89a2-e4ea569726e1
     jinja: 'Please come up with a good question to test reading comprehension about
       the following paragraph:
 
@@ -172,12 +159,23 @@ templates:
       original_task: false
     name: generate_question
     reference: question generation task
-  f602988d-c3ea-4894-9fb6-7fadbb9d87c8: !Template
+  c5a5a853-be8d-4455-94e6-561eb46ab5b5: !Template
     answer_choices: null
-    id: f602988d-c3ea-4894-9fb6-7fadbb9d87c8
-    jinja: 'I''m working on the final exam for my class and am trying to figure out
-      the answer to the question "{{question}}" I found the following info on New York Times
-      and I think it has the answer. Can you tell me the answer?
+    id: c5a5a853-be8d-4455-94e6-561eb46ab5b5
+    jinja: "Question: {{question}}\n\nAnswer: \n|||\n{{answers['text'] | most_frequent\
+      \ | choice}}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - ROUGE
+      - BLEU
+      original_task: false
+    name: cbqa_question_answer
+    reference: Minimal closed book question answering  template with a prefix
+  ffc98700-eb7a-4099-b77f-9677e2ceb7d3: !Template
+    answer_choices: null
+    id: ffc98700-eb7a-4099-b77f-9677e2ceb7d3
+    jinja: 'After reading the following paragraph, please answer this question: {{question}}
 
 
       {{context}}
@@ -191,5 +189,5 @@ templates:
       metrics:
       - Squad
       original_task: true
-    name: exam
-    reference: 'Exam style prompt '
+    name: after
+    reference: First question, then answer
