@@ -30,13 +30,14 @@ templates:
       \ True)}}\n{%- endfor -%}\n{%- endfor -%}\n{% if miscs %}\n{{\"Miscellaneous:\
       \ \"}}{{ miscs | unique | join(\", \")}}{{\".\"}}\n{% endif %}"
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
+      choices_in_prompt: false
+      metrics:
+      - Accuracy
       original_task: false
     name: type-to-entity
     reference: ''
   3ab9cfc9-3ba3-41dd-959c-60182def11af: !Template
-    answer_choices: null
+    answer_choices: PER ||| LOC ||| ORG ||| TIME ||| NUM ||| MISC
     id: 3ab9cfc9-3ba3-41dd-959c-60182def11af
     jinja: "Read the following text and answer the questions.\n\nText:\n{% for sent\
       \ in sents -%}\n{{ sent | join(\" \") }}\n{%- endfor %} \n\nQuestion:\nAssign\
@@ -54,8 +55,9 @@ templates:
       {{name}}{{\": \"}}\n{% endfor %}\n|||\n{% for name, type in zip(names, types)\
       \ %}\n{{name}}{{\": \"}}{{type}}\n{% endfor %}"
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
+      choices_in_prompt: false
+      metrics:
+      - Accuracy
       original_task: true
     name: ner-type
     reference: ''
@@ -69,8 +71,9 @@ templates:
       \ \") }}\n{%- endfor -%} \n|||\n{{ locations| unique | join(\", \")}}{{\".\"\
       }}\n{% endif %}"
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
+      choices_in_prompt: false
+      metrics:
+      - Accuracy
       original_task: false
     name: find-all-locations
     reference: ''
@@ -84,8 +87,9 @@ templates:
       \ -%}\n{{ sent | join(\" \") }}\n{%- endfor -%} \n|||\n{{ organizations| unique\
       \ | join(\", \")}}{{\".\"}}\n{% endif %}"
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
+      choices_in_prompt: false
+      metrics:
+      - Accuracy
       original_task: false
     name: find-all-organizations
     reference: ''
@@ -100,8 +104,11 @@ templates:
       \ relation: {{relation}}\n{% endfor %}\n|||\n{% for sent in sents -%}\n{{ sent\
       \ | join(\" \") }}\n{%- endfor -%} \n{% endif %}"
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
+      choices_in_prompt: false
+      metrics:
+      - Accuracy
+      - BLEU
+      - ROUGE
       original_task: false
     name: relation-to-text
     reference: ''
@@ -117,8 +124,10 @@ templates:
       \ zip(names, types) %}\n{{name}}{{\": \"}}{{type}}\n{% endfor %}\n|||\n{% for\
       \ sent in sents -%}\n{{ sent | join(\" \") }}\n{%- endfor -%} "
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      - ROUGE
       original_task: false
     name: ner-to-text
     reference: ''
@@ -132,8 +141,9 @@ templates:
       ) }}\n{%- endfor -%} \n|||\n{{ times| unique | join(\", \")}}{{\".\"}}\n{% endif\
       \ %}"
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
+      choices_in_prompt: false
+      metrics:
+      - Accuracy
       original_task: false
     name: find-all-times
     reference: ''
@@ -147,8 +157,9 @@ templates:
       \ \") }}\n{%- endfor -%} \n|||\n{{ people| unique | join(\", \")}}{{\".\"}}\n\
       {% endif %}"
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
+      choices_in_prompt: false
+      metrics:
+      - Accuracy
       original_task: false
     name: find-all-people
     reference: ''
@@ -166,8 +177,9 @@ templates:
       \ {{vertexSet[tail][0]['name']}}, relation: {{relation}}\n{% endfor %}\n{% endif\
       \ %}"
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
+      choices_in_prompt: false
+      metrics:
+      - Accuracy
       original_task: true
     name: relation
     reference: ''
@@ -181,8 +193,9 @@ templates:
       \ sents -%}\n{{ sent | join(\" \") }}\n{%- endfor -%} \n|||\n{{ numbers| unique\
       \ | join(\", \")}}{{\".\"}}\n{% endif %}"
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
+      choices_in_prompt: false
+      metrics:
+      - Accuracy
       original_task: false
     name: find-all-numbers
     reference: ''
