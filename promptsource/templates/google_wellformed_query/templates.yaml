@@ -1,5 +1,23 @@
 dataset: google_wellformed_query
 templates:
+  23336a6b-af7d-49ec-9d8b-364bc9e83dfe: !Template
+    answer_choices: yes ||| no
+    id: 23336a6b-af7d-49ec-9d8b-364bc9e83dfe
+    jinja: 'After you type "{{content}}" on Google Search, you can get the information
+      you want. Do you agree? Answer {{ answer_choices[0] }} or {{ answer_choices[1]
+      }}.
+
+      |||
+
+      {% if 0.5 < rating %}{{ answer_choices[0] }}{% else %}{{ answer_choices[1] }}{%
+      endif %}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
+      original_task: true
+    name: is_wellformed_for_search_6
+    reference: ''
   7462caa6-9fb3-43ed-a883-85f8940ba23d: !Template
     answer_choices: null
     id: 7462caa6-9fb3-43ed-a883-85f8940ba23d
@@ -34,6 +52,49 @@ templates:
       original_task: true
     name: is_wellformed_2
     reference: ''
+  868d696c-428c-4915-b786-719361394143: !Template
+    answer_choices: yes ||| no
+    id: 868d696c-428c-4915-b786-719361394143
+    jinja: 'Is asking search engines "{{content}}" good for finding information?
+
+      |||
+
+      {% if 0.5 < rating %}{{ answer_choices[0] }}{% else %}{{ answer_choices[1] }}{%
+      endif %}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - Accuracy
+      original_task: true
+    name: is_wellformed_for_search_5
+    reference: ''
+  964515de-c6d4-45a1-8f17-d3e17c0c1caf: !Template
+    answer_choices: yes ||| no
+    id: 964515de-c6d4-45a1-8f17-d3e17c0c1caf
+    jinja: "Answer {{ answer_choices[0] }} or {{ answer_choices[1] }} for the following\
+      \ question. \nIs \"{{content}}\" a good search query on Google?\n|||\n{% if\
+      \ 0.5 < rating %}{{ answer_choices[0] }}{% else %}{{ answer_choices[1] }}{%\
+      \ endif %}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
+      original_task: true
+    name: is_wellformed_for_search_4
+    reference: ''
+  97eed413-3efd-45d2-9bb4-5774df4522a8: !Template
+    answer_choices: yes ||| no
+    id: 97eed413-3efd-45d2-9bb4-5774df4522a8
+    jinja: "It is Zoey's first time using a search engine. She wants to find information\
+      \ with the query \"{{content}}\". Is the query good? \n|||\n{% if 0.5 < rating\
+      \ %}{{ answer_choices[0] }}{% else %}{{ answer_choices[1] }}{% endif %}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - Accuracy
+      original_task: true
+    name: is_wellformed_for_search_7
+    reference: ''
   9816d5bf-c4db-42ed-8ac8-2be45fa8a0bb: !Template
     answer_choices: yes ||| no
     id: 9816d5bf-c4db-42ed-8ac8-2be45fa8a0bb
@@ -66,6 +127,20 @@ templates:
       - Accuracy
       original_task: true
     name: is_wellformed_for_search_3
+    reference: ''
+  9ce08cae-8744-48bf-8896-f0c10a3efbd0: !Template
+    answer_choices: yes ||| no
+    id: 9ce08cae-8744-48bf-8896-f0c10a3efbd0
+    jinja: "Query: \"{{content}}\"\nQuestion: Is this a wellformed query for search\
+      \ engines like Google or Bing? \nSelect your answer from the following choices:\
+      \ {{ answer_choices[0] }}, {{ answer_choices[1] }}\n|||\n{% if 0.5 < rating\
+      \ %}{{ answer_choices[0] }}{% else %}{{ answer_choices[1] }}{% endif %}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
+      original_task: true
+    name: is_wellformed_for_search_8
     reference: ''
   9f3cc358-3746-405e-b5e9-5fc0dedc0b5d: !Template
     answer_choices: yes ||| no
