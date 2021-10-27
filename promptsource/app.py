@@ -40,10 +40,11 @@ else:
     side_bar_title_prefix = "Promptsource"
 
 #
-# Helper functions for datasets library
+# Cache functions
 #
 get_dataset = st.cache(allow_output_mutation=True)(get_dataset)
 get_dataset_confs = st.cache(get_dataset_confs)
+list_datasets = st.cache(list_datasets)
 
 
 def reset_template_state():
@@ -228,7 +229,7 @@ else:
     # Loads dataset information
     #
 
-    dataset_list = list_datasets(state)
+    dataset_list = list_datasets()
     ag_news_index = dataset_list.index("ag_news")
 
     #
