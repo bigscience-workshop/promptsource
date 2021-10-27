@@ -1,5 +1,20 @@
 dataset: hlgd
 templates:
+  06c785aa-2c21-4842-a27c-64c86c98c052: !Template
+    answer_choices: yes ||| no
+    id: 06c785aa-2c21-4842-a27c-64c86c98c052
+    jinja: "On {{date_a}} , the article \"{{headline_a}}\" is published.\nOn {{date_b}},\
+      \ the article \"{{headline_b}}\" is published. \nAre they related to the same\
+      \ event? Answer {{ answer_choices[0] }} or {{ answer_choices[1] }}.\n|||\n{%\
+      \ if label %}\n{{ answer_choices[0] }}\n{% else %}\n{{ answer_choices[1] }}\n\
+      {% endif %}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
+      original_task: true
+    name: is_same_event_with_time_2
+    reference: ''
   147ad380-5ce4-4900-b5ec-f01a63bb3653: !Template
     answer_choices: yes ||| no
     id: 147ad380-5ce4-4900-b5ec-f01a63bb3653
@@ -12,6 +27,31 @@ templates:
       - Accuracy
       original_task: true
     name: is_same_event
+    reference: ''
+  2a2a9754-b6cd-40a7-a920-b75d9116d431: !Template
+    answer_choices: yes ||| no
+    id: 2a2a9754-b6cd-40a7-a920-b75d9116d431
+    jinja: 'Barbara just finished reading an article titled "{{headline_a}}". She
+      then came across another article "{{headline_b}}". Is the second article describing
+      the same event as the first article?
+
+      |||
+
+      {% if label %}
+
+      {{ answer_choices[0] }}
+
+      {% else %}
+
+      {{ answer_choices[1] }}
+
+      {% endif %}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
+      original_task: true
+    name: is_same_event_6
     reference: ''
   36154717-e2bc-4414-bfe6-8ed70ebf292d: !Template
     answer_choices: null
@@ -76,6 +116,71 @@ templates:
       - Accuracy
       original_task: true
     name: is_same_event_2
+    reference: ''
+  811556ef-26cb-4aae-b59d-8b06fdc546a5: !Template
+    answer_choices: yes ||| no
+    id: 811556ef-26cb-4aae-b59d-8b06fdc546a5
+    jinja: 'Can "{{headline_a}}" replace "{{headline_b}}"? Here, a headline is replaceable
+      by another headline if the latter headline describes the same event as the former.
+
+      |||
+
+      {% if label %}
+
+      {{ answer_choices[0] }}
+
+      {% else %}
+
+      {{ answer_choices[1] }}
+
+      {% endif %}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - Accuracy
+      original_task: true
+    name: is_same_event_7
+    reference: ''
+  f680d28f-ba41-4a30-a099-88be61751e7f: !Template
+    answer_choices: yes ||| no
+    id: f680d28f-ba41-4a30-a099-88be61751e7f
+    jinja: 'The editor asks James to create a headline that describes the same event
+      as "{{headline_a}}". James comes up with "{{headline_b}}". Does the new headline
+      satisfy the editor''s requirement? Answer {{ answer_choices[0] }} or {{ answer_choices[1]
+      }}.
+
+      |||
+
+      {% if label %}
+
+      {{ answer_choices[0] }}
+
+      {% else %}
+
+      {{ answer_choices[1] }}
+
+      {% endif %}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - Accuracy
+      original_task: true
+    name: is_same_event_5
+    reference: ''
+  feccc382-21c7-464f-b322-b03dde3adfd2: !Template
+    answer_choices: yes ||| no
+    id: feccc382-21c7-464f-b322-b03dde3adfd2
+    jinja: "On {{date_a}} , the article \"{{headline_a}}\" is published.\nOn {{date_b}},\
+      \ the article \"{{headline_b}}\" is published. \nAnswer {{ answer_choices[0]\
+      \ }} if the second article's headline is a paraphrase of the first; otherwise,\
+      \ answer {{ answer_choices[1] }}.\n|||\n{% if label %}\n{{ answer_choices[0]\
+      \ }}\n{% else %}\n{{ answer_choices[1] }}\n{% endif %}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
+      original_task: true
+    name: is_same_event_with_time_3
     reference: ''
   ff3d165e-3c52-42f4-96e0-df125605a379: !Template
     answer_choices: yes ||| no
