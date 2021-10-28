@@ -118,7 +118,7 @@ def add_task(dataset_name, subset_name, template_name, task_name=None, split_map
     )
 
     # Add rank classification eval task
-    if template.answer_choices or template.answer_choices_key:
+    if template.answer_choices:
         rank_classification_preprocessor = functools.partial(
             t5.data.preprocessors.rank_classification,
             inputs_fn=lambda ex: tf.fill((len(ex["answer_choices"]),), ex["inputs"]),
@@ -225,7 +225,7 @@ for dataset_name, subset_name in all_templates.keys:
         if (dataset_name, subset_name) in d4_eval:
             if template.metadata.original_task:
                 d4_eval_mixture.append(task_name)
-            # TODO use template.metadata.answer_choices or answer_choice_keys here for rank eval
+            # TODO use template.metadata.answer_choices here for rank eval
         if (dataset_name, subset_name) in bias_fairness_eval:
             bias_fairness_eval_mixture.append(task_name)
 
@@ -245,7 +245,7 @@ for anli_round in ("r1", "r2", "r3"):
         template = dataset[template_name]
         if template.metadata.original_task:
             d4_eval_mixture.append(task_name)  # TODO or add to ANLI special mixture
-        # TODO use template.metadata.answer_choices or answer_choice_keys here for rank eval
+        # TODO use template.metadata.answer_choices here for rank eval
 
 
 TASK_BLACKLIST = [

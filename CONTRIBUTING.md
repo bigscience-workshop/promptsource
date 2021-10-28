@@ -1,68 +1,57 @@
 # Contributing
 
-One of the best ways to contribute is by writing templates!
+One of the best ways to contribute is by writing prompts!
 
-### What are Templates?
+### What are Prompts?
 
-A template is a piece of code written in a templating language called
+A prompt consists of a template(input template and target template, along with collection of associated metadata. A template is a piece of code written in a templating language called
 [Jinja](https://jinja.palletsprojects.com/en/3.0.x/). A template defines
 a function that maps an example from a dataset in the
 [Hugging Face datasets library](https://huggingface.co/datasets) to two strings of
-text. The first is called the _prompt_ which provides all information that
+text. The first is called the _input_ which provides all information that
 will be available to solve a task, such as the instruction and the context.
-The second piece is called the _output_, which is the desired response to the
+The second piece is called the _target_, which is the desired response to the
 prompt.
 
-### Quick-Start Guide to Writing Templates
+### Quick-Start Guide to Writing Prompts
 
 1. **Set up the app.** Fork the app and set up using the
 [README](https://github.com/bigscience-workshop/promptsource/blob/main/README.md).
-1. **Select a dataset.** Go to the tracking spreadsheet
-[here](https://docs.google.com/spreadsheets/d/10SBt96nXutB49H52PV2Lvne7F1NvVr_WZLXD8_Z0JMw/)
-and find an unclaimed one. Put your name under "Who's Prompting it?" and
-mark it yellow to show it's in progress.
 1. **Examine the dataset.** Select or type the dataset into the dropdown in the app.
 If the dataset has subsets (subsets are not the same as splits), you can select
-which one to work on. Note that templates are subset-specific. You can find
+which one to work on. Note that prompts are subset-specific. You can find
 out background information on the dataset by reading the information in the
 app. The dataset is a collection of examples, and each example is a Python
 dictionary. The sidebar will tell you the schema that each example has.
-1. **Start a new template**. Enter a name for your first template and hit "Create."
-You can always update the name later. If you want to cancel the template, select
-"Delete Template."
-1. **Write the template**. In the box labeled "Template," enter a Jinja expression.
-See the [getting started guide](#getting-started-using-jinja-to-write-templates)
+1. **Start a new prompt**. Enter a name for your first prompt and hit "Create."
+You can always update the name later. If you want to cancel the prompt, select
+"Delete Prompt."
+1. **Write the prompt**. In the box labeled "Template," enter a Jinja expression.
+See the [getting started guide](#getting-started-using-jinja-to-write-prompts)
 and [cookbook](#jinja-cookbook) for details on how to write templates.
-1. **Add a reference.** If your template was inspired by a paper, note the
-reference in the "Template Reference" section. You can also add a description of
-what your template does.
-1. **Save the template**. Hit the "Save" button. The output of the template
+1. **Save the prompt**. Hit the "Save" button. The output of the prompt
 applied to the current example will appear in the right sidebar.
-1. **Verify the template**. Check that you didn't miss any case by scrolling
+1. **Verify the prompt**. Check that you didn't miss any case by scrolling
 through a handful of examples of the prompted dataset using the
 "Prompted dataset viewer" mode.
-1. **Write between 5 and 10 templates**. Repeat the steps 4 to 8 to create between 5
-and 10 (more if you want!) templates per dataset/subset. Feel free to introduce
+1. **Write between 5 and 10 prompts**. Repeat the steps 4 to 8 to create between 5
+and 10 (more if you want!) prompts per dataset/subset. Feel free to introduce
 a mix of formats, some that follow the templates listed in the [best practices](#best-practices)
 and some that are more diverse in the format and the formulation. 
-1. **Duplicate the template(s).** If the dataset you have chosen bear the same
+1. **Duplicate the prompts(s).** If the dataset you have chosen bear the same
 format as other datasets (for instance, `MNLI` and `SNLI` have identical formats),
-you can simply claim these datasets and duplicate the templates you have written
-to these additional datasets. The most straighforward way to do it is to copy-paste
-the `templates.yaml` file in right subfolder (the `templates` folder is broken down by dataset/subset).
-Please make sure you adapt the `dataset` and `subset` keys in the yaml file. You don't need to wory
-about the `id` as it is unique for a given dataset/subset.
+you can simply duplicate the prompts you have written to these additional datasets.
 1. **Upload the template(s).** Submit a PR using the instructions
-[here](#uploading-templates).
+[here](#uploading-prompts).
 
-## Getting Started Using Jinja to Write Templates
+## Getting Started Using Jinja to Write Prompts
 
 Here is a quick crash course on using [Jinja](https://jinja.palletsprojects.com/en/3.0.x/)
 to write templates. More advanced usage is in the [cookbook](#jinja-cookbook).
 
 Generally, in a template, you'll want to use a mix of hard-coded data that is
 task-specific and stays the same across examples, and commands that tailor the
-prompt and output to a specific example.
+input and target to a specific example.
 
 To write text that should be rendered as written, just write it normally. The
 following "template" will produce the same text every time:
@@ -107,40 +96,82 @@ The choices are {{"a"}}, {{"b"}}, and {{"c"}}.
 ```
 You can leave binary options like yes/no, true/false, etc. unprotected.
 
-Finally, remember that a template must produce two strings: a prompt and an output.
+Finally, remember that a template must produce two strings: an input and a target.
 To separate these two pieces, use three vertical bars `|||`.
-So, a complete template for AG News could be:
+So, a complete template for Squad could be:
 ```jinja2
-{{text}}
-Is this a piece of news regarding {{"world politics"}}, {{"sports"}}, {{"business"}}, or {{"science and technology"}}? |||
-{{ ["World politics", "Sports", "Business", "Science and technology"][label] }}
+I'm working on the final exam for my class and am trying to figure out the answer
+to the question "{{question}}" I found the following info on Wikipedia and I think
+it has the answer. Can you tell me the answer?
+{{context}}
+|||
+{{answers["text"][0]}}'
+```
+
+## Options
+In addition to the template itself, you can fill out several other fields in the app.
+* **Prompt Reference.** If your template was inspired by a paper, note the
+reference in the "Prompt Reference" section. You can also add a description of
+what your template does.
+* **Original Task?** The checkbox should be checked if the template requires solving a
+task that the underlying dataset is used to study. For example, a template that asks a
+question from a question answering dataset would be an original task template, but one that asks
+to generate a question for a given answer would not.
+* **Choices in Template?** The checkbox should be checked if the input explicitly indicates
+the options for the possible outputs (regardless of whether `answer_choices` is used).
+* **Metrics.** Use the multiselect widget to select all metrics commonly used to evaluate
+this task. Choose “Other” if there is one that is not included in the list.
+* **Answer Choices.**  If the prompt has a small set of possible outputs (e.g., Yes/No,
+class labels, entailment judgements, etc.), then the prompt should define and use answer
+choices as follows. This allows evaluation to consider just the possible targets for
+scoring model outputs. The answer choices field is a Jinja expression that should produce
+a `|||` separated list of all possible targets. If the choices don't change from example
+to example, then you can just list them. For example, AG News is
+```jinja2
+World News ||| Sports ||| Business ||| Science and Technology
+```
+Note that whitespace is stripped from the ends of the choices. If answer choices are set,
+then they are also available to Jinja in the prompt itself in the form of a list called
+`answer_choices`. You should use this list in both input and target templates so that the
+resulting inputs and targets match the answer choices field exactly. For example, a prompt
+for AG News could use `answer_choices` like this:
+```jinja2
+{{text}} Which of the following sections of a newspaper would
+this article likely appear in? {{answer_choices[0]}}, {{answer_choices[1]}},
+{{answer_choices[2]}}, or {{answer_choices[3]}}?
+|||
+{{ answer_choices[label] }}
+```
+Since Answer Choices is a Jinja expression that has access to the example, it can also be used
+to extract example-specific choices from the underlying data. For example, in AI2 ARC, we could
+use
+```jinja2
+{{choices.text | join("|||")}}
 ```
 
 ## Best Practices
 
-
-* **Writing outputs.** When writing a template for a task that requires outputting
-a label, don't use articles or other stop words before the label name in the output.
-For example, in TREC, the output should be "Person", not "A person". The reason
-is that evaluations often look at the first word of the generated output to determine
-correctness.
-*  **Skipping datasets.** You might find a dataset in the spreadsheet that it
-doesn't make sense to write templates for. For example, a dataset might just be
-text without any annotations. For other cases, ask on Slack. If skipping a dataset,
-mark it in red on the spreadsheet.
-* **Choosing input and output pairs.** Lots of datasets have multiple columns that can be
-combined to form different (input, output) pairs i.e. different "tasks". Don't hesitate to
+* **Writing target templates.** The target template should only contain the answer to the task.
+It should not contain any extra text such as “The answer is…” (unless that extra text is also in
+`answer_choices`). If `answer_choices` is populated, the output should only contain the values
+in `answer_choices`.
+* **Formatting multple-choice questions.** If the target should match the name of the choice
+(e.g., “World News”), then it should list the choices either as part of a grammatical question
+or a list with the marker for each (e.g, dashes). If the target should indicate the choice from
+the list (e.g., “A,” “Explanation 1,” etc.), then it should list the choices with the indicator
+before each one.
+* **Choosing input and target pairs.** Lots of datasets have multiple columns that can be
+combined to form different (input, target) pairs i.e. different "tasks". Don't hesitate to
 introduce some diversity by prompting a given dataset into multiple tasks and provide some
 description in the "Template Reference" text box. An example is given
 in the already prompted `movie_rationales`.
-* **Task Template Checkbox** While there are many different ways to prompt the tasks, only some of them correspond to the original intention of the dataset. For instance, for a summary dataset you can generate a summary or hallucinate an article. However, only the first was the true original task for the dataset. Use the *Task template* check box to indicate true task prompts. (We realize there are some corner cases, for instance, if there was no original task, you should leave this blank. If there are multiple original tasks you can check it for each of them. If you are confused for your dataset, consult with us in slack.) 
-* **Filtering templates.** If a template is applied to an example and produces an
-empty string, that template/example pair will be skipped. (Either the entire output
+* **Filtering prompts.** If a prompt is applied to an example and produces an
+empty string, that prompt/example pair will be skipped. (Either the entire target
 is whitespace or the text on either side of the separator `|||` is whitespace.
-You can therefore create templates that only apply to a subset of the examples by
+You can therefore create prompts that only apply to a subset of the examples by
 wrapping them in Jinja if statements. For example, in the `TREC` dataset, there
 are fine-grained categories that are only applicable to certain coarse-grained categories.
-We can capture this with the following template:
+We can capture this with the following prompt:
 ```jinja2
 {% if label_coarse == 0 %}
 Is this question asking for a {{"definition"}}, a {{"description"}}, a {{"manner of action"}}, or a {{"reason"}}?
@@ -149,9 +180,9 @@ Is this question asking for a {{"definition"}}, a {{"description"}}, a {{"manner
 {{ {0: "Manner", 7: "Defintion", 9: "Reason", 12: "Description"}[label_fine] }}
 {% endif %}
 ```
-* **Conditional generation format.** Always specify the output label `y` and separate it from the prompt
-by indicating the vertical bars `|||`. The `y` will be generated by a generative model
-conditioned on the prompted input you wrote. You can always transform an "infix" prompt format
+* **Conditional generation format.** Always specify the target and separate it from the prompt
+by indicating the vertical bars `|||`. The target will be generated by a generative model
+conditioned on the input you wrote. You can always transform an "infix" prompt format
 ```jinja2
 Given that {{premise}}, it {{ ["must be true", "might be true", "must be false"][label] }} that {{hypothesis}}
 ```
@@ -181,10 +212,13 @@ Determine the relation between the following two sentences. The relations are en
 {{premise}}
 {{hypothesis}} ||| {{label}}
 ```
+* **Setting variables.** You might want to use the Jinja expression `{% set %}` to define a variable. If you do,
+do it at the beginning of the prompt, outside any conditional statements, so that the automatic prompt checks
+recognize that the variable is defined.
 
 ## More Examples
 
-Here are a few interesting examples of templates with explanations.
+Here are a few interesting examples of prompts with explanations.
 
 Here's one for `hellaswag`:
 ```jinja2
@@ -239,7 +273,7 @@ the label might be unknown, so the pieces are wrapped in if statements.
 Second, notice that the choices `Yes or No` are not escaped. Yes/no, true/false
 are choices that do not need to be escaped (unlike categories).
 
-## Uploading Templates
+## Uploading Prompts
 
 Once you save or modify a template, the corresponding file inside the `templates`
 directory in the repo will be modified. To upload it, follow these steps:
@@ -247,7 +281,6 @@ directory in the repo will be modified. To upload it, follow these steps:
 2. Commit the modified template files (anything under `templates`) to git.
 3. Push to your fork on GitHub.
 4. Open a pull request against `main` on the PromptSource repo.
-5. When the PR is merged into main, mark the dataset in green on the spreadsheet.
 
 
 ## Jinja Cookbook
@@ -280,5 +313,4 @@ do_something_with_a_and_b
 
 Jinja includes lots of complex features but for most instances you likely only
 need to use the methods above. If there's something you're not sure how to do,
-just message the prompt engineering group on Slack. We'll collect other frequent
-patterns here.
+just open an issue. We'll collect other frequent patterns here.
