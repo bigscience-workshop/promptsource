@@ -1,19 +1,6 @@
 dataset: squadshifts
 subset: amazon
 templates:
-  008c3c1b-dbe7-4097-98a7-723e8a93fcf7: !Template
-    answer_choices: null
-    id: 008c3c1b-dbe7-4097-98a7-723e8a93fcf7
-    jinja: "Question: {{question}}\n\nAnswer: \n|||\n{{answers['text'] | most_frequent\
-      \ | choice}}"
-    metadata: !TemplateMetadata
-      choices_in_prompt: false
-      metrics:
-      - ROUGE
-      - BLEU
-      original_task: false
-    name: cbqa_question_answer
-    reference: Minimal closed book question answering  template with a prefix
   24400f56-8d4e-4090-8b37-1861aad5bbb6: !Template
     answer_choices: null
     id: 24400f56-8d4e-4090-8b37-1861aad5bbb6
@@ -141,29 +128,10 @@ templates:
       original_task: true
     name: wondered
     reference: 'Original task prompt '
-  b0634449-fdb6-4f71-b4e1-ef6b01dec9e9: !Template
-    answer_choices: null
-    id: b0634449-fdb6-4f71-b4e1-ef6b01dec9e9
-    jinja: 'Generate a title for the following short passage:
-
-
-      {{context}} |||
-
-      {{title|replace("_"," ")}}
-
-      '
-    metadata: !TemplateMetadata
-      choices_in_prompt: false
-      metrics:
-      - BLEU
-      - ROUGE
-      original_task: false
-    name: title
-    reference: Pormpt generates the title of the short passage
   b7f7b2b5-e099-40c9-bc7c-93e957b32c8d: !Template
     answer_choices: null
     id: b7f7b2b5-e099-40c9-bc7c-93e957b32c8d
-    jinja: 'Use the following non-answers to generate a possible short passage-question
+    jinja: 'Use the following answers to generate a possible short passage-question
       pair:
 
       {{answers["text"]|join('', '')}} |||

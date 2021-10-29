@@ -23,29 +23,10 @@ templates:
       original_task: true
     name: wondered
     reference: 'Original task prompt '
-  2d8ca3d9-2e79-4fc2-a720-918a70e2cf2c: !Template
-    answer_choices: null
-    id: 2d8ca3d9-2e79-4fc2-a720-918a70e2cf2c
-    jinja: 'Generate a title for the following short passage:
-
-
-      {{context}} |||
-
-      {{title|replace("_"," ")}}
-
-      '
-    metadata: !TemplateMetadata
-      choices_in_prompt: false
-      metrics:
-      - BLEU
-      - ROUGE
-      original_task: false
-    name: title
-    reference: Pormpt generates the title of the short passage
   2e618671-1bb3-4943-b16c-cbef60b0c3e2: !Template
     answer_choices: null
     id: 2e618671-1bb3-4943-b16c-cbef60b0c3e2
-    jinja: 'Use the following non-answers to generate a possible short passage-question
+    jinja: 'Use the following answers to generate a possible short passage-question
       pair:
 
       {{answers["text"]|join('', '')}} |||
@@ -161,19 +142,6 @@ templates:
       original_task: false
     name: generate_question
     reference: question generation task
-  c5a5a853-be8d-4455-94e6-561eb46ab5b5: !Template
-    answer_choices: null
-    id: c5a5a853-be8d-4455-94e6-561eb46ab5b5
-    jinja: "Question: {{question}}\n\nAnswer: \n|||\n{{answers['text'] | most_frequent\
-      \ | choice}}"
-    metadata: !TemplateMetadata
-      choices_in_prompt: false
-      metrics:
-      - ROUGE
-      - BLEU
-      original_task: false
-    name: cbqa_question_answer
-    reference: Minimal closed book question answering  template with a prefix
   ffc98700-eb7a-4099-b77f-9677e2ceb7d3: !Template
     answer_choices: null
     id: ffc98700-eb7a-4099-b77f-9677e2ceb7d3
