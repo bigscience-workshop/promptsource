@@ -8,7 +8,7 @@ templates:
       \ the help of the context. If the question cannot be answered, say Unanswerable.\n\
       \nQuestion: \n{{question}}\n\nContext:\n{{context}}\n\n|||\n{% if (answers[\"\
       text\"]  | length) == 0 %}\n{{ \"Unanswerable\" }}\n{% else %}\n{{answers[\"\
-      text\"] | join(\" \\n \")}}\n{% endif %}"
+      text\"][0]}}\n{% endif %}"
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
@@ -45,7 +45,7 @@ templates:
       \ help of the context. If the question cannot be answered, say Unanswerable.\n\
       \nQuestion: \n{{question}}\n\nContext:\n{{context}}\n\n|||\n{% if (answers[\"\
       text\"]  | length) == 0 %}\n{{ \"Unanswerable\" }}\n{% else %}\n{{answers[\"\
-      text\"] | join(\" \\n \")}}\n{% endif %}"
+      text\"][0]}}\n{% endif %}"
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
@@ -72,7 +72,7 @@ templates:
 
       {% else %}
 
-      {{answers["text"] | join(" \n ")}}
+      {{answers["text"][0]}}
 
       {% endif %}'
     metadata: !TemplateMetadata
@@ -135,7 +135,7 @@ templates:
 
       {% else %}
 
-      {{answers["text"] | join(" \n ")}}
+      {{answers["text"][0]}}
 
       {% endif %}'
     metadata: !TemplateMetadata
@@ -227,7 +227,7 @@ templates:
 
       {% else %}
 
-      {{answers["text"] | join(" \n ")}}
+      {{answers["text"][0]}}
 
       {% endif %}'
     metadata: !TemplateMetadata
