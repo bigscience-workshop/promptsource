@@ -6,17 +6,18 @@ templates:
     id: 27c7a53c-d5b8-410d-affc-95ff59a89c03
     jinja: 'Please rate how funny the sentence is from {{"0.0"}} to {{"3.0"}}.
 
-      {{ original.replace(original[original.index("<"):original.index(">")+1], edit)
-      }}
+      Sentence: {{ original.replace(original[original.index("<"):original.index(">")+1],
+      edit) }}
 
       |||
 
       {{ (((5 * meanGrade) | round) / 5) }}'
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
-      original_task: null
-    name: only_edited_sent_rate
+      choices_in_prompt: false
+      metrics:
+      - Other
+      original_task: true
+    name: rate_edited_sent_2
     reference: ''
   2d0e8f25-5680-4079-9a59-7b06329bd65a: !Template
     answer_choices: null
@@ -30,30 +31,32 @@ templates:
 
       {{ (((5 * meanGrade) | round) / 5) }}'
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
-      original_task: null
-    name: original_sent_edit_word_rate
+      choices_in_prompt: false
+      metrics:
+      - Other
+      original_task: true
+    name: rate_original_sent_edit_word
     reference: ''
   43af1016-6d25-434d-b9b0-893706cda5d6: !Template
     answer_choices: null
     id: 43af1016-6d25-434d-b9b0-893706cda5d6
-    jinja: 'Please give a score denoting the funniness of the following sentence.
+    jinja: 'Please give a score between 0 and 3 denoting the funniness of the following
+      sentence. Your score should be something like {{"1.5"}}, where {{"0.0 means
+      not funny and 3.0 means funny"}}.
+
 
       {{ original.replace(original[original.index("<"):original.index(">")+1], edit)
       }}
-
-      Your score should be something like {{"1.5"}}, where {{"0.0 means not funny,
-      1.0 means slightly funny, 2.0 means moderately funny and 3.0 means funny"}}.
 
       |||
 
       {{ (((5 * meanGrade) | round) / 5) }}'
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
-      original_task: null
-    name: only_edited_sent_examples
+      choices_in_prompt: false
+      metrics:
+      - Other
+      original_task: true
+    name: score_edited_sent
     reference: ''
   692750f4-b4a2-4344-bc4d-e05daef47c25: !Template
     answer_choices: null
@@ -62,19 +65,20 @@ templates:
       }}" with "{{ edit }}" in the sentence "{{ original.replace(original[original.index("<"):original.index(">")+1],
       original[original.index("<")+1:original.index("/>")]) }} ".
 
+
       Question: Can you give me a number from {{"0.0 to 3.0"}} that denotes how funny
       it is, where {{"0.0"}} means not funny and {{"3.0"}} means funny?
 
-      Answer:
 
       |||
 
       {{ (((5 * meanGrade) | round) / 5) }}'
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
-      original_task: null
-    name: original_sent_edit_word_funniness
+      choices_in_prompt: false
+      metrics:
+      - Other
+      original_task: true
+    name: know_funniness_original_sent_edit_word
     reference: ''
   6c6c7354-fcd5-4b0d-8672-671c639c25f5: !Template
     answer_choices: null
@@ -91,35 +95,35 @@ templates:
       Question: Can you give me a number from {{"0.0 to 3.0"}} that denotes how funny
       it is, where {{"0.0"}} means not funny and {{"3.0"}} means funny?
 
-      Answer:
-
       |||
 
       {{ (((5 * meanGrade) | round) / 5) }}'
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
-      original_task: null
-    name: original_sent_edited_sent_funniness
+      choices_in_prompt: false
+      metrics:
+      - Other
+      original_task: true
+    name: know_funniness_original_sent_edited_sent
     reference: ''
   759a11e7-5933-41a1-b803-f352eb385d28: !Template
     answer_choices: null
     id: 759a11e7-5933-41a1-b803-f352eb385d28
-    jinja: 'Please give a score denoting the funniness of replacing "{{ original[original.index("<")+1:original.index("/>")]
+    jinja: 'Please give a score between 0 (not funny) and 3 (very funny) denoting
+      the funniness of replacing "{{ original[original.index("<")+1:original.index("/>")]
       }}" with "{{ edit }}" in the sentence "{{ original.replace(original[original.index("<"):original.index(">")+1],
       original[original.index("<")+1:original.index("/>")]) }} ".
 
-      Your score should be something like {{"1.5"}}, where {{"0.0 means not funny,
-      1.0 means slightly funny, 2.0 means moderately funny and 3.0 means funny"}}.
 
       |||
 
+
       {{ (((5 * meanGrade) | round) / 5) }}'
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
-      original_task: null
-    name: original_sent_edit_word_examples
+      choices_in_prompt: false
+      metrics:
+      - Other
+      original_task: true
+    name: score_original_sent_edit_word
     reference: ''
   8ae3f3c4-deb2-4a82-8a50-5f726b781e2a: !Template
     answer_choices: null
@@ -137,10 +141,11 @@ templates:
 
       {{ (((5 * meanGrade) | round) / 5) }}'
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
-      original_task: null
-    name: original_sent_edited_sent_rate
+      choices_in_prompt: false
+      metrics:
+      - Other
+      original_task: true
+    name: rate_original_sent_edited_sent_2
     reference: ''
   90ac629a-f670-4c43-bbf8-a9ef9021c0b3: !Template
     answer_choices: null
@@ -152,10 +157,11 @@ templates:
       />\")]) }} \". \nWhat score should I assign?\n||| \n{{ (((5 * meanGrade) | round)\
       \ / 5) }}"
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
-      original_task: null
-    name: original_sent_edit_word_score
+      choices_in_prompt: false
+      metrics:
+      - Other
+      original_task: true
+    name: score_original_sent_edit_word_2
     reference: ''
   93bd417d-a17f-460b-800c-5881ce752d98: !Template
     answer_choices: null
@@ -168,10 +174,11 @@ templates:
 
       {{ (((5 * meanGrade) | round) / 5) }}'
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
-      original_task: null
-    name: only_edited_sent_rank
+      choices_in_prompt: false
+      metrics:
+      - Other
+      original_task: true
+    name: rate_edited_sent
     reference: ''
   a08cab27-06fb-4c96-b6b1-eb0533fe9b25: !Template
     answer_choices: null
@@ -185,17 +192,18 @@ templates:
       Edited: {{ original.replace(original[original.index("<"):original.index(">")+1],
       edit) }}
 
-      Your score should be something like {{"1.5"}}, where {{"0.0 means not funny,
-      1.0 means slightly funny, 2.0 means moderately funny and 3.0 means funny"}}.
+      Your score should be something like {{"1.5"}}, where {{"0.0 means not funny
+      and 3.0 means funny"}}.
 
       |||
 
       {{ (((5 * meanGrade) | round) / 5) }}'
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
-      original_task: null
-    name: original_sent_edited_sent_examples
+      choices_in_prompt: false
+      metrics:
+      - Other
+      original_task: true
+    name: score_original_sent_edited_sent_2
     reference: ''
   ac6a9fa1-0f23-4ee9-9bec-c6f9f8daf7a9: !Template
     answer_choices: null
@@ -215,10 +223,11 @@ templates:
 
       {{ (((5 * meanGrade) | round) / 5) }}'
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
-      original_task: null
-    name: original_sent_edited_sent_score
+      choices_in_prompt: false
+      metrics:
+      - Other
+      original_task: true
+    name: score_original_sent_edited_sent
     reference: ''
   c1511cfc-8ba8-4d10-98b7-1e576cf02588: !Template
     answer_choices: null
@@ -235,10 +244,11 @@ templates:
 
       {{ (((5 * meanGrade) | round) / 5) }}'
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
-      original_task: null
-    name: only_edited_sent_score
+      choices_in_prompt: false
+      metrics:
+      - Other
+      original_task: true
+    name: assign_score_edited_sent
     reference: ''
   c53bbbcb-6bbb-4279-bd55-e3c4f7baa828: !Template
     answer_choices: null
@@ -252,32 +262,31 @@ templates:
 
       {{ (((5 * meanGrade) | round) / 5) }}'
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
-      original_task: null
-    name: original_sent_edited_sent_rank
+      choices_in_prompt: false
+      metrics:
+      - Other
+      original_task: true
+    name: rate_original_sent_edited_sent
     reference: ''
   ce115e3d-f63c-4030-8c13-bd77721ef0f5: !Template
     answer_choices: null
     id: ce115e3d-f63c-4030-8c13-bd77721ef0f5
-    jinja: 'I need to know how funny the sentence is:
+    jinja: 'I need to know how funny the sentence is, and I am expecting a value between
+      0 (not funny) and 3 (very funny):
 
       {{ original.replace(original[original.index("<"):original.index(">")+1], edit)
       }}
 
-      Question: Can you give me a number from {{"0.0 to 3.0"}} that denotes how funny
-      it is, where {{"0.0"}} means not funny and {{"3.0"}} means funny?
-
-      Answer:
 
       |||
 
       {{ (((5 * meanGrade) | round) / 5) }}'
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
-      original_task: null
-    name: only_edited_sent_funniness
+      choices_in_prompt: false
+      metrics:
+      - Other
+      original_task: true
+    name: know_funniness_edited_sent
     reference: ''
   fee13ce1-e03e-4dd2-9d7d-08c8fd8b74c7: !Template
     answer_choices: null
@@ -291,8 +300,9 @@ templates:
 
       {{ (((5 * meanGrade) | round) / 5) }}'
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
-      original_task: null
-    name: original_sent_edit_word_rank
+      choices_in_prompt: false
+      metrics:
+      - Other
+      original_task: true
+    name: rate_sent_edit_word
     reference: ''
