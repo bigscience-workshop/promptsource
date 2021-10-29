@@ -6,7 +6,9 @@ templates:
       ||| martinkettle ||| maryriddell ||| nickcohen ||| peterpreston ||| pollytoynbee
       ||| royhattersley ||| simonhoggart ||| willhutton ||| zoewilliams
     id: 026e1ef2-c765-4262-b7b3-a087f38907db
-    jinja: 'Who could have authored this article based on the writing style?
+    jinja: 'Who could have authored this article based on the writing style? The answer
+      options are {% for author in answer_choices[:-1] %} {{author.capitalize()}},
+      {% endfor %} {{answer_choices[-1].capitalize()}}.
 
 
       {{article}} |||
@@ -27,7 +29,7 @@ templates:
       ,\n  \"maryriddell\",\n  \"nickcohen\",\n  \"peterpreston\",\n  \"pollytoynbee\"\
       ,\n  \"royhattersley\",\n  \"simonhoggart\",\n  \"willhutton\",\n  \"zoewilliams\"\
       \n] [author].capitalize()\n}}  on the topic of {{\n[\n  \"Politics\",\n  \"\
-      Society\",\n  \"UK\",\n  \"World\",\n  \"Books\"\n] [topic]\n}} |||\n{{article}}"
+      Society\",\n  \"UK\",\n  \"World\",\n  \"Books\"\n] [topic]\n}}. |||\n{{article}}"
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
@@ -52,8 +54,10 @@ templates:
       ||| martinkettle ||| maryriddell ||| nickcohen ||| peterpreston ||| pollytoynbee
       ||| royhattersley ||| simonhoggart ||| willhutton ||| zoewilliams
     id: 45e1aa31-6e76-4072-a6ee-ba99785999fc
-    jinja: 'Who is the author of the passage, which is related to {{ ["Politics",
-      "Society", "UK", "World", "Books"][topic] }}, below?
+    jinja: 'Given the answer options of {% for author in answer_choices[:-1] %} {{author.capitalize()}},
+      {% endfor %} and {{answer_choices[-1].capitalize()}}, identify the author of
+      the passage, which is related to {{ ["Politics", "Society", "UK", "World", "Books"][topic]
+      }}, below.
 
 
       {{article}}
@@ -71,7 +75,9 @@ templates:
   68bfa6a4-a89c-4be2-aa0b-cce1103e3ecf: !Template
     answer_choices: Politics ||| Society ||| UK ||| World ||| Books
     id: 68bfa6a4-a89c-4be2-aa0b-cce1103e3ecf
-    jinja: "What is the topic of this article?\n\n{{article}} \n|||\n{{answer_choices[topic]}}"
+    jinja: "What is the topic of this article? The answer options are {% for topic\
+      \ in answer_choices[:-1] %} {{topic.capitalize()}}, {% endfor %} {{answer_choices[-1].capitalize()}}.\n\
+      \n{{article}} \n|||\n{{answer_choices[topic]}}"
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics: []
@@ -83,8 +89,9 @@ templates:
       ||| martinkettle ||| maryriddell ||| nickcohen ||| peterpreston ||| pollytoynbee
       ||| royhattersley ||| simonhoggart ||| willhutton ||| zoewilliams
     id: 8d8e432e-8594-4e89-8b03-e11f0cebcf7b
-    jinja: 'Identify the author of the passage below. The answer options are {% for
-      author in answer_choices[:-1] %} {{author.capitalize()}}, {% endfor %} {{answer_choices[-1].capitalize()}}.
+    jinja: 'Identify the author of the passage below by choosing from the author list
+      of {% for author in answer_choices[:-1] %} {{author.capitalize()}}, {% endfor
+      %} {{answer_choices[-1].capitalize()}}.
 
 
       {{article}}
@@ -124,7 +131,7 @@ templates:
       ,\n  \"georgemonbiot\",\n  \"hugoyoung\",\n  \"jonathanfreedland\",\n  \"martinkettle\"\
       ,\n  \"maryriddell\",\n  \"nickcohen\",\n  \"peterpreston\",\n  \"pollytoynbee\"\
       ,\n  \"royhattersley\",\n  \"simonhoggart\",\n  \"willhutton\",\n  \"zoewilliams\"\
-      \n] [author].capitalize()\n}} \n|||\n{{article}}"
+      \n] [author].capitalize()\n}} .\n|||\n{{article}}"
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
@@ -137,8 +144,9 @@ templates:
       ||| martinkettle ||| maryriddell ||| nickcohen ||| peterpreston ||| pollytoynbee
       ||| royhattersley ||| simonhoggart ||| willhutton ||| zoewilliams
     id: e885498a-04f9-4db9-bc01-d1324803315a
-    jinja: "Who wrote this article?\n\n{{article}} \n\n|||\n\n{{ answer_choices[author].capitalize()\
-      \ }}"
+    jinja: "Who wrote this article? The answer options are {% for author in answer_choices[:-1]\
+      \ %} {{author.capitalize()}}, {% endfor %} {{answer_choices[-1].capitalize()}}.\n\
+      \n{{article}} \n\n|||\n\n{{ answer_choices[author].capitalize() }}"
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
@@ -151,17 +159,11 @@ templates:
       ||| martinkettle ||| maryriddell ||| nickcohen ||| peterpreston ||| pollytoynbee
       ||| royhattersley ||| simonhoggart ||| willhutton ||| zoewilliams
     id: f6ff1e76-4148-450c-ba0c-157a5b4c2383
-    jinja: 'Who is the author of the passage below? Choose from the following list:
-      {% for author in answer_choices[:-1] %} {{author.capitalize()}}, {% endfor %}
-      {{answer_choices[-1].capitalize()}}. Hint: The topic is related to {{ ["Politics",
-      "Society", "UK", "World", "Books"][topic] }}.
-
-
-      {{article}}
-
-      |||
-
-      {{ answer_choices[author].capitalize() }}'
+    jinja: "Who is the author of the passage below? Choose from the following list:\
+      \ {% for author in answer_choices[:-1] %} {{author.capitalize()}}, {% endfor\
+      \ %} {{answer_choices[-1].capitalize()}}. \n\nHint: The topic is related to\
+      \ {{ [\"Politics\", \"Society\", \"UK\", \"World\", \"Books\"][topic] }}.\n\n\
+      {{article}}\n|||\n{{ answer_choices[author].capitalize() }}"
     metadata: !TemplateMetadata
       choices_in_prompt: true
       metrics:
