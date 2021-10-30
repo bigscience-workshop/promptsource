@@ -8,7 +8,7 @@ templates:
       original1[original1.index("<")+1:original1.index("/>")]) }}", is it more humorous
       to replace "{{ original1[original1.index("<")+1:original1.index("/>")] }}" with
       "{{ edit1 }}", or to replace "{{ original2[original2.index("<")+1:original2.index("/>")]
-      }}" with "{{ edit2 }}", or are both equally humorous?
+      }}" with "{{ edit2 }}", or are both equally hilarious?
 
       {{ answer_choices[1] }}. replace "{{ original1[original1.index("<")+1:original1.index("/>")]
       }}" with "{{ edit1 }}"
@@ -16,7 +16,7 @@ templates:
       {{ answer_choices[2] }}. replace "{{ original2[original2.index("<")+1:original2.index("/>")]
       }}" with "{{ edit2 }}"
 
-      {{ answer_choices[0] }}. both equally humorous
+      {{ answer_choices[0] }}. both equally hilarious
 
       |||
 
@@ -36,7 +36,8 @@ templates:
       />\")]) }}.\nEdited sentence A: {{ original1.replace(original1[original1.index(\"\
       <\"):original1.index(\">\")+1], edit1) }}.\nEdited sentence B: {{ original2.replace(original2[original2.index(\"\
       <\"):original2.index(\">\")+1], edit2) }}.\nThere are two edited sentences based\
-      \ on the original sentence, which is more humorous or equally humorous? \n{{answer_choices[1]}}.\
+      \ on the original sentence, which is more humorous ({{answer_choices[1]}} or\
+      \ {{answer_choices[2]}}) or are they equally humorous? \n{{answer_choices[1]}}.\
       \ Edited sentence A\n{{answer_choices[2]}}. Edited sentence B\n{{answer_choices[0]}}.\
       \ Equal\n|||\n{{ answer_choices[label] }}"
     metadata: !TemplateMetadata
@@ -66,7 +67,8 @@ templates:
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
-      - Accuracy
+      - BLEU
+      - ROUGE
       original_task: true
     name: only_edited_sentences_text
     reference: ''
@@ -79,7 +81,7 @@ templates:
       }}" with "{{ edit1 }}", and the second is to replace "{{ original2[original2.index("<")+1:original2.index("/>")]
       }}" with "{{ edit2 }}".
 
-      Which strategy is more humorous or equally humorous?
+      Is the first strategy more humorous or the second, or are they equally funny?
 
       {{ answer_choices[1] }}. The first strategy
 
@@ -130,7 +132,7 @@ templates:
     answer_choices: equal ||| A ||| B
     id: 88054771-74d2-481f-91f1-c078a2bda5b9
     jinja: 'Which of the following sentences is more humorous? If they are equally
-      humorous, please answer "{{ answer_choices[0] }}".
+      funny, please answer "{{ answer_choices[0] }}".
 
       {{ answer_choices[1] }}. {{ original1.replace(original1[original1.index("<"):original1.index(">")+1],
       edit1) }}
@@ -187,7 +189,7 @@ templates:
       {{ edit1 }}\".\nThe second is to replace \"{{ original2[original2.index(\"<\"\
       )+1:original2.index(\"/>\")] }}\" with \"{{ edit2 }}\".\nWhich strategy is more\
       \ humorous (respond with \"{{answer_choices[1]}}\" or \"{{answer_choices[2]}}\"\
-      ) or equally humorous (if so, respond with \"{{answer_choices[0]}}\")? \n|||\n\
+      ) or equally funny (if so, respond with \"{{answer_choices[0]}}\")? \n|||\n\
       {{ answer_choices[label] }}"
     metadata: !TemplateMetadata
       choices_in_prompt: true
