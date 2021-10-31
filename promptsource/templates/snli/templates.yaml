@@ -5,13 +5,17 @@ templates:
     id: 4b15006d-48de-49e9-970c-6c4206fd4216
     jinja: '{{premise}}
 
-      Question: {{hypothesis}} True, False, or Neither? ||| {{ answer_choices[label]
-      }}'
+      Question: {{hypothesis}} True, False, or Neither?
+
+      |||
+
+      - {{ answer_choices[label] }}'
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
       original_task: true
-    name: GPT-3 style
+    name: is it entailment, neutral, or contradiction
     reference: 'Same as reported in Figure G7 of the GPT-3 paper, except that there
       is no task identifying tokens like "anli R1: ".'
   5f0ef86f-2b8f-4a0c-8bca-a8b8d9ac015e: !Template
@@ -23,22 +27,28 @@ templates:
 
       Question: Does Sentence 1 entail Sentence 2? Yes, No, or Neutral? |||
 
-      {{answer_choices[label]}}'
+      - {{answer_choices[label]}}'
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
       original_task: true
     name: does S1 entail S2?
     reference: Copied from Victor's prompts for XNLI.
   68afa6d2-547d-4c2f-bcac-71507b1fe778: !Template
     answer_choices: must be true ||| might be true ||| must be false
     id: 68afa6d2-547d-4c2f-bcac-71507b1fe778
-    jinja: Given that {{premise}}, it {{"must be true, might be true, or must be false"}}
-      that {{hypothesis}}? ||| It {{ answer_choices[label] }}.
+    jinja: 'Given that {{premise}}, it {{"must be true, might be true, or must be
+      false"}} that {{hypothesis}}?
+
+      |||
+
+      - It {{ answer_choices[label] }}.'
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
-      original_task: true
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
+      original_task: false
     name: "given\u2026 it must be true that\u2026"
     reference: 'Maybe a little verbose for a generative model, but anecdotally this
       is the most natural way of how I say an NLI sentence pair out loud to humans.
@@ -51,23 +61,31 @@ templates:
 
       Sentence 2: {{hypothesis}}
 
-      Question: Does Sentence 1 contradict Sentence 2? Yes, No, or Neutral? |||
+      Question: Does Sentence 1 contradict Sentence 2? Yes, No, or Neutral?
 
-      {{answer_choices[label]}}'
+      |||
+
+      - {{answer_choices[label]}}'
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
-      original_task: false
-    name: does S1 contradict S2?
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
+      original_task: true
+    name: does S1 contradict S2
     reference: Copied from Victor's prompts for XNLI.
   b6abcb2e-a0b0-4046-810c-d27f316b1bd5: !Template
     answer_choices: Yes ||| Maybe ||| No
     id: b6abcb2e-a0b0-4046-810c-d27f316b1bd5
-    jinja: Given that {{premise}} Does it follow that {{hypothesis}} Yes, no, or maybe?
-      ||| {{ answer_choices[label] }}
+    jinja: 'Given that {{premise}} Does it follow that {{hypothesis}} Yes, no, or
+      maybe?
+
+      |||
+
+      - {{ answer_choices[label] }}'
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
       original_task: true
     name: "given\u2026 does it follow that\u2026 "
     reference: "\"Does it follow that\" could be replaced with \"can we infer that\u2026\
@@ -78,10 +96,15 @@ templates:
     answer_choices: Yes ||| Maybe ||| No
     id: f227d882-7838-4c7a-93fc-c2b68d2464fb
     jinja: '{{premise}} Based on the previous passage, is it true that {{hypothesis}}
-      Yes, no, or maybe? ||| {{ answer_choices[label] }}'
+      Yes, no, or maybe?
+
+      |||
+
+      - {{ answer_choices[label] }}'
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
       original_task: true
-    name: based on the previous passage
+    name: does premise relate to hypothesis
     reference: "Adapted from the BoolQ prompts in Schick & Sch\xFCtze 2021."
