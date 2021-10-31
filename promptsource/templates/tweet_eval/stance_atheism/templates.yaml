@@ -1,26 +1,77 @@
 dataset: tweet_eval
 subset: stance_atheism
 templates:
-  11c82916-b422-4d42-99b5-bee028a73843: !Template
+  0d1dc279-e50c-4706-bc3d-84ea01cb59a1: !Template
     answer_choices: null
-    id: 11c82916-b422-4d42-99b5-bee028a73843
-    jinja: "Is this tweet in favor of or against atheism?\n\n{{text}} |||\n{{\n[\n\
-      \  \"none\",\n  \"against\",\n  \"favor\"\n] [label]\n}}"
+    id: 0d1dc279-e50c-4706-bc3d-84ea01cb59a1
+    jinja: "Does the author express any stance about atheism in the following text?\n\
+      \n{{text}} |||\n{{\n[\n  \"none\",\n  \"against\",\n  \"favor\"\n]\n[label]}}"
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
-      original_task: null
+      choices_in_prompt: false
+      metrics:
+      - Accuracy
+      original_task: true
+    name: atheism_predict_stance
+    reference: ''
+  22758062-db86-4009-81a4-1e2a2e1052f2: !Template
+    answer_choices: null
+    id: 22758062-db86-4009-81a4-1e2a2e1052f2
+    jinja: "{{text}} Where does the author of the above sentence stand on atheism?\
+      \ |||\n{{\n[\n  \"none\",\n  \"against\",\n  \"favor\"\n]\n[label]}}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - Accuracy
+      original_task: true
+    name: atheism_guess_passive_author
+    reference: ''
+  615151f8-ac5b-4c0e-a234-9e9b6296a2f2: !Template
+    answer_choices: null
+    id: 615151f8-ac5b-4c0e-a234-9e9b6296a2f2
+    jinja: "What option among, {{\"none\"}}, {{\"against\"}}, {{\"favor\"}}, best\
+      \ describes the stance of this tweet towards atheism?\n\n{{text}} |||\n{{\n\
+      [\n  \"none\",\n  \"against\",\n  \"favor\"\n]\n[label]}}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
+      original_task: true
+    name: atheism_option
+    reference: ''
+  687ffa1e-a772-48b1-9291-ba4e530a909e: !Template
+    answer_choices: null
+    id: 687ffa1e-a772-48b1-9291-ba4e530a909e
+    jinja: "Is this tweet in favor of or against atheism?\n\n{{text}} |||\n{{\n[\n\
+      \  \"none\",\n  \"against\",\n  \"favor\"\n]\n[label]}}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - Accuracy
+      original_task: true
     name: atheism
     reference: ''
-  39195494-2d37-4684-b30a-b406bfd9f5b3: !Template
+  c5507588-1d20-42f9-935f-0c767294f5a9: !Template
     answer_choices: null
-    id: 39195494-2d37-4684-b30a-b406bfd9f5b3
-    jinja: "Which option among, {{\"none\"}}, {{\"against\"}}, {{\"favor\"}}, conveys\
-      \ the stance of this tweet towards atheism?\n\n{{text}} |||\n{{\n[\n  \"none\"\
-      ,\n  \"against\",\n  \"favor\"\n] [label]\n}}"
+    id: c5507588-1d20-42f9-935f-0c767294f5a9
+    jinja: "How would you describe the stance used in this tweet? {{\"none\"}}, {{\"\
+      against\"}}, {{\"favor\"}}\n\n{{text}} |||\n{{\n[\n  \"none\",\n  \"against\"\
+      ,\n  \"favor\"\n]\n[label]}}"
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
-      original_task: null
-    name: atheism_option
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
+      original_task: true
+    name: atheism_option_2
+    reference: ''
+  ee12d37b-5667-4b0e-9831-f952d08152b5: !Template
+    answer_choices: null
+    id: ee12d37b-5667-4b0e-9831-f952d08152b5
+    jinja: "{{text}} Where does the above sentence stand on atheism? |||\n{{\n[\n\
+      \  \"none\",\n  \"against\",\n  \"favor\"\n]\n[label]}}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - Accuracy
+      original_task: true
+    name: atheism_guess_passive
     reference: ''
