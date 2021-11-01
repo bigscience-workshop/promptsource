@@ -1,27 +1,20 @@
 dataset: boolq
 templates:
   9bd5fbaa-e7a2-4847-a7a1-500591d90bb4: !Template
-    answer_choices: null
+    answer_choices: No|||Yes
     id: 9bd5fbaa-e7a2-4847-a7a1-500591d90bb4
     jinja: '{{passage}} {{question}}? |||
 
-      {% if answer == true %}
-
-      Yes
-
-      {% else %}
-
-      No
-
-      {% endif %}'
+      {{answer_choices[answer]}}'
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
-      original_task: null
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
+      original_task: true
     name: LM style
     reference: Concatenate passage and question. Transform True/False into Yes/No.
   c746b16d-212d-4f1f-9988-9fee99584f25: !Template
-    answer_choices: null
+    answer_choices: No|||Yes
     id: c746b16d-212d-4f1f-9988-9fee99584f25
     jinja: '{{passage}}
 
@@ -29,23 +22,16 @@ templates:
 
       Answer: |||
 
-      {% if answer == true %}
-
-      Yes
-
-      {% else %}
-
-      No
-
-      {% endif %}'
+      {{answer_choices[answer]}}'
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
-      original_task: null
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
+      original_task: true
     name: Boolq GPT3
     reference: Take from GPT3 - Figure G29
   dc7caf4f-b109-4a82-86a0-2798a5437283: !Template
-    answer_choices: null
+    answer_choices: No|||Yes
     id: dc7caf4f-b109-4a82-86a0-2798a5437283
     jinja: '{{passage}}
 
@@ -53,23 +39,16 @@ templates:
 
       Answer by yes or no. |||
 
-      {% if answer == true %}
-
-      Yes
-
-      {% else %}
-
-      No
-
-      {% endif %}'
+      {{answer_choices[answer]}}'
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
-      original_task: null
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
+      original_task: true
     name: yes/no
     reference: Yes or no
   fbba0375-4220-4483-8bbe-0fd630330611: !Template
-    answer_choices: null
+    answer_choices: No|||Yes
     id: fbba0375-4220-4483-8bbe-0fd630330611
     jinja: 'Answer the question based on the passage.
 
@@ -81,19 +60,12 @@ templates:
 
       Answer: |||
 
-      {% if answer == true %}
-
-      Yes
-
-      {% else %}
-
-      No
-
-      {% endif %}'
+      {{answer_choices[answer]}}'
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
-      original_task: null
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
+      original_task: true
     name: Exercise style
     reference: Prompt in the style of task description + instance. Mapped True/False
       into Yes/No
