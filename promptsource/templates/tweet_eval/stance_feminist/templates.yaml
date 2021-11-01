@@ -1,26 +1,77 @@
 dataset: tweet_eval
 subset: stance_feminist
 templates:
-  4797c407-28f2-4490-ad95-0d5451f68e2d: !Template
+  0d1dc279-e50c-4706-bc3d-84ea01cb59a1: !Template
     answer_choices: null
-    id: 4797c407-28f2-4490-ad95-0d5451f68e2d
-    jinja: "Which option among, {{\"none\"}}, {{\"against\"}}, {{\"favor\"}}, reflects\
-      \ the stance of this tweet towards feminism?\n\n{{text}} |||\n{{\n[\n  \"none\"\
-      ,\n  \"against\",\n  \"favor\"\n] [label]\n}}"
+    id: 0d1dc279-e50c-4706-bc3d-84ea01cb59a1
+    jinja: "Does the author express any stance about feminism in the following text?\n\
+      \n{{text}} |||\n{{\n[\n  \"none\",\n  \"against\",\n  \"favor\"\n]\n[label]}}"
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
-      original_task: null
-    name: feminist_option
+      choices_in_prompt: false
+      metrics:
+      - Accuracy
+      original_task: true
+    name: feminism_predict_stance
     reference: ''
-  95d81282-256b-44c9-b168-d279c625f5b4: !Template
+  22758062-db86-4009-81a4-1e2a2e1052f2: !Template
     answer_choices: null
-    id: 95d81282-256b-44c9-b168-d279c625f5b4
-    jinja: "Is this tweet in favor of or against feminism?\n\n{{text}} |||\n{{\n[\n\
-      \  \"none\",\n  \"against\",\n  \"favor\"\n] [label]\n}}"
+    id: 22758062-db86-4009-81a4-1e2a2e1052f2
+    jinja: "{{text}} Where does the author of the above sentence stand on feminism?\
+      \ |||\n{{\n[\n  \"none\",\n  \"against\",\n  \"favor\"\n]\n[label]}}"
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
-      original_task: null
+      choices_in_prompt: false
+      metrics:
+      - Accuracy
+      original_task: true
+    name: feminism_guess_passive_author
+    reference: ''
+  615151f8-ac5b-4c0e-a234-9e9b6296a2f2: !Template
+    answer_choices: null
+    id: 615151f8-ac5b-4c0e-a234-9e9b6296a2f2
+    jinja: "What option among, {{\"none\"}}, {{\"against\"}}, {{\"favor\"}}, best\
+      \ describes the stance of this tweet regarding feminism?\n\n{{text}} |||\n{{\n\
+      [\n  \"none\",\n  \"against\",\n  \"favor\"\n]\n[label]}}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
+      original_task: true
+    name: feminism_option
+    reference: ''
+  687ffa1e-a772-48b1-9291-ba4e530a909e: !Template
+    answer_choices: null
+    id: 687ffa1e-a772-48b1-9291-ba4e530a909e
+    jinja: "Is this tweet in favor of or against feminism?\n\n{{text}} |||\n{{\n[\n\
+      \  \"none\",\n  \"against\",\n  \"favor\"\n]\n[label]}}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - Accuracy
+      original_task: true
     name: feminism
+    reference: ''
+  c5507588-1d20-42f9-935f-0c767294f5a9: !Template
+    answer_choices: null
+    id: c5507588-1d20-42f9-935f-0c767294f5a9
+    jinja: "How would you describe the stance used in this tweet? {{\"none\"}}, {{\"\
+      against\"}}, {{\"favor\"}}\n\n{{text}} |||\n{{\n[\n  \"none\",\n  \"against\"\
+      ,\n  \"favor\"\n]\n[label]}}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
+      original_task: true
+    name: feminism_option_2
+    reference: ''
+  ee12d37b-5667-4b0e-9831-f952d08152b5: !Template
+    answer_choices: null
+    id: ee12d37b-5667-4b0e-9831-f952d08152b5
+    jinja: "{{text}} Where does the above sentence stand on feminism? |||\n{{\n[\n\
+      \  \"none\",\n  \"against\",\n  \"favor\"\n]\n[label]}}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - Accuracy
+      original_task: true
+    name: feminism_guess_passive
     reference: ''
