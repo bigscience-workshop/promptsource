@@ -1,88 +1,6 @@
 dataset: squadshifts
 subset: new_wiki
 templates:
-  1c38fc00-2a70-482b-b491-a0603e6db137: !Template
-    answer_choices: null
-    id: 1c38fc00-2a70-482b-b491-a0603e6db137
-    jinja: 'For the following passage-question pair, list all possible wrong answers
-      (pitfalls) test-takers may choose:
-
-
-      {{context}}
-
-      {{question}} |||
-
-      {{answers["text"]|join(", ")}}'
-    metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
-      original_task: true
-    name: possible_pitfalls
-    reference: ''
-  1f282852-c08f-46f2-a702-c1b94332c85d: !Template
-    answer_choices: null
-    id: 1f282852-c08f-46f2-a702-c1b94332c85d
-    jinja: 'Generate a possible question for the following short passage:
-
-
-      {{context}} |||
-
-      {{question}}'
-    metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
-      original_task: false
-    name: possible_qn
-    reference: ''
-  4ba25909-7d60-4374-a030-968189b4e444: !Template
-    answer_choices: null
-    id: 4ba25909-7d60-4374-a030-968189b4e444
-    jinja: "Q: {{question}}\n\nA: \n|||\n{{answers['text'] | most_frequent | choice}}"
-    metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
-      original_task: false
-    name: cbqa qa
-    reference: ''
-  4fbdd9ac-e770-4383-a5b4-0154e6d0cf99: !Template
-    answer_choices: null
-    id: 4fbdd9ac-e770-4383-a5b4-0154e6d0cf99
-    jinja: 'At what character does the text "{{answers["text"][0]}}" start in the
-      following paragraph?
-
-
-      {{context}}
-
-
-      |||
-
-      {{answers["answer_start"][0]}}'
-    metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
-      original_task: false
-    name: find text
-    reference: ''
-  5b1e053d-8ebe-43d5-85b5-c61b8ce444be: !Template
-    answer_choices: null
-    id: 5b1e053d-8ebe-43d5-85b5-c61b8ce444be
-    jinja: 'Count the characters up until "{{answers["text"][0]}}" appears in the
-      following chunk of text.
-
-
-      {{context}}
-
-
-      |||
-
-
-      {{answers["answer_start"][0]}}'
-    metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
-      original_task: null
-    name: count letters
-    reference: ''
   60995116-53af-456f-ac20-858b83fa9ba6: !Template
     answer_choices: null
     id: 60995116-53af-456f-ac20-858b83fa9ba6
@@ -96,42 +14,16 @@ templates:
 
       {{answers[''text''] | most_frequent | choice}}'
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
+      choices_in_prompt: false
+      metrics:
+      - Squad
       original_task: true
     name: after
-    reference: ''
-  612266f2-da8e-4a88-b8fc-69c7be342cfd: !Template
-    answer_choices: null
-    id: 612266f2-da8e-4a88-b8fc-69c7be342cfd
-    jinja: '{{question}}
-
-
-      |||
-
-
-      {{answers[''text''] | most_frequent | choice}}'
-    metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
-      original_task: false
-    name: cbqa
-    reference: ''
-  694f0a21-4cc2-4485-88e6-e5b1ceb9a341: !Template
-    answer_choices: null
-    id: 694f0a21-4cc2-4485-88e6-e5b1ceb9a341
-    jinja: "Question: {{question}}\n\nAnswer: \n|||\n{{answers['text'] | most_frequent\
-      \ | choice}}"
-    metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
-      original_task: false
-    name: cbqa question answer
-    reference: ''
+    reference: First question, then answer
   a5691e58-f2cc-41eb-8308-c7046856f72f: !Template
     answer_choices: null
     id: a5691e58-f2cc-41eb-8308-c7046856f72f
-    jinja: 'Use the following non-answers to generate a possible short passage-question
+    jinja: 'Use the following answers to generate a possible short passage-question
       pair:
 
       {{answers["text"]|join('', '')}} |||
@@ -142,11 +34,13 @@ templates:
 
       '
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      - ROUGE
       original_task: false
     name: answers_question
-    reference: ''
+    reference: Generate a question-passage pair from the answer
   bc874f68-ce23-43cd-9683-5574c9ef01cb: !Template
     answer_choices: null
     id: bc874f68-ce23-43cd-9683-5574c9ef01cb
@@ -163,11 +57,12 @@ templates:
 
       {{answers[''text''] | most_frequent | choice}}'
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
-      original_task: false
+      choices_in_prompt: false
+      metrics:
+      - Squad
+      original_task: true
     name: wondered
-    reference: ''
+    reference: 'Original task prompt '
   bfa571de-6076-44c2-b23b-8b2a404b180d: !Template
     answer_choices: null
     id: bfa571de-6076-44c2-b23b-8b2a404b180d
@@ -181,11 +76,13 @@ templates:
 
       {{answers["text"] | most_frequent | choice}}'
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
-      original_task: false
-    name: question/hint
-    reference: ''
+      choices_in_prompt: false
+      metrics:
+      - Squad
+      original_task: true
+    name: question_num_hint_answer
+    reference: 'The prompt has a prefix of question or problem and chooses a random
+      number followed the actual question. '
   caec82a4-f845-4e10-aad4-19111c9884c1: !Template
     answer_choices: null
     id: caec82a4-f845-4e10-aad4-19111c9884c1
@@ -202,11 +99,13 @@ templates:
 
       {{question}}'
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
-      original_task: null
-    name: exam creation help
-    reference: ''
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      - ROUGE
+      original_task: false
+    name: exam_creation_help
+    reference: 'Question generation '
   d760501f-7726-48ec-9d86-46c10ce408d3: !Template
     answer_choices: null
     id: d760501f-7726-48ec-9d86-46c10ce408d3
@@ -219,31 +118,25 @@ templates:
 
       '
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      - ROUGE
       original_task: false
     name: title
-    reference: ''
+    reference: Pormpt generates the title of the short passage
   e5b77630-c87c-47b5-9544-5a68cd6b5a93: !Template
     answer_choices: null
     id: e5b77630-c87c-47b5-9544-5a68cd6b5a93
-    jinja: 'List all possible non-answers that have a lot of words in common with
-      the following context-question pair:
-
-
-      {{context}}
-
-      {{question}} |||
-
-      {{answers["text"]|join('', '')}}
-
-      '
+    jinja: "{{context}}\n\nWith the help of the passage, please answer the following\
+      \ question: \n{{question}} |||\n{{answers[\"text\"]|choice}}\n"
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
+      choices_in_prompt: false
+      metrics:
+      - Squad
       original_task: true
-    name: incorrect_answers
-    reference: ''
+    name: pick_one_answer
+    reference: The prompt randomly picks one correct answer
   f372bda7-8ac7-4b7f-a777-37c6cdc18f34: !Template
     answer_choices: null
     id: f372bda7-8ac7-4b7f-a777-37c6cdc18f34
@@ -259,11 +152,13 @@ templates:
 
       {{question}}'
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
-      original_task: null
-    name: generate question
-    reference: ''
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      - ROUGE
+      original_task: false
+    name: generate_question
+    reference: question generation task
   f602988d-c3ea-4894-9fb6-7fadbb9d87c8: !Template
     answer_choices: null
     id: f602988d-c3ea-4894-9fb6-7fadbb9d87c8
@@ -279,8 +174,9 @@ templates:
 
       {{answers[''text''] | most_frequent | choice}}'
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
-      original_task: false
+      choices_in_prompt: false
+      metrics:
+      - Squad
+      original_task: true
     name: exam
-    reference: ''
+    reference: 'Exam style prompt '
