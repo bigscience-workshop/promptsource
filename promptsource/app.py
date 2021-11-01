@@ -11,7 +11,7 @@ from pygments.formatters import HtmlFormatter
 from pygments.lexers import DjangoLexer
 
 from promptsource.session import _get_state
-from promptsource.templates import Template, TemplateCollection
+from promptsource.templates import DatasetTemplates, Template, TemplateCollection
 from promptsource.utils import (
     get_dataset,
     get_dataset_confs,
@@ -40,10 +40,11 @@ else:
     side_bar_title_prefix = "Promptsource"
 
 #
-# Helper functions for datasets library
+# Cache functions
 #
 get_dataset = st.cache(allow_output_mutation=True)(get_dataset)
 get_dataset_confs = st.cache(get_dataset_confs)
+list_datasets = st.cache(list_datasets)
 
 
 def reset_template_state():
@@ -98,26 +99,26 @@ def show_text(t, width=WIDTH, with_markdown=False):
         st.text(wrap)
 
 
-#
-# Loads template data
-#
-try:
-    template_collection = TemplateCollection()
-except FileNotFoundError:
-    st.error(
-        "Unable to find the prompt folder!\n\n"
-        "We expect the folder to be in the working directory. "
-        "You might need to restart the app in the root directory of the repo."
-    )
-    st.stop()
-
-
 if mode == "Helicopter view":
     st.title("High level metrics")
+    st.write("This will take a minute to collect.")
     st.write(
         "If you want to contribute, please refer to the instructions in "
         + "[Contributing](https://github.com/bigscience-workshop/promptsource/blob/main/CONTRIBUTING.md)."
     )
+
+    #
+    # Loads template data
+    #
+    try:
+        template_collection = TemplateCollection()
+    except FileNotFoundError:
+        st.error(
+            "Unable to find the prompt folder!\n\n"
+            "We expect the folder to be in the working directory. "
+            "You might need to restart the app in the root directory of the repo."
+        )
+        st.stop()
 
     #
     # Global metrics
@@ -228,10 +229,7 @@ else:
     # Loads dataset information
     #
 
-    dataset_list = list_datasets(
-        template_collection,
-        state,
-    )
+    dataset_list = list_datasets()
     ag_news_index = dataset_list.index("ag_news")
 
     #
@@ -267,7 +265,18 @@ else:
         dataset = dataset[split]
         dataset = renameDatasetColumn(dataset)
 
-        dataset_templates = template_collection.get_dataset(dataset_key, conf_option.name if conf_option else None)
+        #
+        # Loads template data
+        #
+        try:
+            dataset_templates = DatasetTemplates(dataset_key, conf_option.name if conf_option else None)
+        except FileNotFoundError:
+            st.error(
+                "Unable to find the prompt folder!\n\n"
+                "We expect the folder to be in the working directory. "
+                "You might need to restart the app in the root directory of the repo."
+            )
+            st.stop()
 
         template_list = dataset_templates.all_template_names
         num_templates = len(template_list)
@@ -428,7 +437,6 @@ else:
                     state.new_template_name = None
 
             with col1b, st.beta_expander("or Select Prompt", expanded=True):
-                dataset_templates = template_collection.get_dataset(*state.templates_key)
                 template_list = dataset_templates.all_template_names
                 if state.template_name:
                     index = template_list.index(state.template_name)
