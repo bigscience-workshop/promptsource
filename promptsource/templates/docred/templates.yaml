@@ -6,8 +6,13 @@ templates:
     jinja: "Read the following text and answer the questions.\n\nText:\n{% for sent\
       \ in sents -%}\n{{ sent | join(\" \") }}\n{%- endfor %} \n\nQuestion:\nFrom\
       \ the above text, find people, locations, organizations, times, numbers, and\
-      \ miscellaneous.\n|||\n{%- set people = [] -%} \n{%- for ners in vertexSet -%}\n\
-      {%- for ner in ners if ner['type'] == 'PER' -%}\n{{people.append(ner['name'])\
+      \ miscellaneous.\n\nYou should answer the question in the following way:\n\n\
+      People: a list of people separated with commas\n\nLocations: a list of locations\
+      \ separated with commas\n\nOrganizations: a list of organizations separated\
+      \ with commas\n\nTimes: a list of times separated with commas\n\nNumbers: a\
+      \ list of numbers separated with commas\n\nMiscellaneous: a list of miscellaneous\
+      \ items separated by commas\n|||\n{%- set people = [] -%} \n{%- for ners in\
+      \ vertexSet -%}\n{%- for ner in ners if ner['type'] == 'PER' -%}\n{{people.append(ner['name'])\
       \ | default(\"\", True)}}\n{%- endfor -%}\n{%- endfor -%}\n{% if people %}\n\
       {{\"People: \"}}{{ people | unique | join(\", \")}}{{\".\"}}\n{% endif %}\n\n\
       {%- set locations = [] -%} \n{%- for ners in vertexSet -%}\n{%- for ner in ners\
@@ -67,9 +72,9 @@ templates:
     jinja: "{%- set locations = [] -%} \n{%- for ners in vertexSet -%}\n{%- for ner\
       \ in ners if ner['type'] == 'LOC' -%}\n{{locations.append(ner['name']) | default(\"\
       \", True)}}\n{%- endfor -%}\n{%- endfor -%}\n{% if locations %}\nFind all of\
-      \ the locations in the text below. \n\n{% for sent in sents -%}\n{{ sent | join(\"\
-      \ \") }}\n{%- endfor -%} \n|||\n{{ locations| unique | join(\", \")}}{{\".\"\
-      }}\n{% endif %}"
+      \ the locations in the text below. Please list all of them separated by commas.\n\
+      \n{% for sent in sents -%}\n{{ sent | join(\" \") }}\n{%- endfor -%} \n|||\n\
+      {{ locations| unique | join(\", \")}}{{\".\"}}\n{% endif %}"
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
@@ -83,9 +88,10 @@ templates:
     jinja: "{%- set organizations = [] -%} \n{%- for ners in vertexSet -%}\n{%- for\
       \ ner in ners if ner['type'] == 'ORG' -%}\n{{organizations.append(ner['name'])\
       \ | default(\"\", True)}}\n{%- endfor -%}\n{%- endfor -%}\n{% if organizations\
-      \ %}\nFind all of the organizations in the text below.\n\n{% for sent in sents\
-      \ -%}\n{{ sent | join(\" \") }}\n{%- endfor -%} \n|||\n{{ organizations| unique\
-      \ | join(\", \")}}{{\".\"}}\n{% endif %}"
+      \ %}\nFind all of the organizations in the text below. Please list all of them\
+      \ separated by commas.\n\n{% for sent in sents -%}\n{{ sent | join(\" \") }}\n\
+      {%- endfor -%} \n|||\n{{ organizations| unique | join(\", \")}}{{\".\"}}\n{%\
+      \ endif %}"
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
@@ -106,7 +112,6 @@ templates:
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
-      - Accuracy
       - BLEU
       - ROUGE
       original_task: false
@@ -137,9 +142,9 @@ templates:
     jinja: "{%- set times = [] -%} \n{%- for ners in vertexSet -%}\n{%- for ner in\
       \ ners if ner['type'] == 'TIME' -%}\n{{times.append(ner['name']) | default(\"\
       \", True)}}\n{%- endfor -%}\n{%- endfor -%}\n{% if times %}\nFind all of the\
-      \ times in the text below. \n\n{% for sent in sents -%}\n{{ sent | join(\" \"\
-      ) }}\n{%- endfor -%} \n|||\n{{ times| unique | join(\", \")}}{{\".\"}}\n{% endif\
-      \ %}"
+      \ times in the text below. Please list all of them separated by commas.\n\n\
+      {% for sent in sents -%}\n{{ sent | join(\" \") }}\n{%- endfor -%} \n|||\n{{\
+      \ times| unique | join(\", \")}}{{\".\"}}\n{% endif %}"
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
@@ -153,9 +158,9 @@ templates:
     jinja: "{%- set people = [] -%} \n{%- for ners in vertexSet -%}\n{%- for ner in\
       \ ners if ner['type'] == 'PER' -%}\n{{people.append(ner['name']) | default(\"\
       \", True)}}\n{%- endfor -%}\n{%- endfor -%}\n{% if people %}\nFind all of the\
-      \ people in the text below. \n\n{% for sent in sents -%}\n{{ sent | join(\"\
-      \ \") }}\n{%- endfor -%} \n|||\n{{ people| unique | join(\", \")}}{{\".\"}}\n\
-      {% endif %}"
+      \ people in the text below. Please list all of them separated by commas.\n\n\
+      {% for sent in sents -%}\n{{ sent | join(\" \") }}\n{%- endfor -%} \n|||\n{{\
+      \ people| unique | join(\", \")}}{{\".\"}}\n{% endif %}"
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
@@ -189,9 +194,10 @@ templates:
     jinja: "{%- set numbers = [] -%} \n{%- for ners in vertexSet -%}\n{%- for ner\
       \ in ners if ner['type'] == 'NUM' -%}\n{{numbers.append(ner['name']) | default(\"\
       \", True)}}\n{%- endfor -%}\n{%- endfor -%}\n{% if numbers %}\nFind all of the\
-      \ numbers in the text below. Please do not include years.\n\n{% for sent in\
-      \ sents -%}\n{{ sent | join(\" \") }}\n{%- endfor -%} \n|||\n{{ numbers| unique\
-      \ | join(\", \")}}{{\".\"}}\n{% endif %}"
+      \ numbers in the text below. Please do not include years and also list all of\
+      \ them separated by commas.\n\n{% for sent in sents -%}\n{{ sent | join(\" \"\
+      ) }}\n{%- endfor -%} \n|||\n{{ numbers| unique | join(\", \")}}{{\".\"}}\n{%\
+      \ endif %}"
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
