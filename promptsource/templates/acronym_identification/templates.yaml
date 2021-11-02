@@ -42,7 +42,6 @@ templates:
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
-      - AUC
       - Other
       original_task: true
     name: find_acronym_meaning
@@ -56,16 +55,15 @@ templates:
       \ (acronyms).\"{{\"B-long\"}}\" and \"{{\"I-long\"}}\" represent respectively\
       \ the beginning and intermediate tokens for expansions of abbreviations (acronyms\
       \ meaning). All other tokens are represented by \"{{\"O\"}}\". \n\nGiven the\
-      \ comma-separated tokens below,  write down for each token the corresponding\
-      \ BIO tag. Use commas to separate tags in the answer.\n\nTokens: {{tokens|join(',\
+      \ space-separated tokens below,  write down for each token the corresponding\
+      \ BIO tag. Use a space to separate tags in the answer.\n\nTokens: {{tokens|join('\
       \ ')}}\nBIO tags:|||{% for label in labels %}{{[\"B-long\", \"B-short\", \"\
-      I-long\",  \"I-short\", \"O\"][label]}}{% if not loop.last %},{%endif %}{% endfor\
+      I-long\",  \"I-short\", \"O\"][label]}}{% if not loop.last %} {%endif %}{% endfor\
       \ %}"
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
       - Other
-      - AUC
       original_task: true
     name: acronyms_and_expansions_bio_encode
     reference: 'Given the comma separated tokens, generate BIO encoding for abbreviations.
@@ -74,11 +72,11 @@ templates:
     answer_choices: null
     id: 8832e5f7-7c45-46da-b85f-71fcb444f264
     jinja: 'List all the expansions (meanings) of the acronyms present in the following
-      comma-separated tokens. Return {{"\"No expansions found\""}} if the expansions
+      space-separated tokens. Return {{"\"No expansions found\""}} if the expansions
       can''t be found.
 
 
-      Tokens: {{tokens|join('', '')}}
+      Tokens: {{tokens|join('' '')}}
 
       |||
 
@@ -124,7 +122,6 @@ templates:
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
-      - AUC
       - Other
       original_task: true
     name: list_expansions
@@ -133,7 +130,7 @@ templates:
   cae58242-cde9-472d-ae9e-56fc7e79c0d1: !Template
     answer_choices: null
     id: cae58242-cde9-472d-ae9e-56fc7e79c0d1
-    jinja: "List all the acryonyms in the following comma-separated tokens: \n\n{{tokens|join(',\
+    jinja: "List all the acryonyms in the following space-separated tokens: \n\n{{tokens|join('\
       \ ')}}\n|||\n{% set abbr_string=namespace(value='') %}\n{% set answer_list=namespace(value=[])\
       \ %}\n{% for label_idx in range(labels|length) %}\n{% if labels[label_idx] ==\
       \ 1 %}\n{% set abbr_string.value = tokens[label_idx] %}\n{% elif abbr_string.value!=''\
@@ -146,7 +143,6 @@ templates:
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
-      - AUC
       - Other
       original_task: true
     name: list_abbreviations
@@ -185,14 +181,12 @@ templates:
       \ not in abbr_exp_dict.value.keys() %}\n      {% set _dummy = abbr_exp_dict.value.update({abbr_string.value:''})\
       \ %}\n    {% endif %}\n  {% endif %}\n{% endif %}\n \nGiven the following tokens,\
       \ find the abbreviations (acronyms) and their expansions (acronyms meaning).\
-      \ Return {{\"\\\"Unclear\\\"\"}} if the expansion can't be found. Separate abbreviations\
-      \ and expansions with a colon.\n \nTokens: {{tokens|join(' ')}}\n|||\n{% for\
-      \ item, value in abbr_exp_dict.value.items() %}\n{{item}} : {% if value!=''\
-      \ %}{{value}}{% else %}Unclear{% endif %}\n{%endfor%}"
+      \ Return {{\"\\\"Unclear\\\"\"}} if the expansion can't be found.\n \nTokens:\
+      \ {{tokens|join(' ')}}\n|||\n{% for item, value in abbr_exp_dict.value.items()\
+      \ %}\n{{item}} : {% if value!='' %}{{value}}{% else %}Unclear{% endif %}\n{%endfor%}"
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
-      - AUC
       - Other
       original_task: true
     name: find_acronyms_and_expansions
@@ -235,7 +229,6 @@ templates:
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
-      - AUC
       - Other
       original_task: true
     name: find_acronym
