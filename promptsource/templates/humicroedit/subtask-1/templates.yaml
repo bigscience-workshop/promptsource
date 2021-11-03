@@ -1,27 +1,6 @@
 dataset: humicroedit
 subset: subtask-1
 templates:
-  43af1016-6d25-434d-b9b0-893706cda5d6: !Template
-    answer_choices: null
-    id: 43af1016-6d25-434d-b9b0-893706cda5d6
-    jinja: 'Please give a score between 0 and 3 denoting the funniness of the following
-      sentence. Your score should be something like {{"1.5"}}, where {{"0.0 means
-      not funny and 3.0 means funny"}}.
-
-
-      {{ original.replace(original[original.index("<"):original.index(">")+1], edit)
-      }}
-
-      |||
-
-      {{ (((5 * meanGrade) | round) / 5) }}'
-    metadata: !TemplateMetadata
-      choices_in_prompt: false
-      metrics:
-      - Other
-      original_task: true
-    name: example_score_edited_sent_affirmative
-    reference: ''
   692750f4-b4a2-4344-bc4d-e05daef47c25: !Template
     answer_choices: null
     id: 692750f4-b4a2-4344-bc4d-e05daef47c25
@@ -105,23 +84,6 @@ templates:
       original_task: true
     name: score_original_sent_edit_word_low_high
     reference: ''
-  93bd417d-a17f-460b-800c-5881ce752d98: !Template
-    answer_choices: null
-    id: 93bd417d-a17f-460b-800c-5881ce752d98
-    jinja: 'Rate on a scale from {{"0.0"}} (not funny) to {{"3.0"}} (hilarious) how
-      funny the sentence "{{ original.replace(original[original.index("<"):original.index(">")+1],
-      edit) }}" is.
-
-      |||
-
-      {{ (((5 * meanGrade) | round) / 5) }}'
-    metadata: !TemplateMetadata
-      choices_in_prompt: false
-      metrics:
-      - Other
-      original_task: true
-    name: rate_edited_sent
-    reference: ''
   a08cab27-06fb-4c96-b6b1-eb0533fe9b25: !Template
     answer_choices: null
     id: a08cab27-06fb-4c96-b6b1-eb0533fe9b25
@@ -171,26 +133,4 @@ templates:
       - Other
       original_task: true
     name: best_shot_rate_original_sent_edited_sent
-    reference: ''
-  c1511cfc-8ba8-4d10-98b7-1e576cf02588: !Template
-    answer_choices: null
-    id: c1511cfc-8ba8-4d10-98b7-1e576cf02588
-    jinja: 'I need to assign a score from {{"0.0"}} (not funny) to {{"3.0"}} (very
-      funny) that denotes how funny the following sentence is. What score should I
-      assign?
-
-
-      Sentence: {{ original.replace(original[original.index("<"):original.index(">")+1],
-      edit) }}
-
-
-      |||
-
-      {{ (((5 * meanGrade) | round) / 5) }}'
-    metadata: !TemplateMetadata
-      choices_in_prompt: true
-      metrics:
-      - Other
-      original_task: true
-    name: assign_score_edited_sent
     reference: ''
