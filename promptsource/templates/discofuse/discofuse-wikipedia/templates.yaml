@@ -22,10 +22,11 @@ templates:
 
       {{coherent_first_sentence}} {{coherent_second_sentence}}'
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
-      original_task: false
-    name: fuse_instruction_2
+      choices_in_prompt: false
+      metrics:
+      - Other
+      original_task: true
+    name: fuse_instruction_bottom
     reference: ''
   223b3d21-f809-4876-9273-31d75307eb06: !Template
     answer_choices: null
@@ -34,10 +35,12 @@ templates:
       \nDecompose this sentence into two sentences\n|||\n\n{{incoherent_first_sentence}}\
       \ {{incoherent_second_sentence}} \n{% endif %}"
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      - ROUGE
       original_task: false
-    name: decompose
+    name: decompose_bottom
     reference: ''
   2b0f2c7a-1426-4713-b293-e1e4d876bdfd: !Template
     answer_choices: null
@@ -47,62 +50,69 @@ templates:
       \ sentence: {{incoherent_second_sentence}} \n\n|||\n\n{{coherent_first_sentence}}\n\
       {% endif %}"
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
-      original_task: false
-    name: fuse_3
+      choices_in_prompt: false
+      metrics:
+      - Other
+      original_task: true
+    name: fuse_top
     reference: ''
   54ea85d8-d1af-4644-b787-55c0226db777: !Template
     answer_choices: null
     id: 54ea85d8-d1af-4644-b787-55c0226db777
     jinja: "{% if coherent_second_sentence==\"\" %}\n\nRead this sentence:\n\n{{coherent_first_sentence}}\n\
       \nNow, read this second sentence, that covers some of the information from the\
-      \ first:\n\n{{incoherent_second_sentence}}\n\nWrite a sentence that covers the\
+      \ first:\n\n{{incoherent_first_sentence}}\n\nWrite a sentence that covers the\
       \ information from the first sentence that is missing from the second\n|||\n\
-      \n {{incoherent_first_sentence}} \n{% endif %}"
+      \n {{incoherent_second_sentence}} \n{% endif %}"
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      - ROUGE
       original_task: false
-    name: decompose remainder 2
+    name: decompose_remainder_2
     reference: ''
   62b617d2-5524-42d4-8ef1-8c2b38fa2c7e: !Template
     answer_choices: null
     id: 62b617d2-5524-42d4-8ef1-8c2b38fa2c7e
     jinja: "{% if coherent_second_sentence==\"\" %}\n\nRead this sentence:\n\n{{coherent_first_sentence}}\n\
       \nNow, read this second sentence, that covers some of the information from the\
-      \ first:\n\n{{incoherent_first_sentence}}\n\nWrite a sentence that covers the\
+      \ first:\n\n{{incoherent_second_sentence}}\n\nWrite a sentence that covers the\
       \ information from the first sentence that is missing from the second\n|||\n\
-      \n {{incoherent_second_sentence}} \n{% endif %}"
+      \n {{incoherent_first_sentence}} \n{% endif %}"
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      - ROUGE
       original_task: false
-    name: decompose remainder 1
+    name: decompose_remainder_1
     reference: ''
   6ac9b065-38f3-43b6-9e6c-751a71ef1e2f: !Template
-    answer_choices: null
+    answer_choices: Apposition ||| Relative Clauses ||| Cataphora ||| Verb Phrase
+      Coordination ||| Anaphora ||| Inner Connectives ||| Both Inner Connectives and
+      Anaphora ||| Sentence Coordination ||| Both Sentence Coordination and Anaphora
+      ||| Forward Connectives ||| Discourse Connectives ||| Both Discourse Connectives
+      and Anaphora
     id: 6ac9b065-38f3-43b6-9e6c-751a71ef1e2f
-    jinja: "{% if discourse_type != \"PAIR_NONE\" %}\n\nPassage A: {{coherent_first_sentence}}\
-      \ {{coherent_second_sentence}}\n\nPassage B: {{incoherent_first_sentence}} {{incoherent_second_sentence}}\n\
-      \nWhich of the following discourse phenomena have been removed in order to turn\
-      \ Passage A into Passage B?\n\n{{\"1: Apposition\"}}\n\n{{\"2: Relative Clauses\"\
-      }}\n\n{{\"3: Cataphora\"}}\n\n{{\"4: Verb Phrase Coordination\"}}\n\n{{\"5:\
-      \ Anaphora\"}}\n\n{{\"6: Inner Connectives\"}}\n\n{{\"7: Both Inner Connectives\
-      \ and Anaphora\"}}\n\n{{\"8: Sentence Coordination\"}}\n\n{{\"9 Both Sentence\
-      \ Coordination and Anaphora\"}}\n\n{{\"10: Forward Connectives\"}}\n\n{{\"11:\
-      \ Discourse Connectives\"}}\n\n{{\"12: Both Discourse Connectives and Anaphora\"\
-      }}\n\nAnswer with both the option letter and phenomena name.\n|||\n\n{{\n{\"\
-      PAIR_ANAPHORA\": \"5\",\n\"PAIR_CONN\": \"11\", \n\"PAIR_CONN_ANAPHORA\": \"\
-      12\",\n\"SINGLE_APPOSITION\": \"1\",\n\"SINGLE_CATAPHORA\": \"3\",\n\"SINGLE_CONN_INNER\"\
-      : \"6\",\n\"SINGLE_CONN_INNER_ANAPHORA\": \"7\",\n\"SINGLE_CONN_START\": \"\
-      10\",\n\"SINGLE_RELATIVE\": \"2\",\n\"SINGLE_S_COORD\":\"8\",\n\"SINGLE_S_COORD_ANAPHORA\"\
-      : \"9\",\n\"SINGLE_VP_COORD\": \"4\"\n}[discourse_type]\n}}\n\n\n{% endif %}\n"
+    jinja: "{% if discourse_type != \"PAIR_NONE\" %}\n\n{% set poss_ans_list = [\"\
+      SINGLE_APPOSITION\", \"SINGLE_RELATIVE\", \"SINGLE_CATAPHORA\", \"SINGLE_VP_COORD\"\
+      , \"PAIR_ANAPHORA\", \"SINGLE_CONN_INNER\", \"SINGLE_CONN_INNER_ANAPHORA\",\
+      \ \"SINGLE_S_COORD\", \"SINGLE_S_COORD_ANAPHORA\", \"SINGLE_CONN_START\", \"\
+      PAIR_CONN\", \"PAIR_CONN_ANAPHORA\"] %}\n\nPeruse the following two passages\
+      \ and identify the discourse phenomenon which can be used to turn Passage 1\
+      \ into Passage 2.\n\nPassage 1: {{incoherent_first_sentence}} {{incoherent_second_sentence}}\n\
+      \nPassage 2: {{coherent_first_sentence}} {{coherent_second_sentence}}\n\n{%\
+      \ for lab in answer_choices %}\n{{ loop.index }}: {{ lab }}\n{% endfor %}\n\
+      \  \n |||\n\n{{ answer_choices[poss_ans_list.index(discourse_type)] }}\n\n{%\
+      \ endif %}"
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
+      choices_in_prompt: true
+      metrics:
+      - AUC
+      - Accuracy
       original_task: false
-    name: Grammar detection 2
+    name: grammar_detection_top
     reference: ''
   91e17ea5-91cd-4d0d-a0d2-5e3f4d06da47: !Template
     answer_choices: null
@@ -111,10 +121,12 @@ templates:
       \ into two separate sentences:\n\n{{coherent_first_sentence}}\n\n|||\n\n{{incoherent_first_sentence}}\
       \ {{incoherent_second_sentence}} \n{% endif %}"
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      - ROUGE
       original_task: false
-    name: decompose 2
+    name: decompose_top
     reference: ''
   a5fb909f-894c-431d-8b1a-ab2177b726ad: !Template
     answer_choices: null
@@ -133,45 +145,46 @@ templates:
 
       {{coherent_first_sentence}} {{coherent_second_sentence}}'
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
-      original_task: false
-    name: fuse_instruction
+      choices_in_prompt: false
+      metrics:
+      - Other
+      original_task: true
+    name: fuse_instruction_top
     reference: ''
   c6292146-751f-4650-8fc0-4cbf71aebcf7: !Template
     answer_choices: null
     id: c6292146-751f-4650-8fc0-4cbf71aebcf7
-    jinja: "{% if coherent_second_sentence==\"\" %}\nI'm doing some research, and\
-      \ found these facts:\n\n{{incoherent_first_sentence}} {{incoherent_second_sentence}}\
-      \ \n\nHow could I rewrite my facts to sound more natural?\n\n|||\n\n{{coherent_first_sentence}}\n\
-      {% endif %}"
+    jinja: "{% if coherent_second_sentence==\"\" %}\n\nSentence 1: {{incoherent_first_sentence}}\n\
+      Sentence 2: {{incoherent_second_sentence}}\n \nCould you find a way to fuse\
+      \ the two sentences above?\n\n|||\n\n{{coherent_first_sentence}}\n{% endif %}"
     metadata: !TemplateMetadata
-      choices_in_prompt: null
+      choices_in_prompt: false
       metrics: []
       original_task: false
-    name: fuse_4
+    name: fuse_interrogative_bottom
     reference: ''
   cc4bb1fb-251d-4258-a0b4-4c355ff41315: !Template
-    answer_choices: null
+    answer_choices: Apposition ||| Relative Clauses ||| Cataphora ||| Verb Phrase
+      Coordination ||| Anaphora ||| Inner Connectives ||| Both Inner Connectives and
+      Anaphora ||| Sentence Coordination ||| Both Sentence Coordination and Anaphora
+      ||| Forward Connectives ||| Discourse Connectives ||| Both Discourse Connectives
+      and Anaphora
     id: cc4bb1fb-251d-4258-a0b4-4c355ff41315
-    jinja: "{% if discourse_type != \"PAIR_NONE\" %}\n\nPassage 1: {{incoherent_first_sentence}}\
+    jinja: "{% if discourse_type != \"PAIR_NONE\" %}\n\n{% set poss_ans_list = [\"\
+      SINGLE_APPOSITION\", \"SINGLE_RELATIVE\", \"SINGLE_CATAPHORA\", \"SINGLE_VP_COORD\"\
+      , \"PAIR_ANAPHORA\", \"SINGLE_CONN_INNER\", \"SINGLE_CONN_INNER_ANAPHORA\",\
+      \ \"SINGLE_S_COORD\", \"SINGLE_S_COORD_ANAPHORA\", \"SINGLE_CONN_START\", \"\
+      PAIR_CONN\", \"PAIR_CONN_ANAPHORA\"] %}\n\nPassage 1: {{incoherent_first_sentence}}\
       \ {{incoherent_second_sentence}}\n\nPassage 2: {{coherent_first_sentence}} {{coherent_second_sentence}}\n\
-      \nWhich of the following discourse phenomena have been used to turn Passage\
-      \ 1 into Passage 2?\n\n{{\"A: Apposition\"}}\n\n{{\"B: Relative Clauses\"}}\n\
-      \n{{\"C: Cataphora\"}}\n\n{{\"D: Verb Phrase Coordination\"}}\n\n{{\"E: Anaphora\"\
-      }}\n\n{{\"F: Inner Connectives\"}}\n\n{{\"G: Both Inner Connectives and Anaphora\"\
-      }}\n\n{{\"H: Sentence Coordination\"}}\n\n{{\"I: Both Sentence Coordination\
-      \ and Anaphora\"}}\n\n{{\"J: Forward Connectives\"}}\n\n{{\"K: Discourse Connectives\"\
-      }}\n\n{{\"L: Both Discourse Connectives and Anaphora\"}}\n\nAnswer with both\
-      \ the option letter and phenomena name.\n|||\n\n{{\n{\"PAIR_ANAPHORA\": \"E\"\
-      ,\n\"PAIR_CONN\": \"K\", \n\"PAIR_CONN_ANAPHORA\": \"L\",\n\"SINGLE_APPOSITION\"\
-      : \"A\",\n\"SINGLE_CATAPHORA\": \"C\",\n\"SINGLE_CONN_INNER\": \"F\",\n\"SINGLE_CONN_INNER_ANAPHORA\"\
-      : \"G\",\n\"SINGLE_CONN_START\": \"J\",\n\"SINGLE_RELATIVE\": \"B\",\n\"SINGLE_S_COORD\"\
-      :\"H\",\n\"SINGLE_S_COORD_ANAPHORA\": \"I\",\n\"SINGLE_VP_COORD\": \"D\"\n}[discourse_type]\n\
-      }}\n\n\n{% endif %}\n"
+      \nWhich of the following discourse phenomenon have been used to turn Passage\
+      \ 1 into Passage 2?\n\n{% for lab in answer_choices %}\n{{ loop.index }}: {{\
+      \ lab }}\n{% endfor %}\n  \n |||\n\n{{ answer_choices[poss_ans_list.index(discourse_type)]\
+      \ }}\n\n{% endif %}"
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
+      - AUC
       original_task: false
-    name: Grammar detection
+    name: grammar_detection_bottom
     reference: ''
