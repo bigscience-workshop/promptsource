@@ -16,11 +16,12 @@ templates:
 
       {{ (((10*ave_f) | round )/10) }}'
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
-      original_task: false
+      choices_in_prompt: false
+      metrics:
+      - Other
+      original_task: true
     name: fluency
-    reference: ''
+    reference: The metric is a regression task metric.
   2b712291-0629-4499-86cc-566ee7376271: !Template
     answer_choices: null
     id: 2b712291-0629-4499-86cc-566ee7376271
@@ -37,11 +38,12 @@ templates:
 
       {{ (((10*ave_g) | round )/10) }}'
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
-      original_task: false
+      choices_in_prompt: false
+      metrics:
+      - Other
+      original_task: true
     name: grammar
-    reference: ''
+    reference: The metric is a regression task metric.
   30a17c4d-2bee-450c-b921-9b748ae87c93: !Template
     answer_choices: null
     id: 30a17c4d-2bee-450c-b921-9b748ae87c93
@@ -55,8 +57,10 @@ templates:
 
       {{output}}'
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      - ROUGE
       original_task: false
     name: correct-sentence
     reference: ''
@@ -76,11 +80,12 @@ templates:
 
       {{ (((10*ave_m) | round )/10) }}'
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
-      original_task: false
+      choices_in_prompt: false
+      metrics:
+      - Other
+      original_task: true
     name: meaning
-    reference: ''
+    reference: The metric is a regression task metric.
   c8347303-bfcd-4fe5-b085-dee46045850c: !Template
     answer_choices: null
     id: c8347303-bfcd-4fe5-b085-dee46045850c
@@ -95,22 +100,25 @@ templates:
 
       Question: Sentence B is an improved version of Sentence A. How would you rate
       the improvement on a scale from 0 to 4, with respect to grammaticality,  fluency,
-      and meaning preservation, respectively?
+      and meaning preservation, respectively? Please give an answer with three numbers
+      separated by commas.
 
       |||
 
       {{ (((10*ave_g) | round )/10) }}, {{ (((10*ave_f) | round )/10) }}, and {{ (((10*ave_m)
       | round )/10) }}.'
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
+      choices_in_prompt: false
+      metrics:
+      - Other
       original_task: true
     name: grammar-fluency-meaning
-    reference: ''
+    reference: The metric is a regression task metric.
   ebb2956b-25eb-4a66-ba23-569ccf9b8675: !Template
-    answer_choices: null
+    answer_choices: Sentence A ||| Sentence B
     id: ebb2956b-25eb-4a66-ba23-569ccf9b8675
-    jinja: 'Which one of the following two sentences is written better?
+    jinja: 'Which one of the following two sentences is written better? Your answer
+      should be either "Sentence A" or "Sentence B".
 
       {% if range(0,2) | choice %}
 
@@ -136,8 +144,9 @@ templates:
 
       {% endif %}'
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
       original_task: false
     name: choose-better
     reference: ''
