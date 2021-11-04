@@ -3,34 +3,42 @@ templates:
   58d1370e-3fc0-4b96-9e74-950b7c3edfd9: !Template
     answer_choices: null
     id: 58d1370e-3fc0-4b96-9e74-950b7c3edfd9
-    jinja: 'Simplify the below sentence.
+    jinja: '{% set real_simplifications = [] %}{% for text in simplifications %}{%
+      if text|length < original|length %}{% set tmp = real_simplifications.append(text)
+      %}{% endif %}{% endfor %}
+
+      Simplify the below sentence.
 
 
       {{original}}
 
       |||
 
-      {{simplifications | choice}}'
+      {{real_simplifications | choice}}'
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
       - BLEU
       - ROUGE
       original_task: true
-    name: simplification
+    name: simplify
     reference: This is not the original task, since the original task is the analysis
       of simplification, not the simplification itself.
   da3fb228-7383-497f-936c-9bcbcd0d057b: !Template
     answer_choices: Text A ||| Text B
     id: da3fb228-7383-497f-936c-9bcbcd0d057b
-    jinja: 'Read the below two texts and answer the question.
+    jinja: '{% set real_simplifications = [] %}{% for text in simplifications %}{%
+      if text|length < original|length %}{% set tmp = real_simplifications.append(text)
+      %}{% endif %}{% endfor %}
+
+      Read the below two texts and answer the question.
 
       {% if range(0,2) | choice %}
 
       Text A: {{original}}
 
 
-      Text B: {{simplifications | choice }}
+      Text B: {{real_simplifications | choice }}
 
 
       One of the texts above is more verbose than the other. Which one is the verbose
@@ -42,7 +50,7 @@ templates:
 
       {% else %}
 
-      Text A: {{simplifications | choice }}
+      Text A: {{real_simplifications | choice }}
 
 
       Text B: {{original}}
@@ -66,10 +74,14 @@ templates:
   dc853532-e948-443b-bae1-3ebb968bc7c5: !Template
     answer_choices: null
     id: dc853532-e948-443b-bae1-3ebb968bc7c5
-    jinja: 'Make the following sentence more verbose.
+    jinja: '{% set real_simplifications = [] %}{% for text in simplifications %}{%
+      if text|length < original|length %}{% set tmp = real_simplifications.append(text)
+      %}{% endif %}{% endfor %}
+
+      Make the following sentence more verbose.
 
 
-      {{simplifications | choice}}
+      {{real_simplifications | choice}}
 
       |||
 
@@ -85,12 +97,16 @@ templates:
   ec70cd03-8282-4e45-957f-927c60254ad4: !Template
     answer_choices: Text A ||| Text B
     id: ec70cd03-8282-4e45-957f-927c60254ad4
-    jinja: '{% if range(0,2) | choice %}
+    jinja: '{% set real_simplifications = [] %}{% for text in simplifications %}{%
+      if text|length < original|length %}{% set tmp = real_simplifications.append(text)
+      %}{% endif %}{% endfor %}
+
+      {% if range(0,2) | choice %}
 
       Text A: {{original}}
 
 
-      Text B: {{simplifications | choice }}
+      Text B: {{real_simplifications | choice }}
 
 
       One of the texts above is a simplification of the other. Which one is the simplified
@@ -102,7 +118,7 @@ templates:
 
       {% else %}
 
-      Text A: {{simplifications | choice }}
+      Text A: {{real_simplifications | choice }}
 
 
       Text B: {{original}}
