@@ -4,36 +4,36 @@ templates:
     answer_choices: null
     id: 02af700c-e9e9-4a84-b75c-5fb29a5b7993
     jinja: "Read the following text and answer the question.\n\nText: {% for sent\
-      \ in sents -%}\n{{ sent | join(\" \") }}\n{%- endfor %} \n\nQuestion: From the\
-      \ above text, find people, locations, organizations, times, numbers, and miscellaneous.\n\
-      \nYou should answer the question in the following way:\n\nPeople: a list of\
-      \ people separated with commas\n\nLocations: a list of locations separated with\
-      \ commas\n\nOrganizations: a list of organizations separated with commas\n\n\
-      Times: a list of times separated with commas\n\nNumbers: a list of numbers separated\
-      \ with commas\n\nMiscellaneous: a list of miscellaneous items separated by commas\n\
-      |||\n{%- set people = [] -%} \n{%- for ners in vertexSet -%}\n{%- for ner in\
-      \ ners if ner['type'] == 'PER' -%}\n{{people.append(ner['name']) | default(\"\
-      \", True)}}\n{%- endfor -%}\n{%- endfor -%}\n{% if people %}\n{{\"People: \"\
-      }}{{ people | unique | join(\", \")}}{{\".\"}}\n{% endif %}\n\n{%- set locations\
-      \ = [] -%} \n{%- for ners in vertexSet -%}\n{%- for ner in ners if ner['type']\
-      \ == 'LOC' -%}\n{{locations.append(ner['name']) | default(\"\", True)}}\n{%-\
-      \ endfor -%}\n{%- endfor -%}\n{% if locations %}\n{{\"Locations: \"}}{{ locations\
-      \ | unique | join(\", \")}}{{\".\"}}\n{% endif %}\n\n{%- set orgs = [] -%} \n\
-      {%- for ners in vertexSet -%}\n{%- for ner in ners if ner['type'] == 'ORG' -%}\n\
-      {{orgs.append(ner['name']) | default(\"\", True)}}\n{%- endfor -%}\n{%- endfor\
-      \ -%}\n{% if orgs %}\n{{\"Organizations: \"}}{{ orgs | unique | join(\", \"\
-      )}}{{\".\"}}\n{% endif %}\n\n{%- set times = [] -%} \n{%- for ners in vertexSet\
-      \ -%}\n{%- for ner in ners if ner['type'] == 'TIME' -%}\n{{times.append(ner['name'])\
-      \ | default(\"\", True)}}\n{%- endfor -%}\n{%- endfor -%}\n{% if times %}\n\
-      {{\"Times: \"}}{{ times | unique | join(\", \")}}{{\".\"}}\n{% endif %}\n\n\
-      {%- set numbers = [] -%} \n{%- for ners in vertexSet -%}\n{%- for ner in ners\
-      \ if ner['type'] == 'NUM' -%}\n{{numbers.append(ner['name']) | default(\"\"\
-      , True)}}\n{%- endfor -%}\n{%- endfor -%}\n{% if numbers %}\n{{\"Numbers: \"\
-      }}{{ numbers | unique | join(\", \")}}{{\".\"}}\n{% endif %}\n\n{%- set miscs\
-      \ = [] -%} \n{%- for ners in vertexSet -%}\n{%- for ner in ners if ner['type']\
-      \ == 'MISC' -%}\n{{miscs.append(ner['name']) | default(\"\", True)}}\n{%- endfor\
-      \ -%}\n{%- endfor -%}\n{% if miscs %}\n{{\"Miscellaneous: \"}}{{ miscs | unique\
-      \ | join(\", \")}}{{\".\"}}\n{% endif %}"
+      \ in sents -%}\n{{ sent | join(\" \") }}{{\" \"}}\n{%- endfor %} \n\nQuestion:\
+      \ From the above text, find people, locations, organizations, times, numbers,\
+      \ and miscellaneous.\n\nYou should answer the question in the following way:\n\
+      \nPeople: a list of people separated with commas\n\nLocations: a list of locations\
+      \ separated with commas\n\nOrganizations: a list of organizations separated\
+      \ with commas\n\nTimes: a list of times separated with commas\n\nNumbers: a\
+      \ list of numbers separated with commas\n\nMiscellaneous: a list of miscellaneous\
+      \ items separated by commas\n|||\n{%- set people = [] -%} \n{%- for ners in\
+      \ vertexSet -%}\n{%- for ner in ners if ner['type'] == 'PER' -%}\n{{people.append(ner['name'])\
+      \ | default(\"\", True)}}\n{%- endfor -%}\n{%- endfor -%}\n{% if people %}\n\
+      {{\"People: \"}}{{ people | unique | join(\", \")}}{{\".\"}}\n{% endif %}\n\n\
+      {%- set locations = [] -%} \n{%- for ners in vertexSet -%}\n{%- for ner in ners\
+      \ if ner['type'] == 'LOC' -%}\n{{locations.append(ner['name']) | default(\"\"\
+      , True)}}\n{%- endfor -%}\n{%- endfor -%}\n{% if locations %}\n{{\"Locations:\
+      \ \"}}{{ locations | unique | join(\", \")}}{{\".\"}}\n{% endif %}\n\n{%- set\
+      \ orgs = [] -%} \n{%- for ners in vertexSet -%}\n{%- for ner in ners if ner['type']\
+      \ == 'ORG' -%}\n{{orgs.append(ner['name']) | default(\"\", True)}}\n{%- endfor\
+      \ -%}\n{%- endfor -%}\n{% if orgs %}\n{{\"Organizations: \"}}{{ orgs | unique\
+      \ | join(\", \")}}{{\".\"}}\n{% endif %}\n\n{%- set times = [] -%} \n{%- for\
+      \ ners in vertexSet -%}\n{%- for ner in ners if ner['type'] == 'TIME' -%}\n\
+      {{times.append(ner['name']) | default(\"\", True)}}\n{%- endfor -%}\n{%- endfor\
+      \ -%}\n{% if times %}\n{{\"Times: \"}}{{ times | unique | join(\", \")}}{{\"\
+      .\"}}\n{% endif %}\n\n{%- set numbers = [] -%} \n{%- for ners in vertexSet -%}\n\
+      {%- for ner in ners if ner['type'] == 'NUM' -%}\n{{numbers.append(ner['name'])\
+      \ | default(\"\", True)}}\n{%- endfor -%}\n{%- endfor -%}\n{% if numbers %}\n\
+      {{\"Numbers: \"}}{{ numbers | unique | join(\", \")}}{{\".\"}}\n{% endif %}\n\
+      \n{%- set miscs = [] -%} \n{%- for ners in vertexSet -%}\n{%- for ner in ners\
+      \ if ner['type'] == 'MISC' -%}\n{{miscs.append(ner['name']) | default(\"\",\
+      \ True)}}\n{%- endfor -%}\n{%- endfor -%}\n{% if miscs %}\n{{\"Miscellaneous:\
+      \ \"}}{{ miscs | unique | join(\", \")}}{{\".\"}}\n{% endif %}"
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
@@ -49,12 +49,12 @@ templates:
       \ -%}\n{%- for ner in ners if ner['name'] not in names -%}\n{{ names.append(ner['name'])\
       \ | default(\"\", True) }}\n{{ types.append(ner['type']) | default(\"\", True)\
       \ }}\n{%- endfor -%}\n{%- endfor -%}\nRead the following text and answer the\
-      \ question.\n\nText: {% for sent in sents -%}\n{{ sent | join(\" \") }}\n{%-\
-      \ endfor %}                                                                \
-      \            \n                                                            \
-      \       \nQuestion: Assign an entity type to the following entities. \n\nEntities:\
-      \ {{ names | join(\", \")}}{{\".\"}}\n\nThe choices are PER (Person), LOC (Location),\
-      \ ORG (Organization), TIME (Time), NUM (Number), and MISC (Miscellaneous).\n\
+      \ question.\n\nText: {% for sent in sents -%}\n{{ sent | join(\" \") }}{{\"\
+      \ \"}}\n{%- endfor %}                                                      \
+      \                      \n                                                  \
+      \                 \nQuestion: Assign an entity type to the following entities.\
+      \ \n\nEntities: {{ names | join(\", \")}}{{\".\"}}\n\nThe choices are PER (Person),\
+      \ LOC (Location), ORG (Organization), TIME (Time), NUM (Number), and MISC (Miscellaneous).\n\
       |||                                                                        \
       \              \n{% for name, type in zip(names, types) -%}\n{{name}}{{\": \"\
       }}{{type}}\n{% endfor %}"
@@ -73,8 +73,8 @@ templates:
       \ in ners if ner['type'] == 'LOC' -%}\n{{locations.append(ner['name']) | default(\"\
       \", True)}}\n{%- endfor -%}\n{%- endfor -%}\n{% if locations %}\nFind all of\
       \ the locations in the text below. Please list all of them separated by commas.\n\
-      \n{% for sent in sents -%}\n{{ sent | join(\" \") }}\n{%- endfor -%} \n|||\n\
-      {{ locations| unique | join(\", \")}}{{\".\"}}\n{% endif %}"
+      \n{% for sent in sents -%}\n{{ sent | join(\" \") }}{{\" \"}}\n{%- endfor -%}\
+      \ \n|||\n{{ locations| unique | join(\", \")}}{{\".\"}}\n{% endif %}"
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
@@ -90,9 +90,9 @@ templates:
       \ ner in ners if ner['type'] == 'ORG' -%}\n{{organizations.append(ner['name'])\
       \ | default(\"\", True)}}\n{%- endfor -%}\n{%- endfor -%}\n{% if organizations\
       \ %}\nFind all of the organizations in the text below. Please list all of them\
-      \ separated by commas.\n\n{% for sent in sents -%}\n{{ sent | join(\" \") }}\n\
-      {%- endfor -%} \n|||\n{{ organizations| unique | join(\", \")}}{{\".\"}}\n{%\
-      \ endif %}"
+      \ separated by commas.\n\n{% for sent in sents -%}\n{{ sent | join(\" \") }}{{\"\
+      \ \"}}\n{%- endfor -%} \n|||\n{{ organizations| unique | join(\", \")}}{{\"\
+      .\"}}\n{% endif %}"
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
@@ -110,7 +110,7 @@ templates:
       \n{% for  head, tail, relation in zip(labels['head'], labels['tail'], labels['relation_text'])\
       \ %}\nhead: {{vertexSet[head][0]['name']}}, tail: {{vertexSet[tail][0]['name']}},\
       \ relation: {{relation}}\n{% endfor %}\n|||\n{% for sent in sents -%}\n{{ sent\
-      \ | join(\" \") }}\n{%- endfor -%} \n{% endif %}"
+      \ | join(\" \") }}{{\" \"}}\n{%- endfor -%} \n{% endif %}"
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
@@ -129,7 +129,8 @@ templates:
       \ types, make a creative text. The types are PER (Person), LOC (Location), ORG\
       \ (Organization), TIME (Time), NUM (Number), and MISC (Miscellaneous).\n\n{%\
       \ for name, type in zip(names, types) -%}\n{{name}}{{\": \"}}{{type}}\n{% endfor\
-      \ %}\n|||\n{% for sent in sents -%}\n{{ sent | join(\" \") }}\n{%- endfor -%} "
+      \ %}\n|||\n{% for sent in sents -%}\n{{ sent | join(\" \") }}{{\" \"}}\n{%-\
+      \ endfor -%} "
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
@@ -145,8 +146,8 @@ templates:
       \ ners if ner['type'] == 'TIME' -%}\n{{times.append(ner['name']) | default(\"\
       \", True)}}\n{%- endfor -%}\n{%- endfor -%}\n{% if times %}\nFind all of the\
       \ times in the text below. Please list all of them separated by commas.\n\n\
-      {% for sent in sents -%}\n{{ sent | join(\" \") }}\n{%- endfor -%} \n|||\n{{\
-      \ times| unique | join(\", \")}}{{\".\"}}\n{% endif %}"
+      {% for sent in sents -%}\n{{ sent | join(\" \") }}{{\" \"}}\n{%- endfor -%}\
+      \ \n|||\n{{ times| unique | join(\", \")}}{{\".\"}}\n{% endif %}"
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
@@ -162,8 +163,8 @@ templates:
       \ ners if ner['type'] == 'PER' -%}\n{{people.append(ner['name']) | default(\"\
       \", True)}}\n{%- endfor -%}\n{%- endfor -%}\n{% if people %}\nFind all of the\
       \ people in the text below. Please list all of them separated by commas.\n\n\
-      {% for sent in sents -%}\n{{ sent | join(\" \") }}\n{%- endfor -%} \n|||\n{{\
-      \ people| unique | join(\", \")}}{{\".\"}}\n{% endif %}"
+      {% for sent in sents -%}\n{{ sent | join(\" \") }}{{\" \"}}\n{%- endfor -%}\
+      \ \n|||\n{{ people| unique | join(\", \")}}{{\".\"}}\n{% endif %}"
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
@@ -176,10 +177,10 @@ templates:
     answer_choices: null
     id: 9effc9d0-bf50-4dbb-9813-02a021e8da33
     jinja: "{% if labels['relation_text'] %}\nRead the following text and answer the\
-      \ question.\n\nText:\n{%- for sent in sents -%}\n{{ sent | join(\" \") }}\n\
-      {%- endfor %} \n\nQuestion: Find the named entities (i.e., heads and tails)\
-      \ above and their relationships.\n|||\n{% for  head, tail, relation in zip(labels['head'],\
-      \ labels['tail'], labels['relation_text']) %}\nhead: {{vertexSet[head][0]['name']}},\
+      \ question.\n\nText:\n{%- for sent in sents -%}\n{{ sent | join(\" \") }}{{\"\
+      \ \"}}\n{%- endfor %} \n\nQuestion: Find the named entities (i.e., heads and\
+      \ tails) above and their relationships.\n|||\n{% for  head, tail, relation in\
+      \ zip(labels['head'], labels['tail'], labels['relation_text']) %}\nhead: {{vertexSet[head][0]['name']}},\
       \ tail: {{vertexSet[tail][0]['name']}}, relation: {{relation}}\n{% endfor %}\n\
       {% endif %}"
     metadata: !TemplateMetadata
@@ -198,8 +199,8 @@ templates:
       \", True)}}\n{%- endfor -%}\n{%- endfor -%}\n{% if numbers %}\nFind all of the\
       \ numbers in the text below. Please do not include years and also list all of\
       \ them separated by commas.\n\n{% for sent in sents -%}\n{{ sent | join(\" \"\
-      ) }}\n{%- endfor -%} \n|||\n{{ numbers| unique | join(\", \")}}{{\".\"}}\n{%\
-      \ endif %}"
+      ) }}{{\" \"}}\n{%- endfor -%} \n|||\n{{ numbers| unique | join(\", \")}}{{\"\
+      .\"}}\n{% endif %}"
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
