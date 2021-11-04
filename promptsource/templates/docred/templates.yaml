@@ -3,69 +3,69 @@ templates:
   02af700c-e9e9-4a84-b75c-5fb29a5b7993: !Template
     answer_choices: null
     id: 02af700c-e9e9-4a84-b75c-5fb29a5b7993
-    jinja: "Read the following text and answer the questions.\n\nText:\n{% for sent\
-      \ in sents -%}\n{{ sent | join(\" \") }}\n{%- endfor %} \n\nQuestion:\nFrom\
-      \ the above text, find people, locations, organizations, times, numbers, and\
-      \ miscellaneous.\n\nYou should answer the question in the following way:\n\n\
-      People: a list of people separated with commas\n\nLocations: a list of locations\
-      \ separated with commas\n\nOrganizations: a list of organizations separated\
-      \ with commas\n\nTimes: a list of times separated with commas\n\nNumbers: a\
-      \ list of numbers separated with commas\n\nMiscellaneous: a list of miscellaneous\
-      \ items separated by commas\n|||\n{%- set people = [] -%} \n{%- for ners in\
-      \ vertexSet -%}\n{%- for ner in ners if ner['type'] == 'PER' -%}\n{{people.append(ner['name'])\
-      \ | default(\"\", True)}}\n{%- endfor -%}\n{%- endfor -%}\n{% if people %}\n\
-      {{\"People: \"}}{{ people | unique | join(\", \")}}{{\".\"}}\n{% endif %}\n\n\
-      {%- set locations = [] -%} \n{%- for ners in vertexSet -%}\n{%- for ner in ners\
-      \ if ner['type'] == 'LOC' -%}\n{{locations.append(ner['name']) | default(\"\"\
-      , True)}}\n{%- endfor -%}\n{%- endfor -%}\n{% if locations %}\n{{\"Locations:\
-      \ \"}}{{ locations | unique | join(\", \")}}{{\".\"}}\n{% endif %}\n\n{%- set\
-      \ orgs = [] -%} \n{%- for ners in vertexSet -%}\n{%- for ner in ners if ner['type']\
-      \ == 'ORG' -%}\n{{orgs.append(ner['name']) | default(\"\", True)}}\n{%- endfor\
-      \ -%}\n{%- endfor -%}\n{% if orgs %}\n{{\"Organizations: \"}}{{ orgs | unique\
-      \ | join(\", \")}}{{\".\"}}\n{% endif %}\n\n{%- set times = [] -%} \n{%- for\
-      \ ners in vertexSet -%}\n{%- for ner in ners if ner['type'] == 'TIME' -%}\n\
-      {{times.append(ner['name']) | default(\"\", True)}}\n{%- endfor -%}\n{%- endfor\
-      \ -%}\n{% if times %}\n{{\"Times: \"}}{{ times | unique | join(\", \")}}{{\"\
-      .\"}}\n{% endif %}\n\n{%- set numbers = [] -%} \n{%- for ners in vertexSet -%}\n\
-      {%- for ner in ners if ner['type'] == 'NUM' -%}\n{{numbers.append(ner['name'])\
-      \ | default(\"\", True)}}\n{%- endfor -%}\n{%- endfor -%}\n{% if numbers %}\n\
-      {{\"Numbers: \"}}{{ numbers | unique | join(\", \")}}{{\".\"}}\n{% endif %}\n\
-      \n{%- set miscs = [] -%} \n{%- for ners in vertexSet -%}\n{%- for ner in ners\
-      \ if ner['type'] == 'MISC' -%}\n{{miscs.append(ner['name']) | default(\"\",\
-      \ True)}}\n{%- endfor -%}\n{%- endfor -%}\n{% if miscs %}\n{{\"Miscellaneous:\
-      \ \"}}{{ miscs | unique | join(\", \")}}{{\".\"}}\n{% endif %}"
+    jinja: "Read the following text and answer the question.\n\nText: {% for sent\
+      \ in sents -%}\n{{ sent | join(\" \") }}\n{%- endfor %} \n\nQuestion: From the\
+      \ above text, find people, locations, organizations, times, numbers, and miscellaneous.\n\
+      \nYou should answer the question in the following way:\n\nPeople: a list of\
+      \ people separated with commas\n\nLocations: a list of locations separated with\
+      \ commas\n\nOrganizations: a list of organizations separated with commas\n\n\
+      Times: a list of times separated with commas\n\nNumbers: a list of numbers separated\
+      \ with commas\n\nMiscellaneous: a list of miscellaneous items separated by commas\n\
+      |||\n{%- set people = [] -%} \n{%- for ners in vertexSet -%}\n{%- for ner in\
+      \ ners if ner['type'] == 'PER' -%}\n{{people.append(ner['name']) | default(\"\
+      \", True)}}\n{%- endfor -%}\n{%- endfor -%}\n{% if people %}\n{{\"People: \"\
+      }}{{ people | unique | join(\", \")}}{{\".\"}}\n{% endif %}\n\n{%- set locations\
+      \ = [] -%} \n{%- for ners in vertexSet -%}\n{%- for ner in ners if ner['type']\
+      \ == 'LOC' -%}\n{{locations.append(ner['name']) | default(\"\", True)}}\n{%-\
+      \ endfor -%}\n{%- endfor -%}\n{% if locations %}\n{{\"Locations: \"}}{{ locations\
+      \ | unique | join(\", \")}}{{\".\"}}\n{% endif %}\n\n{%- set orgs = [] -%} \n\
+      {%- for ners in vertexSet -%}\n{%- for ner in ners if ner['type'] == 'ORG' -%}\n\
+      {{orgs.append(ner['name']) | default(\"\", True)}}\n{%- endfor -%}\n{%- endfor\
+      \ -%}\n{% if orgs %}\n{{\"Organizations: \"}}{{ orgs | unique | join(\", \"\
+      )}}{{\".\"}}\n{% endif %}\n\n{%- set times = [] -%} \n{%- for ners in vertexSet\
+      \ -%}\n{%- for ner in ners if ner['type'] == 'TIME' -%}\n{{times.append(ner['name'])\
+      \ | default(\"\", True)}}\n{%- endfor -%}\n{%- endfor -%}\n{% if times %}\n\
+      {{\"Times: \"}}{{ times | unique | join(\", \")}}{{\".\"}}\n{% endif %}\n\n\
+      {%- set numbers = [] -%} \n{%- for ners in vertexSet -%}\n{%- for ner in ners\
+      \ if ner['type'] == 'NUM' -%}\n{{numbers.append(ner['name']) | default(\"\"\
+      , True)}}\n{%- endfor -%}\n{%- endfor -%}\n{% if numbers %}\n{{\"Numbers: \"\
+      }}{{ numbers | unique | join(\", \")}}{{\".\"}}\n{% endif %}\n\n{%- set miscs\
+      \ = [] -%} \n{%- for ners in vertexSet -%}\n{%- for ner in ners if ner['type']\
+      \ == 'MISC' -%}\n{{miscs.append(ner['name']) | default(\"\", True)}}\n{%- endfor\
+      \ -%}\n{%- endfor -%}\n{% if miscs %}\n{{\"Miscellaneous: \"}}{{ miscs | unique\
+      \ | join(\", \")}}{{\".\"}}\n{% endif %}"
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
-      - Accuracy
+      - Other
       original_task: false
     name: type-to-entity
-    reference: ''
+    reference: The metric is set to Other, not Accuracy, because it requires parsing
+      the output and counting individual matches.
   3ab9cfc9-3ba3-41dd-959c-60182def11af: !Template
-    answer_choices: PER ||| LOC ||| ORG ||| TIME ||| NUM ||| MISC
+    answer_choices: null
     id: 3ab9cfc9-3ba3-41dd-959c-60182def11af
-    jinja: "Read the following text and answer the questions.\n\nText:\n{% for sent\
-      \ in sents -%}\n{{ sent | join(\" \") }}\n{%- endfor %} \n\nQuestion:\nAssign\
-      \ an entity type to the following entities. The choices are PER (Person), LOC\
-      \ (Location), ORG (Organization), TIME (Time), NUM (Number), and MISC (Miscellaneous).\n\
-      \nExample: \n{%- set names = [] -%}\n{%- set types = [] -%}\n{% for ners in\
-      \ vertexSet[:1] %}\n{% for ner in ners if ner['name'] not in names %}\n{{ names.append(ner['name'])\
-      \ | default(\"\", True) }} \n{{ types.append(ner['type']) | default(\"\", True)\
-      \ }} \n{% endfor %}\n{% endfor %}\n{% for name, type in zip(names, types) %}\n\
-      {{name}}{{\": \"}}{{type}}\n{% endfor %}\n\nNow do the same with below:\n\n\
-      {%- set names = [] -%}\n{%- set types = [] -%}\n{% for ners in vertexSet[1:]\
-      \ %}\n{% for ner in ners if ner['name'] not in names %}\n{{ names.append(ner['name'])\
-      \ | default(\"\", True) }} \n{{ types.append(ner['type']) | default(\"\", True)\
-      \ }} \n{% endfor %}\n{% endfor %}\n{% for name, type in zip(names, types) %}\n\
-      {{name}}{{\": \"}}\n{% endfor %}\n|||\n{% for name, type in zip(names, types)\
-      \ %}\n{{name}}{{\": \"}}{{type}}\n{% endfor %}"
+    jinja: "{%- set names = [] -%}\n{%- set types = [] -%}\n{%- for ners in vertexSet\
+      \ -%}\n{%- for ner in ners if ner['name'] not in names -%}\n{{ names.append(ner['name'])\
+      \ | default(\"\", True) }}\n{{ types.append(ner['type']) | default(\"\", True)\
+      \ }}\n{%- endfor -%}\n{%- endfor -%}\nRead the following text and answer the\
+      \ question.\n\nText: {% for sent in sents -%}\n{{ sent | join(\" \") }}\n{%-\
+      \ endfor %}                                                                \
+      \            \n                                                            \
+      \       \nQuestion: Assign an entity type to the following entities. \n\nEntities:\
+      \ {{ names | join(\", \")}}{{\".\"}}\n\nThe choices are PER (Person), LOC (Location),\
+      \ ORG (Organization), TIME (Time), NUM (Number), and MISC (Miscellaneous).\n\
+      |||                                                                        \
+      \              \n{% for name, type in zip(names, types) -%}\n{{name}}{{\": \"\
+      }}{{type}}\n{% endfor %}"
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
-      - Accuracy
+      - Other
       original_task: false
     name: ner-type
-    reference: ''
+    reference: The metric is set to Other, not Accuracy, because it requires parsing
+      the output and counting individual matches.
   412b482e-185b-48da-8aef-4a93a42e779d: !Template
     answer_choices: null
     id: 412b482e-185b-48da-8aef-4a93a42e779d
@@ -78,10 +78,11 @@ templates:
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
-      - Accuracy
+      - Other
       original_task: false
     name: find-all-locations
-    reference: ''
+    reference: The metric is set to Other, not Accuracy, because it requires parsing
+      the output and counting individual matches.
   5361a8ba-8ced-4417-be21-ba13fa319e9f: !Template
     answer_choices: null
     id: 5361a8ba-8ced-4417-be21-ba13fa319e9f
@@ -95,18 +96,19 @@ templates:
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
-      - Accuracy
+      - Other
       original_task: false
     name: find-all-organizations
-    reference: ''
+    reference: The metric is set to Other, not Accuracy, because it requires parsing
+      the output and counting individual matches.
   6efa4d1a-3368-4b12-9e30-588b53801077: !Template
     answer_choices: null
     id: 6efa4d1a-3368-4b12-9e30-588b53801077
-    jinja: "{% if labels['relation_text'] %}\nGiven the following entities and relations,\
-      \ make a creative text. The types are PER (Person), LOC (Location), ORG (Organization),\
-      \ TIME (Time), NUM (Number), and MISC (Miscellaneous).\n\n{% for  head, tail,\
-      \ relation in zip(labels['head'], labels['tail'], labels['relation_text']) %}\n\
-      head: {{vertexSet[head][0]['name']}}, tail: {{vertexSet[tail][0]['name']}},\
+    jinja: "{% if labels['relation_text'] %}\nGiven the following entities (i.e.,\
+      \ heads and tails) and relations, make a creative text. The types are PER (Person),\
+      \ LOC (Location), ORG (Organization), TIME (Time), NUM (Number), and MISC (Miscellaneous).\n\
+      \n{% for  head, tail, relation in zip(labels['head'], labels['tail'], labels['relation_text'])\
+      \ %}\nhead: {{vertexSet[head][0]['name']}}, tail: {{vertexSet[tail][0]['name']}},\
       \ relation: {{relation}}\n{% endfor %}\n|||\n{% for sent in sents -%}\n{{ sent\
       \ | join(\" \") }}\n{%- endfor -%} \n{% endif %}"
     metadata: !TemplateMetadata
@@ -115,19 +117,19 @@ templates:
       - BLEU
       - ROUGE
       original_task: false
-    name: relation-to-text
+    name: entity-and-relation-to-text
     reference: ''
   7458c4ed-b527-4ad5-8a04-7c87d887d5e6: !Template
     answer_choices: null
     id: 7458c4ed-b527-4ad5-8a04-7c87d887d5e6
-    jinja: "Given the following entities and their types, make a creative text. The\
-      \ types are PER (Person), LOC (Location), ORG (Organization), TIME (Time), NUM\
-      \ (Number), and MISC (Miscellaneous).\n\n{%- set names = [] -%}\n{%- set types\
-      \ = [] -%}\n{% for ners in vertexSet %}\n{% for ner in ners if ner['name'] not\
-      \ in names %}\n{{ names.append(ner['name']) | default(\"\", True) }} \n{{ types.append(ner['type'])\
-      \ | default(\"\", True) }} \n{% endfor %}\n{% endfor %}\n{% for name, type in\
-      \ zip(names, types) %}\n{{name}}{{\": \"}}{{type}}\n{% endfor %}\n|||\n{% for\
-      \ sent in sents -%}\n{{ sent | join(\" \") }}\n{%- endfor -%} "
+    jinja: "{%- set names = [] -%}\n{%- set types = [] -%}\n{%- for ners in vertexSet\
+      \ -%}\n{%- for ner in ners if ner['name'] not in names -%}\n{{ names.append(ner['name'])\
+      \ | default(\"\", True) }} \n{{ types.append(ner['type']) | default(\"\", True)\
+      \ }} \n{%- endfor -%}\n{%- endfor -%}\nGiven the following entities and their\
+      \ types, make a creative text. The types are PER (Person), LOC (Location), ORG\
+      \ (Organization), TIME (Time), NUM (Number), and MISC (Miscellaneous).\n\n{%\
+      \ for name, type in zip(names, types) -%}\n{{name}}{{\": \"}}{{type}}\n{% endfor\
+      \ %}\n|||\n{% for sent in sents -%}\n{{ sent | join(\" \") }}\n{%- endfor -%} "
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
@@ -148,10 +150,11 @@ templates:
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
-      - Accuracy
+      - Other
       original_task: false
     name: find-all-times
-    reference: ''
+    reference: The metric is set to Other, not Accuracy, because it requires parsing
+      the output and counting individual matches.
   9ca601e9-bf97-4fba-90c9-ca502247d034: !Template
     answer_choices: null
     id: 9ca601e9-bf97-4fba-90c9-ca502247d034
@@ -164,30 +167,29 @@ templates:
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
-      - Accuracy
+      - Other
       original_task: false
     name: find-all-people
-    reference: ''
+    reference: The metric is set to Other, not Accuracy, because it requires parsing
+      the output and counting individual matches.
   9effc9d0-bf50-4dbb-9813-02a021e8da33: !Template
     answer_choices: null
     id: 9effc9d0-bf50-4dbb-9813-02a021e8da33
-    jinja: "{% if labels['relation_text'] %}\n\nRead the following text and answer\
-      \ the questions.\n\nText:\n{%- for sent in sents -%}\n{{ sent | join(\" \")\
-      \ }}\n{%- endfor -%} \n\nQuestion: Find the named entities above and their relationships.\n\
-      \n{{\"For example, \"}}\n\n{% for  head, tail, relation in zip(labels['head'][:1],\
-      \ labels['tail'][:1], labels['relation_text'][:1]) -%}\nhead: {{vertexSet[head][0]['name']}},\
-      \ tail: {{vertexSet[tail][0]['name']}}, relation: {{relation}}\n{%- endfor -%}\n\
-      {{\".\"}}\n|||\n{% for  head, tail, relation in zip(labels['head'][1:], labels['tail'][1:],\
-      \ labels['relation_text'][1:]) %}\nhead: {{vertexSet[head][0]['name']}}, tail:\
-      \ {{vertexSet[tail][0]['name']}}, relation: {{relation}}\n{% endfor %}\n{% endif\
-      \ %}"
+    jinja: "{% if labels['relation_text'] %}\nRead the following text and answer the\
+      \ question.\n\nText:\n{%- for sent in sents -%}\n{{ sent | join(\" \") }}\n\
+      {%- endfor %} \n\nQuestion: Find the named entities (i.e., heads and tails)\
+      \ above and their relationships.\n|||\n{% for  head, tail, relation in zip(labels['head'],\
+      \ labels['tail'], labels['relation_text']) %}\nhead: {{vertexSet[head][0]['name']}},\
+      \ tail: {{vertexSet[tail][0]['name']}}, relation: {{relation}}\n{% endfor %}\n\
+      {% endif %}"
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
-      - Accuracy
+      - Other
       original_task: true
     name: relation
-    reference: ''
+    reference: The metric is set to Other, not Accuracy, because it requires parsing
+      the output and counting individual matches.
   a31dc527-a5b9-4411-a600-ea2bbe22a9d3: !Template
     answer_choices: null
     id: a31dc527-a5b9-4411-a600-ea2bbe22a9d3
@@ -201,7 +203,8 @@ templates:
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
-      - Accuracy
+      - Other
       original_task: false
     name: find-all-numbers
-    reference: ''
+    reference: The metric is set to Other, not Accuracy, because it requires parsing
+      the output and counting individual matches.
