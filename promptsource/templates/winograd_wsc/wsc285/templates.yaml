@@ -1,58 +1,113 @@
 dataset: winograd_wsc
 subset: wsc285
 templates:
+  1ab89604-45c8-4c12-9f25-24d62e8bb6a6: !Template
+    answer_choices: A ||| B
+    id: 1ab89604-45c8-4c12-9f25-24d62e8bb6a6
+    jinja: 'Text: {{text}}
+
+      After reading the text above, you should be able to answer who the subject in
+      the quote "{{quote}}" is. Choose from the choices below.
+
+      {{ answer_choices[0] }}. {{options[0]}}
+
+      {{ answer_choices[1] }}. {{options[1]}}
+
+      |||
+
+      {{answer_choices[label]}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
+      original_task: true
+    name: subject_reference_affirmative
+    reference: ''
   2194ca96-203d-4306-8888-1093655ce825: !Template
     answer_choices: null
     id: 2194ca96-203d-4306-8888-1093655ce825
-    jinja: "Identify the phrase in \"{{text}}\" in which the key action or context\
-      \ surrounding the pronoun is described |||  \n{{quote}}"
+    jinja: "Identify the phrase in the text below in which the key action or context\
+      \ surrounding the pronoun \"{{pronoun}}\" is described. \nText: {{text}}\n|||\
+      \  \n{{quote}}"
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
-      original_task: null
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      - ROUGE
+      original_task: false
     name: key_action
     reference: ''
   442e7f58-5378-4ebb-853e-db1dc2e3fd78: !Template
-    answer_choices: null
+    answer_choices: A ||| B
     id: 442e7f58-5378-4ebb-853e-db1dc2e3fd78
-    jinja: "Who does the pronoun \"{{pronoun}}\" in \"{{text}}\" refer to?\n\nThe\
-      \ options are {{options | join(\" and \")}} |||  \n{{options[label]}}"
+    jinja: "Given the text \"{{text}}\", use your reasoning skills to disambiguate\
+      \ the pronoun \"{{pronoun}}\" in the phrase \"{{quote}}\". \n\nThe answer options\
+      \ are as follows: \n{{ answer_choices[0] }}. {{options[0]}}\n{{ answer_choices[1]\
+      \ }}. {{options[1]}}\n|||\n{{answer_choices[label]}}"
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
-      original_task: null
-    name: pronoun_options
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
+      original_task: true
+    name: pronoun_disambiguation_affirmative
     reference: ''
   46eaa2c6-b7d7-4c64-a7a2-a78aac7b3712: !Template
     answer_choices: null
     id: 46eaa2c6-b7d7-4c64-a7a2-a78aac7b3712
-    jinja: "Identify the pronoun in \"{{text}}\" |||  \n{{pronoun}}"
+    jinja: "Identify the pronoun in the following text: \"{{text}}\".\n|||  \n{{pronoun}}"
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
-      original_task: null
+      choices_in_prompt: false
+      metrics:
+      - Accuracy
+      original_task: false
     name: identify_pronoun
     reference: ''
-  5e26dc7e-c9c2-4392-94cf-0bda201d96f5: !Template
-    answer_choices: null
-    id: 5e26dc7e-c9c2-4392-94cf-0bda201d96f5
-    jinja: 'Who does the pronoun "{{pronoun}}" in "{{text}}" refer to? |||
+  ac69d5f7-c9e2-4a80-93ff-2ba88f38c65a: !Template
+    answer_choices: A ||| B
+    id: ac69d5f7-c9e2-4a80-93ff-2ba88f38c65a
+    jinja: 'The pronoun "{{pronoun}}" in the phrase "{{quote}}" is ambiguous in the
+      context of "{{text}}". What could it be?
 
-      {{options[label]}}'
+
+      What is it? {{ answer_choices[0] }} or {{ answer_choices[1] }}?
+
+      {{ answer_choices[0] }}. {{options[0]}}
+
+      {{ answer_choices[1] }}. {{options[1]}}
+
+      |||
+
+      {{answer_choices[label]}}'
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
-      original_task: null
-    name: pronoun
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
+      original_task: true
+    name: pronoun_disambiguation_interrogative
     reference: ''
-  f73d23dd-440c-451e-8f2f-a6d8ad41c858: !Template
-    answer_choices: null
-    id: f73d23dd-440c-451e-8f2f-a6d8ad41c858
-    jinja: "Identify the pronoun in \"{{text}}\" and the entity it is referring to\
-      \ |||  \n\"{{pronoun}}\" which refers to the \"{{options[label]}}\""
+  b5c68418-3776-44b6-99d6-cbad437775ee: !Template
+    answer_choices: A ||| B
+    id: b5c68418-3776-44b6-99d6-cbad437775ee
+    jinja: "Context: {{text}}\nWho does the subject \"{{pronoun}}\" in \"{{quote}}\"\
+      \ in the text above refer to? \n{{ answer_choices[0] }}. {{options[0]}}\n{{\
+      \ answer_choices[1] }}. {{options[1]}}\n|||\n{{answer_choices[label]}}"
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
-      original_task: null
-    name: identify_pronoun_entity
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
+      original_task: true
+    name: subject_reference_interrogative
+    reference: ''
+  c45a0ba3-a0a2-410a-8ef7-f11558135496: !Template
+    answer_choices: Yes ||| No
+    id: c45a0ba3-a0a2-410a-8ef7-f11558135496
+    jinja: "Text: {{text}}\nAfter reading the text above, John thinks that the subject\
+      \ in the quote \"{{quote}}\" refers to \"{{options[0]}}\" instead of \"{{options[1]}}\"\
+      . Do you agree? \n|||\n{{answer_choices[label]}}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - Accuracy
+      original_task: true
+    name: subject_reference_classify
     reference: ''
