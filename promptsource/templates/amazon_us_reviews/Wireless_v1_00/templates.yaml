@@ -4,8 +4,8 @@ templates:
   5feaa0d7-e4e0-46cc-8517-e00bfa7fd00e: !Template
     answer_choices: null
     id: 5feaa0d7-e4e0-46cc-8517-e00bfa7fd00e
-    jinja: "Summarize a review headline for the review below: \n{{review_body}} \n\
-      |||\n{{review_headline}}"
+    jinja: "Give a short sentence describing the following product review:\n{{review_body}}\
+      \ \n|||\n{{review_headline}}"
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
@@ -14,24 +14,11 @@ templates:
       original_task: false
     name: Generate review headline based on review body
     reference: Generate review headline based on review body
-  957e3322-6907-4e67-bfbe-6ed8862f352c: !Template
-    answer_choices: null
-    id: 957e3322-6907-4e67-bfbe-6ed8862f352c
-    jinja: "Guess the product category for which the below review is: \n {{review_body}}\n\
-      \ |||        \n{{product_category}}"
-    metadata: !TemplateMetadata
-      choices_in_prompt: false
-      metrics:
-      - ROUGE
-      - BLEU
-      original_task: false
-    name: Predict the product category based on review
-    reference: Predict the product category based on review
   9588a967-d698-4a33-9b96-a5254df9d260: !Template
     answer_choices: null
     id: 9588a967-d698-4a33-9b96-a5254df9d260
     jinja: Generate a {{star_rating}}-star review (1 being lowest and 5 being highest)
-      about this product {{product_title}} in {{product_category}} category.        |||        {{review_body}}
+      about this product {{product_title}}.        |||        {{review_body}}
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
@@ -43,10 +30,11 @@ templates:
   9a8b953d-2c68-4046-a7b7-8fd5f7469d10: !Template
     answer_choices: '1 ||| 2 ||| 3 ||| 4 ||| 5 '
     id: 9a8b953d-2c68-4046-a7b7-8fd5f7469d10
-    jinja: "How would you rate this review from 1 to 5 (1 being lowest and 5 being\
-      \ highest): {{review_headline}}?        \n|||\n{{answer_choices[star_rating-1]}}"
+    jinja: "Given the following review headline \n{{review_headline}}\npredict the\
+      \ the associated rating from the following choices\n- {{ answer_choices | join('\\\
+      n- ') }} \n(1 being lowest and 5 being highest)\n|||\n{{answer_choices[star_rating-1]}}"
     metadata: !TemplateMetadata
-      choices_in_prompt: false
+      choices_in_prompt: true
       metrics:
       - Accuracy
       original_task: true
@@ -55,8 +43,9 @@ templates:
   e40e4a53-ca5d-4fc8-a7c3-be9adfe0dbec: !Template
     answer_choices: null
     id: e40e4a53-ca5d-4fc8-a7c3-be9adfe0dbec
-    jinja: Generate a {{star_rating}}-star review headline (1 being lowest and 5 being
-      highest) about this product.        |||        {{review_headline}}
+    jinja: "Generate a {{star_rating}}-star review headline (1 being lowest and 5\
+      \ being highest) about this product: \n{{product_title}}        \n|||      \
+      \  \n{{review_headline}}"
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
@@ -68,11 +57,11 @@ templates:
   e6a1bbde-715d-4dad-9178-e2bcfaf5c646: !Template
     answer_choices: 1 ||| 2 ||| 3 ||| 4 ||| 5
     id: e6a1bbde-715d-4dad-9178-e2bcfaf5c646
-    jinja: 'How would you rate this review from 1 to 5 (1 being lowest and 5 being
-      highest): {{review_body}}?        |||        {{answer_choices[star_rating -
-      1]}}'
+    jinja: "Given the following review:\n{{review_body}}\npredict the associated rating\
+      \ from the following choices (1 being lowest and 5 being highest)\n- {{ answer_choices\
+      \ | join('\\n- ') }} \n|||\n{{answer_choices[star_rating-1]}}"
     metadata: !TemplateMetadata
-      choices_in_prompt: false
+      choices_in_prompt: true
       metrics:
       - Accuracy
       original_task: true
