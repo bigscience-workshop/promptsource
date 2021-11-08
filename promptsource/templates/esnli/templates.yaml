@@ -26,8 +26,8 @@ templates:
     answer_choices: null
     id: 3d077f02-bba0-4019-bacd-bf3e7119b1f7
     jinja: "{% if label == 0 %} \nWhy does the first sentence entail the second?\n\
-      {% elif label == 1 %}\nWhy do the two sentences neither entail nor contradict\
-      \ each other?\n{% else %}\nWhy do these two sentences contradict each other?\n\
+      {% elif label == 1 %}\nWhy does the first sentence neither entail nor contradict\
+      \ the second?\n{% else %}\nWhy does the first sentence contradict the second?\n\
       {% endif%}\n\nFirst sentence: \n{{premise}} \n\nSecond sentence:\n{{hypothesis}}\n\
       |||\n{{explanation_1}}"
     metadata: !TemplateMetadata
@@ -65,7 +65,7 @@ templates:
 
       |||
 
-      - {{ answer_choices[label] }}'
+      {{ answer_choices[label] }}'
     metadata: !TemplateMetadata
       choices_in_prompt: true
       metrics:
@@ -87,7 +87,7 @@ templates:
 
       |||
 
-      - {{ answer_choices[label] }}'
+      {{ answer_choices[label] }}'
     metadata: !TemplateMetadata
       choices_in_prompt: true
       metrics:
@@ -109,7 +109,7 @@ templates:
 
       |||
 
-      - {{ answer_choices[label] }}'
+      {{ answer_choices[label] }}'
     metadata: !TemplateMetadata
       choices_in_prompt: true
       metrics:
@@ -131,7 +131,7 @@ templates:
 
       |||
 
-      - {{ answer_choices[label] }}'
+      {{ answer_choices[label] }}'
     metadata: !TemplateMetadata
       choices_in_prompt: true
       metrics:
@@ -143,9 +143,9 @@ templates:
     answer_choices: Yes ||| No ||| No
     id: c6cce628-8e69-418b-8676-deae7a782e7f
     jinja: "Does this statement: \n\n{{ premise }} \n\nimply that: \n\n{{ hypothesis\
-      \ }}?\n|||\n- {{ answer_choices[label] }}"
+      \ }}?\n|||\n{{ answer_choices[label] }}"
     metadata: !TemplateMetadata
-      choices_in_prompt: true
+      choices_in_prompt: false
       metrics:
       - Accuracy
       original_task: false
@@ -155,10 +155,10 @@ templates:
     answer_choices: No ||| No ||| Yes
     id: ef034633-d4d9-47b8-9152-b025b1d61e5b
     jinja: "First statement: \n{{ premise }}\n\nSecond statement: \n{{ hypothesis\
-      \ }}\n\nDo the statements above contradict each other?\n|||\n- {{ answer_choices[label]\
+      \ }}\n\nDoes the first statement contradict the second?\n|||\n{{ answer_choices[label]\
       \ }}"
     metadata: !TemplateMetadata
-      choices_in_prompt: true
+      choices_in_prompt: false
       metrics:
       - Accuracy
       original_task: false
