@@ -7,6 +7,8 @@ templates:
       if text|length < original|length %}{{real_simplifications.append(text) | default("",
       True)}}{% endif %}{% endfor %}
 
+      {% if real_simplifications %}
+
       Simplify the below sentence.
 
 
@@ -14,7 +16,9 @@ templates:
 
       |||
 
-      {{real_simplifications | choice}}'
+      {{real_simplifications | choice}}
+
+      {% endif %}'
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
@@ -30,6 +34,8 @@ templates:
     jinja: '{% set real_simplifications = [] %}{% for text in simplifications %}{%
       if text|length < original|length %}{{real_simplifications.append(text) | default("",
       True)}}{% endif %}{% endfor %}
+
+      {% if real_simplifications %}
 
       Read the below two texts and answer the question.
 
@@ -63,7 +69,9 @@ templates:
 
       Text B
 
-      {% endif %} '
+      {% endif %}
+
+      {% endif %}'
     metadata: !TemplateMetadata
       choices_in_prompt: true
       metrics:
@@ -78,6 +86,8 @@ templates:
       if text|length < original|length %}{{real_simplifications.append(text) | default("",
       True)}}{% endif %}{% endfor %}
 
+      {% if real_simplifications %}
+
       Make the following sentence more verbose.
 
 
@@ -85,7 +95,9 @@ templates:
 
       |||
 
-      {{original}}'
+      {{original}}
+
+      {% endif %}'
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
@@ -97,41 +109,16 @@ templates:
   ec70cd03-8282-4e45-957f-927c60254ad4: !Template
     answer_choices: Text A ||| Text B
     id: ec70cd03-8282-4e45-957f-927c60254ad4
-    jinja: '{% set real_simplifications = [] %}{% for text in simplifications %}{%
-      if text|length < original|length %}{{real_simplifications.append(text) | default("",
-      True)}}{% endif %}{% endfor %}
-
-      {% if range(0,2) | choice %}
-
-      Text A: {{original}}
-
-
-      Text B: {{real_simplifications | choice }}
-
-
-      One of the texts above is a simplification of the other. Which one is the simplified
-      one? Your answer should be either "Text A" or "Text B".
-
-      |||
-
-      Text B
-
-      {% else %}
-
-      Text A: {{real_simplifications | choice }}
-
-
-      Text B: {{original}}
-
-
-      One of the texts above is a simplification of the other. Which one is the simplified
-      one? Your answer should be either "Text A" or "Text B".
-
-      |||
-
-      Text A
-
-      {% endif %} '
+    jinja: "{% set real_simplifications = [] %}{% for text in simplifications %}{%\
+      \ if text|length < original|length %}{{real_simplifications.append(text) | default(\"\
+      \", True)}}{% endif %}{% endfor %}\n{% if real_simplifications %}\n{% if range(0,2)\
+      \ | choice %}\nText A: {{original}}\n\nText B: {{real_simplifications | choice\
+      \ }}\n\nOne of the texts above is a simplification of the other. Which one is\
+      \ the simplified one? Your answer should be either \"Text A\" or \"Text B\"\
+      .\n|||\nText B\n{% else %}\nText A: {{real_simplifications | choice }}\n\nText\
+      \ B: {{original}}\n\nOne of the texts above is a simplification of the other.\
+      \ Which one is the simplified one? Your answer should be either \"Text A\" or\
+      \ \"Text B\".\n|||\nText A\n{% endif %} \n{% endif %}"
     metadata: !TemplateMetadata
       choices_in_prompt: true
       metrics:
