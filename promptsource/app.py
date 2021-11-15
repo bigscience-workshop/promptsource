@@ -67,7 +67,12 @@ st.sidebar.markdown(
     "<center><a href='https://github.com/bigscience-workshop/promptsource'>💻Github - Promptsource\n\n</a></center>",
     unsafe_allow_html=True,
 )
-mode = st.sidebar.selectbox(label="Choose a mode", options=select_options, index=0, key="mode_select",)
+mode = st.sidebar.selectbox(
+    label="Choose a mode",
+    options=select_options,
+    index=0,
+    key="mode_select",
+)
 st.sidebar.title(f"{side_bar_title_prefix} 🌸 - {mode}")
 
 #
@@ -232,7 +237,11 @@ else:
     # Select a dataset - starts with ag_news
     #
     dataset_key = st.sidebar.selectbox(
-        "Dataset", dataset_list, key="dataset_select", index=ag_news_index, help="Select the dataset to work on.",
+        "Dataset",
+        dataset_list,
+        key="dataset_select",
+        index=ag_news_index,
+        help="Select the dataset to work on.",
     )
 
     #
