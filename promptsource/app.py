@@ -9,6 +9,7 @@ from datasets import get_dataset_infos
 from pygments import highlight
 from pygments.formatters import HtmlFormatter
 from pygments.lexers import DjangoLexer
+from templates import INCLUDED_USERS
 
 from promptsource.session import _get_state
 from promptsource.templates import DatasetTemplates, Template, TemplateCollection
@@ -324,12 +325,20 @@ else:
         #
         st.header("Dataset: " + dataset_key + " " + (("/ " + conf_option.name) if conf_option else ""))
 
-        st.markdown(
-            "*Homepage*: "
-            + dataset.info.homepage
-            + "\n\n*Dataset*: https://github.com/huggingface/datasets/blob/master/datasets/%s/%s.py"
-            % (dataset_key, dataset_key)
+        source_link = "https://github.com/huggingface/datasets/blob/master/datasets/%s/%s.py" % (
+            dataset_key,
+            dataset_key,
         )
+
+        # check if a there is a custom dataset
+        for user in INCLUDED_USERS:
+            if user in dataset_key:
+                source_link = "https://huggingface.co/datasets/%s/blob/main/%s.py" % (
+                    dataset_key,
+                    dataset_key.split("/")[-1],
+                )
+
+        st.markdown("*Homepage*: " + dataset.info.homepage + "\n\n*Dataset*: " + source_link)
 
         md = """
         %s
