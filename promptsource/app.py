@@ -329,7 +329,10 @@ else:
         split_dataset_key = dataset_key.split("/")
         possible_user = split_dataset_key[0]
         if len(split_dataset_key) > 1 and possible_user in INCLUDED_USERS:
-            source_link = "https://huggingface.co/datasets/%s/blob/main/%s.py" % (dataset_key, split_dataset_key[-1],)
+            source_link = "https://huggingface.co/datasets/%s/blob/main/%s.py" % (
+                dataset_key,
+                split_dataset_key[-1],
+            )
         else:
             source_link = "https://github.com/huggingface/datasets/blob/master/datasets/%s/%s.py" % (
                 dataset_key,
