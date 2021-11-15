@@ -30,8 +30,9 @@ templates:
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
-      - COQA F1
+      - BLEU
       - Other
+      - ROUGE
       original_task: true
     name: generate_explanations_affirmative
     reference: 'Given information, question, and its answer, list the sentences from
@@ -44,8 +45,9 @@ templates:
       \ | join(\"\")}}\n{% endfor %}\n||| \n{{answer}}"
     metadata: !TemplateMetadata
       choices_in_prompt: false
-      metrics: []
-      original_task: false
+      metrics:
+      - Squad
+      original_task: true
     name: generate_answer_interrogative
     reference: ''
   6e33c684-725d-49a2-8da3-f9d0b2bb60a0: !Template
@@ -57,8 +59,8 @@ templates:
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
-      - COQA F1
-      - Other
+      - BLEU
+      - ROUGE
       original_task: false
     name: generate_question
     reference: Given information and answer, generate question.
@@ -75,7 +77,6 @@ templates:
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
-      - COQA F1
       - Other
       original_task: true
     name: generate_answer_and_explanations
@@ -105,8 +106,7 @@ templates:
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
-      - COQA F1
-      - Other
+      - Squad
       original_task: true
     name: generate_answer_affirmative
     reference: Given information and question, generate answer.
