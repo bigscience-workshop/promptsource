@@ -1,11 +1,11 @@
 dataset: newspop
 templates:
   3f264cef-d7f0-4f62-81f6-fb2292ab59dd: !Template
-    answer_choices: economy |||  microsoft |||  obama ||| palestine
+    answer_choices: Economy |||  Microsoft |||  Obama ||| Palestine
     id: 3f264cef-d7f0-4f62-81f6-fb2292ab59dd
     jinja: "Title: {{title}} \nHeadline: {{headline}}\n\nIs this article about {{answer_choices[0]}},\
       \ {{answer_choices[1]}}, {{answer_choices[2]}} or {{answer_choices[3]}}?\n|||\n\
-      \n{{topic}}"
+      \n{{topic|capitalize}}"
     metadata: !TemplateMetadata
       choices_in_prompt: true
       metrics:
@@ -14,10 +14,10 @@ templates:
     name: after_text_question
     reference: ''
   5053ada5-7fd3-491f-981e-be64ba35aa39: !Template
-    answer_choices: economy |||  microsoft |||  obama ||| palestine
+    answer_choices: Economy |||  Microsoft |||  Obama ||| Palestine
     id: 5053ada5-7fd3-491f-981e-be64ba35aa39
     jinja: "What is the following article about?\n\nTitle: {{title}} \nHeadline: {{headline}}\n\
-      \n|||\n\n{{topic}}"
+      \n|||\n\n{{topic|capitalize}}"
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
@@ -26,10 +26,10 @@ templates:
     name: before_text_question_no_choice
     reference: ''
   590017ce-8204-400d-a172-93da2337aa6f: !Template
-    answer_choices: economy |||  microsoft |||  obama ||| palestine
+    answer_choices: Economy |||  Microsoft |||  Obama ||| Palestine
     id: 590017ce-8204-400d-a172-93da2337aa6f
     jinja: "Title: {{title}} \nHeadline: {{headline}}\n\nWhat is this news about?\n\
-      |||\n\n{{topic}}"
+      |||\n\n{{topic|capitalize}}"
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
@@ -38,20 +38,21 @@ templates:
     name: after_text_question_no_choice
     reference: ''
   71d4d30d-7340-4ad4-bbfe-d587361c3ad8: !Template
-    answer_choices: economy |||  microsoft |||  obama ||| palestine
+    answer_choices: Economy |||  Microsoft |||  Obama ||| Palestine
     id: 71d4d30d-7340-4ad4-bbfe-d587361c3ad8
-    jinja: "{{title}}\n{{headline}}\n\nTopic: \n\n|||\n\n{{topic}}"
+    jinja: "{{title}}\n{{headline}}\n\nTopic: \n\n|||\n\n{{topic|capitalize}}"
     metadata: !TemplateMetadata
       choices_in_prompt: false
-      metrics: []
+      metrics:
+      - Accuracy
       original_task: true
     name: topic_no_choice_in_template
     reference: ''
   8fdfb019-2f82-4f94-a703-355b40ed9de2: !Template
-    answer_choices: economy |||  microsoft |||  obama ||| palestine
+    answer_choices: Economy |||  Microsoft |||  Obama ||| Palestine
     id: 8fdfb019-2f82-4f94-a703-355b40ed9de2
     jinja: "Title: {{title}} \n\nIs this article about {{answer_choices[0]}}, {{answer_choices[1]}},\
-      \ {{answer_choices[2]}} or {{answer_choices[3]}}?\n|||\n\n{{topic}}"
+      \ {{answer_choices[2]}} or {{answer_choices[3]}}?\n|||\n\n{{topic|capitalize}}"
     metadata: !TemplateMetadata
       choices_in_prompt: true
       metrics:
@@ -60,7 +61,7 @@ templates:
     name: after_text_question_title_only
     reference: ''
   b2b833b7-e431-40b8-869e-a675daa7e392: !Template
-    answer_choices: economy |||  microsoft |||  obama ||| palestine
+    answer_choices: Economy |||  Microsoft |||  Obama ||| Palestine
     id: b2b833b7-e431-40b8-869e-a675daa7e392
     jinja: 'Headline: {{headline}}
 
@@ -71,7 +72,7 @@ templates:
       |||
 
 
-      {{topic}}'
+      {{topic|capitalize}}'
     metadata: !TemplateMetadata
       choices_in_prompt: true
       metrics:
@@ -88,15 +89,16 @@ templates:
       choices_in_prompt: false
       metrics:
       - BLEU
+      - ROUGE
       original_task: false
     name: headline_to_title
     reference: Summarize the headline to a title.
   f8c33f6b-86a8-46bb-b26f-9a38a91207e3: !Template
-    answer_choices: economy |||  microsoft |||  obama ||| palestine
+    answer_choices: Economy |||  Microsoft |||  Obama ||| Palestine
     id: f8c33f6b-86a8-46bb-b26f-9a38a91207e3
     jinja: "Is the following article about {{answer_choices[0]}}, {{answer_choices[1]}},\
       \ {{answer_choices[2]}} or {{answer_choices[3]}}?\n\nTitle: {{title}} \nHeadline:\
-      \ {{headline}}\n\n|||\n\n{{topic}}"
+      \ {{headline}}\n\n|||\n\n{{topic|capitalize}}"
     metadata: !TemplateMetadata
       choices_in_prompt: true
       metrics:
