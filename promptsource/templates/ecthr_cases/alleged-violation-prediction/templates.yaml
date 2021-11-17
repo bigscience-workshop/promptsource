@@ -25,10 +25,10 @@ templates:
     answer_choices: one ||| two ||| three ||| several
     id: 3e5ba238-98ad-4d25-b84f-f226158ef8d6
     jinja: "The following facts relate to a claim brought before the European Court\
-      \ of Human Rights (ECtHR). \n{{facts | join(\"\\n\")}}\n\nQuestion: How many\
-      \ substantive articles in the European Convention on Human Rights could have\
-      \ been breached on these facts? If more than three substantive articles are\
-      \ breached, answer \"{{'several'}}\".\nAnswer:\n|||\n{{ answer_choices[{1:0,2:1,3:2,4:3}[[4,labels\
+      \ of Human Rights (ECtHR). \nQuestion: How many substantive articles in the\
+      \ European Convention on Human Rights could have been breached on these facts?\
+      \ If more than three substantive articles are breached, answer \"{{'several'}}\"\
+      .\n\n{{facts | join(\"\\n\")}}\n\nAnswer:\n|||\n{{ answer_choices[{1:0,2:1,3:2,4:3}[[4,labels\
       \ | length] | min]]}}"
     metadata: !TemplateMetadata
       choices_in_prompt: false
@@ -41,12 +41,12 @@ templates:
   7a56f5cc-20b5-4543-bb20-9c616d3f36dc: !Template
     answer_choices: one ||| two ||| three ||| several
     id: 7a56f5cc-20b5-4543-bb20-9c616d3f36dc
-    jinja: '{{facts | join("\n")}}
-
-
-      Question: Have {{"one"}}, {{"two"}}, {{"three"}}, or {{"several"}} articles
+    jinja: 'Question: Have {{"one"}}, {{"two"}}, {{"three"}}, or {{"several"}} articles
       of the European Convention on Human Rights (ECHR) been violated on the facts
       above?
+
+
+      {{facts | join("\n")}}
 
 
       Answer:
@@ -86,12 +86,13 @@ templates:
   b4fb5e6e-5e91-4f39-82ba-45dba7b71aad: !Template
     answer_choices: yes ||| no
     id: b4fb5e6e-5e91-4f39-82ba-45dba7b71aad
-    jinja: '{{facts | join("\n")}}
+    jinja: 'Question: Is it true that the facts in this case indicate more than two
+      sections of the European Human Rights Convention were allegedly violated? Answer
+      "{{"yes"}}" or "{{"no"}}"
 
 
-      Question: Is it true that the facts in this case indicate more than two sections
-      of the European Human Rights Convention were allegedly violated? Answer "{{"yes"}}"
-      or "{{"no"}}"
+      {{facts | join("\n")}}
+
 
       Answer:
 
@@ -112,6 +113,9 @@ templates:
     jinja: 'The following is an extract of facts from a judgment handed down by the
       European Court of Human Rights.
 
+      Question: Have {{"one"}}, {{"two"}}, {{"three"}}, or {{"several"}} articles
+      of the European Court of Human Rights (ECHR) been violated on these facts?
+
 
       {{facts[:10] | join("\n")}}
 
@@ -128,9 +132,6 @@ templates:
 
       {% endif %}
 
-
-      Question: Have {{"one"}}, {{"two"}}, {{"three"}}, or {{"several"}} articles
-      of the European Court of Human Rights (ECHR) been violated on these facts?
 
       Answer:
 
