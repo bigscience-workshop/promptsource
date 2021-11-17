@@ -95,17 +95,16 @@ templates:
       ||| Forward Connectives ||| Discourse Connectives ||| Both Discourse Connectives
       and Anaphora
     id: 6ac9b065-38f3-43b6-9e6c-751a71ef1e2f
-    jinja: "{% if discourse_type != \"PAIR_NONE\" %}\n\n{% set poss_ans_list = [\"\
-      SINGLE_APPOSITION\", \"SINGLE_RELATIVE\", \"SINGLE_CATAPHORA\", \"SINGLE_VP_COORD\"\
-      , \"PAIR_ANAPHORA\", \"SINGLE_CONN_INNER\", \"SINGLE_CONN_INNER_ANAPHORA\",\
-      \ \"SINGLE_S_COORD\", \"SINGLE_S_COORD_ANAPHORA\", \"SINGLE_CONN_START\", \"\
-      PAIR_CONN\", \"PAIR_CONN_ANAPHORA\"] %}\n\nPeruse the following two passages\
-      \ and identify the discourse phenomenon which can be used to turn Passage 1\
-      \ into Passage 2.\n\nPassage 1: {{incoherent_first_sentence}} {{incoherent_second_sentence}}\n\
-      \nPassage 2: {{coherent_first_sentence}} {{coherent_second_sentence}}\n\n{%\
-      \ for lab in answer_choices %}\n{{ loop.index }}: {{ lab }}\n{% endfor %}\n\
-      \  \n |||\n\n{{ answer_choices[poss_ans_list.index(discourse_type)] }}\n\n{%\
-      \ endif %}"
+    jinja: "{% set poss_ans_list = [\"SINGLE_APPOSITION\", \"SINGLE_RELATIVE\", \"\
+      SINGLE_CATAPHORA\", \"SINGLE_VP_COORD\", \"PAIR_ANAPHORA\", \"SINGLE_CONN_INNER\"\
+      , \"SINGLE_CONN_INNER_ANAPHORA\", \"SINGLE_S_COORD\", \"SINGLE_S_COORD_ANAPHORA\"\
+      , \"SINGLE_CONN_START\", \"PAIR_CONN\", \"PAIR_CONN_ANAPHORA\"] %}\n{% if discourse_type\
+      \ != \"PAIR_NONE\" %}\nPeruse the following two passages and identify the discourse\
+      \ phenomenon which can be used to turn Passage 1 into Passage 2.\n\nPassage\
+      \ 1: {{incoherent_first_sentence}} {{incoherent_second_sentence}}\n\nPassage\
+      \ 2: {{coherent_first_sentence}} {{coherent_second_sentence}}\n\n{% for lab\
+      \ in answer_choices %}\n{{ loop.index }}: {{ lab }}\n{% endfor %}\n  \n |||\n\
+      \n{{ answer_choices[poss_ans_list.index(discourse_type)] }}\n\n{% endif %}"
     metadata: !TemplateMetadata
       choices_in_prompt: true
       metrics:
