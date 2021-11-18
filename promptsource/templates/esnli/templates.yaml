@@ -1,7 +1,7 @@
 dataset: esnli
 templates:
   16206cff-dd01-408e-b0b4-daabb750b38b: !Template
-    answer_choices: null
+    answer_choices: '{{explanation_1}} ||| {{explanation_2}} ||| {{explanation_3}}'
     id: 16206cff-dd01-408e-b0b4-daabb750b38b
     jinja: 'Explain why the relation between the following two sentences can be described
       as {{ ["an entailment", "neutral", "a contradiction"][label] }}.
@@ -14,7 +14,7 @@ templates:
 
       |||
 
-      {{explanation_1}}'
+      {{ answer_choices |select("!=","") |list |choice }}'
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
@@ -23,13 +23,14 @@ templates:
     name: explain_the_choice
     reference: ''
   3d077f02-bba0-4019-bacd-bf3e7119b1f7: !Template
-    answer_choices: null
+    answer_choices: '{{ explanation_1 }} ||| {{ explanation_2 }} ||| {{ explanation_3
+      }}'
     id: 3d077f02-bba0-4019-bacd-bf3e7119b1f7
     jinja: "{% if label == 0 %} \nWhy does the first sentence entail the second?\n\
       {% elif label == 1 %}\nWhy does the first sentence neither entail nor contradict\
       \ the second?\n{% else %}\nWhy does the first sentence contradict the second?\n\
       {% endif%}\n\nFirst sentence: \n{{premise}} \n\nSecond sentence:\n{{hypothesis}}\n\
-      |||\n{{explanation_1}}"
+      |||\n{{ answer_choices |select(\"!=\",\"\") |list |choice }}"
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
@@ -38,12 +39,12 @@ templates:
     name: elaborate_on_the_choice
     reference: ''
   3e84960e-99db-42bf-9370-50858a92318c: !Template
-    answer_choices: null
+    answer_choices: '{{explanation_1}}  ||| {{explanation_2}}  ||| {{explanation_3}}'
     id: 3e84960e-99db-42bf-9370-50858a92318c
     jinja: "Given than:\n{{ premise }}\n{% if label == 0 %} \nWhy is it always true\
       \ that:\n{% elif label == 1 %}\nWhy it cannot be concluded that:\n{% else %}\n\
-      Why is it necessarily false that:\n{% endif%}\n{{ hypothesis }}\n|||\n{{ explanation_1\
-      \ }}"
+      Why is it necessarily false that:\n{% endif%}\n{{ hypothesis }}\n|||\n{{ answer_choices\
+      \ |select(\"!=\",\"\") |list |choice }}"
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
@@ -165,12 +166,12 @@ templates:
     name: does_premise_contradicts_hypothesis
     reference: ''
   f64d6196-370b-4501-acb5-e11a5ebf0c5e: !Template
-    answer_choices: null
+    answer_choices: '{{explanation_1}} ||| {{explanation_2}} ||| {{explanation_3}}'
     id: f64d6196-370b-4501-acb5-e11a5ebf0c5e
     jinja: "If we know that:\n{{premise}}\n{% if label == 0 %} \nWhy is it always\
       \ the case that:\n{% elif label == 1 %}\nWhy it is not necessarily the case\
       \ that:\n{% else %}\nWhy is it not true that:\n{% endif%}\n{{hypothesis}}\n\
-      |||\n{{explanation_1}}"
+      |||\n{{ answer_choices |select(\"!=\",\"\") |list |choice }}"
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
