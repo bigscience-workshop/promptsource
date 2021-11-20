@@ -1,10 +1,10 @@
 dataset: climate_fever
 templates:
   38632cd9-7c4c-4e1d-85b3-20e7a78d4580: !Template
-    answer_choices: Supports ||| Refutes ||| Not enough information
+    answer_choices: support ||| refute ||| does not provide enough information
     id: 38632cd9-7c4c-4e1d-85b3-20e7a78d4580
-    jinja: 'Here''s a statement and accompanying evidence. Does the evidence {{"supports"}},
-      {{"refutes"}}, or provide {{"not enough info"}} on climate change?
+    jinja: 'Here''s a statement and accompanying evidence. Does the evidence {{answer_choices[0]}},
+      {{answer_choices[1]}}, or {{answer_choices[2]}} on climate change?
 
 
       Statement: {{claim}}
@@ -16,16 +16,17 @@ templates:
 
       {{ answer_choices[evidences[0]["evidence_label"]] }}'
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
-      original_task: null
+      choices_in_prompt: true
+      metrics: 
+        - Accuracy
+      original_task: true
     name: first_evidence_and_claim_itemization
     reference: First evidence and claim with simple itemization
   3970f474-a9e3-4264-aefa-dd4cfadd279c: !Template
-    answer_choices: Supports ||| Refutes ||| Not enough information ||| Disputed
+    answer_choices: support ||| refute ||| does not provide enough information ||| disputed
     id: 3970f474-a9e3-4264-aefa-dd4cfadd279c
     jinja: 'Here''s a claim and accompanying evidence statements . Do the statements
-      {{"support"}}, {{"refute"}},  {{"dispute"}} or provide {{"not enough info"}}
+      {{answer_choices[0]}}, {{answer_choices[1]}}, are  {{answer_choices[3]}} or {{answer_choices[2]}}
       on climate change?
 
 
@@ -42,16 +43,17 @@ templates:
       {{ answer_choices[claim_label] }}'
     metadata: !TemplateMetadata
       choices_in_prompt: null
-      metrics: []
+      metrics:
+        - Accuracy
       original_task: null
     name: claim_and_all_supporting_evidences
     reference: A claim and all supproting evidences provided with the associated claim
       label
   5d5062c1-d28f-4b1c-a7da-9b53796ed39f: !Template
-    answer_choices: Supports ||| Refutes ||| Not enough information
+    answer_choices: support ||| refute ||| does not provide enough information
     id: 5d5062c1-d28f-4b1c-a7da-9b53796ed39f
-    jinja: 'Here''s a statement and accompanying evidence. Does the evidence {{"supports"}},
-      {{"refutes"}}, or provide {{"not enough info"}} on climate change?
+    jinja: 'Here''s a statement and accompanying evidence. Does the evidence {{answer_choices[0]}},
+      {{answer_choices[1]}}, or {{answer_choices[2]}} on climate change?
 
 
       Statement: {{claim}}
@@ -64,19 +66,19 @@ templates:
       {{ answer_choices[evidences[4]["evidence_label"]] }}'
     metadata: !TemplateMetadata
       choices_in_prompt: null
-      metrics: []
+      metrics: 
+        - Accuracy
       original_task: null
     name: fifth_evidence_and_claim_itemization
     reference: Fifth evidence and claim with simple itemization
   82c484bd-2ed7-4ee0-aaee-2b31ac68e751: !Template
-    answer_choices: Supports ||| Refutes ||| Not enough information
+    answer_choices: support ||| refute ||| does not provide enough information
     id: 82c484bd-2ed7-4ee0-aaee-2b31ac68e751
     jinja: 'Considering the following claim:
 
       {{claim}}.
 
-      Does the following statement {{"supports"}}, {{"refutes"}}, or provide {{"not
-      enough info"}} on climate change?
+      Does the following statement {{answer_choices[0]}}, {{answer_choices[1]}}, or {{answer_choices[2]}} on climate change?
 
       {{evidences[4]["evidence"].strip(".").strip(''"'')}}.
 
@@ -85,15 +87,16 @@ templates:
       {{ answer_choices[evidences[4]["evidence_label"]] }}'
     metadata: !TemplateMetadata
       choices_in_prompt: null
-      metrics: []
+      metrics: 
+        - Accuracy
       original_task: null
     name: fifth_evidence_claim_pair
     reference: Relation between the claim and fifth evidence pair.
   9ba074a2-fbcf-4f69-bf03-bd16dbdec9cd: !Template
-    answer_choices: Supports ||| Refutes ||| Not enough information
+    answer_choices: support ||| refute ||| does not provide enough information
     id: 9ba074a2-fbcf-4f69-bf03-bd16dbdec9cd
-    jinja: 'Here''s a statement and accompanying evidence. Does the evidence {{"supports"}},
-      {{"refutes"}}, or provide {{"not enough info"}} on climate change?
+    jinja: 'Here''s a statement and accompanying evidence. Does the evidence {{answer_choices[0]}},
+      {{answer_choices[1]}}, or {{answer_choices[2]}} on climate change?
 
 
       Statement: {{claim}}
@@ -106,15 +109,16 @@ templates:
       {{ answer_choices[evidences[3]["evidence_label"]] }}'
     metadata: !TemplateMetadata
       choices_in_prompt: null
-      metrics: []
+      metrics: 
+        - Accuracy
       original_task: null
     name: fourth_evidence_and_claim_itemization
     reference: Fourth evidence and claim with simple itemization
   9f68b883-d6a3-4e95-af2a-b7755bc46ba9: !Template
-    answer_choices: Supports ||| Refutes ||| Not enough information
+    answer_choices: support ||| refute ||| does not provide enough information
     id: 9f68b883-d6a3-4e95-af2a-b7755bc46ba9
-    jinja: 'Here''s a statement and accompanying evidence. Does the evidence {{"supports"}},
-      {{"refutes"}}, or provide {{"not enough info"}} on climate change?
+    jinja: 'Here''s a statement and accompanying evidence. Does the evidence {{answer_choices[0]}},
+      {{answer_choices[1]}}, or {{answer_choices[2]}} on climate change?
 
 
       Statement: {{claim}}
@@ -127,18 +131,19 @@ templates:
       {{ answer_choices[evidences[2]["evidence_label"]] }}'
     metadata: !TemplateMetadata
       choices_in_prompt: null
-      metrics: []
+      metrics: 
+        - Accuracy
       original_task: null
     name: third_evidence_and_claim_itemization
     reference: Third evidence and claim with simple itemization
   cb78a363-fd32-4dbd-976f-b56de644ba90: !Template
-    answer_choices: Supports ||| Refutes ||| Not enough information
+    answer_choices: support ||| refute ||| does not provide enough information
     id: cb78a363-fd32-4dbd-976f-b56de644ba90
     jinja: 'Considering the following claim:
 
       {{claim}}.
 
-      Does the following statement {{"supports"}}, {{"refutes"}}, or provide {{"not
+      Does the following statement {{naswer_choices[0]}}, {{answer_choices[1]}}, or {{"not
       enough info"}} on climate change?
 
       {{evidences[1]["evidence"].strip(".").strip(''"'')}}.
@@ -148,18 +153,19 @@ templates:
       {{ answer_choices[evidences[1]["evidence_label"]] }}'
     metadata: !TemplateMetadata
       choices_in_prompt: null
-      metrics: []
+      metrics: 
+        - Accuracy
       original_task: null
     name: second_evidence_claim_pair
     reference: Relation between the claim and second evidence pair.
   cca7b6f5-29e3-45a4-bc8b-889f5ab2fc13: !Template
-    answer_choices: Supports ||| Refutes ||| Not enough information
+    answer_choices: support ||| refute ||| does not provide enough information
     id: cca7b6f5-29e3-45a4-bc8b-889f5ab2fc13
     jinja: 'Considering the following claim:
 
       {{claim}}.
 
-      Does the following statement {{"supports"}}, {{"refutes"}}, or provide {{"not
+      Does the following statement {{answer_choices[0]}}, {{answer_choices[1]}}, or {{"not
       enough info"}} on climate change?
 
       {{evidences[0]["evidence"].strip(".").strip(''"'')}}.
@@ -169,18 +175,19 @@ templates:
       {{ answer_choices[evidences[0]["evidence_label"]] }}'
     metadata: !TemplateMetadata
       choices_in_prompt: null
-      metrics: []
+      metrics: 
+        - Accuracy
       original_task: null
     name: first_evidence_claim_pair
     reference: Relation between the claim and first evidence pair.
   dc3e0a0b-4f4d-4a76-9e7b-eafce4967e98: !Template
-    answer_choices: Supports ||| Refutes ||| Not enough information
+    answer_choices: support ||| refute ||| does not provide enough information
     id: dc3e0a0b-4f4d-4a76-9e7b-eafce4967e98
     jinja: 'Considering the following claim:
 
       {{claim}}.
 
-      Does the following statement {{"supports"}}, {{"refutes"}}, or provide {{"not
+      Does the following statement {{answer_choices[0]}}, {{answer_choices[1]}}, or {{"not
       enough info"}} on climate change?
 
       {{evidences[3]["evidence"].strip(".").strip(''"'')}}.
@@ -190,15 +197,16 @@ templates:
       {{ answer_choices[evidences[3]["evidence_label"]] }}'
     metadata: !TemplateMetadata
       choices_in_prompt: null
-      metrics: []
+      metrics: 
+        - Accuracy
       original_task: null
     name: fourth_evidence_claim_pair
     reference: Relation between the claim and fourth evidence pair.
   e3e01825-e256-4098-b7bb-aa07c399e8f6: !Template
-    answer_choices: Supports ||| Refutes ||| Not enough information
+    answer_choices: support ||| refute ||| does not provide enough information
     id: e3e01825-e256-4098-b7bb-aa07c399e8f6
-    jinja: 'Here''s a statement and accompanying evidence. Does the evidence {{"supports"}},
-      {{"refutes"}}, or provide {{"not enough info"}} on climate change?
+    jinja: 'Here''s a statement and accompanying evidence. Does the evidence {{answer_choices[0]}},
+      {{answer_choices[1]}}, or {{answer_choices[2]}} on climate change?
 
 
       Statement: {{claim}}
@@ -211,18 +219,19 @@ templates:
       {{ answer_choices[evidences[1]["evidence_label"]] }}'
     metadata: !TemplateMetadata
       choices_in_prompt: null
-      metrics: []
+      metrics: 
+        - Accuracy
       original_task: null
     name: second_evidence_and_claim_itemization
     reference: Second evidence and claim with simple itemization
   ff9c9c11-92f1-4cb2-a73c-d786d58b00e1: !Template
-    answer_choices: Supports ||| Refutes ||| Not enough information
+    answer_choices: support ||| refute ||| does not provide enough information
     id: ff9c9c11-92f1-4cb2-a73c-d786d58b00e1
     jinja: 'Considering the following claim:
 
       {{claim}}.
 
-      Does the following statement {{"supports"}}, {{"refutes"}}, or provide {{"not
+      Does the following statement {{answer_choices[0]}}, {{answer_choices[1]}}, or {{"not
       enough info"}} on climate change?
 
       {{evidences[2]["evidence"].strip(".").strip(''"'')}}.
@@ -232,7 +241,8 @@ templates:
       {{ answer_choices[evidences[2]["evidence_label"]] }}'
     metadata: !TemplateMetadata
       choices_in_prompt: null
-      metrics: []
+      metrics:
+        - Accuracy
       original_task: null
     name: third_evidence_claim_pair
     reference: Relation between the claim and third evidence pair.
