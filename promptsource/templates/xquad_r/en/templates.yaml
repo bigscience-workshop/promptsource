@@ -2,7 +2,7 @@ dataset: xquad_r
 subset: en
 templates:
   4c005896-9534-47fe-a765-b2fa8666ea85: !Template
-    answer_choices: null
+    answer_choices: '{{answers.text[0]}}'
     id: 4c005896-9534-47fe-a765-b2fa8666ea85
     jinja: 'Text: {{context}}
 
@@ -12,17 +12,18 @@ templates:
 
       Question: {{question}} |||
 
-      {{answers.text[0]}}
+      {{answer_choices[0]}}
 
       '
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
+      choices_in_prompt: false
+      metrics:
+      - Accuracy
       original_task: true
-    name: Template 2
+    name: answer_given_context_question
     reference: ''
   50fc3bd0-7dcd-40e6-b73d-8c255718ba20: !Template
-    answer_choices: null
+    answer_choices: '{{answers.text[0]}}'
     id: 50fc3bd0-7dcd-40e6-b73d-8c255718ba20
     jinja: 'Given a paragraph and a question, can you find the answer in the paragraph?
 
@@ -32,15 +33,16 @@ templates:
 
       {{question}}|||
 
-      {{answers.text[0]}}'
+      {{answer_choices[0]}}'
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
+      choices_in_prompt: false
+      metrics:
+      - Accuracy
       original_task: true
-    name: Template 5
+    name: context_question_to_answer
     reference: ''
   5417ae40-e0ac-40c7-bbbf-f999611b0e03: !Template
-    answer_choices: null
+    answer_choices: '{{answers.text[0]}}'
     id: 5417ae40-e0ac-40c7-bbbf-f999611b0e03
     jinja: '{{question}}
 
@@ -50,62 +52,66 @@ templates:
 
       {{context}}|||
 
-      {{answers.text[0]}}'
+      {{answer_choices[0]}}'
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
+      choices_in_prompt: false
+      metrics:
+      - Accuracy
       original_task: true
-    name: Template 6
+    name: answer_question_based_on_context
     reference: ''
   5b3b8c55-b270-40d9-ae97-430133528aa9: !Template
-    answer_choices: null
+    answer_choices: '{{answers.text[0]}}'
     id: 5b3b8c55-b270-40d9-ae97-430133528aa9
     jinja: "Given the following paragraph, frame a question for which the answer would\
-      \ be: \n\n{{answers.text[0]}}\n\n{{context}}|||\n{{question}}"
+      \ be: \n\n{{answer_choices[0]}}\n\n{{context}}|||\n{{question}}"
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      - ROUGE
       original_task: false
-    name: Template 8
+    name: frame_question_given_context_answer
     reference: ''
   8db592de-7185-4e3d-922d-f6c9aa22cd8f: !Template
-    answer_choices: null
+    answer_choices: '{{answers.text[0]}}'
     id: 8db592de-7185-4e3d-922d-f6c9aa22cd8f
     jinja: '{{context}}
 
+      Based on the context above what is the answer to the query below?
 
-      {{question}}
-
-
-      What answers the given query?|||
+      {{question}}|||
 
 
-      {{answers.text[0]}}
+      {{answer_choices[0]}}
 
       '
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
+      choices_in_prompt: false
+      metrics:
+      - Accuracy
       original_task: true
-    name: Template 3
+    name: answer_query_based_on_context
     reference: ''
   b04111f8-d139-4b47-90ae-cc255998951f: !Template
-    answer_choices: null
+    answer_choices: '{{answers.text[0]}}'
     id: b04111f8-d139-4b47-90ae-cc255998951f
     jinja: '{{context}}
 
 
-      What is the question for which the answer is ''{{answers.text[0]}}''? |||
+      What is the question for which the answer is ''{{answer_choices[0]}}''? |||
 
       {{question}}'
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      - ROUGE
       original_task: false
-    name: Template 9
+    name: create_question_given_context_answer
     reference: ''
   eb0e4eb2-8235-42de-a22a-7ea1cfe98f69: !Template
-    answer_choices: null
+    answer_choices: '{{answers.text[0]}}'
     id: eb0e4eb2-8235-42de-a22a-7ea1cfe98f69
     jinja: 'Read the paragraph and answer the question that follows.
 
@@ -115,15 +121,16 @@ templates:
 
       {{question}} |||
 
-      {{answers.text[0]}}'
+      {{answer_choices[0]}}'
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
+      choices_in_prompt: false
+      metrics:
+      - Accuracy
       original_task: true
-    name: Template 1
+    name: question_answer
     reference: ''
   f6442d4b-02bb-4cdf-95f6-f148253b8b5b: !Template
-    answer_choices: null
+    answer_choices: '{{answers.text[0]}}'
     id: f6442d4b-02bb-4cdf-95f6-f148253b8b5b
     jinja: '{{context}}
 
@@ -133,10 +140,11 @@ templates:
 
       What is the answer to the question?|||
 
-      Answer: {{answers.text[0]}}'
+      Answer: {{answer_choices[0]}}'
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
+      choices_in_prompt: false
+      metrics:
+      - Accuracy
       original_task: true
-    name: Template 7
+    name: question_answer_type
     reference: ''
