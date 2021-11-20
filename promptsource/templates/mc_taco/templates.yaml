@@ -1,10 +1,7 @@
 dataset: mc_taco
 templates:
   1b27afce-9748-44bd-9d82-9db4b815c292: !Template
-    answer_choices:
-    - 'No'
-    - 'Yes'
-    answer_choices_key: null
+    answer_choices: No ||| Yes
     id: 1b27afce-9748-44bd-9d82-9db4b815c292
     jinja: 'Given the context,
 
@@ -23,8 +20,6 @@ templates:
 
       {{answer_choices[label]}}'
     metadata: !TemplateMetadata
-      _do_eval: true
-      _do_train: true
       choices_in_prompt: false
       metrics:
       - Accuracy
@@ -32,17 +27,12 @@ templates:
     name: observe_check_plausible_yes_no
     reference: Basic Context, QA Pair, ask for plausibility
   38ab730f-1ed8-4362-99e1-c0d305aa056e: !Template
-    answer_choices:
-    - plausible
-    - implausible
-    answer_choices_key: null
+    answer_choices: plausible ||| implausible
     id: 38ab730f-1ed8-4362-99e1-c0d305aa056e
     jinja: "I've been grappling with the temporal accuracy of this answer for a while:\n\
       \nQ: \"{{question}}\"\n\nI have the following information: \"{{sentence}}\"\n\
       \nA: \"{{answer}}\" \n\nThis answer is definitely not ||| {{answer_choices[label]}}"
     metadata: !TemplateMetadata
-      _do_eval: false
-      _do_train: true
       choices_in_prompt: false
       metrics:
       - Accuracy
@@ -50,13 +40,8 @@ templates:
     name: plausible_negated
     reference: Context, QA Pair, Negation
   5bc98cb7-350e-471e-b986-ad52a46f403c: !Template
-    answer_choices:
-    - Event Duration
-    - Event Ordering
-    - Frequency
-    - Typical Time
-    - Stationarity
-    answer_choices_key: null
+    answer_choices: Event Duration ||| Event Ordering ||| Frequency ||| Typical Time
+      ||| Stationarity
     id: 5bc98cb7-350e-471e-b986-ad52a46f403c
     jinja: 'There are five temporal categories: {{"Event Duration"}}, {{"Event Ordering"}},
       {{"Frequency"}}, {{"Typical Time"}}, {{"Stationarity"}}.
@@ -67,8 +52,6 @@ templates:
 
       {{answer_choices[category]}}'
     metadata: !TemplateMetadata
-      _do_eval: false
-      _do_train: true
       choices_in_prompt: true
       metrics:
       - Accuracy
@@ -77,7 +60,6 @@ templates:
     reference: Temporal categories as part of the prompt
   5e5cedef-b943-439a-a75a-1140478b0620: !Template
     answer_choices: null
-    answer_choices_key: null
     id: 5e5cedef-b943-439a-a75a-1140478b0620
     jinja: '{% if label %}
 
@@ -97,8 +79,6 @@ templates:
 
       {% endif %}'
     metadata: !TemplateMetadata
-      _do_eval: false
-      _do_train: true
       choices_in_prompt: false
       metrics:
       - BLEU
@@ -107,10 +87,7 @@ templates:
     name: generate_answer_from_question_and_context
     reference: Generate answer from question+context (if plausible)
   8423a3fa-adcf-4d36-b639-774bd13ac3fe: !Template
-    answer_choices:
-    - 'No'
-    - 'Yes'
-    answer_choices_key: null
+    answer_choices: No ||| Yes
     id: 8423a3fa-adcf-4d36-b639-774bd13ac3fe
     jinja: 'Here''s what happened: {{sentence}}
 
@@ -134,10 +111,7 @@ templates:
     name: asked_my_friend
     reference: ''
   89aaa7f3-d409-4a27-acd5-a207b431b12c: !Template
-    answer_choices:
-    - 'No'
-    - 'Yes'
-    answer_choices_key: null
+    answer_choices: No ||| Yes
     id: 89aaa7f3-d409-4a27-acd5-a207b431b12c
     jinja: 'Given the context, the question, and the candidate answer, the task is
       to determine whether the candidate answer is plausible ("yes") or not ("no").
@@ -165,10 +139,7 @@ templates:
     name: formal_description
     reference: Taken from the description of the dataset.
   a2896c7d-d443-4a3a-847c-9896a166a4b5: !Template
-    answer_choices:
-    - 'No'
-    - 'Yes'
-    answer_choices_key: null
+    answer_choices: No ||| Yes
     id: a2896c7d-d443-4a3a-847c-9896a166a4b5
     jinja: 'Given the context,
 
@@ -197,10 +168,7 @@ templates:
     name: believable
     reference: ''
   b08c4c20-f8a2-4bdb-8a9b-235f782c7386: !Template
-    answer_choices:
-    - 'False'
-    - 'True'
-    answer_choices_key: null
+    answer_choices: False ||| True
     id: b08c4c20-f8a2-4bdb-8a9b-235f782c7386
     jinja: 'True/False?
 
@@ -210,8 +178,6 @@ templates:
 
       {{answer_choices[label]}}'
     metadata: !TemplateMetadata
-      _do_eval: true
-      _do_train: true
       choices_in_prompt: true
       metrics:
       - Accuracy
@@ -219,21 +185,14 @@ templates:
     name: plausible_true_false
     reference: Context, QA Pair, T/F question
   df9ad236-1385-48ea-b056-171aa3f8d0bd: !Template
-    answer_choices:
-    - Event Duration
-    - Event Ordering
-    - Frequency
-    - Typical Time
-    - Stationarity
-    answer_choices_key: null
+    answer_choices: Event Duration ||| Event Ordering ||| Frequency ||| Typical Time
+      ||| Stationarity
     id: df9ad236-1385-48ea-b056-171aa3f8d0bd
     jinja: 'Which temporal category does the question "{{question}}" belong to? |||
 
 
       {{answer_choices[category]}}'
     metadata: !TemplateMetadata
-      _do_eval: false
-      _do_train: true
       choices_in_prompt: false
       metrics:
       - Accuracy
@@ -241,10 +200,7 @@ templates:
     name: temporal_categories_no_choices
     reference: Question provided, predict Temporal Category
   fb4f8f70-c1cc-4004-97a5-cd131259d318: !Template
-    answer_choices:
-    - 'Yes'
-    - 'No'
-    answer_choices_key: null
+    answer_choices: Yes ||| No
     id: fb4f8f70-c1cc-4004-97a5-cd131259d318
     jinja: 'Here''s what happened: {{sentence}}
 

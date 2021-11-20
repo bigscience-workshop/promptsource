@@ -25,7 +25,7 @@ env.globals.update(zip=zip)
 
 # These are users whose datasets should be included in the results returned by
 # filter_english_datasets (regardless of their metadata)
-INCLUDED_USERS = {"Zaid"}
+INCLUDED_USERS = {"Zaid", "craffel"}
 
 
 def highlight(input):
@@ -58,7 +58,7 @@ class Template(yaml.YAMLObject):
 
     yaml_tag = "!Template"
 
-    def __init__(self, name, jinja, reference, metadata=None, answer_choices=None, answer_choices_key=None):
+    def __init__(self, name, jinja, reference, metadata=None, answer_choices=None):
         """
         Creates a prompt template.
 
@@ -73,15 +73,12 @@ class Template(yaml.YAMLObject):
         :param jinja: template expressed in Jinja
         :param reference: string describing author or paper reference for template
         :param metadata: a Metadata object with template annotations
-        :param answer_choices: list of strings that enumerates the possible completions
-                               for templates that should be evaluated as ranked
-                               completions. If None, then the template is open-ended.
-                               This list is accessible from within Jinja as the
-                               variable `answer_choices`.
-                               TODO: Merge answer_choices and answer_choices_key
-        :param answer_choices_key: Jinja expression for answer choices, or None if
-                                   no answer choices
-
+        :param answer_choices: Jinja expression for answer choices. Should produce
+                               a ||| delimited string of choices that enumerates
+                               the possible completions for templates that should
+                               be evaluated as ranked completions. If None, then
+                               the template is open-ended. This list is accessible
+                               from within Jinja as the variable `answer_choices`.
         """
         self.id = str(uuid.uuid4())
         self.name = name
@@ -89,7 +86,6 @@ class Template(yaml.YAMLObject):
         self.reference = reference
         self.metadata = metadata if metadata is not None else Template.Metadata()
         self.answer_choices = answer_choices
-        self.answer_choices_key = answer_choices_key
 
     def get_id(self):
         """
@@ -115,24 +111,13 @@ class Template(yaml.YAMLObject):
         """
         return self.reference
 
-    def get_answer_choices(self):
-        """
-        Returns a list of strings enumerating the possible completions for
-        this template, or None if the template is open ended.
-
-        :return: List[String]
-        """
-        # TODO: Replace answer_choices with answer_choices_key values
-        return self.answer_choices
-
     def get_answer_choices_expr(self):
         """
         Returns a Jinja expression for computing the answer choices from an example.
 
         :return: String, or None if no answer choices
         """
-        # TODO: Change to return answer_choices
-        return self.answer_choices_key
+        return self.answer_choices
 
     def get_answer_choices_list(self, example):
         """
@@ -140,11 +125,10 @@ class Template(yaml.YAMLObject):
 
         :return: list of strings, or None if get_answer_choices_expr is None
         """
-        # TODO: remove when merging answer_choices and answer_choices_key
-        if self.get_answer_choices_expr() is None:
-            return self.get_answer_choices()
+        jinja = self.get_answer_choices_expr()
+        if jinja is None:
+            return None
 
-        jinja = self.answer_choices_key
         rtemplate = env.from_string(jinja)
         protected_example = self._escape_pipe(example)
         rendered_choices = rtemplate.render(**protected_example)
@@ -156,11 +140,10 @@ class Template(yaml.YAMLObject):
 
         :return: list of strings, or None if no static list exists
         """
-        # TODO: remove when merging answer_choices and answer_choices_key
-        if self.get_answer_choices_expr() is None:
-            return self.get_answer_choices()
+        jinja = self.get_answer_choices_expr()
+        if jinja is None:
+            return None
 
-        jinja = self.answer_choices_key
         parse = env.parse(jinja)
         variables = meta.find_undeclared_variables(parse)
         if len(variables) == 0:
@@ -450,8 +433,7 @@ class DatasetTemplates:
         jinja: str,
         reference: str,
         metadata: Template.Metadata,
-        answer_choices: List[str],
-        answer_choices_key: str,
+        answer_choices: str,
     ) -> None:
         """
         Updates a pre-existing template and writes changes
@@ -461,8 +443,7 @@ class DatasetTemplates:
         :param jinja: new jinja entry
         :param reference: new reference entry
         :param metadata: a Metadata object with template annotations
-        :param answer_choices: new answer_choices list
-        :param answer_choices_key: new answer_choices_key string
+        :param answer_choices: new answer_choices string
         """
         template_id = self.name_to_id_mapping[current_template_name]
         self.templates[template_id].name = new_template_name
@@ -470,7 +451,6 @@ class DatasetTemplates:
         self.templates[template_id].reference = reference
         self.templates[template_id].metadata = metadata
         self.templates[template_id].answer_choices = answer_choices
-        self.templates[template_id].answer_choices_key = answer_choices_key
 
         self.write_to_file()
 
@@ -512,7 +492,6 @@ def get_templates_data_frame():
         "choices_in_prompt": [],
         "metrics": [],
         "answer_choices": [],
-        "answer_choices_key": [],
         "jinja": [],
     }
 
@@ -530,8 +509,7 @@ def get_templates_data_frame():
             data["original_task"].append(template.metadata.original_task)
             data["choices_in_prompt"].append(template.metadata.choices_in_prompt)
             data["metrics"].append(template.metadata.metrics)
-            data["answer_choices"].append(template.get_answer_choices())
-            data["answer_choices_key"].append(template.get_answer_choices_expr())
+            data["answer_choices"].append(template.get_answer_choices_expr())
             data["jinja"].append(template.jinja)
 
     return pd.DataFrame(data)

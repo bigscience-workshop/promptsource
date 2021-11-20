@@ -2,14 +2,11 @@ dataset: coqa
 templates:
   530616d3-1cc8-4faa-a855-4b21e0da9ec9: !Template
     answer_choices: null
-    answer_choices_key: null
     id: 530616d3-1cc8-4faa-a855-4b21e0da9ec9
     jinja: "Answer the question based on the information contained in the passage.\n\
       Q: {{questions[0]}} \n\nPassage: {{story}}\n\nA: ||| {{answers[\"input_text\"\
       ][0]}}"
     metadata: !TemplateMetadata
-      _do_eval: false
-      _do_train: false
       choices_in_prompt: false
       metrics:
       - Other
@@ -18,7 +15,6 @@ templates:
     reference: 'Metric: variant of SQuAD (Section 6.1 of the paper)'
   7c0e2256-961c-48e9-bc08-6c270cc68b4a: !Template
     answer_choices: null
-    answer_choices_key: null
     id: 7c0e2256-961c-48e9-bc08-6c270cc68b4a
     jinja: 'Answer the last question based on the hint.
 
@@ -44,8 +40,6 @@ templates:
 
       '
     metadata: !TemplateMetadata
-      _do_eval: false
-      _do_train: false
       choices_in_prompt: false
       metrics:
       - Other
@@ -54,7 +48,6 @@ templates:
     reference: 'Metric: variant of SQuAD (Section 6.1 of the paper)'
   a22e8bf1-f5af-43eb-b38c-002462261da2: !Template
     answer_choices: null
-    answer_choices_key: null
     id: a22e8bf1-f5af-43eb-b38c-002462261da2
     jinja: 'Can you form a set of {{questions | length}} question-answer pairs about
       the passage below?
@@ -72,8 +65,6 @@ templates:
 
       {% endfor %}'
     metadata: !TemplateMetadata
-      _do_eval: false
-      _do_train: false
       choices_in_prompt: false
       metrics:
       - BLEU
@@ -83,7 +74,6 @@ templates:
     reference: ''
   cb53f12f-e781-4a92-bbb0-fbef19bd2d29: !Template
     answer_choices: null
-    answer_choices_key: null
     id: cb53f12f-e781-4a92-bbb0-fbef19bd2d29
     jinja: 'In the passage below, extract the part which answers the question:
 
@@ -94,8 +84,6 @@ templates:
 
       {{story[answers["answer_start"][0] : answers["answer_end"][0] ]}}'
     metadata: !TemplateMetadata
-      _do_eval: false
-      _do_train: false
       choices_in_prompt: false
       metrics:
       - Squad
@@ -104,7 +92,6 @@ templates:
     reference: ''
   dc05f09a-0b2b-4448-9226-45dcc4cf52e6: !Template
     answer_choices: null
-    answer_choices_key: null
     id: dc05f09a-0b2b-4448-9226-45dcc4cf52e6
     jinja: "{% set missing_idx = range(questions|length)|choice %}\n\n{% for i in\
       \ range(questions|length) %}\nQ: {{questions[i] }}\n\nA:  {% if i !=missing_idx\
@@ -112,8 +99,6 @@ templates:
       \ conversation, give a suitable response to the missing answer\n\nHint: {{story}}\n\
       ||| \n{{answers[\"input_text\"][missing_idx]}}"
     metadata: !TemplateMetadata
-      _do_eval: false
-      _do_train: false
       choices_in_prompt: false
       metrics:
       - Other

@@ -2,18 +2,13 @@ dataset: glue
 subset: sst2
 templates:
   11d1c505-9232-4c35-82a4-4c3642843e2e: !Template
-    answer_choices:
-    - negative
-    - positive
-    answer_choices_key: null
+    answer_choices: negative ||| positive
     id: 11d1c505-9232-4c35-82a4-4c3642843e2e
     jinja: '{{sentence}}
 
       Question: Was that sentence {{"positive"}} or {{"negative"}}? Answer: ||| {{
       answer_choices[label] }}'
     metadata: !TemplateMetadata
-      _do_eval: false
-      _do_train: true
       choices_in_prompt: true
       metrics:
       - Accuracy
@@ -21,10 +16,7 @@ templates:
     name: positive negative after
     reference: ''
   228fcae7-7f4c-4e3c-9ac4-e49b26bc103d: !Template
-    answer_choices:
-    - negative
-    - positive
-    answer_choices_key: null
+    answer_choices: negative ||| positive
     id: 228fcae7-7f4c-4e3c-9ac4-e49b26bc103d
     jinja: 'I''m reading a review that says "{{sentence}}".
 
@@ -32,8 +24,6 @@ templates:
       Do you think the review is {{"positive"}} or {{"negative"}}? ||| {{ answer_choices[label]
       }}'
     metadata: !TemplateMetadata
-      _do_eval: false
-      _do_train: true
       choices_in_prompt: true
       metrics:
       - Accuracy
@@ -41,10 +31,7 @@ templates:
     name: review
     reference: ''
   5aa0cea9-0f8d-454d-b25b-b0d4cda273b8: !Template
-    answer_choices:
-    - sad
-    - happy
-    answer_choices_key: null
+    answer_choices: sad ||| happy
     id: 5aa0cea9-0f8d-454d-b25b-b0d4cda273b8
     jinja: 'Someone just said to me "{{sentence}}".
 
@@ -52,8 +39,6 @@ templates:
       Do you think they are {{"sad"}} or {{"happy"}}? ||| {{ answer_choices[label]
       }}'
     metadata: !TemplateMetadata
-      _do_eval: false
-      _do_train: true
       choices_in_prompt: true
       metrics:
       - Accuracy
@@ -61,10 +46,7 @@ templates:
     name: said
     reference: ''
   63c6b2be-8ecd-42ad-88c7-0d1dc1a8323a: !Template
-    answer_choices:
-    - negative
-    - positive
-    answer_choices_key: null
+    answer_choices: negative ||| positive
     id: 63c6b2be-8ecd-42ad-88c7-0d1dc1a8323a
     jinja: 'Does the following sentence have a {{"positive"}} or {{"negative"}} sentiment?
 
@@ -74,8 +56,6 @@ templates:
 
       {{ answer_choices[label] }}'
     metadata: !TemplateMetadata
-      _do_eval: false
-      _do_train: true
       choices_in_prompt: true
       metrics:
       - Accuracy
@@ -83,16 +63,11 @@ templates:
     name: following positive negative
     reference: ''
   6dd74cd5-e074-4612-9e96-c17ca88c3bc4: !Template
-    answer_choices:
-    - bad
-    - good
-    answer_choices_key: null
+    answer_choices: bad ||| good
     id: 6dd74cd5-e074-4612-9e96-c17ca88c3bc4
     jinja: Someone sent me an email with the sentence "{{sentence}}". Do you think
       they are feeling {{"good"}} or {{"bad"}}? ||| {{ answer_choices[label] }}
     metadata: !TemplateMetadata
-      _do_eval: false
-      _do_train: true
       choices_in_prompt: true
       metrics:
       - Accuracy

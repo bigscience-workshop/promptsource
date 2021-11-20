@@ -3,15 +3,12 @@ subset: answer_selection_analysis
 templates:
   39f5f57c-50b9-40b3-bb4f-3f0e4fec7776: !Template
     answer_choices: null
-    answer_choices_key: null
     id: 39f5f57c-50b9-40b3-bb4f-3f0e4fec7776
     jinja: '{% set rand_index = range(0,10)|choice %} He asked me "{{ question }}"
       Is he talking about {{ ["MUSIC", "TV","TRAVEL","ART","SPORT","COUNTRY","MOVIES","HISTORICAL
       EVENTS","SCIENCE","FOOD"][rand_index]|lower}}? ||| {% if topic == rand_index
       %}Yes{% else %}No{% endif %}'
     metadata: !TemplateMetadata
-      _do_eval: false
-      _do_train: false
       choices_in_prompt: null
       metrics: []
       original_task: false
@@ -19,7 +16,6 @@ templates:
     reference: ''
   5354e98d-8aa2-49d0-a50b-fc72a503d7d4: !Template
     answer_choices: null
-    answer_choices_key: null
     id: 5354e98d-8aa2-49d0-a50b-fc72a503d7d4
     jinja: '{% set rand_index = range(0,candidates|length)|choice %} Would it make
       sense to reply "{{ candidates[rand_index]|trim|trim(''.'') }}" to the question
@@ -27,8 +23,6 @@ templates:
 
       '
     metadata: !TemplateMetadata
-      _do_eval: false
-      _do_train: false
       choices_in_prompt: null
       metrics: []
       original_task: false
@@ -36,7 +30,6 @@ templates:
     reference: ''
   721463cf-bae4-4a22-bd19-7bdbb0777856: !Template
     answer_choices: null
-    answer_choices_key: null
     id: 721463cf-bae4-4a22-bd19-7bdbb0777856
     jinja: '{% set rand_index = range(0,10)|choice %}{% set rand_index = rand_index
       - 1 if rand_index == topic else rand_index %}{% set topics = ["MUSIC", "TV","TRAVEL","ART","SPORT","COUNTRY","MOVIES","HISTORICAL
@@ -44,8 +37,6 @@ templates:
       Is it {{ topics[rand_index]|lower}} or {{ topics[topic]|lower}}? ||| {{ topics[topic]|lower
       }}'
     metadata: !TemplateMetadata
-      _do_eval: false
-      _do_train: false
       choices_in_prompt: null
       metrics: []
       original_task: false
@@ -53,15 +44,12 @@ templates:
     reference: ''
   9de0a553-63e7-4b67-a6c5-1a15ac0d5483: !Template
     answer_choices: null
-    answer_choices_key: null
     id: 9de0a553-63e7-4b67-a6c5-1a15ac0d5483
     jinja: 'Someone asked me "{{ question }}" I replied "{{ candidates[0] }} Does
       my answer make sense? ||| {% if 0 in answers %}Yes{%else %}No{%endif%}
 
       '
     metadata: !TemplateMetadata
-      _do_eval: false
-      _do_train: false
       choices_in_prompt: null
       metrics: []
       original_task: null
@@ -69,7 +57,6 @@ templates:
     reference: ''
   c2be1297-cfce-48bd-9ef0-9f46fc898e84: !Template
     answer_choices: null
-    answer_choices_key: null
     id: c2be1297-cfce-48bd-9ef0-9f46fc898e84
     jinja: "{% set rand_val = range(0,candidates|length)|choice %}{% set rand_index\
       \ = namespace(value=rand_val)%}\n{% for answer in answers|sort(reverse=True)%}\n\
@@ -81,8 +68,6 @@ templates:
       \ }}\" Which is the correct answer? 1: \"{{ real_fake_answers|join('\" or 2:\
       \ \"') }} ||| {{ response }}\n"
     metadata: !TemplateMetadata
-      _do_eval: false
-      _do_train: false
       choices_in_prompt: null
       metrics: []
       original_task: false
