@@ -1,7 +1,6 @@
 # coding=utf-8
 
 import datasets
-import pkg_resources
 import requests
 
 from promptsource.templates import INCLUDED_USERS
@@ -34,13 +33,6 @@ def renameDatasetColumn(dataset):
 
 def get_dataset_builder(path, conf=None):
     "Get a dataset builder from name and conf."
-    # `datasets.load.prepare_module` pulls infos from hf/datasets's master.
-    # story_cloze hasn't been merged yet (https://github.com/huggingface/datasets/pull/2907)
-    # This is a temporary fix for the tests (more specifically test_templates.py)
-    # Once PR 2907 is merged, we can remove this if condition (along with the `custom_datasets` folder)
-    # Also see `promptsource.seqio_tasks.utils.get_dataset_splits`
-    if path == "story_cloze":
-        path = pkg_resources.resource_filename("promptsource", "custom_datasets/story_cloze")
     module_path = datasets.load.prepare_module(path, dataset=True)
     builder_cls = datasets.load.import_main_class(module_path[0], dataset=True)
     if conf:
@@ -53,15 +45,11 @@ def get_dataset_builder(path, conf=None):
 def get_dataset(path, conf=None):
     "Get a dataset from name and conf."
     builder_instance = get_dataset_builder(path, conf)
-    fail = False
     if builder_instance.manual_download_instructions is None and builder_instance.info.size_in_bytes is not None:
         builder_instance.download_and_prepare()
-        dts = builder_instance.as_dataset()
-        dataset = dts
+        return builder_instance.as_dataset()
     else:
-        dataset = builder_instance
-        fail = True
-    return dataset, fail
+        return datasets.load_dataset(path, conf)
 
 
 def get_dataset_confs(path):
@@ -131,7 +119,7 @@ def filter_english_datasets():
     return sorted(english_datasets)
 
 
-def list_datasets(template_collection, _state):
+def list_datasets():
     """Get all the datasets to work with."""
     dataset_list = filter_english_datasets()
     dataset_list.sort(key=lambda x: x.lower())
