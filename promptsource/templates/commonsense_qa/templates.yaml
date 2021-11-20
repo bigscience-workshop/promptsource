@@ -1,50 +1,51 @@
 dataset: commonsense_qa
 templates:
   1e1d0ce1-b0ea-4ad8-9971-b2b44948123b: !Template
-    answer_choices: null
+    answer_choices: '{{choices.text | join("|||")}}'
     id: 1e1d0ce1-b0ea-4ad8-9971-b2b44948123b
     jinja: '{% if answerKey != "" %}
 
+      Answer the following question:
+
       {{question}} |||
 
-      {{ choices[''text''][choices[''label''].index(answerKey)] }}
+      {{ answer_choices[choices[''label''].index(answerKey)] }}
 
       {% endif %}'
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
-      original_task: null
-    name: not_multiple_choice
+      choices_in_prompt: false
+      metrics:
+      - Accuracy
+      original_task: true
+    name: answer_given_question_without_options
     reference: ''
   41188da5-c16a-4c6b-89af-6ce6815aedc6: !Template
-    answer_choices: null
+    answer_choices: '{{choices.text | join("|||")}}'
     id: 41188da5-c16a-4c6b-89af-6ce6815aedc6
     jinja: '{% if answerKey != "" %}
 
       {{question}}
 
 
-      {% for i in range(choices[''text'']|length) %}
+      - {{answer_choices | join("\n- ")}} |||
 
-      - {{choices[''text''][i]}}
-
-      {% endfor %} |||
-
-      {{ choices[''text''][choices[''label''].index(answerKey)] }}
+      {{answer_choices[choices[''label''].index(answerKey)] }}
 
       {% endif %}'
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
-      original_task: null
-    name: qa
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
+      original_task: true
+    name: question_answering
     reference: ''
   42fca80b-b614-4288-aad2-2525360543cb: !Template
-    answer_choices: null
+    answer_choices: A ||| B ||| C ||| D
     id: 42fca80b-b614-4288-aad2-2525360543cb
     jinja: '{% if answerKey != "" %}
 
-      Pick the most suitable answer for the following question:
+      Given the following options, what do you think is the correct answer to the
+      question below:
 
 
       {{question}}
@@ -52,28 +53,28 @@ templates:
 
       Options:
 
+      {% for letter, t in zip(answer_choices, choices.text) %}
 
-      {% for i in range(choices[''text'']|length) %}
-
-      {{choices[''label''][i]}}: {{choices[''text''][i]}}
+      - {{letter}}: {{t}}
 
       {% endfor %} |||
 
-      {{ answerKey }}
+      {{answerKey}}
 
       {% endif %}'
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
-      original_task: null
-    name: test_question
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
+      original_task: true
+    name: question_to_answer_index
     reference: ''
   4e46612a-a320-4692-bddc-37df45680df4: !Template
-    answer_choices: null
+    answer_choices: '{{choices.text | join("|||")}}'
     id: 4e46612a-a320-4692-bddc-37df45680df4
     jinja: '{% if answerKey != "" %}
 
-      Pick all the incorrect/false options for the following question:
+      For the question below, select all the incorrect options:
 
 
       {{question}}
@@ -82,17 +83,13 @@ templates:
       Options:
 
 
-      {% for i in range(choices[''text'']|length) %}
+      - {{answer_choices | join("\n- ")}}|||
 
-      - {{choices[''text''][i]}}
-
-      {% endfor %} |||
-
-      {% for i in range(choices[''text'']|length) %}
+      {% for i in range(answer_choices|length) %}
 
       {% if i != choices[''label''].index(answerKey) %}
 
-      - {{ choices[''text''][i] }}
+      - {{ answer_choices[i] }}
 
       {% endif %}
 
@@ -100,39 +97,34 @@ templates:
 
       {% endif %}'
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
-      original_task: null
-    name: test_question_false
+      choices_in_prompt: false
+      metrics:
+      - Accuracy
+      original_task: false
+    name: select_incorrect_answers
     reference: ''
   8e3f63fa-9ae6-4105-bd51-874b5e1d6b8e: !Template
-    answer_choices: null
+    answer_choices: '{{choices.text | join("|||")}}'
     id: 8e3f63fa-9ae6-4105-bd51-874b5e1d6b8e
     jinja: '{% if answerKey != "" %}
 
-      Pick the most suitable answer for the following question:
-
+      Given the options below, select the most suitable answer for the following question:
 
       {{question}}
 
-
       Options:
 
+      - {{answer_choices | join("\n- ")}}|||
 
-      {% for i in range(choices[''text'']|length) %}
-
-      - {{choices[''text''][i]}}
-
-      {% endfor %} |||
-
-      {{ choices[''text''][choices[''label''].index(answerKey)] }}
+      {{answer_choices[choices["label"].index(answerKey)]}}
 
       {% endif %}'
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
-      original_task: null
-    name: most_suitable
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
+      original_task: true
+    name: most_suitable_answer
     reference: ''
   bc718994-1d3e-4ae4-b65b-be307154b0a6: !Template
     answer_choices: null
@@ -152,8 +144,9 @@ templates:
 
       {% endif %}'
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
-      original_task: null
-    name: answer_qn
+      choices_in_prompt: false
+      metrics:
+      - Other
+      original_task: false
+    name: answer_to_question
     reference: ''
