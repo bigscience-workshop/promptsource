@@ -69,40 +69,6 @@ templates:
       original_task: true
     name: question_to_answer_index
     reference: ''
-  4e46612a-a320-4692-bddc-37df45680df4: !Template
-    answer_choices: '{{choices.text | join("|||")}}'
-    id: 4e46612a-a320-4692-bddc-37df45680df4
-    jinja: '{% if answerKey != "" %}
-
-      For the question below, select all the incorrect options:
-
-
-      {{question}}
-
-
-      Options:
-
-
-      - {{answer_choices | join("\n- ")}}|||
-
-      {% for i in range(answer_choices|length) %}
-
-      {% if i != choices[''label''].index(answerKey) %}
-
-      - {{ answer_choices[i] }}
-
-      {% endif %}
-
-      {% endfor %}
-
-      {% endif %}'
-    metadata: !TemplateMetadata
-      choices_in_prompt: false
-      metrics:
-      - Accuracy
-      original_task: false
-    name: select_incorrect_answers
-    reference: ''
   8e3f63fa-9ae6-4105-bd51-874b5e1d6b8e: !Template
     answer_choices: '{{choices.text | join("|||")}}'
     id: 8e3f63fa-9ae6-4105-bd51-874b5e1d6b8e
@@ -146,7 +112,8 @@ templates:
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
-      - Other
+      - BLEU
+      - ROUGE
       original_task: false
     name: answer_to_question
     reference: ''
