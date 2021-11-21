@@ -1,23 +1,11 @@
 dataset: poem_sentiment
 templates:
-  211c0765-1f51-4574-b354-040273ea7c38: !Template
-    answer_choices: negative ||| positive ||| neutral ||| mixed
-    id: 211c0765-1f51-4574-b354-040273ea7c38
-    jinja: '{{verse_text}} How does the reader feel about this poem? |||  {{ answer_choices
-      [label] }}'
-    metadata: !TemplateMetadata
-      choices_in_prompt: false
-      metrics:
-      - Accuracy
-      original_task: true
-    name: guess_sentiment_without_options_variation_3
-    reference: ''
   2714baf0-5d19-4781-a60f-f44cd95935f7: !Template
     answer_choices: negative ||| positive ||| neutral ||| mixed
     id: 2714baf0-5d19-4781-a60f-f44cd95935f7
-    jinja: '{{verse_text}} Is the sentiment the poet express for the poem {{"negative"}},
-      {{"positive"}}, {{"neutral"}} or {{"mixed"}}? |||  {{ answer_choices [label]
-      }}'
+    jinja: '{{verse_text}} Is the sentiment the poet express for the poem {{answer_choices[0]}},
+      {{answer_choices[1]}}, {{answer_choices[2]}} or {{answer_choices[3]}}? |||  {{
+      answer_choices [label] }}'
     metadata: !TemplateMetadata
       choices_in_prompt: true
       metrics:
@@ -79,11 +67,11 @@ templates:
   ca15cecb-4ee6-4445-a0f4-6ef5cd519923: !Template
     answer_choices: negative ||| positive ||| neutral ||| mixed
     id: ca15cecb-4ee6-4445-a0f4-6ef5cd519923
-    jinja: "{{verse_text}} What sentiement does this poem express? \nOptions: {{\"\
-      negative\"}}, {{\"positive\"}}, {{\"neutral\"}},{{\"mixed\"}}.\nAnswer:  |||\
-      \ {{ answer_choices [label] }}"
+    jinja: "{{verse_text}} What sentiment does this poem express? \nOptions: {{answer_choices[0]}},\
+      \ {{answer_choices[1]}}, {{answer_choices[2]}}, {{answer_choices[3]}}.\nAnswer:\
+      \  ||| {{ answer_choices [label] }}"
     metadata: !TemplateMetadata
-      choices_in_prompt: false
+      choices_in_prompt: true
       metrics:
       - Accuracy
       original_task: true
@@ -111,5 +99,5 @@ templates:
       metrics:
       - Accuracy
       original_task: true
-    name: guess_sentiment_without_options_5
+    name: guess_sentiment_without_options
     reference: ''
