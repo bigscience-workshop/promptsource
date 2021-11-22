@@ -1,5 +1,4 @@
-dataset: subjqa
-subset: restaurants
+dataset: subjqa/restaurants
 templates:
   5177d00a-255d-4a80-bb77-2d94f40e276c: !Template
     answer_choices: 1 ||| 2 ||| 3 ||| 4 ||| 5
@@ -207,7 +206,7 @@ templates:
       \ the help of the context. If the question cannot be answered, say Unanswerable.\n\
       \nQuestion: \n{{question}}\n\nContext:\n{{context}}\n\n|||\n{% if (answers[\"\
       text\"]  | length) == 0 %}\n{{ \"Unanswerable\" }}\n{% else %}\n{{answers[\"\
-      text\"][0]}}\n{% endif %}"
+      text\"] | join(\" \\n \")}}\n{% endif %}"
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:

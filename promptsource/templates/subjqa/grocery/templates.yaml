@@ -1,5 +1,4 @@
-dataset: subjqa
-subset: grocery
+dataset: subjqa/grocery
 templates:
   0f728f5b-6488-439d-8a92-6e15a1d87c62: !Template
     answer_choices: null
@@ -202,7 +201,7 @@ templates:
       \ the help of the context. If the question cannot be answered, say Unanswerable.\n\
       \nQuestion: \n{{question}}\n\nContext:\n{{context}}\n\n|||\n{% if (answers[\"\
       text\"]  | length) == 0 %}\n{{ \"Unanswerable\" }}\n{% else %}\n{{answers[\"\
-      text\"][0]}}\n{% endif %}"
+      text\"] | join(\" \\n \")}}\n{% endif %}"
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:

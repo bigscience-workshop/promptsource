@@ -1,5 +1,4 @@
-dataset: subjqa
-subset: tripadvisor
+dataset: subjqa/tripadvisor
 templates:
   0cb4bf0f-6f89-4f17-bf81-9740fac3d374: !Template
     answer_choices: books|||electronics|||grocery|||movies|||restaurants|||tripadvisor
@@ -137,7 +136,7 @@ templates:
       \ help of the context. If the question cannot be answered, say Unanswerable.\n\
       \nQuestion: \n{{question}}\n\nContext:\n{{context}}\n\n|||\n{% if (answers[\"\
       text\"]  | length) == 0 %}\n{{ \"Unanswerable\" }}\n{% else %}\n{{answers[\"\
-      text\"] | join(\" \\n \")}}\n{% endif %}"
+      text\"][0]}}\n{% endif %}"
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:

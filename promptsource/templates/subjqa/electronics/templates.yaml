@@ -1,11 +1,12 @@
-dataset: subjqa
-subset: electronics
+dataset: subjqa/electronics
 templates:
   2077a669-1574-4117-84fe-e683bead8d46: !Template
     answer_choices: books|||electronics|||grocery|||movies|||restaurants|||tripadvisor
     id: 2077a669-1574-4117-84fe-e683bead8d46
     jinja: '{% set mapping = {"books": 0, "electronics": 1, "grocery": 2, "movies":
       3, "restaurants":4 , "tripadvisor": 5} %}
+
+      Possible categories:
 
       - {{ ["books", "electronics", "grocery", "movies", "restaurants", "tripadvisor"]  |
       join("\n- ") }}
@@ -56,7 +57,7 @@ templates:
 
       {% else %}
 
-      {{answers["text"] | join(" \n ")}}
+      {{answers["text"][0]}}
 
       {% endif %}'
     metadata: !TemplateMetadata
@@ -100,7 +101,7 @@ templates:
 
       {% else %}
 
-      {{answers["text"] | join(" \n ")}}
+      {{answers["text"][0]}}
 
       {% endif %}'
     metadata: !TemplateMetadata
@@ -133,7 +134,7 @@ templates:
 
       {% else %}
 
-      {{answers["text"] | join(" \n ")}}
+      {{answers["text"][0]}}
 
       {% endif %}'
     metadata: !TemplateMetadata
@@ -200,7 +201,7 @@ templates:
       \ the help of the context. If the question cannot be answered, say Unanswerable.\n\
       \nQuestion: \n{{question}}\n\nContext:\n{{context}}\n\n|||\n{% if (answers[\"\
       text\"]  | length) == 0 %}\n{{ \"Unanswerable\" }}\n{% else %}\n{{answers[\"\
-      text\"][0]}}\n{% endif %}"
+      text\"] | join(\" \\n \")}}\n{% endif %}"
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
@@ -214,9 +215,6 @@ templates:
     id: e35fe9f1-84db-4436-9264-e30f090052f0
     jinja: '{% set mapping = {"books": 0, "electronics": 1, "grocery": 2, "movies":
       3, "restaurants":4 , "tripadvisor": 5} %}
-
-      Possible categories:
-
 
       Context:
 
