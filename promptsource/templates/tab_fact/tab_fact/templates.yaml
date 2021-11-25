@@ -23,10 +23,11 @@ templates:
 
       {% endif %}'
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
+      choices_in_prompt: false
+      metrics:
+      - Edit Distance
       original_task: false
-    name: tab_fact_7
+    name: tab_fact_table_caption
     reference: Generate Table Caption
   1f0606bd-0453-427f-8cc5-ab996aff680e: !Template
     answer_choices: No ||| Yes
@@ -51,10 +52,11 @@ templates:
 
       {{answer_choices[label]}}'
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
+      choices_in_prompt: false
+      metrics:
+      - Accuracy
       original_task: true
-    name: tab_fact_4
+    name: tab_fact_==>_implication_symbol
     reference: 'Input: Table Caption, Table; Label: Yes/No (mathematical "implication"
       symbol)'
   33e3dbc2-3b1b-4891-8c78-2b575dd3ec35: !Template
@@ -66,10 +68,11 @@ templates:
       \ \"{{statement}}\" can either be {{\"entailed\"}} or {{\"refuted\"}}. Which\
       \ one is it? |||  \n{{answer_choices[label]}}"
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
+      choices_in_prompt: false
+      metrics:
+      - Accuracy
       original_task: true
-    name: tab_fact_1
+    name: parse_table
     reference: 'Input: Table Caption, Table; Label: Refuted/Entailed -- Affirmative
       Form'
   5bf642b0-4d75-40b7-9c0a-80b38a170d0f: !Template
@@ -80,10 +83,11 @@ templates:
       {{table_text}}\" \n\nNote: {{\"#\"}} is the delimiter between columns; {{\"\\\
       n\"}} is the delimiter between rows.\n|||\n{{statement}}\n{% endif %}"
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
+      choices_in_prompt: false
+      metrics:
+      - Edit Distance
       original_task: false
-    name: tab_fact_6
+    name: tab_fact_express
     reference: Generate Natural Text from the table
   6e4d3fe8-1d31-4685-8ef6-419ab8554741: !Template
     answer_choices: No ||| Yes
@@ -92,10 +96,11 @@ templates:
       ? \n\nNote: {{\"#\"}} is the delimiter between columns; {{\"\\n\"}} is the delimiter\
       \ between rows.\n|||\n{{answer_choices[label]}}\n"
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
+      choices_in_prompt: false
+      metrics:
+      - Accuracy
       original_task: true
-    name: tab_fact_5
+    name: 'tab_fact_corroborated '
     reference: 'Input: Table Caption, Table; Label: Yes/No -- Interrogative Form (corroboration)'
   becf68bd-726d-40c1-afb1-80afd461126c: !Template
     answer_choices: No ||| Yes
@@ -120,10 +125,11 @@ templates:
 
       {{answer_choices[label]}}'
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
+      choices_in_prompt: false
+      metrics:
+      - Accuracy
       original_task: true
-    name: tab_fact_3
+    name: 'tab_fact_evidence '
     reference: 'Input: Table Caption, Table; Label: Yes/No -- Interrogative Form'
   faa6c21a-f52a-4eb9-a9e8-0931ea253229: !Template
     answer_choices: refuted ||| entailed
@@ -147,9 +153,10 @@ templates:
       From the above table, given two options ({{"refuted"}}/{{"entailed"}}), the
       statement "{{statement}}" can definitely be not |||  {{answer_choices[1-label]}}'
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
+      choices_in_prompt: false
+      metrics:
+      - Accuracy
       original_task: true
-    name: tab_fact_2
+    name: tab_fact_negative_answer
     reference: 'Input: Table Caption, Table; Label: Refuted/Entailed (Negation) --
       Affirmative Form'
