@@ -37,7 +37,8 @@ templates:
 
       {% if vars["value"]|length > 0 %}
 
-      {{human_reference}} What type of dinery is the passage talking about?  ||| {{vars[''value'']}}
+      {{human_reference}} What type of restaurant is the passage talking about?  |||
+      {{vars[''value'']}}
 
       {% endif %}
 
@@ -46,7 +47,7 @@ templates:
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
-      - Other
+      - Accuracy
       original_task: false
     name: eat_type_qa
     reference: ''
@@ -68,7 +69,7 @@ templates:
       {{human_reference}}
 
       From the passage given above, what type of food do you think is served at this
-      dinery?  ||| {{vars[''value'']}}
+      restaurant?  ||| {{vars[''value'']}}
 
       {% endif %}
 
@@ -77,14 +78,14 @@ templates:
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
-      - Other
+      - Accuracy
       original_task: false
     name: food_qa
     reference: ''
   1acabbc3-c9b9-4624-a684-29faeccff46f: !Template
     answer_choices: null
     id: 1acabbc3-c9b9-4624-a684-29faeccff46f
-    jinja: 'Given the following data about a dinery:
+    jinja: 'Given the following data about a restaurant:
 
       {% for feature in meaning_representation.split("]") %} {% set key = feature.split("[")[0].replace(",","")
       %} {% set value = feature.replace(",","").replace(key+"[", '''''''') %}
@@ -93,14 +94,14 @@ templates:
 
       {%- endfor %}
 
-      Generate some text about this dinery. ||| {{human_reference}}'
+      Generate some text about this restaurant. ||| {{human_reference}}'
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
       - BLEU
       - ROUGE
       original_task: true
-    name: generate_text_dinery
+    name: generate_text_restaurant
     reference: ''
   418c7942-06e8-48a7-b5f4-9f15bb874edf: !Template
     answer_choices: null
@@ -119,7 +120,8 @@ templates:
 
       {{human_reference}}
 
-      From the passage given above, where is the location of the diner?  ||| {{vars[''value'']}}
+      From the passage given above, where is the location of the restaurant?  |||
+      {{vars[''value'']}}
 
       {% endif %}
 
@@ -128,28 +130,9 @@ templates:
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
-      - Other
+      - Accuracy
       original_task: false
     name: area_qa
-    reference: ''
-  471c477b-becb-4898-9555-e1282f6c54ab: !Template
-    answer_choices: null
-    id: 471c477b-becb-4898-9555-e1282f6c54ab
-    jinja: ' {% for feature in meaning_representation.split("]") %} {% set key = feature.split("[")[0].replace(",","")
-      %} {% set value = feature.replace(",","").replace(key+"[", "") %}
-
-      {% if value != "" %} {{key}} : {{value}} {% endif %}
-
-      {%- endfor %}
-
-      Rearrange the information provided above to generate a fluent text. ||| {{human_reference}}'
-    metadata: !TemplateMetadata
-      choices_in_prompt: false
-      metrics:
-      - BLEU
-      - ROUGE
-      original_task: true
-    name: rearrange_text
     reference: ''
   51666217-46cf-4950-bf63-108ed16e074c: !Template
     answer_choices: null
@@ -166,7 +149,8 @@ templates:
 
       {% if vars["value"]|length > 0 %}
 
-      {{human_reference}} Is the dinery from the passage family friendly?  ||| {{vars[''value'']}}
+      {{human_reference}} Is the restaurant from the passage family friendly?  |||
+      {{vars[''value'']}}
 
       {% endif %}
 
@@ -175,7 +159,7 @@ templates:
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
-      - Other
+      - Accuracy
       original_task: false
     name: family_friendly_yes_no
     reference: ''
@@ -196,7 +180,8 @@ templates:
 
       {{human_reference}}
 
-      Name one landmark that is close to the dinery in the given passage.  ||| {{vars[''value'']}}
+      Name one landmark that is close to the restaurant in the given passage.  |||
+      {{vars[''value'']}}
 
       {% endif %}
 
@@ -205,7 +190,7 @@ templates:
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
-      - Other
+      - Accuracy
       original_task: false
     name: near_qa
     reference: ''
@@ -224,7 +209,7 @@ templates:
       - BLEU
       - ROUGE
       original_task: true
-    name: create_text_for_mr
+    name: create_text_for_me
     reference: ''
   83992c17-745f-4940-b626-b01a85ba66c1: !Template
     answer_choices: null
@@ -249,7 +234,7 @@ templates:
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
-      - Other
+      - Accuracy
       original_task: false
     name: name_qa
     reference: ''
@@ -270,7 +255,8 @@ templates:
 
       {{human_reference}}
 
-      According to this passage, what is the rating given to this dinery?  ||| {{vars[''value'']}}
+      According to this passage, what is the rating given to this restaurant?  |||
+      {{vars[''value'']}}
 
       {% endif %}
 
@@ -279,14 +265,14 @@ templates:
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
-      - Other
+      - Accuracy
       original_task: false
     name: rating_qa
     reference: ''
   bdecbb5a-d3e8-46f3-9ea8-22025bc59e3b: !Template
     answer_choices: null
     id: bdecbb5a-d3e8-46f3-9ea8-22025bc59e3b
-    jinja: 'Please generate a coherent text from the information given below:
+    jinja: 'Please generate a restaurant description from the information given below:
 
 
       {{meaning_representation}} ||| {{human_reference}}'
@@ -315,7 +301,7 @@ templates:
 
       {{human_reference}}
 
-      According to the passage, what is an approximate price range of the given dinery?  |||
+      According to the passage, what is an approximate price range of the given restaurant?  |||
       {{vars[''value'']}}
 
       {% endif %}
@@ -325,7 +311,7 @@ templates:
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
-      - Other
+      - Accuracy
       original_task: false
     name: price_range_qa
     reference: ''
