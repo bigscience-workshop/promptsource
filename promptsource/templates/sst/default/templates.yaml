@@ -4,7 +4,7 @@ templates:
   23c231c1-672d-4420-a8ab-41ab930de317: !Template
     answer_choices: no ||| yes
     id: 23c231c1-672d-4420-a8ab-41ab930de317
-    jinja: 'Does the movie review below would make you watch it?
+    jinja: 'Does the movie review below make someone want to watch it?
 
 
       {{sentence}} |||
@@ -57,6 +57,22 @@ templates:
       original_task: true
     name: sentiment_watch_scale
     reference: ''
+  9453d08b-6144-4f36-a53d-232ed1dfcff4: !Template
+    answer_choices: no ||| yes
+    id: 9453d08b-6144-4f36-a53d-232ed1dfcff4
+    jinja: 'Does it seem like the reviewer who wrote this review liked the movie?
+
+
+      {{sentence}} |||
+
+      {{answer_choices[0 if label < 0.5 else 1]}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - Accuracy
+      original_task: true
+    name: did_reviewer_like
+    reference: ''
   b15994be-ca57-4924-9af7-fbaa6ee0124b: !Template
     answer_choices: no ||| yes
     id: b15994be-ca57-4924-9af7-fbaa6ee0124b
@@ -76,16 +92,4 @@ templates:
       - Accuracy
       original_task: true
     name: sentiment_classification
-    reference: ''
-  c5dc88f9-204f-43be-b09f-f6334215e271: !Template
-    answer_choices: null
-    id: c5dc88f9-204f-43be-b09f-f6334215e271
-    jinja: "Form a sentence parse tree (formatted as a parent pointer tree) using\
-      \ the sentence below:\n\n{{sentence}} |||\n {{tree.replace('|',' ')}}"
-    metadata: !TemplateMetadata
-      choices_in_prompt: false
-      metrics:
-      - Other
-      original_task: true
-    name: tree_from_tokens
     reference: ''
