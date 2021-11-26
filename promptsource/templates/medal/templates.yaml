@@ -26,7 +26,7 @@ templates:
     name: disambiguate_abbrev_text_after
     reference: ''
   6de8a038-84a4-4a3f-b4ff-6ecca058da6d: !Template
-    answer_choices: null
+    answer_choices: Yes ||| No
     id: 6de8a038-84a4-4a3f-b4ff-6ecca058da6d
     jinja: '{% set tokenised_text = text.split('' '') %}
 
@@ -55,13 +55,13 @@ templates:
 
       {% endif %}
 
-      Please answer {{"Yes"}} | {{"No"}}.
+      Please answer {{"Yes"}} or {{"No"}}.
 
       |||
 
       {{answer}}'
     metadata: !TemplateMetadata
-      choices_in_prompt: false
+      choices_in_prompt: true
       metrics:
       - Accuracy
       original_task: false
@@ -92,7 +92,7 @@ templates:
     name: disambiguate_abbrev_text_before
     reference: ''
   c498cf73-515c-4a5b-bbaa-267485510031: !Template
-    answer_choices: null
+    answer_choices: Yes ||| No
     id: c498cf73-515c-4a5b-bbaa-267485510031
     jinja: '{% set tokenised_text = text.split('' '') %}
 
@@ -100,22 +100,21 @@ templates:
 
       {% set answer = [''Yes'', ''No'']|random %}
 
+      {% set random_index = range(1, tokenised_text|length)|random %}
+
+      {% set text_len = range(2, 5)|random %}
 
 
       {% if answer==''Yes'' %}
 
       Based on the text below, is "{{ label[0] }}" a correct disambiguation of "{{
-      tokenised_text[acronym] }}"? Please answer {{"Yes"}} | {{"No"}}.
+      tokenised_text[acronym] }}"? Please answer {{"Yes"}} or {{"No"}}.
 
       {% else %}
 
-      {% set random_index = range(1, tokenised_text|length)|random %}
-
-      {% set text_len = range(2, 5)|random %}
-
       Based on the text below, is "{{ tokenised_text[random_index:random_index+text_len]|join(''
       '') }}" a correct disambiguation of "{{ tokenised_text[acronym] }}"? Please
-      answer {{"Yes"}} | {{"No"}}.
+      answer {{"Yes"}} or {{"No"}}.
 
       {% endif %}
 
@@ -126,14 +125,14 @@ templates:
 
       {{answer}}'
     metadata: !TemplateMetadata
-      choices_in_prompt: false
+      choices_in_prompt: true
       metrics:
       - Accuracy
       original_task: false
     name: is_true_abbrev_text_after
     reference: ''
   f3d7bceb-227e-474d-a6cb-15273fd74873: !Template
-    answer_choices: null
+    answer_choices: Yes ||| No
     id: f3d7bceb-227e-474d-a6cb-15273fd74873
     jinja: '{% set tokenised_text = text.split('' '') %}
 
@@ -152,12 +151,12 @@ templates:
       {% if answer==''Yes'' %}
 
       Based on the text above, does "{{ tokenised_text[acronym] }}" mean "{{ label[0]
-      }}"? Please answer {{"Yes"}} | {{"No"}}.
+      }}"? Please answer {{"Yes"}} or {{"No"}}.
 
       {% else %}
 
       Based on the text above, does "{{ tokenised_text[acronym] }}" mean  "{{ tokenised_text[random_index:random_index+text_len]|join(''
-      '') }}"? Please answer {{"Yes"}} | {{"No"}}.
+      '') }}"? Please answer {{"Yes"}} or {{"No"}}.
 
       {% endif %}
 
@@ -166,7 +165,7 @@ templates:
 
       {{answer}}'
     metadata: !TemplateMetadata
-      choices_in_prompt: false
+      choices_in_prompt: true
       metrics:
       - Accuracy
       original_task: false
