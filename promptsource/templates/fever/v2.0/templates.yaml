@@ -1,58 +1,69 @@
 dataset: fever
 subset: v2.0
 templates:
-  43acc4a7-262f-4c7c-9774-3e1e06376c52: !Template
-    answer_choices: null
-    id: 43acc4a7-262f-4c7c-9774-3e1e06376c52
-    jinja: "I've heard that {{claim}} Is this correct?\n|||\n{{\n{\"SUPPORTS\": \"\
-      Yes\",\n \"REFUTES\": \"No\",\n\"NOT ENOUGH INFO\": \"\"\n}[label]\n}}"
+  0870481e-e5d1-43a1-821e-b11c6bfd248a: !Template
+    answer_choices: Yes|||No|||Not sure
+    id: 0870481e-e5d1-43a1-821e-b11c6bfd248a
+    jinja: "{{claim}} Is this true?\n|||\n{% if label != \"\" %}\n{{\n{\"SUPPORTS\"\
+      : \"Yes\",\n \"REFUTES\": \"No\",\n\"NOT ENOUGH INFO\": \"Not sure\"\n}[label]\n\
+      }}\n{% endif %}"
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
-      original_task: false
-    name: cbqa_fever_dialog_style_surrounded
-    reference: CBQA fever, like a conversation, with prompts surrounding claim
-  6d109e17-3fc0-4cad-bc97-1ffb2c82d1de: !Template
-    answer_choices: null
-    id: 6d109e17-3fc0-4cad-bc97-1ffb2c82d1de
-    jinja: "{{claim}} Is this true?\n|||\n{{\n{\"SUPPORTS\": \"Yes\",\n \"REFUTES\"\
-      : \"No\",\n\"NOT ENOUGH INFO\": \"\"\n}[label]\n}}"
-    metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
+      choices_in_prompt: false
+      metrics:
+      - Accuracy
       original_task: false
     name: cbqa_fever_postprompt
     reference: CBQA fever, prompt after claim
-  6e43e0de-988b-45d1-b43d-0ac2c6b396fc: !Template
-    answer_choices: null
-    id: 6e43e0de-988b-45d1-b43d-0ac2c6b396fc
-    jinja: "\"{{claim}}\", I have heard. Correct?\n|||\n{{\n{\"SUPPORTS\": \"Yes\"\
-      ,\n \"REFUTES\": \"No\",\n\"NOT ENOUGH INFO\": \"\"\n}[label]\n}}"
+  51c55af8-1996-4cb2-88a1-ca7ddb8f9e1b: !Template
+    answer_choices: Yes|||No|||Not Sure
+    id: 51c55af8-1996-4cb2-88a1-ca7ddb8f9e1b
+    jinja: "I've heard that {{claim}} Is this correct? Yes, No or Not Sure?\n|||\n\
+      {% if label != \"\" %}\n{{\n{\"SUPPORTS\": \"Yes\",\n \"REFUTES\": \"No\",\n\
+      \"NOT ENOUGH INFO\": \"Not Sure\"\n}[label]\n}}\n{% endif %}"
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
       original_task: false
-    name: cbqa_fever_dialog_style_postprompt
-    reference: CBQA fever, like a conversation, prompt after output
-  a5a3f123-0390-4221-b481-83f1165eabda: !Template
-    answer_choices: null
-    id: a5a3f123-0390-4221-b481-83f1165eabda
-    jinja: "Is this statement correct? {{claim}} ||| \n{{\n{\"SUPPORTS\": \"Yes\"\
-      ,\n \"REFUTES\": \"No\",\n\"NOT ENOUGH INFO\": \"\"\n}[label]\n}}"
+    name: cbqa_fever_dialog_style_surrounded_all_class
+    reference: CBQA fever, like a conversation, with prompts surrounding claim, all
+      class included.
+  6cc8f145-3fb4-43a9-aaf1-8c25dd6e2cdc: !Template
+    answer_choices: Yes|||No|||Unsure
+    id: 6cc8f145-3fb4-43a9-aaf1-8c25dd6e2cdc
+    jinja: "Is this statement correct? {{claim}} ||| \n{% if label != \"\" %}\n{{\n\
+      {\"SUPPORTS\": \"Yes\",\n \"REFUTES\": \"No\",\n\"NOT ENOUGH INFO\": \"Unsure\"\
+      \n}[label]\n}}\n{% endif %}"
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
+      choices_in_prompt: false
+      metrics:
+      - Accuracy
       original_task: false
     name: cbqa_fever_preprompt
     reference: Closed-book QA from only the claim, prompt before the content
-  febc986d-7651-4f0c-bc42-ec22efc76b2c: !Template
-    answer_choices: null
-    id: febc986d-7651-4f0c-bc42-ec22efc76b2c
-    jinja: "\"{{claim}}\" Yes or no?\n|||\n{{\n{\"SUPPORTS\": \"Yes\",\n \"REFUTES\"\
-      : \"No\",\n\"NOT ENOUGH INFO\": \"\"\n}[label]\n}}"
+  948f41ab-e6bb-4de6-af3e-7f0b5d5f39ad: !Template
+    answer_choices: Yes|||No|||Maybe
+    id: 948f41ab-e6bb-4de6-af3e-7f0b5d5f39ad
+    jinja: "\"{{claim}}\" Yes, no, maybe?\n|||\n{% if label != \"\" %}\n{{\n{\"SUPPORTS\"\
+      : \"Yes\",\n \"REFUTES\": \"No\",\n\"NOT ENOUGH INFO\": \"Maybe\"\n}[label]\n\
+      }}\n{% endif %}\n"
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
+      choices_in_prompt: false
+      metrics:
+      - Accuracy
       original_task: false
     name: cbqa_fever_short
     reference: CBQA fever, minimal
+  b1d8f035-c3af-41a8-b0b8-1604f9dc00fe: !Template
+    answer_choices: Yes|||No|||Not Sure
+    id: b1d8f035-c3af-41a8-b0b8-1604f9dc00fe
+    jinja: "\"{{claim}}\", I have heard. Is this Correct? Yes, No or Not Sure?\n|||\n\
+      {% if label != \"\" %}\n{{\n{\"SUPPORTS\": \"Yes\",\n \"REFUTES\": \"No\",\n\
+      \"NOT ENOUGH INFO\": \"Not Sure\"\n}[label]\n}}\n{% endif %}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
+      original_task: false
+    name: cbqa_fever_dialog_style_postprompt_all_class
+    reference: CBQA fever, like a conversation, prompt after output. Includes 3 class.

@@ -1,24 +1,25 @@
 dataset: math_qa
 templates:
-  46195182-c216-4179-a60f-16637a86306d: !Template
-    answer_choices: null
-    id: 46195182-c216-4179-a60f-16637a86306d
-    jinja: 'Given the problem below, what is the {{"annotated formula"}} you would
-      use to solve it?
+  091ba88e-d208-4a3a-ada7-d9698aeb5568: !Template
+    answer_choices: a ||| b ||| c ||| d  ||| e
+    id: 091ba88e-d208-4a3a-ada7-d9698aeb5568
+    jinja: 'You will receive full credit if you solve the following word problem:
 
-      ===
+      {{Problem}}
 
-      {{Problem}} |||
 
-      {{annotated_formula}}'
+      {{options}}|||
+
+      {{correct}}'
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
-      original_task: null
-    name: Template_5
-    reference: ''
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
+      original_task: true
+    name: choose_correct_variant
+    reference: 'Variant of choose_correct. '
   6312d599-8ca4-4bc8-a76f-81f2e36727bd: !Template
-    answer_choices: null
+    answer_choices: 'a ||| b ||| c ||| d ||| e '
     id: 6312d599-8ca4-4bc8-a76f-81f2e36727bd
     jinja: 'Given the following problem:
 
@@ -32,55 +33,57 @@ templates:
 
       {{correct}}'
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
-      original_task: null
-    name: Template_3
-    reference: ''
-  82345ddb-f2e3-46dc-8283-531a3bd000e9: !Template
-    answer_choices: null
-    id: 82345ddb-f2e3-46dc-8283-531a3bd000e9
-    jinja: "Given the problem:\n{{Problem}}\n===\nand the options:\n{{options}}\n\
-      ===\nProvide a rationale for how you would solve the problem.  |||\n{{Rationale}}\
-      \ \n"
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
+      original_task: true
+    name: choose_correct_og
+    reference: The template asks the model to choose the correct answer.
+  8c4c81cc-ca54-45fc-a69a-4b97a5f2b465: !Template
+    answer_choices: a ||| b ||| c ||| d ||| e
+    id: 8c4c81cc-ca54-45fc-a69a-4b97a5f2b465
+    jinja: "Solve the problem by choosing the correct answer: \n{{Problem}}\n\n{{options}}|||\n\
+      {{correct}}"
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
-      original_task: null
-    name: Template_1
-    reference: ''
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
+      original_task: true
+    name: pick_the_correct
+    reference: The template picks the correct the answer choice
+  a313a5f8-53cd-4b76-abb6-fea2ac4e9ef4: !Template
+    answer_choices: a ||| b ||| c ||| d ||| e
+    id: a313a5f8-53cd-4b76-abb6-fea2ac4e9ef4
+    jinja: "One of the five choices are correctly answers the math problem. Can you\
+      \ choose the right one? \n\n{{options}}\n\nProblem: {{Problem}}\n|||\n{{correct}}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
+      original_task: true
+    name: first_choice_then_problem
+    reference: First give the list of choices and then describe the problem
   a3c2ec72-4af5-42aa-9e8e-ef475fa7c039: !Template
-    answer_choices: null
+    answer_choices: general ||| physics ||| gain ||| geometry ||| probability |||
+      other
     id: a3c2ec72-4af5-42aa-9e8e-ef475fa7c039
-    jinja: 'Given the problem below, in what category would you classify it?
-
-      ===
-
-      {{Problem}} |||
-
-      {{category}}
-
-      '
+    jinja: "Given the problem below, in what category would you classify it?\n===\n\
+      {{Problem}} \n\nCategories:\n{{answer_choices | join(\"\\n\")}}\n|||\n{{category}}\n"
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
-      original_task: null
-    name: Template_2
-    reference: ''
-  b4881325-de90-4cf5-8100-d4a2e13aa017: !Template
-    answer_choices: null
-    id: b4881325-de90-4cf5-8100-d4a2e13aa017
-    jinja: 'Given the problem below, what is the {{"linear formula"}} you would use
-      to solve it?
-
-      ===
-
-      {{Problem}} |||
-
-      {{linear_formula}}'
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
+      original_task: false
+    name: problem_set_type
+    reference: The template asks to generate the category of the problem set
+  eb89c860-5849-461a-9081-3bd466f5642c: !Template
+    answer_choices: a ||| b ||| c ||| d ||| e
+    id: eb89c860-5849-461a-9081-3bd466f5642c
+    jinja: "Solve this advanced GRE problem: \n{{Problem}}\n\n{{options}}|||\n{{correct}}"
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
-      original_task: null
-    name: Template_4
-    reference: ''
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
+      original_task: true
+    name: gre_problem
+    reference: 'Template uses "GRE" as a prefix/template. '
