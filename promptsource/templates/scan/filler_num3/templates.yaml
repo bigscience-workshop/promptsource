@@ -4,14 +4,15 @@ templates:
   0154a526-fdda-4c75-be3b-995bbd6f4cf5: !Template
     answer_choices: null
     id: 0154a526-fdda-4c75-be3b-995bbd6f4cf5
-    jinja: 'Natural language commands: {{ commands }}
-
-
-
-      SCAN actions: |||{{ actions }}'
+    jinja: "{% set scan_lst_of_actions = actions.split(' ') %}\n{% set lst_of_actions\
+      \ = [] %}\n{% for item in scan_lst_of_actions %}\n    {{ lst_of_actions.append(item.lower()[2:]\
+      \ | replace(\"_\", \" \")) | default(\"\", True) }}\n{% endfor %}\n\n{% set\
+      \ actions = lst_of_actions | join(\", \") %}\n\nNatural language commands: {{\
+      \ commands }}\n\nSequence of actions: ||| {{ actions }}"
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
+      choices_in_prompt: false
+      metrics:
+      - Accuracy
       original_task: true
     name: plain
     reference: ''
@@ -55,14 +56,15 @@ templates:
 
 
       Given the commands above and the commands-to-actions mapping, what is the corresponding
-      correct sequence of actions?
+      correct sequence of actions (space-separated)?
 
       |||
 
       {{ actions }}'
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
+      choices_in_prompt: false
+      metrics:
+      - Accuracy
       original_task: false
     name: interrogative_bottom_with_hint
     reference: ''
@@ -70,7 +72,7 @@ templates:
     answer_choices: null
     id: 1aa8f46d-4859-4f53-8630-718332409ff8
     jinja: 'Please translate correctly the following commands in natural language
-      in the corresponding SCAN actions.
+      into the corresponding sequence of actions.
 
 
       {{ commands }}
@@ -113,98 +115,126 @@ templates:
 
       {{ actions }} '
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
+      choices_in_prompt: false
+      metrics:
+      - Accuracy
       original_task: false
     name: translate_with_hint
     reference: ''
   51caf65b-b6ab-412a-9513-f9e20e727b99: !Template
     answer_choices: null
     id: 51caf65b-b6ab-412a-9513-f9e20e727b99
-    jinja: 'Given the following commands: {{ commands }}
-
-
-      What is the corresponding correct sequence of actions?
-
-      |||
-
-      {{ actions }}'
+    jinja: "{% set scan_lst_of_actions = actions.split(' ') %}\n{% set lst_of_actions\
+      \ = [] %}\n{% for item in scan_lst_of_actions %}\n    {{ lst_of_actions.append(item.lower()[2:]\
+      \ | replace(\"_\", \" \")) | default(\"\", True) }}\n{% endfor %}\n\n{% set\
+      \ actions = lst_of_actions | join(\", \") %}\n\nGiven the following commands:\
+      \ {{ commands }}\n\nWhat is the corresponding correct sequence of actions (comma-separated)?\n\
+      |||\n{{ actions }}"
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
+      choices_in_prompt: false
+      metrics:
+      - Accuracy
       original_task: true
     name: interrogative_mix
     reference: ''
   572d665c-cf6b-4302-a112-da225a83dced: !Template
     answer_choices: null
     id: 572d665c-cf6b-4302-a112-da225a83dced
-    jinja: 'Please translate correctly the following commands in natural language
-      in the corresponding SCAN actions.
-
-
-      {{ commands }}
-
-      |||
-
-      {{ actions }} '
+    jinja: "{% set scan_lst_of_actions = actions.split(' ') %}\n{% set lst_of_actions\
+      \ = [] %}\n{% for item in scan_lst_of_actions %}\n    {{ lst_of_actions.append(item.lower()[2:]\
+      \ | replace(\"_\", \" \")) | default(\"\", True) }}\n{% endfor %}\n\n{% set\
+      \ actions = lst_of_actions | join(\", \") %}\n\nPlease translate correctly the\
+      \ following commands in natural language into the corresponding sequence of\
+      \ actions.\n\n{{ commands }}\n|||\n{{ actions }} "
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
+      choices_in_prompt: false
+      metrics:
+      - Accuracy
       original_task: true
     name: translate
     reference: ''
   648ffbee-8432-4ba8-ad86-42a15a21a201: !Template
     answer_choices: null
     id: 648ffbee-8432-4ba8-ad86-42a15a21a201
-    jinja: 'Given the commands below, please produce the corresponding correct sequence
-      of actions.
-
-
-      {{ commands }}
-
-      |||
-
-      {{ actions }}'
+    jinja: "{% set scan_lst_of_actions = actions.split(' ') %}\n{% set lst_of_actions\
+      \ = [] %}\n{% for item in scan_lst_of_actions %}\n    {{ lst_of_actions.append(item.lower()[2:]\
+      \ | replace(\"_\", \" \")) | default(\"\", True) }}\n{% endfor %}\n\n{% set\
+      \ actions = lst_of_actions | join(\", \") %}\n\nGiven the commands below, please\
+      \ produce the corresponding correct sequence of actions. The actions should\
+      \ be comma-separated. A few examples of actions include: \"turn right\", \"\
+      walk\", \"run\", etc.\n\n{{ commands }}\n|||\n{{ actions }}"
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
+      choices_in_prompt: false
+      metrics:
+      - Accuracy
       original_task: true
     name: affirmative_beginning
     reference: ''
   6ce15057-a2c0-489e-8c5b-1978a5692bab: !Template
     answer_choices: null
     id: 6ce15057-a2c0-489e-8c5b-1978a5692bab
-    jinja: '{{ commands }}
-
-
-      Given the commands above, what is the corresponding correct sequence of actions?
-
-      |||
-
-      {{ actions }}'
+    jinja: "{% set scan_lst_of_actions = actions.split(' ') %}\n{% set lst_of_actions\
+      \ = [] %}\n{% for item in scan_lst_of_actions %}\n    {{ lst_of_actions.append(item.lower()[2:]\
+      \ | replace(\"_\", \" \")) | default(\"\", True) }}\n{% endfor %}\n\n{% set\
+      \ actions = lst_of_actions | join(\", \") %}\n\n{{ commands }}\n\nGiven the\
+      \ commands above, what is the corresponding correct sequence of actions (comma-separated)?\n\
+      |||\n{{ actions }}"
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
+      choices_in_prompt: false
+      metrics:
+      - Accuracy
       original_task: true
     name: interrogative_bottom
     reference: ''
   80c18052-3a25-4b1d-a99e-37a0dd56793b: !Template
     answer_choices: null
     id: 80c18052-3a25-4b1d-a99e-37a0dd56793b
-    jinja: 'Given the commands below, what is the corresponding correct sequence of
-      actions?
-
-
-      {{ commands }}
-
-      |||
-
-      {{ actions }}'
+    jinja: "{% set scan_lst_of_actions = actions.split(' ') %}\n{% set lst_of_actions\
+      \ = [] %}\n{% for item in scan_lst_of_actions %}\n    {{ lst_of_actions.append(item.lower()[2:]\
+      \ | replace(\"_\", \" \")) | default(\"\", True) }}\n{% endfor %}\n\n{% set\
+      \ actions = lst_of_actions | join(\", \") %}\n\nGiven the commands below, what\
+      \ is the corresponding correct sequence of actions (comma-separated)?\n\n{{\
+      \ commands }}\n|||\n{{ actions }}"
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
+      choices_in_prompt: false
+      metrics:
+      - Accuracy
       original_task: true
     name: interrogative_beginning
+    reference: ''
+  89c2d715-9cc9-4330-b9f2-9c409b2fdb91: !Template
+    answer_choices: null
+    id: 89c2d715-9cc9-4330-b9f2-9c409b2fdb91
+    jinja: "{% set scan_lst_of_actions = actions.split(' ') %}\n{% set lst_of_actions\
+      \ = [] %}\n{% for item in scan_lst_of_actions %}\n    {{ lst_of_actions.append(item.lower()[2:]\
+      \ | replace(\"_\", \" \")) | default(\"\", True) }}\n{% endfor %}\n\n{% set\
+      \ actions = lst_of_actions | join(\", \") %}\n\nGiven a sequence of actions\
+      \ below, please produce the corresponding  instructions in natural language.\n\
+      \n{{ actions }}\n|||\n{{ commands }}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      - ROUGE
+      original_task: false
+    name: affirmative_opposite
+    reference: ''
+  90758d2e-1462-42aa-98cd-47802542b953: !Template
+    answer_choices: null
+    id: 90758d2e-1462-42aa-98cd-47802542b953
+    jinja: "{% set scan_lst_of_actions = actions.split(' ') %}\n{% set lst_of_actions\
+      \ = [] %}\n{% for item in scan_lst_of_actions %}\n    {{ lst_of_actions.append(item.lower()[2:]\
+      \ | replace(\"_\", \" \")) | default(\"\", True) }}\n{% endfor %}\n\n{% set\
+      \ actions = lst_of_actions | join(\", \") %}\n\nGiven a sequence of actions\
+      \ below, what are the corresponding instructions in natural language?\n\n{{\
+      \ actions }}\n|||\n{{ commands }}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      - ROUGE
+      original_task: false
+    name: interrogative_opposite
     reference: ''
   a619fe38-cc02-4d9b-ba8d-b9ab2edce5c8: !Template
     answer_choices: null
@@ -246,17 +276,34 @@ templates:
 
 
       Given the commands-to-actions mapping and the commands above, produce the corresponding
-      correct sequence of actions.
+      correct sequence of actions (space-separated).
 
 
       |||
 
       {{ actions }}'
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
+      choices_in_prompt: false
+      metrics:
+      - Accuracy
       original_task: false
     name: affirmative_top_with_hint
+    reference: ''
+  c3d92532-1184-4e1c-a463-38b85fff8947: !Template
+    answer_choices: null
+    id: c3d92532-1184-4e1c-a463-38b85fff8947
+    jinja: "{% set scan_lst_of_actions = actions.split(' ') %}\n{% set lst_of_actions\
+      \ = [] %}\n{% for item in scan_lst_of_actions %}\n    {{ lst_of_actions.append(item.lower()[2:]\
+      \ | replace(\"_\", \" \")) | default(\"\", True) }}\n{% endfor %}\n\n{% set\
+      \ actions = lst_of_actions | join(\", \") %}\n\nGiven some actions \"{{actions}}\"\
+      , translate them into natural language.\n|||\n{{commands}}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      - ROUGE
+      original_task: false
+    name: translate_opposite
     reference: ''
   deffa981-1fa3-4b21-9bc1-6b87675c3aa6: !Template
     answer_choices: null
@@ -264,7 +311,8 @@ templates:
     jinja: '{{ commands }}
 
 
-      Given the commands above, produce the corresponding correct sequence of actions.
+      Given the commands above, produce the corresponding correct sequence of actions
+      (space-separated).
 
 
       Hereafter a hint on how to translate each command to the corresponding action:
@@ -303,42 +351,41 @@ templates:
 
       {{ actions }}'
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
+      choices_in_prompt: false
+      metrics:
+      - Accuracy
       original_task: false
     name: affirmative_bottom_with_hint
     reference: ''
   e5b8785b-06d5-4c44-af98-d6d856726b6e: !Template
     answer_choices: null
     id: e5b8785b-06d5-4c44-af98-d6d856726b6e
-    jinja: 'Given the commands: {{ commands }}
-
-
-      Produce the corresponding correct sequence of actions
-
-      |||
-
-      {{ actions }}'
+    jinja: "{% set scan_lst_of_actions = actions.split(' ') %}\n{% set lst_of_actions\
+      \ = [] %}\n{% for item in scan_lst_of_actions %}\n    {{ lst_of_actions.append(item.lower()[2:]\
+      \ | replace(\"_\", \" \")) | default(\"\", True) }}\n{% endfor %}\n\n{% set\
+      \ actions = lst_of_actions | join(\", \") %}\n\nGiven the commands: {{ commands\
+      \ }}\n\nProduce the corresponding correct sequence of actions (comma-separated):\n\
+      |||\n{{ actions }}"
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
+      choices_in_prompt: false
+      metrics:
+      - Accuracy
       original_task: true
     name: affirmative_mix
     reference: ''
   e61ce9e3-c9b8-417f-a2c3-2cd66cf74d5d: !Template
     answer_choices: null
     id: e61ce9e3-c9b8-417f-a2c3-2cd66cf74d5d
-    jinja: '{{ commands }}
-
-
-      Given the commands above, produce the corresponding correct sequence of actions.
-
-      |||
-
-      {{ actions }}'
+    jinja: "{% set scan_lst_of_actions = actions.split(' ') %}\n{% set lst_of_actions\
+      \ = [] %}\n{% for item in scan_lst_of_actions %}\n    {{ lst_of_actions.append(item.lower()[2:]\
+      \ | replace(\"_\", \" \")) | default(\"\", True) }}\n{% endfor %}\n\n{% set\
+      \ actions = lst_of_actions | join(\", \") %}\n\n{{ commands }}\n\nGiven the\
+      \ commands above, produce the corresponding correct sequence of actions. The\
+      \ actions should be comma-separated.\n|||\n{{ actions }}"
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
+      choices_in_prompt: false
+      metrics:
+      - Accuracy
       original_task: true
     name: affirmative_bottom
     reference: ''
