@@ -1,45 +1,134 @@
 dataset: cbt
-subset: NE
+subset: V
 templates:
-  1fd986ce-e44d-4f32-bbb8-f5d4d3d930d9: !Template
+  08820238-5bb3-4c7c-98bb-ec3d81e432e7: !Template
     answer_choices: null
-    id: 1fd986ce-e44d-4f32-bbb8-f5d4d3d930d9
-    jinja: "Which of the following options replaces XXXXX the best?\n{{ options |\
-      \ join (\", \") }}\nin this story: \n{{sentences | join ('')}} {{question}}\n\
-      |||\n{{ answer }}"
-    metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
-      original_task: null
-    name: multi_choice
-    reference: Given the sentences, fill the blanks using the options.
-  3c56e28d-668a-42d0-8976-93864e38bc4c: !Template
-    answer_choices: null
-    id: 3c56e28d-668a-42d0-8976-93864e38bc4c
-    jinja: 'Read the passage and fill in the XXXXX:
+    id: 08820238-5bb3-4c7c-98bb-ec3d81e432e7
+    jinja: '{{sentences | join('' '')}}
 
-      {{ sentences | join('''') }} {{question}}
 
-      |||
-
-      {{ answer }}'
-    metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
-      original_task: null
-    name: answer_prediction
-    reference: Fill in the blank without options.
-  d2f4dcdd-232e-4e56-a9e1-1aed294e651f: !Template
-    answer_choices: null
-    id: d2f4dcdd-232e-4e56-a9e1-1aed294e651f
-    jinja: 'Write the next sentence of this story: {{sentences | join('''')}}
+      Write the next sentence of this story.
 
       |||
 
       {{ question.replace("XXXXX", answer) }}'
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
-      original_task: null
-    name: next_sentence_generation
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      - ROUGE
+      original_task: false
+    name: Generate Next Sentence
     reference: Generate the next sentence given the story.
+  1f8cad96-4c0f-435a-9a6f-653fcf158dd0: !Template
+    answer_choices: '{{options|join("|||")}}'
+    id: 1f8cad96-4c0f-435a-9a6f-653fcf158dd0
+    jinja: '{{sentences | join ('' '')}} {{question}}
+
+
+      Replace {{"XXXXX"}} with the correct option from:
+
+      {{answer_choices|join(", ")}}
+
+      |||
+
+      {{ answer }}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
+      original_task: true
+    name: Fill Blank with Options 3
+    reference: Fill the blank given the options.
+  556ee207-18c9-4c6c-860a-8ea09b93505c: !Template
+    answer_choices: '{{options|join(''|||'')}}'
+    id: 556ee207-18c9-4c6c-860a-8ea09b93505c
+    jinja: "{{sentences | join (' ')}}\n\nIn this following sentence: \n\"{{question}}\"\
+      , \naptly substitute the {{\"XXXXX\"}} from the following options:\n{{answer_choices|join(\"\
+      , \")}}\n|||\n{{ answer }}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
+      original_task: true
+    name: Fill Blank with Options 5
+    reference: Fill in the blanks given options.
+  63bfa7b6-b566-4693-848c-e05cd7a12a03: !Template
+    answer_choices: null
+    id: 63bfa7b6-b566-4693-848c-e05cd7a12a03
+    jinja: '{{ sentences | join('' '') }} {{question}}
+
+
+      Fill in the {{"XXXXX"}}.
+
+      |||
+
+      {{ answer }}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - ROUGE
+      - BLEU
+      original_task: false
+    name: Fill Blank without Options
+    reference: Fill in the blank without options.
+  a2e38459-90d9-4292-9d96-491ad7d4e3db: !Template
+    answer_choices: '{{options|join("|||")}}'
+    id: a2e38459-90d9-4292-9d96-491ad7d4e3db
+    jinja: '{{sentences | join ('' '')}} {{question}}
+
+
+      Which of the following options replaces {{"XXXXX"}} the best in the above story?
+
+      {{answer_choices|join(", ")}}
+
+      |||
+
+      {{ answer }}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
+      original_task: true
+    name: Fill Blanks with Options
+    reference: Given the sentences, fill the blanks using the options.
+  a6fa37d5-899c-4ad0-b888-fab04cc8e423: !Template
+    answer_choices: '{{options|join("|||")}}'
+    id: a6fa37d5-899c-4ad0-b888-fab04cc8e423
+    jinja: '{{sentences | join ('' '')}}
+
+
+      Which of the following options replaces {{"XXXXX"}} in "{{question}}"?
+
+      {{answer_choices|join(", ")}}
+
+      |||
+
+      {{ answer }}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
+      original_task: true
+    name: Fill Blank with Options 4
+    reference: Fill Blank given options.
+  a8b67815-1927-4ef3-8d04-8d3f95525ef5: !Template
+    answer_choices: '{{options|join("|||")}}'
+    id: a8b67815-1927-4ef3-8d04-8d3f95525ef5
+    jinja: '{{sentences | join ('' '')}} {{question}}
+
+
+      Fill in the {{"XXXXX"}} from the following choices:
+
+      {{answer_choices|join(", ")}}
+
+      |||
+
+      {{ answer }}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
+      original_task: true
+    name: Fill Blank with Options 2
+    reference: Fill in the blank given options
