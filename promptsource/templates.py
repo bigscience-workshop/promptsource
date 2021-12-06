@@ -380,7 +380,11 @@ class DatasetTemplates:
         """
 
         if not os.path.exists(self.yaml_path):
-            return {}
+            raise ValueError(
+                f"Dataset {self.dataset_name}, subset {self.subset_name} not found" 
+                if self.subset_name 
+                else f"Dataset {self.dataset_name} not found"
+            )
         yaml_dict = yaml.load(open(self.yaml_path, "r"), Loader=yaml.FullLoader)
         return yaml_dict[self.TEMPLATES_KEY]
 
