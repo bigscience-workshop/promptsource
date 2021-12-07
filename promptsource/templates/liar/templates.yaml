@@ -11,15 +11,17 @@ templates:
 
       What is the party affiliation of the speaker of the following statement?
 
+      Choose between: {{answer_choices|join(", ")}}
 
-      {{statement}} |||
+
+      Statement: {{statement}} |||
 
 
       {{party_affiliation}}
 
       {% endif %}'
     metadata: !TemplateMetadata
-      choices_in_prompt: false
+      choices_in_prompt: true
       metrics:
       - Accuracy
       original_task: false
@@ -36,7 +38,8 @@ templates:
       {{statement}}
 
 
-      and the following speaker: {{speaker}}, predict the speaker''s job title. |||
+      and the following speaker: {{speaker.replace("-", " ")}}, predict the speaker''s
+      job title. |||
 
       {{job_title}}
 
@@ -71,10 +74,10 @@ templates:
     name: 'Given statement, speaker and job title guess the context '
     reference: ''
   d153b4d3-d0a2-4768-854a-582440943c64: !Template
-    answer_choices: false ||| half-true ||| mostly-true ||| true ||| barely-true |||
-      pants-fire
+    answer_choices: False ||| Half true ||| Mostly true ||| True ||| Barely true |||
+      Pants on fire
     id: d153b4d3-d0a2-4768-854a-582440943c64
-    jinja: 'Given the statement below:
+    jinja: 'Here''s a statement:
 
 
       {{statement}}
