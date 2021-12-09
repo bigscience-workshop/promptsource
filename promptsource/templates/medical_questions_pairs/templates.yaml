@@ -1,42 +1,37 @@
 dataset: medical_questions_pairs
 templates:
   18c92f97-0655-4f67-aca1-69f8e4fbb11e: !Template
-    answer_choices:
-    - not a paraphrase of the previous question.
-    - a paraphrase of the previous question.
-    answer_choices_key: null
+    answer_choices: different ||| paraphrase
     id: 18c92f97-0655-4f67-aca1-69f8e4fbb11e
     jinja: "In the context of healthcare questionnaires, it is often necessary to\
       \ find out if two questions are paraphrases of one another. Given the following\
-      \ question:\n\nQuestion 1: {{question_1}}\n\nWhat inference can be made about\
-      \ the next question?\n\nQuestion 2: {{question_2}}\n\nThis question is \n\n\
+      \ question:\n\nQuestion 1: {{question_1}}\n\nIs the following question a {{answer_choices[1]}} or
+      {{answer_choices[0]}}?\n\nQuestion 2: {{question_2}}\n\n
+
       |||\n\n{{answer_choices[label]}}"
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
       original_task: true
-    name: basic_v5
+    name: in_the_context
     reference: ''
   316f2ff7-45f8-4997-9c5f-dfe5fb7f9808: !Template
-    answer_choices:
-    - 'False'
-    - 'True'
-    answer_choices_key: null
+    answer_choices: False ||| True
     id: 316f2ff7-45f8-4997-9c5f-dfe5fb7f9808
-    jinja: "Question 1: {{question_1}}\n\nand\n\nQuestion 2: {{question_2}}\n\nIs\
-      \ it True or False that the two questions above are paraphrases of each other?\n\
+    jinja: "Question 1: {{question_1}}\n\nand\n\nQuestion 2: {{question_2}}\n\n
+    Is\
+      \ it {{answer_choices[1]}} or {{answer_choices[0]}} that the two questions above are paraphrases of each other?\n\
       \n|||\n\n {{answer_choices[label]}} "
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
       original_task: true
-    name: basic_v6
+    name: true_or_false
     reference: ''
   535ed335-de9d-41df-a026-28487c832bfa: !Template
-    answer_choices:
-    - No they do not mean the same thing.
-    - They mean the same thing.
-    answer_choices_key: null
+    answer_choices: no ||| yes
     id: 535ed335-de9d-41df-a026-28487c832bfa
     jinja: 'Question: In the context of healthcare do the following questions mean
       the same thing?
@@ -48,87 +43,94 @@ templates:
       Question 2: {{question_2}}
 
 
-      |||
+      {{answer_choices[1]}} or {{answer_choices[0]}}?
 
+      |||
 
       {{answer_choices[label]}}'
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
       original_task: true
-    name: basic_v2
+    name: yes_or_no_in_the_context
     reference: template about question pattern
   681dc0d2-a771-41ae-aa00-d1f59ab01197: !Template
-    answer_choices:
-    - not duplicates
-    - duplicates
-    answer_choices_key: null
+    answer_choices: not duplicates ||| duplicates
     id: 681dc0d2-a771-41ae-aa00-d1f59ab01197
-    jinja: "Question 1: {{question_1}}\n\nQuestion 2: {{question_2}}\n\nPick one of\
-      \ the following options:\nQuestions are {{\"not duplicates\"}} or {{\"duplicates\"\
-      }}:\n\n|||\n\n {{ answer_choices[label] }}"
+    jinja: "Question 1: {{question_1}}\n\nQuestion 2: {{question_2}}\n\n
+    Pick one of the following options:\n
+    Questions are {{answer_choices[1]}} or {{answer_choices[0]}}\n\n
+    |||
+    {{ answer_choices[label] }}"
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
       original_task: true
-    name: basic_v8
+    name: duplicates
     reference: ''
   7be2b267-8d5c-466b-9fd4-1fbbae442938: !Template
-    answer_choices:
-    - 'no'
-    - 'yes'
-    answer_choices_key: null
+    answer_choices: No ||| Yes
     id: 7be2b267-8d5c-466b-9fd4-1fbbae442938
     jinja: "Question 1: {{question_1}}\n\nQuestion 2: {{question_2}}\n\nQuestion:\
-      \ Is Question 1 asking the same question as Question 2? Yes or No?\n\n\n|||\n\
-      \n {{ answer_choices[label] }}"
+      \ Is Question 1 asking the same question as Question 2? {{answer_choices[1]}} or {{answer_choices[0]}}?\n\n\n
+      |||
+      {{ answer_choices[label] }}"
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
       original_task: true
-    name: basic_v1
+    name: same_question
     reference: context of healthcare
   854ebbe0-8968-4967-a346-4e4d6f98cf73: !Template
-    answer_choices:
-    - 'False'
-    - 'True'
-    answer_choices_key: null
+    answer_choices: False ||| True
     id: 854ebbe0-8968-4967-a346-4e4d6f98cf73
     jinja: "Question 1: {{question_1}}\n\nOne possible way of paraphrasing the same\
-      \ question is : \n\nQuestion 2: {{question_2}}\n\nTrue or False?\n\n|||\n\n\
-      \ {{ answer_choices[label] }}"
+      \ question is: \n\nQuestion 2: {{question_2}}\n\n{{answer_choices[1]}} or {{answer_choices[0]}}?\n\n
+      |||
+      {{ answer_choices[label] }}"
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
       original_task: true
-    name: basic_v4
+    name: possible_way
     reference: ''
   b388913a-9b0d-43a1-8bf9-83319ebf38b2: !Template
-    answer_choices: null
-    answer_choices_key: null
+    answer_choices: related question ||| rewrite
     id: b388913a-9b0d-43a1-8bf9-83319ebf38b2
-    jinja: "Question 1: {{question_1}}\n\nand\n\nQuestion 2: {{question_2}}\n\nAfter\
-      \ reading the two questions above:\n\nA clinician will\n\n|||\n\n{% if label\
-      \ == 0 %} \n not agree that they are paraphrases of each other.\n{% elif label\
-      \ == 1 %}\n agree that they are paraphrases of each other.\n{% endif %}"
+    jinja: "Original question: {{question_1}}
+
+    Given this question, doctors were asked to either:
+    - Rewrite the question so that it kept the same intent
+    - Create a related question for which the original answer is unrelated or wrong
+
+    Is the following question a {{answer_choices[1]}} or {{answer_choices[0]}}?
+
+    New question: {{question_2}}
+     |||
+     {{answer_choices[label]}}"
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
       original_task: true
-    name: basic_v7
+    name: rewrite_or_related
     reference: Using knowledge of dataset creation
   c8df74ce-0ae7-4e70-9322-aaf9921ae3b1: !Template
-    answer_choices:
-    - dissimilar
-    - similar
-    answer_choices_key: null
+    answer_choices: dissimilar ||| similar
     id: c8df74ce-0ae7-4e70-9322-aaf9921ae3b1
-    jinja: "The two questions are either {{\"similar\"}} or {{\"dissimilar\"}} questions\
-      \ in the medical context. Which is it?\n\n{{question_1}} \n\nand\n\n{{question_2}}\n\
-      \n\nThe two questions are \n|||\n\n{{answer_choices[label]}}"
+    jinja: "These two questions are either {{answer_choices[1]}} or {{answer_choices[0]}}.
+     \n\n{{question_1}} \n\nand\n\n{{question_2}}\n\
+     \nWhich is it?
+    |||
+    {{answer_choices[label]}}"
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
       original_task: true
-    name: basic_v3
+    name: similar_dissimilar
     reference: ''
