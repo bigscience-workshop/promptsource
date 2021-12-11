@@ -105,9 +105,12 @@ def filter_english_datasets():
                 english_datasets.append(dataset_name)
             continue
 
-        if "card_data" not in dataset:
+        metadata_key_set = {"card_data", "cardData"} & dataset.keys()
+        if not metadata_key_set:
             continue
-        metadata = dataset["card_data"]
+        if len(metadata_key_set) == 2:
+            raise KeyError(f"A dataset should never have both keys of {metadata_key_set}")
+        metadata = dataset[metadata_key_set.pop()]
 
         if "languages" not in metadata:
             continue
