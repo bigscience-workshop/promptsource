@@ -18,9 +18,11 @@ templates:
   5354e98d-8aa2-49d0-a50b-fc72a503d7d4: !Template
     answer_choices: No ||| Yes
     id: 5354e98d-8aa2-49d0-a50b-fc72a503d7d4
-    jinja: '{% set possible_indexes = [] %}{% for c in candidates %}{% if c|trim %}{% set _ = possible_indexes.append(loop.index0) %}{% endif %}{% endfor %}{% set rand_index = possible_indexes | choice %} Would it make
-      sense to reply "{{ candidates[rand_index]|trim|trim(''.'') }}" to the question
-      "{{ question }}"? ||| {% if rand_index in answers %}{{answer_choices[1]}}{%else %}{{answer_choices[0]}}{%endif%}'
+    jinja: '{% set possible_indexes = [] %}{% for c in candidates %}{% if c|trim %}{{
+      possible_indexes.append(loop.index0) | default("", True) }}{% endif %}{% endfor %}{% set
+      rand_index = possible_indexes | choice %} Would it make sense to reply "{{ candidates[rand_index]|trim|trim(''.'')
+      }}" to the question "{{ question }}"? ||| {% if rand_index in answers %}{{answer_choices[1]}}{%else
+      %}{{answer_choices[0]}}{%endif%}'
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
@@ -46,8 +48,11 @@ templates:
   9de0a553-63e7-4b67-a6c5-1a15ac0d5483: !Template
     answer_choices: No ||| Yes
     id: 9de0a553-63e7-4b67-a6c5-1a15ac0d5483
-    jinja: '{% set possible_indexes = [] %}{% for c in candidates %}{% if c|trim %}{% set _ = possible_indexes.append(loop.index0) %}{% endif %}{% endfor %}{% set rand_index = possible_indexes | choice %}Someone asked me "{{ question }}" I replied "{{ candidates[rand_index] }}" Does
-      my answer make sense? ||| {% if rand_index in answers %}{{answer_choices[1]}}{%else %}{{answer_choices[0]}}{%endif%}
+    jinja: '{% set possible_indexes = [] %}{% for c in candidates %}{% if c|trim %}{{
+      possible_indexes.append(loop.index0) | default("", True) }}{% endif %}{% endfor
+      %}{% set rand_index = possible_indexes | choice %}Someone asked me "{{ question
+      }}" I replied "{{ candidates[rand_index] }}" Does my answer make sense? |||
+      {% if rand_index in answers %}{{answer_choices[1]}}{%else %}{{answer_choices[0]}}{%endif%}
 
       '
     metadata: !TemplateMetadata
