@@ -1,220 +1,84 @@
 dataset: squad
 templates:
-  264f9165-0eed-4855-8825-6508443c64b9: !Template
+  3d85b5b0-51db-4d72-8ead-d0b3654025ee: !Template
     answer_choices: null
-    id: 264f9165-0eed-4855-8825-6508443c64b9
-    jinja: 'I know that the answer to "{{question}}" appears somewhere in the following
-      text snippet. Can you tell me at which character the answer starts?
+    id: 3d85b5b0-51db-4d72-8ead-d0b3654025ee
+    jinja: 'Refer to the passage below and answer the following question:
 
 
-      {{context}}
+      Passage: {{context}}
 
+
+      Question: {{question}}
 
       |||
-
-
-      {{answers["answer_start"][0]}}'
-    metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
-      original_task: null
-    name: find
-    reference: ''
-  35a1e619-8515-4fee-aeb0-04f2fb7ec584: !Template
-    answer_choices: null
-    id: 35a1e619-8515-4fee-aeb0-04f2fb7ec584
-    jinja: 'At what character does the text "{{answers["text"][0]}}" start in the
-      following paragraph?
-
-
-      {{context}}
-
-
-      |||
-
-
-      {{answers["answer_start"][0]}}'
-    metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
-      original_task: null
-    name: find text
-    reference: ''
-  3c9c3a3c-da8c-42aa-a605-3063122c32eb: !Template
-    answer_choices: null
-    id: 3c9c3a3c-da8c-42aa-a605-3063122c32eb
-    jinja: '{{question}}
-
-
-      |||
-
 
       {{answers["text"][0]}}'
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
-      original_task: null
-    name: cbqa
+      choices_in_prompt: false
+      metrics:
+      - Squad
+      original_task: true
+    name: answer_question_given_context
     reference: ''
-  46908111-143b-4ec2-9326-7959739569d8: !Template
+  64ed14d6-c835-424d-a55d-ded1b1bd2546: !Template
     answer_choices: null
-    id: 46908111-143b-4ec2-9326-7959739569d8
-    jinja: 'I''m creating a final exam for my reading class. Can you please come up
-      with a good question to quiz how well students have read the following text
-      snippet?
+    id: 64ed14d6-c835-424d-a55d-ded1b1bd2546
+    jinja: '{{context}}
 
 
-      {{context}}
-
-
-      |||
-
-
-      {{question}}'
+      Generate a question from the above passage : ||| {{question}}'
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
-      original_task: null
-    name: exam creation help
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      - ROUGE
+      original_task: false
+    name: given_context_generate_question
     reference: ''
-  5c908ab4-3f07-4f7a-90c2-b3624a96f3e0: !Template
+  69041854-6e48-4902-92c2-adb46457bea3: !Template
     answer_choices: null
-    id: 5c908ab4-3f07-4f7a-90c2-b3624a96f3e0
-    jinja: 'I''m working on the final exam for my class and am trying to figure out
-      the answer to the question "{{question}}" I found the following info on Wikipedia
-      and I think it has the answer. Can you tell me the answer?
+    id: 69041854-6e48-4902-92c2-adb46457bea3
+    jinja: '{{context}}
 
 
-      {{context}}
-
-
-      |||
-
-
-      {{answers["text"][0]}}'
+      From the above passage, a reasonable question with "{{answers["text"][0]}}"
+      as the answer would be: ||| {{question}}'
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
-      original_task: null
-    name: exam
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      - ROUGE
+      original_task: false
+    name: jeopardy
+    reference: jeopardy style- wiki_qa
+  7c13b5ba-abfc-4b68-9a36-5430a0b0e580: !Template
+    answer_choices: null
+    id: 7c13b5ba-abfc-4b68-9a36-5430a0b0e580
+    jinja: "{{context}}\n\nWith reference to the above context, {{question}} ||| \n\
+      \n{{answers.text[0]}}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - Squad
+      original_task: true
+    name: answer_the_question
     reference: ''
-  7f09d6a1-f4b8-4303-bd76-5e570f2178c1: !Template
+  e153c4cd-6757-487a-8fe6-da7e88ec3e47: !Template
     answer_choices: null
-    id: 7f09d6a1-f4b8-4303-bd76-5e570f2178c1
-    jinja: 'Count the characters up until "{{answers["text"][0]}}" appears in the
-      following chunk of text.
+    id: e153c4cd-6757-487a-8fe6-da7e88ec3e47
+    jinja: '{{context}}
 
 
-      {{context}}
+      Q: {{question}}
 
 
-      |||
-
-
-      {{answers["answer_start"][0]}}'
+      Referring to the passage above, the correct answer to the given question is
+      ||| {{answers["text"][0]}}'
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
-      original_task: null
-    name: count letters
-    reference: ''
-  ad3b868c-5242-4c98-988e-bbe2709ebe6d: !Template
-    answer_choices: null
-    id: ad3b868c-5242-4c98-988e-bbe2709ebe6d
-    jinja: "Q: {{question}}\n\nA: \n|||\n{{answers[\"text\"][0]}}"
-    metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
-      original_task: null
-    name: cbqa qa
-    reference: ''
-  c64ac353-f065-4691-b20c-444fb2bb87bf: !Template
-    answer_choices: null
-    id: c64ac353-f065-4691-b20c-444fb2bb87bf
-    jinja: '{{["Question", "Problem"]  | choice}} {{range(1, 12) | choice}}: {{question}}
-
-
-      Hint: {{context}}
-
-
-      |||
-
-
-      {{answers["text"][0]}}'
-    metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
-      original_task: null
-    name: question/hint
-    reference: ''
-  d74d53b5-a3b9-42ae-8753-9dff3fba1c69: !Template
-    answer_choices: null
-    id: d74d53b5-a3b9-42ae-8753-9dff3fba1c69
-    jinja: 'After reading the following paragraph, please answer this question: {{question}}
-
-
-      {{context}}
-
-
-      |||
-
-
-      {{answers["text"][0]}}'
-    metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
-      original_task: null
-    name: after
-    reference: ''
-  e575a717-37a5-40c2-a255-af104f485c31: !Template
-    answer_choices: null
-    id: e575a717-37a5-40c2-a255-af104f485c31
-    jinja: 'Please come up with a good question to test reading comprehension about
-      the following paragraph:
-
-
-      {{context}}
-
-
-      |||
-
-
-      {{question}}'
-    metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
-      original_task: null
-    name: generate question
-    reference: ''
-  f3d502bf-d44e-4edf-a27e-d469ba5afbd4: !Template
-    answer_choices: null
-    id: f3d502bf-d44e-4edf-a27e-d469ba5afbd4
-    jinja: "Question: {{question}}\n\nAnswer: \n|||\n{{answers[\"text\"][0]}}"
-    metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
-      original_task: null
-    name: cbqa question answer
-    reference: ''
-  ff80522d-1a10-44c5-998a-d3c9840c4ef8: !Template
-    answer_choices: null
-    id: ff80522d-1a10-44c5-998a-d3c9840c4ef8
-    jinja: 'I''ve always wondered: {{question}}
-
-
-      I searched Wikipedia and this is what I found. What''s the answer?
-
-
-      {{context}}
-
-
-      |||
-
-
-      {{answers["text"][0]}}'
-    metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
-      original_task: null
-    name: wondered
+      choices_in_prompt: false
+      metrics:
+      - Squad
+      original_task: true
+    name: answer_given_context_and_question
     reference: ''
