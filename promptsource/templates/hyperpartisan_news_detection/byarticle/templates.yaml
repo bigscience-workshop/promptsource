@@ -10,19 +10,19 @@ templates:
       "{{text}}"
 
 
-      Does it follow a hyperpartisan argumentation? "{{answer_choices[0]}}" or "{{answer_choices[1]}}?
+      Does it follow a hyperpartisan argumentation? "{{answer_choices[0]}}" or "{{answer_choices[1]}}"?
 
 
       |||
 
 
-      {{ hyperpartisan }}'
+      {{answer_choices[0] if hyperpartisan else answer_choices[1]}}'
     metadata: !TemplateMetadata
       choices_in_prompt: true
       metrics:
       - Accuracy
       original_task: true
-    name: hyperpartisan_classification_variation_4
+    name: consider_does_it_follow_a_hyperpartisan_argumentation
     reference: Does this text exhibit prejudice towards a group or cause?
   0e988588-f3f1-4c70-80ce-dc5660cde6dc: !Template
     answer_choices: True ||| False
@@ -31,19 +31,19 @@ templates:
 
 
       The news article text above follows a hyperpartisan argumentation. {{answer_choices[0]}}"
-      or "{{answer_choices[1]}}?
+      or "{{answer_choices[1]}}"?
 
 
       |||
 
 
-      {{hyperpartisan}}'
+      {{answer_choices[0] if hyperpartisan else answer_choices[1]}}'
     metadata: !TemplateMetadata
       choices_in_prompt: true
       metrics:
       - Accuracy
       original_task: true
-    name: hyperpartisan_classification_variation_3
+    name: follows_hyperpartisan_argumentation
     reference: Does this text exhibit prejudice towards a group or cause?
   545567e7-97cf-4600-bf1e-94f213d2f0a4: !Template
     answer_choices: 'True ||| False '
@@ -52,19 +52,19 @@ templates:
 
 
       We must consume the news article above with caution as it exhibits prejudiced
-      allegiance towards one group or cause. "{{answer_choices[0]}}" or "{{answer_choices[1]}}?
+      allegiance towards one group or cause. "{{answer_choices[0]}}" or "{{answer_choices[1]}}"?
 
 
       |||
 
 
-      {{hyperpartisan}}'
+      {{answer_choices[0] if hyperpartisan else answer_choices[1]}}'
     metadata: !TemplateMetadata
       choices_in_prompt: true
       metrics:
       - Accuracy
       original_task: true
-    name: hyperpartisan_classification_variation_1
+    name: consume_with_caution
     reference: Does this text exhibit prejudice towards a group or cause?
   5a612b28-923b-4302-b959-290bf8453166: !Template
     answer_choices: 'True ||| False '
@@ -73,19 +73,19 @@ templates:
 
 
       The news article above takes an extreme left-wing or right-wing standpoint.
-      "{{answer_choices[0]}}" or "{{answer_choices[1]}}?
+      "{{answer_choices[0]}}" or "{{answer_choices[1]}}"?
 
 
       |||
 
 
-      {{hyperpartisan}}'
+      {{answer_choices[0] if hyperpartisan else answer_choices[1]}}'
     metadata: !TemplateMetadata
       choices_in_prompt: true
       metrics:
       - Accuracy
       original_task: true
-    name: hyperpartisan_classification_variation_6
+    name: extreme_left_wing_or_right_wing
     reference: Does this text exhibit prejudice towards a group or cause?
   8ab54a01-2728-4ac2-8ee9-79016434454f: !Template
     answer_choices: 'True ||| False '
@@ -95,43 +95,19 @@ templates:
 
       The publisher of the news piece above has reported strongly in favor of one
       political side and seems to have ignored the other side. "{{answer_choices[0]}}"
-      or "{{answer_choices[1]}}?
+      or "{{answer_choices[1]}}"?
 
 
       |||
 
 
-      {{hyperpartisan}}'
+      {{answer_choices[0] if hyperpartisan else answer_choices[1]}}'
     metadata: !TemplateMetadata
       choices_in_prompt: true
       metrics:
       - Accuracy
       original_task: true
-    name: hyperpartisan_classification_variation_7
-    reference: Does this text exhibit prejudice towards a group or cause?
-  b95dbb9c-793c-4a58-8097-31c9f0230e5f: !Template
-    answer_choices: True ||| False
-    id: b95dbb9c-793c-4a58-8097-31c9f0230e5f
-    jinja: 'Consider this news piece:
-
-
-      "{{text}}"
-
-
-      It exhibits blind, prejudiced, or unreasoning allegiance to one party, faction,
-      cause, or person. "{{answer_choices[0]}}" or "{{answer_choices[1]}}?
-
-
-      |||
-
-
-      {{hyperpartisan}}'
-    metadata: !TemplateMetadata
-      choices_in_prompt: true
-      metrics:
-      - Accuracy
-      original_task: true
-    name: hyperpartisian_classification_variation_2
+    name: publisher_has_reported_strongly
     reference: Does this text exhibit prejudice towards a group or cause?
   d4f7f589-995a-473e-b87b-68b9a0fea0d8: !Template
     answer_choices: 'True ||| False '
@@ -143,17 +119,17 @@ templates:
 
 
       It exhibits extreme one-sidedness to a single group of individuals or cause.
-      "{{answer_choices[0]}}" or "{{answer_choices[1]}}?
+      "{{answer_choices[0]}}" or "{{answer_choices[1]}}"?
 
 
       |||
 
 
-      {{hyperpartisan}}'
+      {{answer_choices[0] if hyperpartisan else answer_choices[1]}}'
     metadata: !TemplateMetadata
       choices_in_prompt: true
       metrics:
       - Accuracy
       original_task: true
-    name: hyperpartisan_classification_variation_5
+    name: consider_it_exhibits_extreme_one_sidedness
     reference: Does this text exhibit prejudice towards a group or cause?
