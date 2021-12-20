@@ -173,7 +173,7 @@ with open(experiment_path) as exp_file:
         ):
             bias_fairness_eval.add(dataset_subset)
         gsheet[dataset_subset] = row
-all_datasets = set.union(d4_train, d4_eval, d3_train_gpt, d3_train_sglue, bias_fairness_eval)
+all_datasets = d4_train | d4_eval | d3_train_gpt | d3_train_sglue | bias_fairness_eval
 
 all_templates = promptsource.templates.TemplateCollection()
 all_templates.remove("anli")  # Need to special-case ANLI due to weird split conventions
@@ -321,13 +321,13 @@ seqio.MixtureRegistry.add(
 
 seqio.MixtureRegistry.add(
     "d4_gpt_train",
-    [task for task in set.union(d4_train_mixture, gpt_train_mixture) if task not in TASK_BLACKLIST],
+    [task for task in d4_train_mixture | gpt_train_mixture if task not in TASK_BLACKLIST],
     default_rate=lambda t: mixture_cap[t.name],
 )
 
 seqio.MixtureRegistry.add(
     "d4_gpt_sglue_train",
-    [task for task in set.union(d4_train_mixture, gpt_train_mixture, sglue_train_mixture) if task not in TASK_BLACKLIST],
+    [task for task in d4_train_mixture | gpt_train_mixture | sglue_train_mixture if task not in TASK_BLACKLIST],
     default_rate=lambda t: mixture_cap[t.name],
 )
 
