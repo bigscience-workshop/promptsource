@@ -299,7 +299,7 @@ class TemplateCollection:
         :param subset_name: name of the subset
         """
         # if the dataset does not exist, we add it
-        if dataset_name not in self.keys:
+        if (dataset_name, subset_name) not in self.datasets_templates:
             self.datasets_templates[(dataset_name, subset_name)] = DatasetTemplates(dataset_name, subset_name)
 
         return self.datasets_templates[(dataset_name, subset_name)]
