@@ -173,7 +173,7 @@ with open(experiment_path) as exp_file:
         ):
             bias_fairness_eval.append(dataset_subset)
         gsheet[dataset_subset] = row
-all_datasets = d4_train + d4_eval + d3_train_gpt + d3_train_sglue + bias_fairness_eval
+all_datasets = set(d4_train + d4_eval + d3_train_gpt + d3_train_sglue + bias_fairness_eval)
 
 all_templates = promptsource.templates.TemplateCollection()
 all_templates.remove("anli")  # Need to special-case ANLI due to weird split conventions
