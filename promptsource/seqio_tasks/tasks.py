@@ -187,7 +187,7 @@ bias_fairness_eval_mixture: Set[str] = set()
 mixture_cap: Dict[str, int] = {}
 single_original_task: Dict[Tuple[str, str], str] = {}
 all_original_tasks: Set[str] = set()
-for dataset_name, subset_name in all_templates.keys:
+for dataset_name, subset_name in list(all_templates.keys):
     if (dataset_name, subset_name) not in all_datasets:
         all_templates.remove(dataset_name, subset_name)
         continue
