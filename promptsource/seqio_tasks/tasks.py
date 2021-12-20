@@ -143,11 +143,11 @@ def add_task(dataset_name, subset_name, template_name, task_name=None, split_map
 
 
 datatset_subset_tuple = Tuple[str, Optional[str]]
-d4_train: List[datatset_subset_tuple] = []
-d4_eval: List[datatset_subset_tuple] = []
-d3_train_gpt: List[datatset_subset_tuple] = []
-d3_train_sglue: List[datatset_subset_tuple] = []
-bias_fairness_eval: List[datatset_subset_tuple] = []
+d4_train: Set[datatset_subset_tuple] = set()
+d4_eval: Set[datatset_subset_tuple] = set()
+d3_train_gpt: Set[datatset_subset_tuple] = set()
+d3_train_sglue: Set[datatset_subset_tuple] = set()
+bias_fairness_eval: Set[datatset_subset_tuple] = set()
 gsheet: Dict[datatset_subset_tuple, Dict] = {}
 experiment_path = pkg_resources.resource_filename(__name__, "experiment_D4.csv")
 with open(experiment_path) as exp_file:
@@ -159,19 +159,19 @@ with open(experiment_path) as exp_file:
             row["subset"] = None  # to match promptsource.Template object
         dataset_subset = (row["HF_name"], row["subset"])
         if row["do_train"] == "TRUE":
-            d4_train.append(dataset_subset)
+            d4_train.add(dataset_subset)
         if row["do_eval"] == "TRUE":
-            d4_eval.append(dataset_subset)
+            d4_eval.add(dataset_subset)
         if row["D3_do_train"] == "TRUE" and "GPT" in row["seed_paper"]:
-            d3_train_gpt.append(dataset_subset)
+            d3_train_gpt.add(dataset_subset)
         if row["D3_do_train"] == "TRUE" and row["HF_name"] == "super_glue":
-            d3_train_sglue.append(dataset_subset)
+            d3_train_sglue.add(dataset_subset)
         if (
             row["do_eval"] == "TRUE"
             and row["task_by_convention"] == "bias_and_fairness"
             and row["HF_name"] != "winogender"
         ):
-            bias_fairness_eval.append(dataset_subset)
+            bias_fairness_eval.add(dataset_subset)
         gsheet[dataset_subset] = row
 all_datasets = set(d4_train + d4_eval + d3_train_gpt + d3_train_sglue + bias_fairness_eval)
 
@@ -179,14 +179,14 @@ all_templates = promptsource.templates.TemplateCollection()
 all_templates.remove("anli")  # Need to special-case ANLI due to weird split conventions
 
 # 3 stages of training/ablation: D4 -> GPT -> SuperGLUE
-d4_train_mixture: List[str] = []  # strings are dataset_subset_template
-gpt_train_mixture: List[str] = []
-sglue_train_mixture: List[str] = []
-d4_eval_mixture: List[str] = []
-bias_fairness_eval_mixture: List[str] = []
+d4_train_mixture: Set[str] = set()  # strings are dataset_subset_template
+gpt_train_mixture: Set[str] = set()
+sglue_train_mixture: Set[str] = set()
+d4_eval_mixture: Set[str] = set()
+bias_fairness_eval_mixture: Set[str] = set()
 mixture_cap: Dict[str, int] = {}
 single_original_task: Dict[Tuple[str, str], str] = {}
-all_original_tasks: List[str] = []
+all_original_tasks: Set[str] = set()
 for dataset_name, subset_name in all_templates.keys:
     if (dataset_name, subset_name) not in all_datasets:
         all_templates.remove(dataset_name, subset_name)
@@ -214,23 +214,23 @@ for dataset_name, subset_name in all_templates.keys:
             single_original_task[(dataset_name, subset_name)] = task_name
 
         if template.metadata.original_task:
-            all_original_tasks.append(task_name)
+            all_original_tasks.add(task_name)
 
         if (dataset_name, subset_name) in d4_train:
-            d4_train_mixture.append(task_name)
+            d4_train_mixture.add(task_name)
             mixture_cap[task_name] = cap
         if (dataset_name, subset_name) in d3_train_gpt:
-            gpt_train_mixture.append(task_name)
+            gpt_train_mixture.add(task_name)
             mixture_cap[task_name] = cap
         if (dataset_name, subset_name) in d3_train_sglue:
-            sglue_train_mixture.append(task_name)
+            sglue_train_mixture.add(task_name)
             mixture_cap[task_name] = cap
         if (dataset_name, subset_name) in d4_eval:
             if template.metadata.original_task:
-                d4_eval_mixture.append(task_name)
+                d4_eval_mixture.add(task_name)
             # TODO use template.metadata.answer_choices here for rank eval
         if (dataset_name, subset_name) in bias_fairness_eval:
-            bias_fairness_eval_mixture.append(task_name)
+            bias_fairness_eval_mixture.add(task_name)
 
 # Special case for ANLI, which has weirdly-named splits and rounds that should be subsets
 dataset_name, subset_name = ("anli", None)
@@ -247,11 +247,11 @@ for anli_round in ("r1", "r2", "r3"):
 
         template = dataset[template_name]
         if template.metadata.original_task:
-            d4_eval_mixture.append(task_name)  # TODO or add to ANLI special mixture
+            d4_eval_mixture.add(task_name)  # TODO or add to ANLI special mixture
         # TODO use template.metadata.answer_choices here for rank eval
 
 
-TASK_BLACKLIST = [
+TASK_BLACKLIST = {
     # Tasks which often tokenize to > 1024 tokens currently
     "hotpot_qa_distractor_Generate_Explanations",
     "hotpot_qa_fullwiki_Generate_Explanations",
@@ -278,10 +278,10 @@ TASK_BLACKLIST = [
     "ecthr_cases_alleged_violation_prediction_silver_rationales",
     # Tasks with broken cached files
     "gigaword_summarize_",
-]
+}
 
 # Tasks that failed caching (won't try to fix them for now) - remove when we are done
-D4_TRAIN_SCORE_EVAL_TASK_BLACKLIST = [
+D4_TRAIN_SCORE_EVAL_TASK_BLACKLIST = {
     "amazon_polarity_Is_this_product_review_positive_score_eval",
     "amazon_polarity_Is_this_review_negative_score_eval",
     "amazon_polarity_Is_this_review_score_eval",
@@ -299,7 +299,7 @@ D4_TRAIN_SCORE_EVAL_TASK_BLACKLIST = [
     "wiki_hop_original_choose_best_object_affirmative_3_score_eval",
     "wiki_hop_original_choose_best_object_interrogative_1_score_eval",
     "wiki_hop_original_choose_best_object_interrogative_2_score_eval",
-]
+}
 
 seqio.MixtureRegistry.add(
     "d4_train",
@@ -351,7 +351,7 @@ seqio.MixtureRegistry.add(
 )
 
 # Train tasks we don't care about evaluating on
-D4_TRAIN_SKIP_EVAL = [
+D4_TRAIN_SKIP_EVAL = {
     "paws_labeled_final",
     "adversarial_qa_dbidaf",
     "adversarial_qa_dbert",
@@ -366,7 +366,7 @@ D4_TRAIN_SKIP_EVAL = [
     "samsum",
     "dbpedia_14",
     "trec",
-]
+}
 
 seqio.MixtureRegistry.add(
     "d4_train_eval",
