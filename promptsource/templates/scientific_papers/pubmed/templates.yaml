@@ -19,7 +19,7 @@ templates:
   7ef28be4-382c-46ee-9fd5-1c4d83aab433: !Template
     answer_choices: null
     id: 7ef28be4-382c-46ee-9fd5-1c4d83aab433
-    jinja: 'Prepare the first three sentences of a scientific article for the following
+    jinja: 'Write the first three sentences of a scientific article for the following
       abstract:
 
       {{abstract}}
@@ -28,7 +28,7 @@ templates:
 
       {{article.strip().split(''\n'')[:3]|join("\n")}}'
     metadata: !TemplateMetadata
-      choices_in_prompt: null
+      choices_in_prompt: false
       metrics: []
       original_task: false
     name: generate_first_three_sentences_of_an_article_from_abstract
@@ -36,14 +36,14 @@ templates:
   a34723df-0c10-4553-8323-99c4cfb53544: !Template
     answer_choices: null
     id: a34723df-0c10-4553-8323-99c4cfb53544
-    jinja: 'What would be the first line of scientific article for the following abstract:
-      {{ abstract }}
+    jinja: 'What would be the first line of a scientific article for the following
+      abstract: {{ abstract }}
 
       |||
 
       {{ article.strip().split(''\n'')[0] }}'
     metadata: !TemplateMetadata
-      choices_in_prompt: null
+      choices_in_prompt: false
       metrics: []
       original_task: false
     name: generate_first_line_from_abstract
@@ -51,18 +51,31 @@ templates:
   a8992de1-443f-4f6a-983a-99e10a34b328: !Template
     answer_choices: null
     id: a8992de1-443f-4f6a-983a-99e10a34b328
-    jinja: 'Write the first 100 words for a scientific article with following abstract
-      : {{ abstract }}
+    jinja: 'Write the first 100 words for a scientific article with the following
+      abstract : {{ abstract }}
 
       |||
 
       {{ article.strip().split('' '')[:100] |join('' '')}}'
     metadata: !TemplateMetadata
-      choices_in_prompt: null
+      choices_in_prompt: false
       metrics: []
       original_task: false
     name: generate_first_100_words_for_article
     reference: Given the abstract, generate the first 100 words of the article.
+  e5a41fa1-3e81-4c74-ad73-6aab5e4855c7: !Template
+    answer_choices: null
+    id: e5a41fa1-3e81-4c74-ad73-6aab5e4855c7
+    jinja: "Suppose that you have an abstract for a scientific paper:   {{abstract}}\
+      \ \nand you have already written the first three sentences of the full article:\
+      \ {{article.strip().split('\\n')[:3]}}. \nPlease generate the next two sentences\
+      \ of the article.\n|||\n{{article.strip().split('\\n')[3:5]|join(\"\\n\")}}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics: []
+      original_task: false
+    name: write_sentences_4_and_5_from_sentences_1_2_3_and_abstract
+    reference: ''
   ff694788-2e84-49e7-8df3-2665b8c687f1: !Template
     answer_choices: null
     id: ff694788-2e84-49e7-8df3-2665b8c687f1
