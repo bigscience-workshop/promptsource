@@ -254,7 +254,7 @@ class TemplateCollection:
 
     @property
     def keys(self):
-        return list(self.datasets_templates.keys())
+        return self.datasets_templates.keys()
 
     def __len__(self) -> int:
         return len(self.datasets_templates)
