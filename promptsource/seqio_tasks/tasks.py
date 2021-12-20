@@ -303,37 +303,37 @@ D4_TRAIN_SCORE_EVAL_TASK_BLACKLIST = {
 
 seqio.MixtureRegistry.add(
     "d4_train",
-    [task for task in d4_train_mixture if task not in TASK_BLACKLIST],
+    list(d4_train_mixture - TASK_BLACKLIST),
     default_rate=lambda t: mixture_cap[t.name],
 )
 
 seqio.MixtureRegistry.add(
     "gpt_train",
-    [task for task in gpt_train_mixture if task not in TASK_BLACKLIST],
+    list(gpt_train_mixture - TASK_BLACKLIST),
     default_rate=lambda t: mixture_cap[t.name],
 )
 
 seqio.MixtureRegistry.add(
     "sglue_train",
-    [task for task in sglue_train_mixture if task not in TASK_BLACKLIST],
+    list(sglue_train_mixture - TASK_BLACKLIST),
     default_rate=lambda t: mixture_cap[t.name],
 )
 
 seqio.MixtureRegistry.add(
     "d4_gpt_train",
-    [task for task in d4_train_mixture | gpt_train_mixture if task not in TASK_BLACKLIST],
+    list((d4_train_mixture | gpt_train_mixture) - TASK_BLACKLIST),
     default_rate=lambda t: mixture_cap[t.name],
 )
 
 seqio.MixtureRegistry.add(
     "d4_gpt_sglue_train",
-    [task for task in d4_train_mixture | gpt_train_mixture | sglue_train_mixture if task not in TASK_BLACKLIST],
+    list((d4_train_mixture | gpt_train_mixture | sglue_train_mixture) - TASK_BLACKLIST),
     default_rate=lambda t: mixture_cap[t.name],
 )
 
 seqio.MixtureRegistry.add(
     "d4_eval",
-    [task for task in d4_eval_mixture if task not in TASK_BLACKLIST],
+    list(d4_eval_mixture - TASK_BLACKLIST),
     default_rate=functools.partial(seqio.mixing_rate_num_examples, maximum=500_000),
 )  # eval mixture does not need to be capped
 
@@ -344,8 +344,7 @@ seqio.MixtureRegistry.add(
         task
         for task in seqio.TaskRegistry.names()
         if task.endswith("_score_eval")
-        and task.split("_score_eval")[0] in d4_eval_mixture
-        and task.split("_score_eval")[0] not in TASK_BLACKLIST
+        and task.split("_score_eval")[0] in (d4_eval_mixture - TASK_BLACKLIST)
     ],
     default_rate=functools.partial(seqio.mixing_rate_num_examples, maximum=500_000),
 )
@@ -372,10 +371,8 @@ seqio.MixtureRegistry.add(
     "d4_train_eval",
     [
         task
-        for task in d4_train_mixture
-        if task not in TASK_BLACKLIST
-        and not any([skip in task for skip in D4_TRAIN_SKIP_EVAL])
-        and task in all_original_tasks
+        for task in ((d4_train_mixture - TASK_BLACKLIST) & all_original_tasks)
+        if not any([skip in task for skip in D4_TRAIN_SKIP_EVAL])
     ],
     default_rate=lambda t: mixture_cap[t.name],
 )
@@ -386,30 +383,28 @@ seqio.MixtureRegistry.add(
         task
         for task in seqio.TaskRegistry.names()
         if task.endswith("_score_eval")
-        and task.split("_score_eval")[0] in d4_train_mixture
-        and task.split("_score_eval")[0] not in TASK_BLACKLIST
+        and task.split("_score_eval")[0] in ((d4_train_mixture - TASK_BLACKLIST) & all_original_tasks)
         and task not in D4_TRAIN_SCORE_EVAL_TASK_BLACKLIST
         and not any([skip in task for skip in D4_TRAIN_SKIP_EVAL])
-        and task.split("_score_eval")[0] in all_original_tasks
     ],
     default_rate=functools.partial(seqio.mixing_rate_num_examples, maximum=500_000),
 )
 
 seqio.MixtureRegistry.add(
     "d4_train_one_og_prompt",
-    [task for task in single_original_task.values() if task in d4_train_mixture and task not in TASK_BLACKLIST],
+    [task for task in single_original_task.values() if task in (d4_train_mixture - TASK_BLACKLIST)],
     default_rate=lambda t: mixture_cap[t.name],
 )
 
 seqio.MixtureRegistry.add(
     "d4_train_all_og_prompts",
-    [task for task in all_original_tasks if task in d4_train_mixture and task not in TASK_BLACKLIST],
+    list(all_original_tasks & (d4_train_mixture - TASK_BLACKLIST)),
     default_rate=lambda t: mixture_cap[t.name],
 )
 
 seqio.MixtureRegistry.add(
     "bias_fairness_eval",
-    bias_fairness_eval_mixture,
+    list(bias_fairness_eval_mixture),
     default_rate=functools.partial(seqio.mixing_rate_num_examples, maximum=500_000),
 )
 
