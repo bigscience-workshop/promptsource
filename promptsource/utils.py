@@ -49,7 +49,23 @@ def get_dataset(path, conf=None):
         builder_instance.download_and_prepare()
         return builder_instance.as_dataset()
     else:
-        return datasets.load_dataset(path, conf)
+        data_dir = get_dataset_data_dir(path, conf)
+        return datasets.load_dataset(path, conf, data_dir=data_dir)
+
+MANUALLY_DOWNLOADED_DATASETS = {
+    "story_cloze": {
+        "2016": "/home/thomas/custom_datasets/story_cloze/2016",
+    }
+}
+def get_dataset_data_dir(dataset_name, subset_name):
+    if dataset_name in MANUALLY_DOWNLOADED_DATASETS:
+        if subset_name in MANUALLY_DOWNLOADED_DATASETS[dataset_name]:
+            data_dir = MANUALLY_DOWNLOADED_DATASETS[dataset_name][subset_name]
+        else:
+            raise ValueError(f"Unknown subset {subset_name} for dataset {dataset_name}")
+    else:
+        data_dir = None
+    return data_dir
 
 
 def get_dataset_confs(path):
