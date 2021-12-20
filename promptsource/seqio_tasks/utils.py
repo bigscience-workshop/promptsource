@@ -32,35 +32,34 @@ def hf_dataset_to_tf_dataset(dataset):
 
 
 def apply_template(dataset, template):
-    def map_fn(ex):
-        ex = promptsource.utils.removeHyphen(ex)
-        inputs_and_targets = template.apply(ex)
-        answer_choices = template.get_answer_choices_list(ex)
-        if len(inputs_and_targets) == 2:
-            inputs, targets = inputs_and_targets
-            if targets == "":
-                ex = {"inputs": inputs, "targets": "<NO LABEL>"}
-            else:
-                ex = {"inputs": inputs, "targets": targets}
-        # When template results in an empty example, template.apply returns [""]
-        # Also, if the template gets split wrong, len can be > 2
-        # We will filter these out later
-        else:
-            ex = {"inputs": "", "targets": ""}
-
-        if answer_choices:
-            ex["answer_choices"] = answer_choices
-
-        return ex
-
     def filter_fn(ex):
         return len(ex["inputs"]) > 0 and len(ex["targets"]) > 0
 
     original_columns = dataset.column_names
-    dataset = dataset.map(map_fn).filter(filter_fn)
+    dataset = dataset.map(_map_apply_template_to_example, fn_kwargs={"template": template}).filter(filter_fn)
     # map keeps original columns, remove them
     return dataset.remove_columns(set(original_columns) - {"inputs", "targets", "answer_choices"})
 
+def _map_apply_template_to_example(ex, template):
+    ex = promptsource.utils.removeHyphen(ex)
+    inputs_and_targets = template.apply(ex)
+    answer_choices = template.get_answer_choices_list(ex)
+    if len(inputs_and_targets) == 2:
+        inputs, targets = inputs_and_targets
+        if targets == "":
+            ex = {"inputs": inputs, "targets": "<NO LABEL>"}
+        else:
+            ex = {"inputs": inputs, "targets": targets}
+    # When template results in an empty example, template.apply returns [""]
+    # Also, if the template gets split wrong, len can be > 2
+    # We will filter these out later
+    else:
+        ex = {"inputs": "", "targets": ""}
+
+    if answer_choices:
+        ex["answer_choices"] = answer_choices
+
+    return ex
 
 def get_dataset_splits(dataset_name, subset_name=None):
     info = datasets.get_dataset_infos(dataset_name)

@@ -87,7 +87,6 @@ def add_task(dataset_name, subset_name, template_name, task_name=None, split_map
 
     dataset_splits = utils.get_dataset_splits(dataset_name, subset_name)
     split_mapping = split_mapping or {k: k for k in dataset_splits.keys()}
-
     dataset_fn = functools.partial(
         get_tf_dataset,
         seed=None,
