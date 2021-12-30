@@ -48,7 +48,9 @@ templates:
   4cc7af61-ee7a-491f-b232-8ef3dc7d1415: !Template
     answer_choices: No ||| Yes
     id: 4cc7af61-ee7a-491f-b232-8ef3dc7d1415
-    jinja: '{% if annotation["explanation_type"] != "none" %}
+    jinja: '{% set does_contain = None %}
+
+      {% if annotation["explanation_type"] != "none" %}
 
       {% set does_contain = 1 %}
 
@@ -99,7 +101,9 @@ templates:
   6679de40-be84-43e5-aa0b-2bdb4bdde83d: !Template
     answer_choices: one ||| more than one ||| zero
     id: 6679de40-be84-43e5-aa0b-2bdb4bdde83d
-    jinja: '{% if annotation["explanation_type"] == "single_sentence" %}
+    jinja: '{% set exp_type = None %}
+
+      {% if annotation["explanation_type"] == "single_sentence" %}
 
       {% set exp_type = 0 %}
 
