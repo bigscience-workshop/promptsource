@@ -28,56 +28,22 @@ templates:
       metrics:
       - BLEU
       - ROUGE
-      original_task: true
-    name: original-nq-answers
+      original_task: false
+    name: closed-book-qa
     reference: ''
   383d06fe-d562-4883-8d29-b727d4c3877b: !Template
     answer_choices: null
     id: 383d06fe-d562-4883-8d29-b727d4c3877b
-    jinja: "{% if annotation['selected_sentence']['string']!=\"\" %}\nAnswer the following\
-      \ question given the hint.\n\nQuestion: {{question}}?\n\nHint: {{paragraph_text}}\
-      \  \n\n|||\n{{annotation['selected_sentence']['string']}}\n{% endif %}\n"
+    jinja: "{% set chosen = original_nq_answers | choice %}\n{% if annotation['selected_sentence']['string']!=\"\
+      \" %}\nAnswer the following question given the hint.\n\nQuestion: {{question}}?\n\
+      \nHint: {{paragraph_text}}  \n\n|||\n{{ chosen[\"string\"]}}\n{% endif %}\n"
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
       - BLEU
       - ROUGE
       original_task: true
-    name: qusetion-and-passage-to-answer
-    reference: ''
-  4cc7af61-ee7a-491f-b232-8ef3dc7d1415: !Template
-    answer_choices: No ||| Yes
-    id: 4cc7af61-ee7a-491f-b232-8ef3dc7d1415
-    jinja: '{% set does_contain = None %}
-
-      {% if annotation["explanation_type"] != "none" %}
-
-      {% set does_contain = 1 %}
-
-      {% else %}
-
-      {% set does_contain = 0 %}
-
-      {% endif %}
-
-      {{paragraph_text}}
-
-
-      Does the above passage contain the answer to the following question? Please
-      answer Yes or No.
-
-
-      Question: {{question}}?
-
-      |||
-
-      {{answer_choices[does_contain] }}'
-    metadata: !TemplateMetadata
-      choices_in_prompt: true
-      metrics:
-      - Accuracy
-      original_task: true
-    name: does-explanation-exist
+    name: open-book-qa
     reference: ''
   5b45c11d-bbea-45a1-a799-a77a56fe8e1d: !Template
     answer_choices: null
@@ -93,52 +59,9 @@ templates:
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
-      - BLEU
-      - ROUGE
+      - Accuracy
       original_task: false
     name: extract-title-from-url
-    reference: ''
-  6679de40-be84-43e5-aa0b-2bdb4bdde83d: !Template
-    answer_choices: one ||| more than one ||| zero
-    id: 6679de40-be84-43e5-aa0b-2bdb4bdde83d
-    jinja: '{% set exp_type = None %}
-
-      {% if annotation["explanation_type"] == "single_sentence" %}
-
-      {% set exp_type = 0 %}
-
-      {% elif annotation["explanation_type"] == "multi_sentence" %}
-
-      {% set exp_type = 1 %}
-
-      {% else %}
-
-      {% set exp_type = 2 %}
-
-      {% endif %}
-
-
-      Read the below paragraph and question A, and answer question B.
-
-
-      Paragraph: {{paragraph_text}}
-
-
-      Question A: {{question}}?
-
-
-      Question B: In order to answer question A, how many sentences did you have to
-      reason over in the paragraph? Please answer "one", "more than one", or "zero".
-
-      |||
-
-      {{answer_choices[exp_type]}}'
-    metadata: !TemplateMetadata
-      choices_in_prompt: true
-      metrics:
-      - Accuracy
-      original_task: true
-    name: explanation-type
     reference: ''
   7d3746b5-52e6-4ce1-b441-007f271f477b: !Template
     answer_choices: null
@@ -179,7 +102,7 @@ templates:
       choices_in_prompt: false
       metrics:
       - BLEU
-      - Squad
+      - ROUGE
       original_task: true
     name: select-sentence
     reference: ''
