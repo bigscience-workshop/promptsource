@@ -12,9 +12,10 @@ templates:
       \ %}\n{{answer.AnswersName[0][0].split(\" \") | map(\"capitalize\") | join(\"\
       \ \") }}"
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
-      original_task: false
+      choices_in_prompt: false
+      metrics:
+      - Accuracy
+      original_task: true
     name: qa_context_2
     reference: qa prompt with topic and inference chain provided
   1d583b71-7ef1-49df-b252-e8e1d6910129: !Template
@@ -33,8 +34,9 @@ templates:
 
       '
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
+      choices_in_prompt: false
+      metrics:
+      - Accuracy
       original_task: false
     name: inference_chain_prompt
     reference: predicting the inference chain given just the question
@@ -45,8 +47,9 @@ templates:
       \ = Parses.Answers | choice %}\n{{answer.AnswersName[0][0].split(\" \") | map(\"\
       capitalize\") | join(\" \") }}"
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
+      choices_in_prompt: false
+      metrics:
+      - Accuracy
       original_task: true
     name: qa_template_basic
     reference: basic question/answer format
@@ -59,8 +62,9 @@ templates:
       \ \n{% set answer = Parses.Answers | choice %}\n{{answer.AnswersName[0][0].split(\"\
       \ \") | map(\"capitalize\") | join(\" \") }}"
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
+      choices_in_prompt: false
+      metrics:
+      - Accuracy
       original_task: true
     name: qa_context_1
     reference: qa question with simple entity context
@@ -73,8 +77,9 @@ templates:
       \ }}\"? \n||| \n{% set a = Parses.InferentialChain | first %}\n{{ a.split(\"\
       .\") | last | capitalize | replace(\"_\", \" \")}}\n"
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
+      choices_in_prompt: false
+      metrics:
+      - Accuracy
       original_task: false
     name: inference_chain_prompt_context
     reference: determine the inference chain between question and answer
