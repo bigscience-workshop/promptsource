@@ -58,12 +58,11 @@ def load_dataset(dataset_name, subset_name):
     try:
         return datasets.load_dataset(dataset_name, subset_name)
     except datasets.builder.ManualDownloadError:
+        cache_root_dir = os.environ["PROMPTSOURCE_MANUAL_DATASET_DIR"] if "PROMPTSOURCE_MANUAL_DATASET_DIR" in os.environ else DEFAULT_PROMPTSOURCE_CACHE_HOME
         return datasets.load_dataset(
             dataset_name,
             subset_name,
-            data_dir=os.environ["PROMPTSOURCE_MANUAL_DATASET_DIR"]
-            if "PROMPTSOURCE_MANUAL_DATASET_DIR" in os.environ
-            else DEFAULT_PROMPTSOURCE_CACHE_HOME,
+            data_dir=f"{cache_root_dir}/{dataset_name}/{subset_name}",
         )
 
 
