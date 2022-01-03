@@ -1,8 +1,10 @@
 # coding=utf-8
+import os
 
 import datasets
 import requests
 
+from promptsource import DEFAULT_PROMPTSOURCE_CACHE_HOME
 from promptsource.templates import INCLUDED_USERS
 
 
@@ -49,8 +51,13 @@ def get_dataset(path, conf=None):
         builder_instance.download_and_prepare()
         return builder_instance.as_dataset()
     else:
-        return datasets.load_dataset(path, conf)
+        return load_dataset(path, conf)
 
+def load_dataset(dataset_name, subset_name):
+    try:
+        return datasets.load_dataset(dataset_name, subset_name)
+    except datasets.builder.ManualDownloadError:
+        return datasets.load_dataset(dataset_name, subset_name, data_dir=os.environ["PROMPTSOURCE_MANUAL_DATASET_DIR"] if "PROMPTSOURCE_MANUAL_DATASET_DIR" in os.environ else DEFAULT_PROMPTSOURCE_CACHE_HOME)
 
 def get_dataset_confs(path):
     "Get the list of confs for a dataset."

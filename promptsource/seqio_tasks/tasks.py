@@ -12,7 +12,7 @@ from t5.evaluation import metrics as mt
 
 import promptsource.templates
 from promptsource.seqio_tasks import utils
-
+from promptsource.utils import load_dataset
 
 GET_METRICS = {
     "BLEU": mt.bleu,
@@ -59,7 +59,7 @@ def maybe_get_class_id_postprocessor(template):
 def get_tf_dataset(split, shuffle_files, seed, dataset_name, subset_name, template, split_mapping):
     # HF datasets does not support file-level shuffling
     del shuffle_files, seed
-    dataset = datasets.load_dataset(dataset_name, subset_name)
+    dataset = load_dataset(dataset_name, subset_name)
     dataset = dataset[split_mapping[split]]
     dataset = utils.apply_template(dataset, template)
     return utils.hf_dataset_to_tf_dataset(dataset)
