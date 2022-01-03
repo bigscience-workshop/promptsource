@@ -70,6 +70,15 @@ collection = TemplateCollection()
 # and the value is an instance of DatasetTemplates
 print(collection.datasets_templates)
 ```
+
+## Running datasets that need manual download
+
+Some datasets are not handled automatically by `datasets` and require users to manually download the dataset.
+
+In order handle those datasets as well, we require users to specify a `PROMPTSOURCE_MANUAL_DATASET_DIR` environment variable. This should point a the root directory containing all manually download datasets.
+
+By default `PROMPTSOURCE_MANUAL_DATASET_DIR=~/.cache/promptsource`
+
 ## Contributing
 Contribution guidelines and step-by-step *HOW TO* are described [here](CONTRIBUTING.md).
 
