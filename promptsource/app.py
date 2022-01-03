@@ -261,13 +261,14 @@ else:
         subset_name = str(conf_option.name) if conf_option else None
         try:
             dataset = get_dataset(dataset_key, subset_name)
-        except datasets.builder.ManualDownloadError:
+        except OSError as e:
             st.error(
                 f"Some datasets are not handled automatically by `datasets` and require users to manually download the "
                 f"dataset. This applies to {dataset_key}{f'/{subset_name}' if subset_name is not None else ''}. "
                 f"Please download raw dataset to `~/.cache/promptsource/{dataset_key}{f'/{subset_name}' if subset_name is not None else ''}`. "
                 f"You can choose another cache directory by overriding `PROMPTSOURCE_MANUAL_DATASET_DIR` environment "
                 f"variable and download raw dataset to `$PROMPTSOURCE_MANUAL_DATASET_DIR/{dataset_key}{f'/{subset_name}' if subset_name is not None else ''}`"
+                f"\nOriginal error:\n{str(e)}"
             )
             st.stop()
 
