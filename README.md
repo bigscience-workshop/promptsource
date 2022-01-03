@@ -75,9 +75,9 @@ print(collection.datasets_templates)
 
 Some datasets are not handled automatically by `datasets` and require users to manually download the dataset.
 
-In order handle those datasets as well, we require users to specify a `PROMPTSOURCE_MANUAL_DATASET_DIR` environment variable. This should point a the root directory containing all manually download datasets.
+In order to handle those datasets as well, we require users to download the dataset and put it in `~/.cache/promptsource`. This is the root directory containing all manually downloaded datasets.
 
-By default `PROMPTSOURCE_MANUAL_DATASET_DIR=~/.cache/promptsource`
+You can override this default path using `PROMPTSOURCE_MANUAL_DATASET_DIR` environment variable. This should point to the root directory.
 
 ## Contributing
 Contribution guidelines and step-by-step *HOW TO* are described [here](CONTRIBUTING.md).
