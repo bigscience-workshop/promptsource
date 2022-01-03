@@ -2,7 +2,6 @@ import csv
 import functools
 from typing import Dict, List, Optional, Tuple
 
-import datasets
 import pkg_resources
 import seqio
 import t5
