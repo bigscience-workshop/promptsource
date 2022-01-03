@@ -53,11 +53,19 @@ def get_dataset(path, conf=None):
     else:
         return load_dataset(path, conf)
 
+
 def load_dataset(dataset_name, subset_name):
     try:
         return datasets.load_dataset(dataset_name, subset_name)
     except datasets.builder.ManualDownloadError:
-        return datasets.load_dataset(dataset_name, subset_name, data_dir=os.environ["PROMPTSOURCE_MANUAL_DATASET_DIR"] if "PROMPTSOURCE_MANUAL_DATASET_DIR" in os.environ else DEFAULT_PROMPTSOURCE_CACHE_HOME)
+        return datasets.load_dataset(
+            dataset_name,
+            subset_name,
+            data_dir=os.environ["PROMPTSOURCE_MANUAL_DATASET_DIR"]
+            if "PROMPTSOURCE_MANUAL_DATASET_DIR" in os.environ
+            else DEFAULT_PROMPTSOURCE_CACHE_HOME,
+        )
+
 
 def get_dataset_confs(path):
     "Get the list of confs for a dataset."

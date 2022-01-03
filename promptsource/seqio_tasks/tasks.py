@@ -14,6 +14,7 @@ import promptsource.templates
 from promptsource.seqio_tasks import utils
 from promptsource.utils import load_dataset
 
+
 GET_METRICS = {
     "BLEU": mt.bleu,
     "ROUGE": mt.rouge,
