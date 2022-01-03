@@ -15,11 +15,12 @@ templates:
   2aa091cb-02ff-4c8c-964c-4c5e53df8c1b: !Template
     answer_choices: null
     id: 2aa091cb-02ff-4c8c-964c-4c5e53df8c1b
-    jinja: "How related are the two sentences : \"{{hypothesis}}\" and \"{{premise}}\"\
-      \ ? Rate it from 1-5, where  1 is completely unrelated and 5 is very related.\
-       \n||| {{(((10*relatedness_score)|round)/10)}}"
+    jinja: 'How related are the two sentences : "{{hypothesis}}" and "{{premise}}"
+      ? Rate it from 1-5, where  1 is completely unrelated and 5 is very related.
+
+      ||| {{(((10*relatedness_score)|round)/10)}}'
     metadata: !TemplateMetadata
-      choices_in_prompt: true
+      choices_in_prompt: false
       metrics:
       - Pearson correlation
       - Spearman correlation
@@ -31,8 +32,8 @@ templates:
     answer_choices: neither ||| entailing ||| contradicting
     id: 75203dd2-5ec3-4e91-b95f-228ad9bd2010
     jinja: "Sentence 1: \"{{hypothesis}}\" \nSentence 2: \"{{premise}}\"\nAre the\
-      \ two sentences {{answer_choices[1]}} or {{answer_choices[2]}} each other?\n|||\
-      \ {{answer_choices[entailment_judgment]}}"
+      \ two sentences {{answer_choices[1]}} or {{answer_choices[2]}} each other? If\
+      \ none of these options are valid, answer \"{{answer_choices[0]}}\".\n||| {{answer_choices[entailment_judgment]}}"
     metadata: !TemplateMetadata
       choices_in_prompt: true
       metrics:
@@ -45,11 +46,12 @@ templates:
     id: 892c58fd-64f5-4059-8fb8-c74bc025ff40
     jinja: "Given the following hypothesis: {{hypothesis}}.\nAs well as the premise:\
       \ {{premise}}, \nPredict the Entailment relation between the premise and hypothesis\
-      \ from the labels {{answer_choices[0]}}, {{answer_choices[1]}}, {{answer_choices[2]\
-      }} |||\n {{answer_choices[entailment_judgment]}}\n"
+      \ from the labels {{answer_choices[0]}}, {{answer_choices[1]}}, {{answer_choices[2]}}\
+      \ |||\n {{answer_choices[entailment_judgment]}}\n"
     metadata: !TemplateMetadata
       choices_in_prompt: true
-      metrics: []
+      metrics:
+      - Accuracy
       original_task: true
     name: entailment_relation
     reference: ''
@@ -70,12 +72,15 @@ templates:
     answer_choices: null
     id: a58fe8b4-f185-46a9-8fca-6dc66d0812be
     jinja: "Given the following hypothesis: {{hypothesis}}.\nAs well as the premise:\
-      \ {{premise}}, \nGive a score on how related the hypothesis and premise was,\
+      \ {{premise}}, \nGive a score on how related the hypothesis and premise were,\
       \ from the scale 1 to 5, where  1 is completely unrelated and 5 is very related:\
       \ |||   {{(((10*relatedness_score)|round)/10)}}\n\n"
     metadata: !TemplateMetadata
-      choices_in_prompt: true
-      metrics: []
+      choices_in_prompt: false
+      metrics:
+      - Pearson correlation
+      - Spearman correlation
+      - Mean Squared Error
       original_task: true
     name: related_score
     reference: ''
