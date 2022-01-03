@@ -2,6 +2,7 @@ import argparse
 import textwrap
 from multiprocessing import Manager, Pool
 
+import datasets
 import pandas as pd
 import plotly.express as px
 import streamlit as st
@@ -257,7 +258,19 @@ else:
         if len(configs) > 0:
             conf_option = st.sidebar.selectbox("Subset", configs, index=0, format_func=lambda a: a.name)
 
-        dataset = get_dataset(dataset_key, str(conf_option.name) if conf_option else None)
+        subset_name = str(conf_option.name) if conf_option else None
+        try:
+            dataset = get_dataset(dataset_key, subset_name)
+        except datasets.builder.ManualDownloadError:
+            st.error(
+                f"Some datasets are not handled automatically by `datasets` and require users to manually download the "
+                f"dataset. This applies to {dataset_key}{f'/{subset_name}' if subset_name is not None else ''}. "
+                f"Please download raw dataset to `~/.cache/promptsource/{dataset_key}{f'/{subset_name}' if subset_name is not None else ''}`. "
+                f"You can choose another cache directory by overriding `PROMPTSOURCE_MANUAL_DATASET_DIR` environment "
+                f"variable and download raw dataset to `$PROMPTSOURCE_MANUAL_DATASET_DIR/{dataset_key}{f'/{subset_name}' if subset_name is not None else ''}`"
+            )
+            st.stop()
+
         splits = list(dataset.keys())
         index = 0
         if "train" in splits:
