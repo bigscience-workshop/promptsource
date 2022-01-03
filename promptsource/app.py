@@ -22,6 +22,7 @@ from promptsource.utils import (
     render_features,
 )
 
+
 # add an argument for read-only
 # At the moment, streamlit does not handle python script arguments gracefully.
 # Thus, for read-only mode, you have to type one of the below two:
@@ -137,10 +138,8 @@ if mode == "Helicopter view":
     all_infos = manager.dict()
     all_datasets = list(set([t[0] for t in template_collection.keys]))
 
-
     def get_infos(d_name):
         all_infos[d_name] = get_dataset_infos(d_name)
-
 
     pool = Pool(processes=len(all_datasets))
     pool.map(get_infos, all_datasets)
@@ -263,11 +262,11 @@ else:
             dataset = get_dataset(dataset_key, subset_name)
         except OSError as e:
             st.error(
-                f"Some datasets are not handled automatically by ``datasets`` and require users to manually download the "
+                f"Some datasets are not handled automatically by `datasets` and require users to manually download the "
                 f"dataset. This applies to {dataset_key}{f'/{subset_name}' if subset_name is not None else ''}. "
-                f"\n\nPlease download raw dataset to ``~/.cache/promptsource/{dataset_key}{f'/{subset_name}' if subset_name is not None else ''}``. "
-                f"\n\nYou can choose another cache directory by overriding ``PROMPTSOURCE_MANUAL_DATASET_DIR`` environment "
-                f"variable and downloading raw dataset to ``$PROMPTSOURCE_MANUAL_DATASET_DIR/{dataset_key}{f'/{subset_name}' if subset_name is not None else ''}``"
+                f"\n\nPlease download raw dataset to `~/.cache/promptsource/{dataset_key}{f'/{subset_name}' if subset_name is not None else ''}`. "
+                f"\n\nYou can choose another cache directory by overriding `PROMPTSOURCE_MANUAL_DATASET_DIR` environment "
+                f"variable and downloading raw dataset to `$PROMPTSOURCE_MANUAL_DATASET_DIR/{dataset_key}{f'/{subset_name}' if subset_name is not None else ''}`"
                 f"\n\nOriginal error:\n{str(e)}"
             )
             st.stop()
@@ -545,7 +544,7 @@ else:
                             metrics_choices,
                             default=template.metadata.metrics,
                             help="Select all metrics that are commonly used (or should "
-                                 "be used if a new task) to evaluate this prompt.",
+                            "be used if a new task) to evaluate this prompt.",
                         )
 
                         # Answer choices
@@ -557,7 +556,7 @@ else:
                             "Answer Choices",
                             value=answer_choices,
                             help="A Jinja expression for computing answer choices. "
-                                 "Separate choices with a triple bar (|||).",
+                            "Separate choices with a triple bar (|||).",
                         )
 
                         # Jinja
@@ -566,8 +565,8 @@ else:
                         # Submit form
                         if st.form_submit_button("Save"):
                             if (
-                                    updated_template_name in dataset_templates.all_template_names
-                                    and updated_template_name != state.template_name
+                                updated_template_name in dataset_templates.all_template_names
+                                and updated_template_name != state.template_name
                             ):
                                 st.error(
                                     f"A prompt with the name {updated_template_name} already exists "
