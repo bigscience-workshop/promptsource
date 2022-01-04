@@ -262,9 +262,9 @@ else:
             dataset = get_dataset(dataset_key, subset_name)
         except OSError as e:
             st.error(
-                f"Some datasets are not handled automatically by `datasets` and require users to manually download the "
-                f"dataset. This applies to {dataset_key}{f'/{subset_name}' if subset_name is not None else ''}. "
-                f"\n\nPlease download raw dataset to `~/.cache/promptsource/{dataset_key}{f'/{subset_name}' if subset_name is not None else ''}`. "
+                f"Some datasets are not handled automatically by `datasets` and require users to download the "
+                f"dataset manually. This applies to {dataset_key}{f'/{subset_name}' if subset_name is not None else ''}. "
+                f"\n\nPlease download the raw dataset to `~/.cache/promptsource/{dataset_key}{f'/{subset_name}' if subset_name is not None else ''}`. "
                 f"\n\nYou can choose another cache directory by overriding `PROMPTSOURCE_MANUAL_DATASET_DIR` environment "
                 f"variable and downloading raw dataset to `$PROMPTSOURCE_MANUAL_DATASET_DIR/{dataset_key}{f'/{subset_name}' if subset_name is not None else ''}`"
                 f"\n\nOriginal error:\n{str(e)}"

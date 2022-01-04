@@ -73,7 +73,7 @@ print(collection.datasets_templates)
 
 ## Running datasets that need manual download
 
-Some datasets are not handled automatically by `datasets` and require users to manually download the dataset.
+Some datasets are not handled automatically by `datasets` and require users to download the dataset manually.
 
 In order to handle those datasets as well, we require users to download the dataset and put it in `~/.cache/promptsource`. This is the root directory containing all manually downloaded datasets.
 
