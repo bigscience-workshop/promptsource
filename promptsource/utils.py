@@ -63,10 +63,15 @@ def load_dataset(dataset_name, subset_name):
             if "PROMPTSOURCE_MANUAL_DATASET_DIR" in os.environ
             else DEFAULT_PROMPTSOURCE_CACHE_HOME
         )
+        data_dir = (
+            f"{cache_root_dir}/{dataset_name}"
+            if subset_name is None
+            else f"{cache_root_dir}/{dataset_name}/{subset_name}"
+        )
         return datasets.load_dataset(
             dataset_name,
             subset_name,
-            data_dir=f"{cache_root_dir}/{dataset_name}/{subset_name}",
+            data_dir=data_dir,
         )
 
 
