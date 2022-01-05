@@ -3,15 +3,15 @@ templates:
   0e06d340-6d2c-44f7-b977-604925773f0b: !Template
     answer_choices: No ||| Yes
     id: 0e06d340-6d2c-44f7-b977-604925773f0b
-    jinja: "Question: {{question}} \nSentence: {{sentence}} \nAre the Question and\
-      \ the Answer positive pairs where positive pairs means that the sentence answers\
+    jinja: "Question: {{question}} \nSentence: {{sentence}} \nAre the question and\
+      \ the Sentence positive pairs where positive pairs means that the sentence answers\
       \ the question. ||| {{answer_choices[label]}}"
     metadata: !TemplateMetadata
-      choices_in_prompt: true
+      choices_in_prompt: false
       metrics:
       - Accuracy
       original_task: true
-    name: label_question_ans3
+    name: positive_pairs
     reference: ''
   55f386ba-9a86-405e-a805-152e254a4205: !Template
     answer_choices: null
@@ -20,10 +20,10 @@ templates:
       \ the following sentence can answer?\n\n {{sentence}}\n\n|||\n\n{{question}}\n\
       {% endif %}\n"
     metadata: !TemplateMetadata
-      choices_in_prompt: null
+      choices_in_prompt: false
       metrics: []
       original_task: false
-    name: Sentence question generation 2
+    name: question_from_sentence
     reference: ''
   5b6abb0a-1b4f-4338-aab6-430465669164: !Template
     answer_choices: null
@@ -46,7 +46,7 @@ templates:
       choices_in_prompt: null
       metrics: []
       original_task: null
-    name: sentence question generation
+    name: write_question
     reference: ''
   719306b9-5dc8-46c7-b693-9b2edc2e09f2: !Template
     answer_choices: NO ||| Yes
@@ -54,11 +54,11 @@ templates:
     jinja: Does this sentence "{{sentence}}"  answer this question "{{question}}"
       ? ||| {{answer_choices[label]}}
     metadata: !TemplateMetadata
-      choices_in_prompt: true
+      choices_in_prompt: false
       metrics:
       - Accuracy
       original_task: true
-    name: label_question_ans1
+    name: Does_sentence_answer_question
     reference: ''
   859ec580-957b-42da-be1b-c3ccb8b52d24: !Template
     answer_choices: null
@@ -78,10 +78,10 @@ templates:
 
       '
     metadata: !TemplateMetadata
-      choices_in_prompt: null
+      choices_in_prompt: false
       metrics: []
       original_task: false
-    name: answer question with a sentence 3
+    name: answer question with a sentence
     reference: ''
   85da6666-9e50-4122-84c8-d00b90967475: !Template
     answer_choices: null
@@ -89,7 +89,7 @@ templates:
     jinja: '{% if label == 1 %}
 
 
-      I was wondering, {{question}}? Can you give me a full sentence answer?
+      Given the following question: {{question}}? Can you give me a full sentence answer?
 
 
       |||
@@ -101,10 +101,10 @@ templates:
 
       '
     metadata: !TemplateMetadata
-      choices_in_prompt: null
+      choices_in_prompt: false
       metrics: []
       original_task: false
-    name: answer question with a sentence 2
+    name: give me a full sentence answer
     reference: ''
   85fe8aaa-83c5-41ec-ada5-0e6d60bab1f9: !Template
     answer_choices: null
@@ -124,7 +124,7 @@ templates:
 
       '
     metadata: !TemplateMetadata
-      choices_in_prompt: null
+      choices_in_prompt: false
       metrics: []
       original_task: null
     name: answer question as a sentence
@@ -132,23 +132,23 @@ templates:
   95e39e1d-a830-4b6c-bd2a-10fe51552427: !Template
     answer_choices: No ||| Yes
     id: 95e39e1d-a830-4b6c-bd2a-10fe51552427
-    jinja: 'Can this question: {{question}} be answered as follow: {{sentence}} ?
-      ||| {{answer_choices[label]}}'
+    jinja: 'Can this question: "{{question}}" be answered as follow: "{{sentence}}" \
+    \ please answer yes or no.  ||| {{answer_choices[label]}}'
     metadata: !TemplateMetadata
-      choices_in_prompt: true
+      choices_in_prompt: yes
       metrics: []
       original_task: true
-    name: label_question_ans2
+    name: yes_vs_no
     reference: ''
   a36d6152-72c4-4278-8266-d27b28667f61: !Template
     answer_choices: null
     id: a36d6152-72c4-4278-8266-d27b28667f61
     jinja: "{% if label == 1 %}\n\nHere is a sentence:\n\n {{sentence}}\n\nWrite a\
-      \ question that this sentence is an answer to.\n\n|||\n\n{{question}}\n{% endif\
+      \ question to which this sentence is an answer.\n\n|||\n\n{{question}}\n{% endif\
       \ %}\n"
     metadata: !TemplateMetadata
-      choices_in_prompt: null
+      choices_in_prompt: false
       metrics: []
       original_task: false
-    name: Sentence question generation 3
+    name: write_a_question
     reference: ''
