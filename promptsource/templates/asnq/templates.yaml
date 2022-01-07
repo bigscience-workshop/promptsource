@@ -55,8 +55,8 @@ templates:
   684aea91-34c4-47de-a61f-7cc9a182b657: !Template
     answer_choices: No ||| Yes
     id: 684aea91-34c4-47de-a61f-7cc9a182b657
-    jinja: Can the answer "{{sentence}}" be inferred from the question "{{question}}" ?
-      ||| {{answer_choices[label]}}
+    jinja: Can the answer "{{sentence}}" be inferred from the question "{{question}}"
+      ? ||| {{answer_choices[label]}}
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
@@ -128,16 +128,13 @@ templates:
     name: give me a full sentence answer
     reference: ''
   85fe8aaa-83c5-41ec-ada5-0e6d60bab1f9: !Template
-    answer_choices: false
+    answer_choices: null
     id: 85fe8aaa-83c5-41ec-ada5-0e6d60bab1f9
     jinja: '{% if label == 1 %}
 
-
       Answer this question as a full sentence: {{question}}?
 
-
       |||
-
 
       {{sentence}}
 
@@ -149,7 +146,7 @@ templates:
       metrics:
       - BLEU
       - ROUGE
-      original_task: null
+      original_task: false
     name: answer question as a sentence
     reference: ''
   95e39e1d-a830-4b6c-bd2a-10fe51552427: !Template
