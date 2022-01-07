@@ -3,6 +3,9 @@ from setuptools import setup, find_packages
 with open('README.md') as readme_file:
     readme = readme_file.read()
 
+with open('requirements.txt') as requirements_file:
+    requirements = requirements_file.read().split('\n')
+
 setup(
     name='promptsource',
     version='0.1.0',
@@ -10,6 +13,7 @@ setup(
     author='Multiple Authors',
     author_email='xxx',
     python_requires='>=3.7, <3.8',
+    install_requires=requirements,
     classifiers=[
         'Development Status :: 2 - Pre-Alpha',
         'Intended Audience :: Developers',
