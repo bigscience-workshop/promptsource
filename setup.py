@@ -29,8 +29,5 @@ setup(
     package_data={"": [
         "templates/*/*.yaml",
         "templates/*/*/*.yaml",
-        "seqio_tasks/experiment_D3.csv",  # Experiment D3
-        "seqio_tasks/experiment_D4.csv",
-        "custom_datasets/*/*"
     ]}
 )
