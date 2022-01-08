@@ -64,6 +64,10 @@ def get_tf_dataset(split, shuffle_files, seed, dataset_name, subset_name, templa
     dataset = utils.apply_template(dataset, template)
     return utils.hf_dataset_to_tf_dataset(dataset)
 
+#Experimental: Testing the hypothesis that adding eos at the end is screwing the ranking
+def remove_last_targets_token(dataset, output_features):
+    return dataset.map(lambda ex: {k: v[:-1] if k=="targets" else v for k,v in ex.items()})
+
 
 def add_task(dataset_name, subset_name, template_name, task_name=None, split_mapping=None):
     template = all_templates.get_dataset(dataset_name, subset_name)[template_name]
@@ -105,6 +109,7 @@ def add_task(dataset_name, subset_name, template_name, task_name=None, split_map
         seqio.preprocessors.tokenize,
         seqio.preprocessors.append_eos,
         seqio.CacheDatasetPlaceholder(required=False),
+        remove_last_targets_token
     ]
 
     # Add train and normal eval tasks
