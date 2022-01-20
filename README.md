@@ -6,7 +6,7 @@ Promptsource uses a simple templating language to programatically map an example
 Promptsource contains a growing collection of prompts (which we call **P3**: **P**ublic **P**ool of **P**rompts). As of October 18th, there are ~2'000 prompts for 170+ datasets in [P3](https://huggingface.co/datasets/bigscience/P3).
 Feel free to use these prompts as they are (you'll find citation details [here](#Citation)).
 
-Note that a subset of the prompts are still *Work in Progress*. You'll find the list of the prompts which will potentially be modified in the near future [here](WIP.md). Modifications will in majority consist of metadata collection, but in some cases, will impact the templates themselves. To facilitate traceability, Promptsource is currently pinned at version `0.1.0`.
+<!-- TODO: flag v0.2 -->
 
 Propmtsource and P3 were originally developed as part of the paper [Multitask Prompted Training Enables Zero-Shot Task Generalization](https://arxiv.org/abs/2110.08207). We release T0* (pronounce "T Zero"), a series of model trained on [P3](https://huggingface.co/datasets/bigscience/P3). Checkpoints are available [here](https://huggingface.co/bigscience/T0pp). In particular, we recommend using T0++ (pronounce "T Zero Plus Plus") as it leads (on average) to the best performances on a variety of NLP tasks.
 
