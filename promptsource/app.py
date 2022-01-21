@@ -92,6 +92,7 @@ def show_jinja(t, width=WIDTH):
         Explicitely replacing `\n\n` with their html equivalent to bypass this issue.
         """
         return t.replace("\n\n", "<br/><br/>")
+
     wrap = textwrap.fill(t, width=width, replace_whitespace=False)
     out = highlight(wrap, DjangoLexer(), HtmlFormatter())
     out = replace_double_linebreaks(out)
