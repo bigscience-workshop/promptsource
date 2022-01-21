@@ -134,25 +134,6 @@ class Template(yaml.YAMLObject):
         rendered_choices = rtemplate.render(**protected_example)
         return [self._unescape_pipe(answer_choice.strip()) for answer_choice in rendered_choices.split("|||")]
 
-    def get_fixed_answer_choices_list(self):
-        """
-        Returns a list of answer choices that is static across examples, if possible
-
-        :return: list of strings, or None if no static list exists
-        """
-        jinja = self.get_answer_choices_expr()
-        if jinja is None:
-            return None
-
-        parse = env.parse(jinja)
-        variables = meta.find_undeclared_variables(parse)
-        if len(variables) == 0:
-            rtemplate = env.from_string(jinja)
-            rendered_choices = rtemplate.render()
-            return [answer_choice.strip() for answer_choice in rendered_choices.split("|||")]
-        else:
-            return None
-
     def apply(self, example, truncate=True, highlight_variables=False):
         """
         Creates a prompt by applying this template to an example
