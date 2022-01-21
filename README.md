@@ -65,6 +65,8 @@ You can also collect all the available prompts for their associated datasets:
 {('poem_sentiment', None): <promptsource.templates.DatasetTemplates object at 0x7fa7ac7939d0>, ('common_gen', None): <promptsource.templates.DatasetTemplates object at 0x7fa7ac795410>, ('anli', None): <promptsource.templates.DatasetTemplates object at 0x7fa7ac794590>, ('cc_news', None): <promptsource.templates.DatasetTemplates object at 0x7fa7ac798a90>, ('craigslist_bargains', None): <promptsource.templates.DatasetTemplates object at 0x7fa7ac7a2c10>,...}
 ```
 
+You can learn more about PromptSource's API to store, manipulate and use prompts in the [documentation](API_DOCUMENTATION.md).
+
 ## How to create prompts
 PromptSourcep rovides a Web-based GUI that enables developers to write prompts in a templating language and immediately view their outputs on different examples.
 
