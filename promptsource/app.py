@@ -82,12 +82,19 @@ st.markdown(
     "<style>" + HtmlFormatter(style="friendly").get_style_defs(".highlight") + "</style>", unsafe_allow_html=True
 )
 
-WIDTH = 80
+WIDTH = 140
 
 
 def show_jinja(t, width=WIDTH):
+    def replace_double_linebreaks(t):
+        """
+        st.write does not handle double breaklines very well. When it encounters `\n\n`, it exit the curent <div> block.
+        Explicitely replacing `\n\n` with their html equivalent to bypass this issue.
+        """
+        return t.replace("\n\n", "<br/><br/>")
     wrap = textwrap.fill(t, width=width, replace_whitespace=False)
     out = highlight(wrap, DjangoLexer(), HtmlFormatter())
+    out = replace_double_linebreaks(out)
     st.write(out, unsafe_allow_html=True)
 
 
