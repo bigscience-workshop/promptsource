@@ -3,12 +3,12 @@
 
 Prompts are functions that map an example from a dataset to a natural language input and target output PromptSource contains a growing collection of prompts (which we call **P3**: **P**ublic **P**ool of **P**rompts). As of January 20, 2022, there are ~2'000 English prompts for 170+ English datasets in [P3](https://huggingface.co/datasets/bigscience/P3).
 
-PromptSource provides the tools to create, and share natural language prompts (see [How to use prompts](#how-to-use-prompts),and then use the thousands of existing and newly created prompts through a simple API (see How to use prompts).
-Prompts are saved in standalone structured files and are writen in a simple templating language called Jinja.
+PromptSource provides the tools to create, and share natural language prompts (see [How to use prompts](#how-to-use-prompts), and then use the thousands of existing and newly created prompts through a simple API (see How to use prompts).
+Prompts are saved in standalone structured files and are written in a simple templating language called Jinja.
 
 ## Setup
 1. Download the repo
-1. Navigate to root directory of the repo
+1. Navigate to the root directory of the repo
 1. Run `pip install -e .` to install the `promptsource` module
 
 *Note: for stability reasons, you will currently need a Python 3.7 environment to run the last step. However, if you only intend to use the prompts, and not create new prompts through the interface, you can remove this constraint in the [`setup.py`](setup.py).*
@@ -68,16 +68,16 @@ You can also collect all the available prompts for their associated datasets:
 You can learn more about PromptSource's API to store, manipulate and use prompts in the [documentation](API_DOCUMENTATION.md).
 
 ## How to create prompts
-PromptSourcep rovides a Web-based GUI that enables developers to write prompts in a templating language and immediately view their outputs on different examples.
+PromptSourcep provides a Web-based GUI that enables developers to write prompts in a templating language and immediately view their outputs on different examples.
 
 There are 3 modes in the app:
 - **Sourcing**: create and write new prompts
 - **Prompted dataset viewer**: check the prompts you wrote (or the existing ones) on the entire dataset
-- **Helicopter view**: aggregate high level metrics on the current state of P3
+- **Helicopter view**: aggregate high-level metrics on the current state of P3
 
 <img src="assets/promptsource_app.png" width="800">
 
-To launch the app locally, please first make sure you have followed the steps in [Setup](#setup), and fromt he root directory of the repo, run:
+To launch the app locally, please first make sure you have followed the steps in [Setup](#setup), and from the root directory of the repo, run:
 ```bash
 streamlit run promptsource/app.py
 ```
@@ -85,12 +85,12 @@ streamlit run promptsource/app.py
 You can also browse through existing prompts on the [hosted version of PromptSource](https://bigscience.huggingface.co/promptsource). Note the hosted version disables the Sourcing mode (`streamlit run promptsource/app.py -- --read-only`).
 
 ### Writing prompts
-Before creating new prompts, you should read the [contribution guidelines](CONTRIBUTING.md) which give an step-by-step description of how to contributed to collection of prompts.
+Before creating new prompts, you should read the [contribution guidelines](CONTRIBUTING.md) which give an step-by-step description of how to contribute to the collection of prompts.
 
 ### Datasets that require manual downloads
 Some datasets are not handled automatically by `datasets` and require users to download the dataset manually (`story_cloze` for instance ).
 
-In order to handle those datasets as well, we require users to download the dataset and put it in `~/.cache/promptsource`. This is the root directory containing all manually downloaded datasets.
+To handle those datasets as well, we require users to download the dataset and put it in `~/.cache/promptsource`. This is the root directory containing all manually downloaded datasets.
 
 You can override this default path using `PROMPTSOURCE_MANUAL_DATASET_DIR` environment variable. This should point to the root directory.
 
@@ -99,7 +99,7 @@ PropmtSource and P3 were originally developed as part of the [BigScience project
 
 In particular, PromptSource and P3 were the first steps for the paper [Multitask Prompted Training Enables Zero-Shot Task Generalization](https://arxiv.org/abs/2110.08207).
 
-**You will find the official repository to reproduce the results of the paper here: https://github.com/bigscience-workshop/t-zero.** We also released T0* (pronounce "T Zero"), a series of model trained on [P3](https://huggingface.co/datasets/bigscience/P3) and presented in the paper. Checkpoints are available [here](https://huggingface.co/bigscience/T0pp).
+**You will find the official repository to reproduce the results of the paper here: https://github.com/bigscience-workshop/t-zero.** We also released T0* (pronounce "T Zero"), a series of models trained on [P3](https://huggingface.co/datasets/bigscience/P3) and presented in the paper. Checkpoints are available [here](https://huggingface.co/bigscience/T0pp).
 
 ## Known Issues
 **Warning or Error about Darwin on OS X:** Try downgrading PyArrow to 3.0.0.

@@ -2,7 +2,7 @@
 PromptSource implements 4 classes to store, manipulate and use prompts and their metadata: `Template`, `Metadata`, `DatasetTemplates` and `TemplateCollection`. All of them are implemented in [`templates.py`](promptsource/templates.py)
 
 ## Class `Template` and `Metadata`
-`Template` a class that wraps a prompt, its associated metadata and implements the helper functions to use the prompt.
+`Template` is a class that wraps a prompt, its associated metadata, and implements the helper functions to use the prompt.
 
 Instances of `Template` have the following main methods that will come handy:
 * `apply(example, truncate=True, highlight_variables=False)`: Create a prompted example by applying the template to the given example
@@ -20,7 +20,7 @@ Each `Template` also has a `metadata` attribute, an instance of the class `Metad
 * `metrics`: List of strings denoting metrics to use for evaluation
 
 ## Class `DatasetTemplates`
-`DatasetTemplates` is a class that wraps all the prompts (each of them are instances of `Template`) for a specific dataset/subset and implements all the helper functions necessary to read/write to the yaml file in which the prompts are saved.
+`DatasetTemplates` is a class that wraps all the prompts (each of them are instances of `Template`) for a specific dataset/subset and implements all the helper functions necessary to read/write to the YAML file in which the prompts are saved.
 
 You will likely mainly be interested in getting the existing prompts and their names for a given dataset. You can do that with the following instantiation:
 ```python
@@ -31,7 +31,7 @@ You will likely mainly be interested in getting the existing prompts and their n
 ```
 
 ## Class `TemplateCollection`
-`TemplateCollection` is a class that encapsulates all the prompts available under PromptSource by wrapping the `DatasetTemplates` class. It initializes the `DatasetTemplates` for all existing template folders, gives access to each `DatasetTemplates` and provides aggregated counts over all `DatasetTemplates`.
+`TemplateCollection` is a class that encapsulates all the prompts available under PromptSource by wrapping the `DatasetTemplates` class. It initializes the `DatasetTemplates` for all existing template folders, gives access to each `DatasetTemplates`, and provides aggregated counts overall `DatasetTemplates`.
 
 The main methods are:
 * `get_dataset(dataset_name, subset_name)`: Return the DatasetTemplates object corresponding to the dataset name
