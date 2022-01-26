@@ -1,10 +1,22 @@
 # PromptSource
 **PromptSource is a toolkit for creating, sharing and using natural language prompts.**
 
+Recent work has shown that large language models exhibit the ability to perform reasonable zeor-shot generalization to new tasks. For instance, [GPT-3](https://arxiv.org/abs/2005.14165) demonstrated that large language models have strong zero- and few-shot abilities. [FLAN](https://arxiv.org/abs/2109.01652) and [T0](https://arxiv.org/abs/2110.08207) then demonstrated that pre-trained language models fine-tuned in a massively multitask fashion yield even stronger zero-shot performance. A common denominator in these works is the use of prompts which have gathered of interest among NLP researchers and engineers. This emphasizes the need for new tools to create, share and use natural language prompts.
+
 Prompts are functions that map an example from a dataset to a natural language input and target output PromptSource contains a growing collection of prompts (which we call **P3**: **P**ublic **P**ool of **P**rompts). As of January 20, 2022, there are ~2'000 English prompts for 170+ English datasets in [P3](https://huggingface.co/datasets/bigscience/P3).
 
-PromptSource provides the tools to create, and share natural language prompts (see [How to use prompts](#how-to-use-prompts), and then use the thousands of existing and newly created prompts through a simple API (see How to use prompts).
-Prompts are saved in standalone structured files and are written in a simple templating language called Jinja.
+<p align="center">
+  <img src="assets/PromptSource ACL Demo Figure.png" width="800"/>
+</p>
+
+PromptSource provides the tools to create, and share natural language prompts (see [How to create prompts](#how-to-create-prompts), and then use the thousands of existing and newly created prompts through a simple API (see [How to use prompts](#how-to-use-prompts)). Prompts are saved in standalone structured files and are written in a simple templating language called Jinja. An example of prompt availabe in PromptSource for [SNLI](https://huggingface.co/datasets/snli) is:
+```jinja2
+{{premise}}
+
+Question: Does this imply that "{{hypothesis}}"? Yes, no, or maybe? ||| {{answer_choices[label]}}
+```
+
+**You can browse through existing prompts on the [hosted version of PromptSource](https://bigscience.huggingface.co/promptsource).**
 
 ## Setup
 1. Download the repo
@@ -12,6 +24,11 @@ Prompts are saved in standalone structured files and are written in a simple tem
 1. Run `pip install -e .` to install the `promptsource` module
 
 *Note: for stability reasons, you will currently need a Python 3.7 environment to run the last step. However, if you only intend to use the prompts, and not create new prompts through the interface, you can remove this constraint in the [`setup.py`](setup.py).*
+
+If you do not intend to modify prompts, you can simply run:
+```python
+pip install promptsource
+```
 
 ## How to use prompts
 You can apply prompts to examples from datasets of the [Hugging Face Datasets library](https://github.com/huggingface/datasets).
@@ -75,7 +92,9 @@ There are 3 modes in the app:
 - **Prompted dataset viewer**: check the prompts you wrote (or the existing ones) on the entire dataset
 - **Helicopter view**: aggregate high-level metrics on the current state of P3
 
-<img src="assets/promptsource_app.png" width="800">
+<p align="center">
+  <img src="assets/promptsource_app.png" width="800"/>
+</p>
 
 To launch the app locally, please first make sure you have followed the steps in [Setup](#setup), and from the root directory of the repo, run:
 ```bash
@@ -118,3 +137,4 @@ If you find P3 or PromptSource useful, please cite the following reference:
       primaryClass={cs.LG}
 }
 ```
+#TODO: Update citation once we have the paper uploaded on arxiv + create a citation.cff file
