@@ -1,3 +1,4 @@
+import logging
 import os
 import random
 import uuid
@@ -5,7 +6,6 @@ from collections import Counter, defaultdict
 from shutil import rmtree
 from typing import Dict, List, Optional, Tuple
 
-import logging
 import pandas as pd
 import pkg_resources
 import yaml
