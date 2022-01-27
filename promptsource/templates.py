@@ -5,7 +5,7 @@ from collections import Counter, defaultdict
 from shutil import rmtree
 from typing import Dict, List, Optional, Tuple
 
-import logger
+import logging
 import pandas as pd
 import pkg_resources
 import yaml
@@ -381,7 +381,7 @@ class DatasetTemplates:
         """
 
         if not os.path.exists(self.yaml_path):
-            logger.warning(
+            logging.warning(
                 f"Tried instantiating `DatasetTemplates` for {self.dataset_name}, but no prompts found."
                 "Please ignore this warning if you are creating new prompts for this datset."
             )
