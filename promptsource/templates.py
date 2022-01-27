@@ -5,6 +5,7 @@ from collections import Counter, defaultdict
 from shutil import rmtree
 from typing import Dict, List, Optional, Tuple
 
+import logger
 import pandas as pd
 import pkg_resources
 import yaml
@@ -380,10 +381,9 @@ class DatasetTemplates:
         """
 
         if not os.path.exists(self.yaml_path):
-            raise ValueError(
-                f"Dataset {self.dataset_name}, subset {self.subset_name} not found"
-                if self.subset_name
-                else f"Dataset {self.dataset_name} not found"
+            logger.warning(
+                f"Tried instantiating `DatasetTemplates` for {self.dataset_name}, but no prompts found."
+                "Please ignore this warning if you are creating new prompts for this datset."
             )
         yaml_dict = yaml.load(open(self.yaml_path, "r"), Loader=yaml.FullLoader)
         return yaml_dict[self.TEMPLATES_KEY]
