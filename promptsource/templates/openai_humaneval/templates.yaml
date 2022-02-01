@@ -1,39 +1,5 @@
 dataset: openai_humaneval
 templates:
-  03aa1c44-28e7-4b9b-9a95-8dd0d984bbef: !Template
-    answer_choices: null
-    id: 03aa1c44-28e7-4b9b-9a95-8dd0d984bbef
-    jinja: "{% set test_num = 1 %}\n{% set ns = namespace(tests=[])%}\n{% set lines\
-      \ = test.split('\\n') %}\n{% for line in lines %}\n\t{% if line.strip().startswith('assert')%}\n\
-      \t\t{% set ns.tests = ns.tests + [line.split('assert')[1]] %}\n\t{%  endif %}\n\
-      {% endfor %}\n{% set num_tests = (ns.tests | length) %}\n{% if num_tests > test_num\
-      \ %}\n\t{% set test_ = ns.tests[test_num]  %}\n\t{% set return_val = test_.split(\"\
-      ==\")[1].split(\", \\\"\")[0].strip() %}\n\t{% set args = (test_.split('(')[1:]\
-      \ | join(\"\")).split(\"==\")[0].strip() %}\n\t{{ prompt }}\n\t{{ canonical_solution\
-      \ }}\n\t{{entry_point}}({{args}} = ?\n\t|||\n\t{{ return_val }}\n{% endif %}"
-    metadata: !TemplateMetadata
-      choices_in_prompt: false
-      metrics: []
-      original_task: false
-    name: test_1 return value generation
-    reference: ''
-  1ec44c0e-a294-4816-9cf8-90366c65fc8b: !Template
-    answer_choices: null
-    id: 1ec44c0e-a294-4816-9cf8-90366c65fc8b
-    jinja: "{% set test_num = 3 %}\n{% set ns = namespace(tests=[])%}\n{% set lines\
-      \ = test.split('\\n') %}\n{% for line in lines %}\n\t{% if line.strip().startswith('assert')%}\n\
-      \t\t{% set ns.tests = ns.tests + [line.split('assert')[1]] %}\n\t{%  endif %}\n\
-      {% endfor %}\n{% set num_tests = (ns.tests | length) %}\n{% if num_tests > test_num\
-      \ %}\n\t{% set test_ = ns.tests[test_num]  %}\n\t{% set return_val = test_.split(\"\
-      ==\")[1].split(\", \\\"\")[0].strip() %}\n\t{% set args = (test_.split('(')[1:]\
-      \ | join(\"\")).split(\"==\")[0].strip() %}\n\t{{ prompt }}\n\t{{ canonical_solution\
-      \ }}\n\t{{entry_point}}({{args}} = ?\n\t|||\n\t{{ return_val }}\n{% endif %}"
-    metadata: !TemplateMetadata
-      choices_in_prompt: false
-      metrics: []
-      original_task: false
-    name: test_3 return value generation
-    reference: ''
   4a108b1c-7514-488f-99ed-3ca5da70e103: !Template
     answer_choices: null
     id: 4a108b1c-7514-488f-99ed-3ca5da70e103
@@ -51,139 +17,21 @@ templates:
       original_task: true
     name: function body generation
     reference: ''
-  96fa09c2-8905-4529-a2c2-9268412b85f5: !Template
-    answer_choices: null
-    id: 96fa09c2-8905-4529-a2c2-9268412b85f5
-    jinja: "{% set test_num = 6 %}\n{% set ns = namespace(tests=[])%}\n{% set lines\
-      \ = test.split('\\n') %}\n{% for line in lines %}\n\t{% if line.strip().startswith('assert')%}\n\
-      \t\t{% set ns.tests = ns.tests + [line.split('assert')[1]] %}\n\t{%  endif %}\n\
-      {% endfor %}\n{% set num_tests = (ns.tests | length) %}\n{% if num_tests > test_num\
-      \ %}\n\t{% set test_ = ns.tests[test_num]  %}\n\t{% set return_val = test_.split(\"\
-      ==\")[1].split(\", \\\"\")[0].strip() %}\n\t{% set args = (test_.split('(')[1:]\
-      \ | join(\"\")).split(\"==\")[0].strip() %}\n\t{{ prompt }}\n\t{{ canonical_solution\
-      \ }}\n\t{{entry_point}}({{args}} = ?\n\t|||\n\t{{ return_val }}\n{% endif %}"
-    metadata: !TemplateMetadata
-      choices_in_prompt: false
-      metrics: []
-      original_task: false
-    name: test_6 return value generation
-    reference: ''
   9c85c898-70fe-4a51-be37-5111be357762: !Template
     answer_choices: null
     id: 9c85c898-70fe-4a51-be37-5111be357762
-    jinja: "{% set test_num = 0 %}\n{% set ns = namespace(tests=[])%}\n{% set lines\
-      \ = test.split('\\n') %}\n{% for line in lines %}\n\t{% if line.strip().startswith('assert')%}\n\
-      \t\t{% set ns.tests = ns.tests + [line.split('assert')[1]] %}\n\t{%  endif %}\n\
-      {% endfor %}\n{% set num_tests = (ns.tests | length) %}\n{% if num_tests > test_num\
-      \ %}\n\t{% set test_ = ns.tests[test_num]  %}\n\t{% set return_val = test_.split(\"\
-      ==\")[1].split(\", \\\"\")[0].strip() %}\n\t{% set args = (test_.split('(')[1:]\
-      \ | join(\"\")).split(\"==\")[0].strip() %}\n\t{{ prompt }}\n\t{{ canonical_solution\
-      \ }}\n\t{{entry_point}}({{args}} = ?\n\t|||\n\t{{ return_val }}\n{% endif %}"
+    jinja: "{% set ns = namespace(tests=[])%}\n{% set lines = test.split('\\n') %}\n\
+      {% for line in lines %}\n    {% if line.strip().startswith('assert') and \"\
+      ==\" in line.strip() %}\n        {% set ns.tests = ns.tests + [line.split('assert')[1]]\
+      \ %}\n    {% endif %}\n{% endfor %}\n{% if (ns.tests | length) > 0 %}\n    {%\
+      \ set test_ = ns.tests | choice  %}\n\n    {% set return_val = test_.split(\"\
+      ==\")[1].split(\", \\\"\")[0].strip() %}\n    {% set args = (test_.split('(')[1:]\
+      \ | join(\"\")).split(\"==\")[0].strip() %}\n    {{ prompt }}\n    {{ canonical_solution\
+      \ }}\n    {{entry_point}}({{args}} =\n    |||\n    {{ return_val }}\n{% endif\
+      \ %}\n"
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics: []
       original_task: false
-    name: test_0 return value generation
-    reference: ''
-  9ef6040a-8e68-46d5-8920-fb90b5e1612b: !Template
-    answer_choices: null
-    id: 9ef6040a-8e68-46d5-8920-fb90b5e1612b
-    jinja: "{% set test_num = 7 %}\n{% set ns = namespace(tests=[])%}\n{% set lines\
-      \ = test.split('\\n') %}\n{% for line in lines %}\n\t{% if line.strip().startswith('assert')%}\n\
-      \t\t{% set ns.tests = ns.tests + [line.split('assert')[1]] %}\n\t{%  endif %}\n\
-      {% endfor %}\n{% set num_tests = (ns.tests | length) %}\n{% if num_tests > test_num\
-      \ %}\n\t{% set test_ = ns.tests[test_num]  %}\n\t{% set return_val = test_.split(\"\
-      ==\")[1].split(\", \\\"\")[0].strip() %}\n\t{% set args = (test_.split('(')[1:]\
-      \ | join(\"\")).split(\"==\")[0].strip() %}\n\t{{ prompt }}\n\t{{ canonical_solution\
-      \ }}\n\t{{entry_point}}({{args}} = ?\n\t|||\n\t{{ return_val }}\n{% endif %}"
-    metadata: !TemplateMetadata
-      choices_in_prompt: false
-      metrics: []
-      original_task: false
-    name: test_7 return value generation
-    reference: ''
-  a6dd38c3-161c-4e9f-89a2-0f2ab6a6e66c: !Template
-    answer_choices: null
-    id: a6dd38c3-161c-4e9f-89a2-0f2ab6a6e66c
-    jinja: "{% set test_num = 2 %}\n{% set ns = namespace(tests=[])%}\n{% set lines\
-      \ = test.split('\\n') %}\n{% for line in lines %}\n\t{% if line.strip().startswith('assert')%}\n\
-      \t\t{% set ns.tests = ns.tests + [line.split('assert')[1]] %}\n\t{%  endif %}\n\
-      {% endfor %}\n{% set num_tests = (ns.tests | length) %}\n{% if num_tests > test_num\
-      \ %}\n\t{% set test_ = ns.tests[test_num]  %}\n\t{% set return_val = test_.split(\"\
-      ==\")[1].split(\", \\\"\")[0].strip() %}\n\t{% set args = (test_.split('(')[1:]\
-      \ | join(\"\")).split(\"==\")[0].strip() %}\n\t{{ prompt }}\n\t{{ canonical_solution\
-      \ }}\n\t{{entry_point}}({{args}} = ?\n\t|||\n\t{{ return_val }}\n{% endif %}"
-    metadata: !TemplateMetadata
-      choices_in_prompt: false
-      metrics: []
-      original_task: false
-    name: test_2 return value generation
-    reference: ''
-  b64bd005-e88d-4dfd-9ad3-fa7418d97ca6: !Template
-    answer_choices: null
-    id: b64bd005-e88d-4dfd-9ad3-fa7418d97ca6
-    jinja: "{% set test_num = 8 %}\n{% set ns = namespace(tests=[])%}\n{% set lines\
-      \ = test.split('\\n') %}\n{% for line in lines %}\n\t{% if line.strip().startswith('assert')%}\n\
-      \t\t{% set ns.tests = ns.tests + [line.split('assert')[1]] %}\n\t{%  endif %}\n\
-      {% endfor %}\n{% set num_tests = (ns.tests | length) %}\n{% if num_tests > test_num\
-      \ %}\n\t{% set test_ = ns.tests[test_num]  %}\n\t{% set return_val = test_.split(\"\
-      ==\")[1].split(\", \\\"\")[0].strip() %}\n\t{% set args = (test_.split('(')[1:]\
-      \ | join(\"\")).split(\"==\")[0].strip() %}\n\t{{ prompt }}\n\t{{ canonical_solution\
-      \ }}\n\t{{entry_point}}({{args}} = ?\n\t|||\n\t{{ return_val }}\n{% endif %}"
-    metadata: !TemplateMetadata
-      choices_in_prompt: false
-      metrics: []
-      original_task: false
-    name: test_8 return value generation
-    reference: ''
-  c1aaee01-90fb-416f-94f2-ef3990429182: !Template
-    answer_choices: null
-    id: c1aaee01-90fb-416f-94f2-ef3990429182
-    jinja: "{% set test_num = 5 %}\n{% set ns = namespace(tests=[])%}\n{% set lines\
-      \ = test.split('\\n') %}\n{% for line in lines %}\n\t{% if line.strip().startswith('assert')%}\n\
-      \t\t{% set ns.tests = ns.tests + [line.split('assert')[1]] %}\n\t{%  endif %}\n\
-      {% endfor %}\n{% set num_tests = (ns.tests | length) %}\n{% if num_tests > test_num\
-      \ %}\n\t{% set test_ = ns.tests[test_num]  %}\n\t{% set return_val = test_.split(\"\
-      ==\")[1].split(\", \\\"\")[0].strip() %}\n\t{% set args = (test_.split('(')[1:]\
-      \ | join(\"\")).split(\"==\")[0].strip() %}\n\t{{ prompt }}\n\t{{ canonical_solution\
-      \ }}\n\t{{entry_point}}({{args}} = ?\n\t|||\n\t{{ return_val }}\n{% endif %}"
-    metadata: !TemplateMetadata
-      choices_in_prompt: false
-      metrics: []
-      original_task: false
-    name: test_5 return value generation
-    reference: ''
-  c48f27d0-a77f-4bad-8b4c-7b0903009242: !Template
-    answer_choices: null
-    id: c48f27d0-a77f-4bad-8b4c-7b0903009242
-    jinja: "{% set test_num = 4 %}\n{% set ns = namespace(tests=[])%}\n{% set lines\
-      \ = test.split('\\n') %}\n{% for line in lines %}\n\t{% if line.strip().startswith('assert')%}\n\
-      \t\t{% set ns.tests = ns.tests + [line.split('assert')[1]] %}\n\t{%  endif %}\n\
-      {% endfor %}\n{% set num_tests = (ns.tests | length) %}\n{% if num_tests > test_num\
-      \ %}\n\t{% set test_ = ns.tests[test_num]  %}\n\t{% set return_val = test_.split(\"\
-      ==\")[1].split(\", \\\"\")[0].strip() %}\n\t{% set args = (test_.split('(')[1:]\
-      \ | join(\"\")).split(\"==\")[0].strip() %}\n\t{{ prompt }}\n\t{{ canonical_solution\
-      \ }}\n\t{{entry_point}}({{args}} = ?\n\t|||\n\t{{ return_val }}\n{% endif %}"
-    metadata: !TemplateMetadata
-      choices_in_prompt: false
-      metrics: []
-      original_task: false
-    name: test_4 return value generation
-    reference: ''
-  c8dc9aab-93d8-4bd7-8c61-5c775adc32b3: !Template
-    answer_choices: null
-    id: c8dc9aab-93d8-4bd7-8c61-5c775adc32b3
-    jinja: "{% set test_num = 9 %}\n{% set ns = namespace(tests=[])%}\n{% set lines\
-      \ = test.split('\\n') %}\n{% for line in lines %}\n\t{% if line.strip().startswith('assert')%}\n\
-      \t\t{% set ns.tests = ns.tests + [line.split('assert')[1]] %}\n\t{%  endif %}\n\
-      {% endfor %}\n{% set num_tests = (ns.tests | length) %}\n{% if num_tests > test_num\
-      \ %}\n\t{% set test_ = ns.tests[test_num]  %}\n\t{% set return_val = test_.split(\"\
-      ==\")[1].split(\", \\\"\")[0].strip() %}\n\t{% set args = (test_.split('(')[1:]\
-      \ | join(\"\")).split(\"==\")[0].strip() %}\n\t{{ prompt }}\n\t{{ canonical_solution\
-      \ }}\n\t{{entry_point}}({{args}} = ?\n\t|||\n\t{{ return_val }}\n{% endif %}"
-    metadata: !TemplateMetadata
-      choices_in_prompt: false
-      metrics: []
-      original_task: false
-    name: test_9 return value generation
+    name: function call return value generation
     reference: ''

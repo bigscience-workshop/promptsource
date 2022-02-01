@@ -82,7 +82,7 @@ templates:
       choices_in_prompt: false
       metrics:
       - Accuracy
-      original_task: false
+      original_task: true
     name: identifier prediction no choices
     reference: ''
   57f93ca1-1e27-40ff-8fa4-ba11a499baef: !Template
@@ -98,8 +98,8 @@ templates:
       \ %}\n               {% set ns.result = ns.result + [indent * ns.indent_size]\
       \ %}\n          {% endif %}\n          {% set ns.result = ns.result + [token\
       \ | replace('\\\\n', '\\n'), \" \"] %}\n    {% endif %}\n{% endfor %}\n{{ns.result\
-      \ | join(\"\")}}\n\nIs there a bug in the code above?\n|||\n{{ {True: \"Yes\"\
-      , False: \"No\"}[has_bug] }}\n"
+      \ | join(\"\") | replace(\" . \", \".\")}}\n\nIs there a bug in the code above?\n\
+      |||\n{{ {True: \"Yes\", False: \"No\"}[has_bug] }}"
     metadata: !TemplateMetadata
       choices_in_prompt: true
       metrics:
