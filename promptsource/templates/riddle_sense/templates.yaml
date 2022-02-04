@@ -3,9 +3,7 @@ templates:
   3df2405b-4a0e-4fcf-8600-b7f4843b945a: !Template
     answer_choices: null
     id: 3df2405b-4a0e-4fcf-8600-b7f4843b945a
-    jinja: '{% if answerKey != "" %}
-
-      Use the following options to predict a possible question for them:
+    jinja: 'Use the following options to predict a possible question for them:
 
 
       {% for i in range(choices[''text'']|length) %}
@@ -14,9 +12,7 @@ templates:
 
       {% endfor %} |||
 
-      {{question}}
-
-      {% endif %}'
+      {{question}}'
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
@@ -28,15 +24,16 @@ templates:
   8b44338c-f635-47fc-86fb-3135ef2a76ae: !Template
     answer_choices: '{{choices.text | join("|||")}}'
     id: 8b44338c-f635-47fc-86fb-3135ef2a76ae
-    jinja: '{% if answerKey != "" %}
-
-      Given the options below, select the most suitable answer for the following question:
+    jinja: 'Given the options below, select the most suitable answer for the following
+      question:
 
       {{question}}
 
       Options:
 
       - {{answer_choices | join("\n- ")}}|||
+
+      {% if answerKey != "" %}
 
       {{answer_choices[choices["label"].index(answerKey)]}}
 
@@ -51,11 +48,11 @@ templates:
   ac002734-5b1f-4478-9ffc-f16d9ca2f70e: !Template
     answer_choices: '{{choices.text | join("|||")}}'
     id: ac002734-5b1f-4478-9ffc-f16d9ca2f70e
-    jinja: '{% if answerKey != "" %}
-
-      Answer the following question:
+    jinja: 'Answer the following question:
 
       {{question}} |||
+
+      {% if answerKey != "" %}
 
       {{ answer_choices[choices[''label''].index(answerKey)] }}
 
@@ -70,10 +67,8 @@ templates:
   bf3f7bd2-91c6-455c-b9f7-42ce265fa2db: !Template
     answer_choices: A ||| B ||| C ||| D ||| E
     id: bf3f7bd2-91c6-455c-b9f7-42ce265fa2db
-    jinja: '{% if answerKey != "" %}
-
-      Given the following options, what do you think is the correct answer to the
-      question below:
+    jinja: 'Given the following options, what do you think is the correct answer to
+      the question below:
 
 
       {{question}}
@@ -86,6 +81,8 @@ templates:
       - {{letter}}: {{t}}
 
       {% endfor %} |||
+
+      {% if answerKey != "" %}
 
       {{answerKey}}
 
@@ -100,12 +97,12 @@ templates:
   bf7d7cbc-aa05-4aca-97ff-29eb34502019: !Template
     answer_choices: '{{choices.text | join("|||")}}'
     id: bf7d7cbc-aa05-4aca-97ff-29eb34502019
-    jinja: '{% if answerKey != "" %}
-
-      {{question}}
+    jinja: '{{question}}
 
 
       - {{answer_choices | join("\n- ")}} |||
+
+      {% if answerKey != "" %}
 
       {{answer_choices[choices[''label''].index(answerKey)] }}
 
