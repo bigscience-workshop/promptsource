@@ -1,3 +1,4 @@
+import logging
 import os
 import random
 import uuid
@@ -361,6 +362,11 @@ class DatasetTemplates:
         """
 
         if not os.path.exists(self.yaml_path):
+            dataset_name = f"{self.dataset_name} {self.subset_name}" if self.subset_name else self.dataset_name
+            logging.warning(
+                f"Tried instantiating `DatasetTemplates` for {dataset_name}, but no prompts found. "
+                "Please ignore this warning if you are creating new prompts for this dataset."
+            )
             return {}
         yaml_dict = yaml.load(open(self.yaml_path, "r"), Loader=yaml.FullLoader)
         return yaml_dict[self.TEMPLATES_KEY]
