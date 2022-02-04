@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 
-with open('README.md') as readme_file:
+with open("README.md", "r", encoding="utf-8") as readme_file:
     readme = readme_file.read()
 
 with open('requirements.txt') as requirements_file:
@@ -26,6 +26,7 @@ setup(
     packages=find_packages(),
     license="Apache Software License 2.0",
     long_description=readme,
+    long_description_content_type="text/markdown",
     package_data={"": [
         "templates/*/*.yaml",
         "templates/*/*/*.yaml",
