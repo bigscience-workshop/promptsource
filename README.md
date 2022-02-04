@@ -19,16 +19,17 @@ Question: Does this imply that "{{hypothesis}}"? Yes, no, or maybe? ||| {{answer
 **You can browse through existing prompts on the [hosted version of PromptSource](https://bigscience.huggingface.co/promptsource).**
 
 ## Setup
+If you do not intend to modify prompts, you can simply run:
+```bash
+pip install promptsource
+```
+
+Otherwise, you need to install the repo locally:
 1. Download the repo
 1. Navigate to the root directory of the repo
 1. Run `pip install -e .` to install the `promptsource` module
 
-*Note: for stability reasons, you will currently need a Python 3.7 environment to run the last step. However, if you only intend to use the prompts, and not create new prompts through the interface, you can remove this constraint in the [`setup.py`](setup.py).*
-
-If you do not intend to modify prompts, you can simply run:
-```python
-pip install promptsource
-```
+*Note: for stability reasons, you will currently need a Python 3.7 environment to run the last step. However, if you only intend to use the prompts, and not create new prompts through the interface, you can remove this constraint in the [`setup.py`](setup.py) and install the package locally.*
 
 ## How to use prompts
 You can apply prompts to examples from datasets of the [Hugging Face Datasets library](https://github.com/huggingface/datasets).
