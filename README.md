@@ -85,7 +85,7 @@ You can also collect all the available prompts for their associated datasets:
 You can learn more about PromptSource's API to store, manipulate and use prompts in the [documentation](API_DOCUMENTATION.md).
 
 ## How to create prompts
-PromptSourcep provides a Web-based GUI that enables developers to write prompts in a templating language and immediately view their outputs on different examples.
+PromptSource provides a Web-based GUI that enables developers to write prompts in a templating language and immediately view their outputs on different examples.
 
 There are 3 modes in the app:
 - **Sourcing**: create and write new prompts
@@ -114,7 +114,7 @@ To handle those datasets as well, we require users to download the dataset and p
 You can override this default path using `PROMPTSOURCE_MANUAL_DATASET_DIR` environment variable. This should point to the root directory.
 
 ## Development structure
-PropmtSource and P3 were originally developed as part of the [BigScience project for open research 🌸](https://bigscience.huggingface.co/), a year-long initiative targeting the study of large models and datasets. The goal of the project is to research language models in a public environment outside large technology companies. The project has 600 researchers from 50 countries and more than 250 institutions.
+PromptSource and P3 were originally developed as part of the [BigScience project for open research 🌸](https://bigscience.huggingface.co/), a year-long initiative targeting the study of large models and datasets. The goal of the project is to research language models in a public environment outside large technology companies. The project has 600 researchers from 50 countries and more than 250 institutions.
 
 In particular, PromptSource and P3 were the first steps for the paper [Multitask Prompted Training Enables Zero-Shot Task Generalization](https://arxiv.org/abs/2110.08207).
 
@@ -137,4 +137,3 @@ If you find P3 or PromptSource useful, please cite the following reference:
       primaryClass={cs.LG}
 }
 ```
-#TODO: Update citation once we have the paper uploaded on arxiv + create a citation.cff file
