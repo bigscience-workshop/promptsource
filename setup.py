@@ -10,8 +10,8 @@ setup(
     name='promptsource',
     version='0.2.0',
     url='https://github.com/bigscience-workshop/promptsource.git',
-    author='Multiple Authors',
-    author_email='xxx',
+    author='BigScience - Prompt Engineering Working Group',
+    author_email='sbach@cs.brown.edu,victor@huggingface.co',
     python_requires='>=3.7, <3.8',
     install_requires=requirements,
     classifiers=[
