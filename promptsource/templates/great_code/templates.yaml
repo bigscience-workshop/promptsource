@@ -28,10 +28,11 @@ templates:
   24fa908d-daa2-4fd2-bb22-374021c1fc23: !Template
     answer_choices: null
     id: 24fa908d-daa2-4fd2-bb22-374021c1fc23
-    jinja: "{% if has_bug %}\n    {% set fixed_token = source_tokens[repair_targets[0]]\
-      \ %}\n    {% set indent = '    ' %}\n    {% set ns = namespace(indent_size=0,\
+    jinja: "{% set result = \"\" %}\n{% set indent = '    ' %}\n{% set ns = namespace(indent_size=0,\
       \ line_number=0, buggy_line=0, bug_location=0, bug_len=0, result=[], result_lines=[])\
-      \ %}\n    {% for token in source_tokens  %}\n        {% if loop.index0 == error_location\
+      \ %}\n{% set fixed_token = source_tokens[repair_targets[0]] %}\n{% set buggy_line_content\
+      \ = \"\" %}\n{% set fixed_buggy_line_content = \"\" %}\n\n{% if has_bug %}\n\
+      \    {% for token in source_tokens  %}\n        {% if loop.index0 == error_location\
       \ %}\n                {% set ns.buggy_line = ns.line_number %}\n           \
       \     {% set ns.bug_location = (ns.result | join(\"\") | length) %}\n      \
       \          {% set ns.bug_len = (token | length) %}\n        {% endif%}\n   \
@@ -62,22 +63,21 @@ templates:
   3c0f36da-834a-4814-86f6-6e55414fbd32: !Template
     answer_choices: null
     id: 3c0f36da-834a-4814-86f6-6e55414fbd32
-    jinja: "{% if has_bug %}\n    {% set mask = '<MASK>' %}\n    {% set indent = '\
-      \    ' %}\n    {% set ns = namespace(indent_size=0, result=[]) %}\n    {% for\
-      \ token in source_tokens  %}\n        {% if loop.index0 == error_location %}\n\
-      \                {% set token = mask %}\n        {% endif%}\n        {% if token==\
-      \ '#INDENT#' %}\n           {% set ns.indent_size = ns.indent_size + 1 %}\n\
-      \           {% set ns.result = ns.result + [indent * ns.indent_size] %}\n  \
-      \      {% elif token == '#NEWLINE#' %}\n              {% set ns.result = ns.result\
-      \ + [\"\\n\"] %}\n        {% elif token == '#UNINDENT#' %}\n            {% set\
-      \ ns.indent_size = ns.indent_size - 1 %}\n        {% else %}\n             \
-      \ {% if not loop.first and loop.previtem == '#NEWLINE#' %}\n               \
-      \    {% set ns.result = ns.result + [indent * ns.indent_size] %}\n         \
-      \     {% endif %}\n              {% set ns.result = ns.result + [token | replace('\\\
-      \\n', '\\n'), \" \"] %}\n        {% endif %}\n    {% endfor %}\n    {{ns.result\
-      \ | join(\"\")}}\n    \n    Given the code above, what is a proper replacement\
-      \ for {{mask}}?\n    |||\n    {{source_tokens[repair_targets[0]]}}\n{% endif\
-      \ %}"
+    jinja: "{% set mask = '<MASK>' %}\n{% set indent = '    ' %}\n{% set ns = namespace(indent_size=0,\
+      \ result=[]) %}\n\n{% if has_bug %}\n    {% for token in source_tokens  %}\n\
+      \        {% if loop.index0 == error_location %}\n                {% set token\
+      \ = mask %}\n        {% endif%}\n        {% if token== '#INDENT#' %}\n     \
+      \      {% set ns.indent_size = ns.indent_size + 1 %}\n           {% set ns.result\
+      \ = ns.result + [indent * ns.indent_size] %}\n        {% elif token == '#NEWLINE#'\
+      \ %}\n              {% set ns.result = ns.result + [\"\\n\"] %}\n        {%\
+      \ elif token == '#UNINDENT#' %}\n            {% set ns.indent_size = ns.indent_size\
+      \ - 1 %}\n        {% else %}\n              {% if not loop.first and loop.previtem\
+      \ == '#NEWLINE#' %}\n                   {% set ns.result = ns.result + [indent\
+      \ * ns.indent_size] %}\n              {% endif %}\n              {% set ns.result\
+      \ = ns.result + [token | replace('\\\\n', '\\n'), \" \"] %}\n        {% endif\
+      \ %}\n    {% endfor %}\n    {{ns.result | join(\"\")}}\n    \n    Given the\
+      \ code above, what is a proper replacement for {{mask}}?\n    |||\n    {{source_tokens[repair_targets[0]]}}\n\
+      {% endif %}"
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
@@ -113,22 +113,22 @@ templates:
       | int)]] %}     {% endfor %}     {{nss.choices | unique | join(" ||| ")}} {%
       endif %}'
     id: 6b154f4f-50a5-4890-b0fc-a0118061ce0c
-    jinja: "{% if has_bug %}\n    {% set mask = '<MASK>' %}\n    {% set indent = '\
-      \    ' %}\n    {% set ns = namespace(indent_size=0, result=[]) %}\n    {% for\
-      \ token in source_tokens  %}\n        {% if loop.index0 == error_location %}\n\
-      \                {% set token = mask %}\n        {% endif%}\n        {% if token==\
-      \ '#INDENT#' %}\n           {% set ns.indent_size = ns.indent_size + 1 %}\n\
-      \           {% set ns.result = ns.result + [indent * ns.indent_size] %}\n  \
-      \      {% elif token == '#NEWLINE#' %}\n              {% set ns.result = ns.result\
-      \ + [\"\\n\"] %}\n        {% elif token == '#UNINDENT#' %}\n            {% set\
-      \ ns.indent_size = ns.indent_size - 1 %}\n        {% else %}\n             \
-      \ {% if not loop.first and loop.previtem == '#NEWLINE#' %}\n               \
-      \    {% set ns.result = ns.result + [indent * ns.indent_size] %}\n         \
-      \     {% endif %}\n              {% set ns.result = ns.result + [token | replace('\\\
-      \\n', '\\n'), \" \"] %}\n        {% endif %}\n    {% endfor %}\n    {{ns.result\
-      \ | join(\"\")}}\n    \n    Given the code above, what is a proper replacement\
-      \ for {{mask}}? Choose among: {{answer_choices | join(\", \")}}\n    |||\n \
-      \   {{source_tokens[repair_targets[0]]}}\n{% endif %}"
+    jinja: "{% set mask = '<MASK>' %}\n{% set indent = '    ' %}\n{% set ns = namespace(indent_size=0,\
+      \ result=[]) %}\n\n{% if has_bug %}\n    {% for token in source_tokens  %}\n\
+      \        {% if loop.index0 == error_location %}\n                {% set token\
+      \ = mask %}\n        {% endif%}\n        {% if token== '#INDENT#' %}\n     \
+      \      {% set ns.indent_size = ns.indent_size + 1 %}\n           {% set ns.result\
+      \ = ns.result + [indent * ns.indent_size] %}\n        {% elif token == '#NEWLINE#'\
+      \ %}\n              {% set ns.result = ns.result + [\"\\n\"] %}\n        {%\
+      \ elif token == '#UNINDENT#' %}\n            {% set ns.indent_size = ns.indent_size\
+      \ - 1 %}\n        {% else %}\n              {% if not loop.first and loop.previtem\
+      \ == '#NEWLINE#' %}\n                   {% set ns.result = ns.result + [indent\
+      \ * ns.indent_size] %}\n              {% endif %}\n              {% set ns.result\
+      \ = ns.result + [token | replace('\\\\n', '\\n'), \" \"] %}\n        {% endif\
+      \ %}\n    {% endfor %}\n    {{ns.result | join(\"\")}}\n    \n    Given the\
+      \ code above, what is a proper replacement for {{mask}}? Choose among: {{answer_choices\
+      \ | join(\", \")}}\n    |||\n    {{source_tokens[repair_targets[0]]}}\n{% endif\
+      \ %}"
     metadata: !TemplateMetadata
       choices_in_prompt: true
       metrics:

@@ -21,7 +21,8 @@ templates:
     answer_choices: null
     id: 9c85c898-70fe-4a51-be37-5111be357762
     jinja: "{% set ns = namespace(tests=[])%}\n{% set lines = test.split('\\n') %}\n\
-      {% for line in lines %}\n    {% if line.strip().startswith('assert') and \"\
+      {% set test_ = \"\" %}\n{% set args = \"\" %}\n{% set return_val = \"\" %}\n\
+      \n{% for line in lines %}\n    {% if line.strip().startswith('assert') and \"\
       ==\" in line.strip() %}\n        {% set ns.tests = ns.tests + [line.split('assert')[1]]\
       \ %}\n    {% endif %}\n{% endfor %}\n{% if (ns.tests | length) > 0 %}\n    {%\
       \ set test_ = ns.tests | choice  %}\n\n    {% set return_val = test_.split(\"\
@@ -31,7 +32,8 @@ templates:
       \ %}\n"
     metadata: !TemplateMetadata
       choices_in_prompt: false
-      metrics: []
+      metrics:
+      - Other
       original_task: false
     name: function call return value generation
     reference: ''
