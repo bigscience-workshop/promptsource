@@ -16,7 +16,9 @@ templates:
       \ loop.previtem == '#NEWLINE#' %}\n               {% set ns.result = ns.result\
       \ + [indent * ns.indent_size] %}\n          {% endif %}\n          {% set ns.result\
       \ = ns.result + [token | replace('\\\\n', '\\n'), \" \"] %}\n    {% endif %}\n\
-      {% endfor %}\n{{ns.result | join(\"\")}}\n\nWhat is the function name?\n|||\n\
+      {% endfor %}\n{{ns.result | join(\"\") | replace(\" . \", \".\") | replace(\"\
+      \ , \", \", \")  | replace(\"( \", \"(\") | replace(\" )\", \")\") | replace(\"\
+      [ \", \"[\") | replace(\" ]\", \"]\")}}\n\nWhat is the function name?\n|||\n\
       {{ ns.target }}"
     metadata: !TemplateMetadata
       choices_in_prompt: false
@@ -31,28 +33,35 @@ templates:
     jinja: "{% set result = \"\" %}\n{% set indent = '    ' %}\n{% set ns = namespace(indent_size=0,\
       \ line_number=0, buggy_line=0, bug_location=0, bug_len=0, result=[], result_lines=[])\
       \ %}\n{% set fixed_token = source_tokens[repair_targets[0]] %}\n{% set buggy_line_content\
-      \ = \"\" %}\n{% set fixed_buggy_line_content = \"\" %}\n\n{% if has_bug %}\n\
-      \    {% for token in source_tokens  %}\n        {% if loop.index0 == error_location\
-      \ %}\n                {% set ns.buggy_line = ns.line_number %}\n           \
-      \     {% set ns.bug_location = (ns.result | join(\"\") | length) %}\n      \
-      \          {% set ns.bug_len = (token | length) %}\n        {% endif%}\n   \
-      \     {% if token== '#INDENT#' %}\n           {% set ns.indent_size = ns.indent_size\
-      \ + 1 %}\n           {% set ns.result = ns.result + [indent * ns.indent_size]\
-      \ %}\n        {% elif token == '#NEWLINE#' %}\n              {% set ns.result_lines\
-      \ = ns.result_lines + [ns.result | join(\"\")] %}\n              {% set ns.result\
-      \ = [] %}\n              {% set ns.line_number = ns.line_number + 1 %}\n   \
-      \     {% elif token == '#UNINDENT#' %}\n            {% set ns.indent_size =\
-      \ ns.indent_size - 1 %}\n        {% else %}\n              {% if not loop.first\
-      \ and loop.previtem == '#NEWLINE#' %}\n                   {% set ns.result =\
-      \ ns.result + [indent * ns.indent_size] %}\n              {% endif %}\n    \
-      \          {% set ns.result = ns.result + [token | replace('\\\\n', '\\n'),\
-      \ \" \"] %}\n        {% endif %}\n    {% endfor %}\n    {% set ns.result_lines\
-      \ = ns.result_lines + [ns.result | join(\"\")] %}\n    {% set result = ns.result_lines\
-      \ | join(\"\\n\") %}\n    {{result}}\n\n    {% set buggy_line_content = ns.result_lines[ns.buggy_line]\
-      \ | trim %}\n    {% set fixed_buggy_line_content = ns.result_lines[ns.buggy_line][:ns.bug_location]\
-      \ + fixed_token +  ns.result_lines[ns.buggy_line][ns.bug_location + ns.bug_len:]\
-      \  | trim%}\n\n    Fix the buggy line: {{buggy_line_content}}\n    |||\n   \
-      \ {{fixed_buggy_line_content}}\n{% endif %}"
+      \ = \"\" %}\n{% set fixed_buggy_line_content = \"\" %}\n\n{% if has_bug and\
+      \ (repair_targets | length > 0) %}\n    {% for token in source_tokens  %}\n\
+      \        {% if loop.index0 == error_location %}\n                {% set ns.buggy_line\
+      \ = ns.line_number %}\n                {% set ns.bug_location = (ns.result |\
+      \ join(\"\") | length) %}\n                {% set ns.bug_len = (token | length)\
+      \ %}\n        {% endif%}\n        {% if token== '#INDENT#' %}\n           {%\
+      \ set ns.indent_size = ns.indent_size + 1 %}\n           {% set ns.result =\
+      \ ns.result + [indent * ns.indent_size] %}\n        {% elif token == '#NEWLINE#'\
+      \ %}\n              {% set ns.result_lines = ns.result_lines + [ns.result |\
+      \ join(\"\")] %}\n              {% set ns.result = [] %}\n              {% set\
+      \ ns.line_number = ns.line_number + 1 %}\n        {% elif token == '#UNINDENT#'\
+      \ %}\n            {% set ns.indent_size = ns.indent_size - 1 %}\n        {%\
+      \ else %}\n              {% if not loop.first and loop.previtem == '#NEWLINE#'\
+      \ %}\n                   {% set ns.result = ns.result + [indent * ns.indent_size]\
+      \ %}\n              {% endif %}\n              {% set ns.result = ns.result\
+      \ + [token | replace('\\\\n', '\\n'), \" \"] %}\n        {% endif %}\n    {%\
+      \ endfor %}\n    {% set ns.result_lines = ns.result_lines + [ns.result | join(\"\
+      \")] %}\n    {% set result = ns.result_lines | join(\"\\n\") %}\n    {{result\
+      \ | replace(\" . \", \".\") | replace(\" , \", \", \")  | replace(\"( \", \"\
+      (\") | replace(\" )\", \")\") | replace(\"[ \", \"[\") | replace(\" ]\", \"\
+      ]\")}}\n\n    {% set buggy_line_content = ns.result_lines[ns.buggy_line] | trim\
+      \ | replace(\" . \", \".\") | replace(\" , \", \", \")  | replace(\"( \", \"\
+      (\") | replace(\" )\", \")\") | replace(\"[ \", \"[\") | replace(\" ]\", \"\
+      ]\") %}\n    {% set fixed_buggy_line_content = (ns.result_lines[ns.buggy_line][:ns.bug_location]\
+      \ + fixed_token +  ns.result_lines[ns.buggy_line][ns.bug_location + ns.bug_len:])\
+      \ | trim | replace(\" . \", \".\") | replace(\" , \", \", \")  | replace(\"\
+      ( \", \"(\") | replace(\" )\", \")\") | replace(\"[ \", \"[\") | replace(\"\
+      \ ]\", \"]\")%}\n\n    Fix the buggy line: {{buggy_line_content}}\n    |||\n\
+      \    {{fixed_buggy_line_content}}\n{% endif %}"
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
@@ -75,7 +84,9 @@ templates:
       \ == '#NEWLINE#' %}\n                   {% set ns.result = ns.result + [indent\
       \ * ns.indent_size] %}\n              {% endif %}\n              {% set ns.result\
       \ = ns.result + [token | replace('\\\\n', '\\n'), \" \"] %}\n        {% endif\
-      \ %}\n    {% endfor %}\n    {{ns.result | join(\"\")}}\n    \n    Given the\
+      \ %}\n    {% endfor %}\n    {{ns.result | join(\"\") | replace(\" . \", \".\"\
+      ) | replace(\" , \", \", \")  | replace(\"( \", \"(\") | replace(\" )\", \"\
+      )\") | replace(\"[ \", \"[\") | replace(\" ]\", \"]\")}}\n    \n    Given the\
       \ code above, what is a proper replacement for {{mask}}?\n    |||\n    {{source_tokens[repair_targets[0]]}}\n\
       {% endif %}"
     metadata: !TemplateMetadata
@@ -98,8 +109,10 @@ templates:
       \ %}\n               {% set ns.result = ns.result + [indent * ns.indent_size]\
       \ %}\n          {% endif %}\n          {% set ns.result = ns.result + [token\
       \ | replace('\\\\n', '\\n'), \" \"] %}\n    {% endif %}\n{% endfor %}\n{{ns.result\
-      \ | join(\"\") | replace(\" . \", \".\")}}\n\nIs there a bug in the code above?\n\
-      |||\n{{ {True: \"Yes\", False: \"No\"}[has_bug] }}"
+      \ | join(\"\") | replace(\" . \", \".\") | replace(\" , \", \", \")  | replace(\"\
+      ( \", \"(\") | replace(\" )\", \")\") | replace(\"[ \", \"[\") | replace(\"\
+      \ ]\", \"]\")}}\n\nIs there a bug in the code above?\n|||\n{{ {True: \"Yes\"\
+      , False: \"No\"}[has_bug] }}"
     metadata: !TemplateMetadata
       choices_in_prompt: true
       metrics:
@@ -125,7 +138,9 @@ templates:
       \ == '#NEWLINE#' %}\n                   {% set ns.result = ns.result + [indent\
       \ * ns.indent_size] %}\n              {% endif %}\n              {% set ns.result\
       \ = ns.result + [token | replace('\\\\n', '\\n'), \" \"] %}\n        {% endif\
-      \ %}\n    {% endfor %}\n    {{ns.result | join(\"\")}}\n    \n    Given the\
+      \ %}\n    {% endfor %}\n    {{ns.result | join(\"\") | replace(\" . \", \".\"\
+      ) | replace(\" , \", \", \")  | replace(\"( \", \"(\") | replace(\" )\", \"\
+      )\") | replace(\"[ \", \"[\") | replace(\" ]\", \"]\")}}\n    \n    Given the\
       \ code above, what is a proper replacement for {{mask}}? Choose among: {{answer_choices\
       \ | join(\", \")}}\n    |||\n    {{source_tokens[repair_targets[0]]}}\n{% endif\
       \ %}"
