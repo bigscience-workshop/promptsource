@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 
-with open('README.md') as readme_file:
+with open("README.md", "r", encoding="utf-8") as readme_file:
     readme = readme_file.read()
 
 with open('requirements.txt') as requirements_file:
@@ -8,10 +8,10 @@ with open('requirements.txt') as requirements_file:
 
 setup(
     name='promptsource',
-    version='0.1.0',
+    version='0.2.0',
     url='https://github.com/bigscience-workshop/promptsource.git',
-    author='Multiple Authors',
-    author_email='xxx',
+    author='BigScience - Prompt Engineering Working Group',
+    author_email='sbach@cs.brown.edu,victor@huggingface.co',
     python_requires='>=3.7, <3.8',
     install_requires=requirements,
     classifiers=[
@@ -22,10 +22,11 @@ setup(
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.7',
     ],
-    description='Toolkit for collecting and applying templates of prompting instances.',
+    description='An Integrated Development Environment and Repository for Natural Language Prompts.',
     packages=find_packages(),
     license="Apache Software License 2.0",
     long_description=readme,
+    long_description_content_type="text/markdown",
     package_data={"": [
         "templates/*/*.yaml",
         "templates/*/*/*.yaml",

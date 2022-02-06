@@ -1,3 +1,4 @@
+import logging
 import os
 import random
 import uuid
@@ -8,7 +9,7 @@ from typing import Dict, List, Optional, Tuple
 import pandas as pd
 import pkg_resources
 import yaml
-from jinja2 import BaseLoader, Environment, meta
+from jinja2 import BaseLoader, Environment
 
 
 # Truncation of jinja template variables
@@ -133,25 +134,6 @@ class Template(yaml.YAMLObject):
         protected_example = self._escape_pipe(example)
         rendered_choices = rtemplate.render(**protected_example)
         return [self._unescape_pipe(answer_choice.strip()) for answer_choice in rendered_choices.split("|||")]
-
-    def get_fixed_answer_choices_list(self):
-        """
-        Returns a list of answer choices that is static across examples, if possible
-
-        :return: list of strings, or None if no static list exists
-        """
-        jinja = self.get_answer_choices_expr()
-        if jinja is None:
-            return None
-
-        parse = env.parse(jinja)
-        variables = meta.find_undeclared_variables(parse)
-        if len(variables) == 0:
-            rtemplate = env.from_string(jinja)
-            rendered_choices = rtemplate.render()
-            return [answer_choice.strip() for answer_choice in rendered_choices.split("|||")]
-        else:
-            return None
 
     def apply(self, example, truncate=True, highlight_variables=False):
         """
@@ -380,6 +362,11 @@ class DatasetTemplates:
         """
 
         if not os.path.exists(self.yaml_path):
+            dataset_name = f"{self.dataset_name} {self.subset_name}" if self.subset_name else self.dataset_name
+            logging.warning(
+                f"Tried instantiating `DatasetTemplates` for {dataset_name}, but no prompts found. "
+                "Please ignore this warning if you are creating new prompts for this dataset."
+            )
             return {}
         yaml_dict = yaml.load(open(self.yaml_path, "r"), Loader=yaml.FullLoader)
         return yaml_dict[self.TEMPLATES_KEY]
