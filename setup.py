@@ -3,8 +3,26 @@ from setuptools import setup, find_packages
 with open("README.md", "r", encoding="utf-8") as readme_file:
     readme = readme_file.read()
 
-with open('requirements.txt') as requirements_file:
-    requirements = requirements_file.read().split('\n')
+requirements = [
+    "black<=21.12b0",
+    "datasets>=1.7.0",
+    "flake8",
+    "isort==5.8.0",
+    "pytest",
+    "pyyaml>=5",
+    "streamlit==0.82",
+    "jinja2",
+    "plotly",
+    "requests",
+    "pandas",
+    ##############################################################
+    # Dependencies in this section are added for specific datasets
+    ##############################################################
+    "py7zr",
+    ##############################################################
+    # End of dataset-specific dependencies
+    ##############################################################
+]
 
 setup(
     name='promptsource',
