@@ -26,7 +26,7 @@ requirements = [
 
 setup(
     name='promptsource',
-    version='0.2.0',
+    version='0.2.1',
     url='https://github.com/bigscience-workshop/promptsource.git',
     author='BigScience - Prompt Engineering Working Group',
     author_email='sbach@cs.brown.edu,victor@huggingface.co',
