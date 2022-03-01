@@ -82,12 +82,21 @@ st.markdown(
     "<style>" + HtmlFormatter(style="friendly").get_style_defs(".highlight") + "</style>", unsafe_allow_html=True
 )
 
-WIDTH = 80
+WIDTH = 140
 
 
 def show_jinja(t, width=WIDTH):
+    def replace_linebreaks(t):
+        """
+        st.write does not handle double breaklines very well. When it encounters `\n\n`, it exit the curent <div> block.
+        Explicitely replacing all `\n` with their html equivalent to bypass this issue.
+        Also stripping the trailing `\n` first.
+        """
+        return t.strip("\n").replace("\n", "<br/>")
+
     wrap = textwrap.fill(t, width=width, replace_whitespace=False)
     out = highlight(wrap, DjangoLexer(), HtmlFormatter())
+    out = replace_linebreaks(out)
     st.write(out, unsafe_allow_html=True)
 
 
@@ -204,7 +213,7 @@ if mode == "Helicopter view":
     fig.update_xaxes(visible=False, showticklabels=False)
     st.plotly_chart(fig, use_container_width=True)
     st.write(
-        f"- Top 3 training subsets account for `{100*plot_df[:3]['Train size'].sum()/nb_training_instances:.2f}%` of the training instances."
+        f"- Top 3 training subsets account for `{100 * plot_df[:3]['Train size'].sum() / nb_training_instances:.2f}%` of the training instances."
     )
     biggest_training_subset = plot_df.iloc[0]
     st.write(
@@ -257,7 +266,20 @@ else:
         if len(configs) > 0:
             conf_option = st.sidebar.selectbox("Subset", configs, index=0, format_func=lambda a: a.name)
 
-        dataset = get_dataset(dataset_key, str(conf_option.name) if conf_option else None)
+        subset_name = str(conf_option.name) if conf_option else None
+        try:
+            dataset = get_dataset(dataset_key, subset_name)
+        except OSError as e:
+            st.error(
+                f"Some datasets are not handled automatically by `datasets` and require users to download the "
+                f"dataset manually. This applies to {dataset_key}{f'/{subset_name}' if subset_name is not None else ''}. "
+                f"\n\nPlease download the raw dataset to `~/.cache/promptsource/{dataset_key}{f'/{subset_name}' if subset_name is not None else ''}`. "
+                f"\n\nYou can choose another cache directory by overriding `PROMPTSOURCE_MANUAL_DATASET_DIR` environment "
+                f"variable and downloading raw dataset to `$PROMPTSOURCE_MANUAL_DATASET_DIR/{dataset_key}{f'/{subset_name}' if subset_name is not None else ''}`"
+                f"\n\nOriginal error:\n{str(e)}"
+            )
+            st.stop()
+
         splits = list(dataset.keys())
         index = 0
         if "train" in splits:
@@ -595,7 +617,6 @@ else:
                         if len(prompt) > 1:
                             st.write("Target")
                             show_text(prompt[1], width=40)
-
 
 #
 # Must sync state at end

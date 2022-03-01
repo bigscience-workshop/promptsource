@@ -11,8 +11,7 @@ templates:
       news piece above? Please choose one of these options:
 
 
-
-      {{"right"}}, {{"right-center"}}, {{"least"}}, {{"left-center"}}, and {{"left"}}.
+      {{ ", ".join(answer_choices) }}
 
 
       |||
@@ -20,11 +19,12 @@ templates:
 
       {{ answer_choices[bias] }}'
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
       original_task: true
-    name: leaning
-    reference: ''
+    name: how_would_you_describe_the_political_leaning
+    reference: Classify the partisan bias of the provided text
   62fc329c-188c-43da-98b7-aa6580cdef17: !Template
     answer_choices: right ||| right-center ||| least ||| left-center ||| left
     id: 62fc329c-188c-43da-98b7-aa6580cdef17
@@ -32,10 +32,10 @@ templates:
 
 
       The news piece above gives the readers a biased view of political news. How
-      would you decribe the bias?
+      would you describe the bias?
 
 
-      {{"right"}}, {{"right-center"}}, {{"least"}}, {{"left-center"}}, or {{"left"}}?
+      Choices: {{ ", ".join(answer_choices) }}?
 
 
       |||
@@ -43,11 +43,12 @@ templates:
 
       {{ answer_choices[bias] }}'
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
       original_task: true
-    name: political_position_readers
-    reference: ''
+    name: gives_the_readers_a_biased_view
+    reference: Classify the partisan bias of the provided text
   6b26ad81-4777-4323-98de-e7956cedc1ef: !Template
     answer_choices: right ||| right-center ||| least ||| left-center ||| left
     id: 6b26ad81-4777-4323-98de-e7956cedc1ef
@@ -58,7 +59,7 @@ templates:
       options do you agree with?
 
 
-      {{"right"}}, {{"right-center"}}, {{"least"}}, {{"left-center"}}, or {{"left"}}?
+      {{ ", ".join(answer_choices) }}?
 
 
       |||
@@ -68,11 +69,12 @@ templates:
 
       '
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
       original_task: true
-    name: political_position_readers_2
-    reference: ''
+    name: offers_a_biased_view
+    reference: Classify the partisan bias of the provided text
   7512e26a-0130-438a-ac39-dde3a4274fcf: !Template
     answer_choices: right ||| right-center ||| least ||| left-center ||| left
     id: 7512e26a-0130-438a-ac39-dde3a4274fcf
@@ -83,8 +85,7 @@ templates:
       the publisher''s poltical position?
 
 
-      Options: {{"right"}}, {{"right-center"}}, {{"least"}}, {{"left-center"}}, and
-      {{"left"}}.
+      Options: {{ ", ".join(answer_choices) }}
 
 
       |||
@@ -92,11 +93,12 @@ templates:
 
       {{ answer_choices[bias] }}'
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
       original_task: true
-    name: political_position
-    reference: ''
+    name: which_best_captures
+    reference: Classify the partisan bias of the provided text
   8cc1b595-29b0-49bc-8323-73fa489d936c: !Template
     answer_choices: right ||| right-center ||| least ||| left-center ||| left
     id: 8cc1b595-29b0-49bc-8323-73fa489d936c
@@ -110,8 +112,7 @@ templates:
       Which of these options do you agree with regarding the said bias?
 
 
-      Options: {{"right"}}, {{"right-center"}}, {{"least"}}, {{"left-center"}}, and
-      {{"left"}}.
+      Options: {{ ", ".join(answer_choices) }}
 
 
       |||
@@ -119,8 +120,9 @@ templates:
 
       {{ answer_choices[bias] }}'
     metadata: !TemplateMetadata
-      choices_in_prompt: null
-      metrics: []
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
       original_task: true
-    name: political_bias
-    reference: ''
+    name: consider_its_publisher_exhibits
+    reference: Classify the partisan bias of the provided text

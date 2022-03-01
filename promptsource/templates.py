@@ -1,3 +1,4 @@
+import logging
 import os
 import random
 import uuid
@@ -137,7 +138,6 @@ class Template(yaml.YAMLObject):
     def get_fixed_answer_choices_list(self):
         """
         Returns a list of answer choices that is static across examples, if possible
-
         :return: list of strings, or None if no static list exists
         """
         jinja = self.get_answer_choices_expr()
@@ -380,6 +380,11 @@ class DatasetTemplates:
         """
 
         if not os.path.exists(self.yaml_path):
+            dataset_name = f"{self.dataset_name} {self.subset_name}" if self.subset_name else self.dataset_name
+            logging.warning(
+                f"Tried instantiating `DatasetTemplates` for {dataset_name}, but no prompts found. "
+                "Please ignore this warning if you are creating new prompts for this dataset."
+            )
             return {}
         yaml_dict = yaml.load(open(self.yaml_path, "r"), Loader=yaml.FullLoader)
         return yaml_dict[self.TEMPLATES_KEY]

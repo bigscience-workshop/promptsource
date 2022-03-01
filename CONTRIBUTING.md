@@ -1,10 +1,10 @@
 # Contributing
 
-One of the best ways to contribute is by writing prompts!
+The best way to contribute growing P3 is by writing prompts for new datasets!
 
 ### What are Prompts?
 
-A prompt consists of a template(input template and target template, along with collection of associated metadata. A template is a piece of code written in a templating language called
+A prompt consists of a template: input template and target template, along with collection of associated metadata. A template is a piece of code written in a templating language called
 [Jinja](https://jinja.palletsprojects.com/en/3.0.x/). A template defines
 a function that maps an example from a dataset in the
 [Hugging Face datasets library](https://huggingface.co/datasets) to two strings of
@@ -17,7 +17,7 @@ prompt.
 
 1. **Set up the app.** Fork the app and set up using the
 [README](https://github.com/bigscience-workshop/promptsource/blob/main/README.md).
-1. **Examine the dataset.** Select or type the dataset into the dropdown in the app.
+1. **Examine the dataset.** In the "Sourcing" mode, select or type the dataset into the dropdown.
 If the dataset has subsets (subsets are not the same as splits), you can select
 which one to work on. Note that prompts are subset-specific. You can find
 out background information on the dataset by reading the information in the
@@ -29,15 +29,17 @@ You can always update the name later. If you want to cancel the prompt, select
 1. **Write the prompt**. In the box labeled "Template," enter a Jinja expression.
 See the [getting started guide](#getting-started-using-jinja-to-write-prompts)
 and [cookbook](#jinja-cookbook) for details on how to write templates.
+1. **Fill in metadata**. Fill in the metadata for the current prompt: reference, original task, choices in templates, and answer choices.
+See [Metadata](#metadata) for more details about these fields.
 1. **Save the prompt**. Hit the "Save" button. The output of the prompt
 applied to the current example will appear in the right sidebar.
 1. **Verify the prompt**. Check that you didn't miss any case by scrolling
 through a handful of examples of the prompted dataset using the
 "Prompted dataset viewer" mode.
-1. **Write between 5 and 10 prompts**. Repeat the steps 4 to 8 to create between 5
+1. **Write between 5 and 10 prompts**. Repeat the steps 4 to 9 to create between 5
 and 10 (more if you want!) prompts per dataset/subset. Feel free to introduce
 a mix of formats, some that follow the templates listed in the [best practices](#best-practices)
-and some that are more diverse in the format and the formulation. 
+and some that are more diverse in the format and the formulation.
 1. **Duplicate the prompts(s).** If the dataset you have chosen bear the same
 format as other datasets (for instance, `MNLI` and `SNLI` have identical formats),
 you can simply duplicate the prompts you have written to these additional datasets.
@@ -108,8 +110,9 @@ it has the answer. Can you tell me the answer?
 {{answers["text"][0]}}'
 ```
 
-## Options
-In addition to the template itself, you can fill out several other fields in the app.
+## Metadata
+In addition to the template itself, you need to fill out several other fields.
+These metadata facilitate finding and using the prompts.
 * **Prompt Reference.** If your template was inspired by a paper, note the
 reference in the "Prompt Reference" section. You can also add a description of
 what your template does.
@@ -166,8 +169,7 @@ introduce some diversity by prompting a given dataset into multiple tasks and pr
 description in the "Template Reference" text box. An example is given
 in the already prompted `movie_rationales`.
 * **Filtering prompts.** If a prompt is applied to an example and produces an
-empty string, that prompt/example pair will be skipped. (Either the entire target
-is whitespace or the text on either side of the separator `|||` is whitespace.
+empty string, that prompt/example pair will be skipped.
 You can therefore create prompts that only apply to a subset of the examples by
 wrapping them in Jinja if statements. For example, in the `TREC` dataset, there
 are fine-grained categories that are only applicable to certain coarse-grained categories.
@@ -178,6 +180,17 @@ Is this question asking for a {{"definition"}}, a {{"description"}}, a {{"manner
 {{text}}
 |||
 {{ {0: "Manner", 7: "Defintion", 9: "Reason", 12: "Description"}[label_fine] }}
+{% endif %}
+```
+For datasets that have splits with no labels (for instance test split without ground truth labels), you can wrap the conditional statement on the target side.
+For instance for `super_glue/boolq`, the following prompt would return an empty target on the test split, but not an empty prompted example:
+```jinja2
+{{ passage }}
+Question: {{ question }}
+Answer:
+|||
+{% if label != -1 %}
+{{ answer_choices[label] }}
 {% endif %}
 ```
 * **Conditional generation format.** Always specify the target and separate it from the prompt
@@ -226,15 +239,15 @@ First, {{ ctx_a.lower() }} Then, {{ ctx_b.lower() }}...
 
 Complete the above description with a chosen ending:
 
-Ending 1: {{ endings[0] }}
+(a) {{ answer_choices[0] }}
 
-Ending 2: {{ endings[1] }}
+(b) {{ answer_choices[1] }}
 
-Ending 3: {{ endings[2] }}
+(c) {{ answer_choices[2] }}
 
-Ending 4: {{ endings[3] }}
+(d) {{ answer_choices[3] }}
 
-||| {{ {"0": "Ending 1", "1": "Ending 2", "2": "Ending 3", "3": "Ending 4"}[label] }}
+||| {{ answer_choices[label | int()] }}
 ```
 Notice how it uses functions to consistently capitalize the information and provides lots
 of context (referring explicitly to "description" and "chosen ending.")
@@ -251,26 +264,17 @@ Which one is the most appropriate answer/completion for the paragraph that follo
 {%- endfor %}
 ```
 Like above, it uses functions to present the choices in a readable way. Also, it
-uses a for loop with conditions to handle the more intricate dataset schema. 
+uses a for loop with conditions to handle the more intricate dataset schema.
 
 Here's one for `paws`:
 ```jinja2
-{% if label == 0 or label == 1 %} 
 Sentence 1: {{sentence1}}
 Sentence 2: {{sentence2}}
 Question: Does Sentence 1 paraphrase Sentence 2? Yes or No?
-{% endif %}
-||| 
-{% if label == 0 %} 
-No
-{% elif label == 1 %}
-Yes
-{% endif %}
-
+|||
+{{answer_choices[label]}}
 ```
-This template has to do a few things, even though it's a yes no question. First,
-the label might be unknown, so the pieces are wrapped in if statements.
-Second, notice that the choices `Yes or No` are not escaped. Yes/no, true/false
+Notice that the choices `Yes or No` are not escaped. Yes/no, true/false
 are choices that do not need to be escaped (unlike categories).
 
 ## Uploading Prompts
@@ -307,7 +311,7 @@ do_something_else
 ```jinja
 {% for a, b in zip(list_A, list_B) %}
 do_something_with_a_and_b
-{% endfor %} 
+{% endfor %}
 ```
 
 
