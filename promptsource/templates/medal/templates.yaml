@@ -21,9 +21,23 @@ templates:
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
-      - Other
+      - Accuracy
       original_task: true
     name: disambiguate_abbrev_text_after
+    reference: ''
+  5e3772f9-4891-47ac-b5c6-5e86be17a600: !Template
+    answer_choices: null
+    id: 5e3772f9-4891-47ac-b5c6-5e86be17a600
+    jinja: "{% set tokenised_text = text.split(' ') %}\n{% set acronym = location[0]\
+      \ %}\n\n{{tokenised_text[0:location[0]]|join(' ') }} {{  label[0]}} {{tokenised_text[location[0]+1:tokenised_text|length]|join('\
+      \ ') }} \n\nGiven the PubMed abstract above, what could be the abbreviation\
+      \ for the token: \"{{ label[0] }}\"?\n\n|||\n{{ tokenised_text[acronym] }}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - Accuracy
+      original_task: false
+    name: create_abbrev_before
     reference: ''
   6de8a038-84a4-4a3f-b4ff-6ecca058da6d: !Template
     answer_choices: Yes ||| No
@@ -67,6 +81,20 @@ templates:
       original_task: false
     name: is_true_abbrev_text_before
     reference: ''
+  6f18eefa-660b-47d9-8093-fc628c3c38a0: !Template
+    answer_choices: null
+    id: 6f18eefa-660b-47d9-8093-fc628c3c38a0
+    jinja: "{% set tokenised_text = text.split(' ') %}\n{% set acronym = location[0]\
+      \ %}\nBased on the text below, how would you abbreviate the token: \"{{ label[0]\
+      \ }}\"?\n\n{{tokenised_text[0:location[0]]|join(' ') }} {{  label[0]}} {{tokenised_text[location[0]+1:tokenised_text|length]|join('\
+      \ ') }} \n\n|||\n{{ tokenised_text[acronym] }}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - Accuracy
+      original_task: false
+    name: create_abbrev_after
+    reference: ''
   767d7896-e29b-4dfb-b82c-a18b356edfd5: !Template
     answer_choices: null
     id: 767d7896-e29b-4dfb-b82c-a18b356edfd5
@@ -87,7 +115,7 @@ templates:
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
-      - Other
+      - Accuracy
       original_task: true
     name: disambiguate_abbrev_text_before
     reference: ''
