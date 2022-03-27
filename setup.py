@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as readme_file:
 
 requirements = [
     "black<=21.12b0",
-    "datasets>=1.7.0",
+    "datasets==1.17.0",
     "flake8",
     "isort==5.8.0",
     "pytest",
