@@ -25,6 +25,47 @@ templates:
       original_task: true
     name: disambiguate_abbrev_text_after
     reference: ''
+  38d3122d-45e0-46d7-b61d-77971b4366f9: !Template
+    answer_choices: null
+    id: 38d3122d-45e0-46d7-b61d-77971b4366f9
+    jinja: "{% set tokenised_text = text.split(' ') %}\n{% set acronym = location[0]\
+      \ %}\n\n{{tokenised_text[0:location[0]]|join(' ') }} {{  label[0]}} {{tokenised_text[location[0]+1:tokenised_text|length]|join('\
+      \ ') }} \n\nI am a doctor, and I need to replace the phrase \"{{ label[0] }}\"\
+      \ with its correct medical abbreviation. Can you suggest to me the acronym based\
+      \ on the PubMed abstract above?\n\n|||\n{{ tokenised_text[acronym] }}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - Accuracy
+      original_task: false
+    name: create_abbrev_doctor
+    reference: ''
+  474fc22a-f7ab-4785-8d54-1ace15e6081a: !Template
+    answer_choices: null
+    id: 474fc22a-f7ab-4785-8d54-1ace15e6081a
+    jinja: '{% set tokenised_text = text.split('' '') %}
+
+      {% set acronym = location[0] %}
+
+      As a layperson, I would like to understand the meaning of the abbreviation "{{
+      tokenised_text[acronym] }}". Could you disambiguate it for me based on the text
+      below?
+
+
+
+      {{text}}
+
+
+      |||
+
+      {{ label[0] }}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - Accuracy
+      original_task: true
+    name: disambiguate_abbrev_layperson
+    reference: ''
   5e3772f9-4891-47ac-b5c6-5e86be17a600: !Template
     answer_choices: null
     id: 5e3772f9-4891-47ac-b5c6-5e86be17a600
@@ -38,48 +79,6 @@ templates:
       - Accuracy
       original_task: false
     name: create_abbrev_before
-    reference: ''
-  6de8a038-84a4-4a3f-b4ff-6ecca058da6d: !Template
-    answer_choices: Yes ||| No
-    id: 6de8a038-84a4-4a3f-b4ff-6ecca058da6d
-    jinja: '{% set tokenised_text = text.split('' '') %}
-
-      {% set acronym = location[0] %}
-
-      {% set answer = [''Yes'', ''No'']|random %}
-
-      {% set random_index = range(1, tokenised_text|length)|random %}
-
-      {% set text_len = range(2, 5)|random %}
-
-
-      {{text}}
-
-
-      {% if answer==''Yes'' %}
-
-      Is "{{ label[0] }}" a correct disambiguation "{{ tokenised_text[acronym] }}"
-      based on the text above?
-
-      {% else %}
-
-      Is "{{ tokenised_text[random_index:random_index+text_len]|join('' '') }}" a
-      correct disambiguation of "{{ tokenised_text[acronym] }}" based on the text
-      above?
-
-      {% endif %}
-
-      Please answer {{"Yes"}} or {{"No"}}.
-
-      |||
-
-      {{answer}}'
-    metadata: !TemplateMetadata
-      choices_in_prompt: true
-      metrics:
-      - Accuracy
-      original_task: false
-    name: is_true_abbrev_text_before
     reference: ''
   6f18eefa-660b-47d9-8093-fc628c3c38a0: !Template
     answer_choices: null
@@ -118,84 +117,4 @@ templates:
       - Accuracy
       original_task: true
     name: disambiguate_abbrev_text_before
-    reference: ''
-  c498cf73-515c-4a5b-bbaa-267485510031: !Template
-    answer_choices: Yes ||| No
-    id: c498cf73-515c-4a5b-bbaa-267485510031
-    jinja: '{% set tokenised_text = text.split('' '') %}
-
-      {% set acronym = location[0] %}
-
-      {% set answer = [''Yes'', ''No'']|random %}
-
-      {% set random_index = range(1, tokenised_text|length)|random %}
-
-      {% set text_len = range(2, 5)|random %}
-
-
-      {% if answer==''Yes'' %}
-
-      Based on the text below, is "{{ label[0] }}" a correct disambiguation of "{{
-      tokenised_text[acronym] }}"? Please answer {{"Yes"}} or {{"No"}}.
-
-      {% else %}
-
-      Based on the text below, is "{{ tokenised_text[random_index:random_index+text_len]|join(''
-      '') }}" a correct disambiguation of "{{ tokenised_text[acronym] }}"? Please
-      answer {{"Yes"}} or {{"No"}}.
-
-      {% endif %}
-
-
-      {{text}}
-
-      |||
-
-      {{answer}}'
-    metadata: !TemplateMetadata
-      choices_in_prompt: true
-      metrics:
-      - Accuracy
-      original_task: false
-    name: is_true_abbrev_text_after
-    reference: ''
-  f3d7bceb-227e-474d-a6cb-15273fd74873: !Template
-    answer_choices: Yes ||| No
-    id: f3d7bceb-227e-474d-a6cb-15273fd74873
-    jinja: '{% set tokenised_text = text.split('' '') %}
-
-      {% set acronym = location[0] %}
-
-      {% set answer = [''Yes'', ''No'']|random %}
-
-      {% set random_index = range(1, tokenised_text|length)|random %}
-
-      {% set text_len = range(2, 5)|random %}
-
-
-      {{text}}
-
-
-      {% if answer==''Yes'' %}
-
-      Based on the text above, does "{{ tokenised_text[acronym] }}" mean "{{ label[0]
-      }}"? Please answer {{"Yes"}} or {{"No"}}.
-
-      {% else %}
-
-      Based on the text above, does "{{ tokenised_text[acronym] }}" mean  "{{ tokenised_text[random_index:random_index+text_len]|join(''
-      '') }}"? Please answer {{"Yes"}} or {{"No"}}.
-
-      {% endif %}
-
-
-      |||
-
-      {{answer}}'
-    metadata: !TemplateMetadata
-      choices_in_prompt: true
-      metrics:
-      - Accuracy
-      original_task: false
-    name: is_true_meaning_text_before
     reference: ''
