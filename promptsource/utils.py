@@ -35,12 +35,12 @@ def renameDatasetColumn(dataset):
 
 def get_dataset_builder(path, conf=None):
     "Get a dataset builder from name and conf."
-    module_path = datasets.load.prepare_module(path, dataset=True)
-    builder_cls = datasets.load.import_main_class(module_path[0], dataset=True)
+    module_path = datasets.load.dataset_module_factory(path)
+    builder_cls = datasets.load.import_main_class(module_path.module_path, dataset=True)
     if conf:
-        builder_instance = builder_cls(name=conf, cache_dir=None, hash=module_path[1])
+        builder_instance = builder_cls(name=conf, cache_dir=None, hash=module_path.hash)
     else:
-        builder_instance = builder_cls(cache_dir=None, hash=module_path[1])
+        builder_instance = builder_cls(cache_dir=None, hash=module_path.hash)
     return builder_instance
 
 
@@ -77,9 +77,9 @@ def load_dataset(dataset_name, subset_name):
 
 def get_dataset_confs(path):
     "Get the list of confs for a dataset."
-    module_path = datasets.load.prepare_module(path, dataset=True)
+    module_path = datasets.load.dataset_module_factory(path).module_path
     # Get dataset builder class from the processing script
-    builder_cls = datasets.load.import_main_class(module_path[0], dataset=True)
+    builder_cls = datasets.load.import_main_class(module_path, dataset=True)
     # Instantiate the dataset builder
     confs = builder_cls.BUILDER_CONFIGS
     if confs and len(confs) > 1:
