@@ -30,7 +30,7 @@ setup(
     url='https://github.com/bigscience-workshop/promptsource.git',
     author='BigScience - Prompt Engineering Working Group',
     author_email='sbach@cs.brown.edu,victor@huggingface.co',
-    python_requires='>=3.7',
+    python_requires='>=3.7,<3.10',
     install_requires=requirements,
     classifiers=[
         'Development Status :: 2 - Pre-Alpha',
