@@ -1,92 +1,6 @@
 dataset: blimp
 subset: adjunct_island
 templates:
-  0e5b5e79-cdea-47d3-b31c-c061162d3203: !Template
-    answer_choices: null
-    id: 0e5b5e79-cdea-47d3-b31c-c061162d3203
-    jinja: 'Between the first sentence and the second sentence, which one is grammatically
-      correct?
-
-      Sentence 1 - {{sentence_good}}
-
-      Sentence 2 - {{sentence_bad}}
-
-
-      Answer - |||
-
-      Sentence 1'
-    metadata: !TemplateMetadata
-      choices_in_prompt: true
-      metrics:
-      - Accuracy
-      original_task: true
-    name: adjunct_good_first_1
-    reference: ''
-  2599b172-d01c-4945-8ad2-5100c5eece1a: !Template
-    answer_choices: null
-    id: 2599b172-d01c-4945-8ad2-5100c5eece1a
-    jinja: 'Amongst the two sentences presented below, which one is syntactically
-      correct?
-
-
-      Sentence 1 - {{sentence_bad}}
-
-      Sentence 2 - {{sentence_good}}
-
-
-      Answer - |||
-
-      Sentence 2'
-    metadata: !TemplateMetadata
-      choices_in_prompt: true
-      metrics:
-      - Accuracy
-      original_task: true
-    name: adjunct_bad_first_2
-    reference: ''
-  7e8b5aa4-be3d-48f1-ba58-ab9eea3c7fc0: !Template
-    answer_choices: null
-    id: 7e8b5aa4-be3d-48f1-ba58-ab9eea3c7fc0
-    jinja: 'Between the first sentence and the second sentence, which one is grammatically
-      correct?
-
-      Sentence 1 - {{sentence_bad}}
-
-      Sentence 2 - {{sentence_good}}
-
-
-      Answer - |||
-
-      Sentence 2'
-    metadata: !TemplateMetadata
-      choices_in_prompt: true
-      metrics:
-      - Accuracy
-      original_task: true
-    name: adjunct_bad_first_1
-    reference: ''
-  d6195bf0-b9df-456f-b66c-f22fc150aedd: !Template
-    answer_choices: null
-    id: d6195bf0-b9df-456f-b66c-f22fc150aedd
-    jinja: 'Amongst the two sentences presented below, which one is syntactically
-      correct?
-
-
-      Sentence 1 - {{sentence_good}}
-
-      Sentence 2 - {{sentence_bad}}
-
-
-      Answer - |||
-
-      Sentence 1'
-    metadata: !TemplateMetadata
-      choices_in_prompt: true
-      metrics:
-      - Accuracy
-      original_task: true
-    name: adjunct_good_first_2
-    reference: ''
   3d2821a7-1c9c-44dd-ad23-e964b0998d1b: !Template
     answer_choices: A ||| B
     id: 3d2821a7-1c9c-44dd-ad23-e964b0998d1b
@@ -97,7 +11,7 @@ templates:
       choices_in_prompt: true
       metrics:
       - Accuracy
-      original_task: false
+      original_task: true
     name: 'A/B choice 2 (bad-good, answer: B)'
     reference: ''
   41594c98-baea-4b1f-a631-27842cd363fd: !Template
@@ -110,8 +24,86 @@ templates:
       choices_in_prompt: true
       metrics:
       - Accuracy
-      original_task: false
+      original_task: true
     name: 'B/A choice 1 (good-bad, answer: A)'
+    reference: ''
+  6e71cd4b-882c-4458-9cd4-fd83f849ad09: !Template
+    answer_choices: null
+    id: 6e71cd4b-882c-4458-9cd4-fd83f849ad09
+    jinja: '{% set shuffled_order = [0, 1] | random %}
+
+      Between the two sentences, which one is grammatical? Please answer 1 or 2.
+
+      {% if shuffled_order == 0 %}
+
+      1: {{ sentence_good }}
+
+      2: {{ sentence_bad }}
+
+      {% else %}
+
+      1: {{ sentence_bad }}
+
+      2: {{ sentence_good }}
+
+      {% endif %}
+
+      |||
+
+      {% if shuffled_order == 0 %}
+
+      1
+
+      {% else %}
+
+      2
+
+      {% endif %}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
+      original_task: true
+    name: random_choice_1_2_2
+    reference: ''
+  7ed733fd-524c-4f00-800f-77a7a862ab4a: !Template
+    answer_choices: null
+    id: 7ed733fd-524c-4f00-800f-77a7a862ab4a
+    jinja: '{% set shuffled_order = [0, 1] | random %}
+
+      Which one of the following sentences is grammatical? Please answer 1 or 2.
+
+      {% if shuffled_order == 0 %}
+
+      1: {{ sentence_good }}
+
+      2: {{ sentence_bad }}
+
+      {% else %}
+
+      1: {{ sentence_bad }}
+
+      2: {{ sentence_good }}
+
+      {% endif %}
+
+      |||
+
+      {% if shuffled_order == 0 %}
+
+      1
+
+      {% else %}
+
+      2
+
+      {% endif %}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
+      original_task: true
+    name: random_choice_1_2
     reference: ''
   88abc121-43ea-4b67-92e3-d762884d391d: !Template
     answer_choices: B ||| A
@@ -123,7 +115,7 @@ templates:
       choices_in_prompt: true
       metrics:
       - Accuracy
-      original_task: false
+      original_task: true
     name: 'B/A choice, 2 (bad-good, answer: B)'
     reference: ''
   8f354d74-5ffb-4cbc-b119-b79f2db00df3: !Template
@@ -137,6 +129,45 @@ templates:
       - Accuracy
       original_task: false
     name: Yes/No binary judgment for bad sentences
+    reference: ''
+  967ca4e2-162f-4365-a1f5-2c87c0e874ce: !Template
+    answer_choices: null
+    id: 967ca4e2-162f-4365-a1f5-2c87c0e874ce
+    jinja: '{% set shuffled_order = [0, 1] | random %}
+
+      Between the two sentences, which one is grammatical? Please answer A or B.
+
+      {% if shuffled_order == 0 %}
+
+      A: {{ sentence_good }}
+
+      B: {{ sentence_bad }}
+
+      {% else %}
+
+      A: {{ sentence_bad }}
+
+      B: {{ sentence_good }}
+
+      {% endif %}
+
+      |||
+
+      {% if shuffled_order == 0 %}
+
+      A
+
+      {% else %}
+
+      B
+
+      {% endif %}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
+      original_task: true
+    name: random_choice_A_B_2
     reference: ''
   a1997343-0a20-4f8c-8939-a512f0f68485: !Template
     answer_choices: Yes ||| No
@@ -160,6 +191,45 @@ templates:
       choices_in_prompt: true
       metrics:
       - Accuracy
-      original_task: false
+      original_task: true
     name: 'A/B choice 1 (good-bad, answer: A)'
+    reference: ''
+  d11a37d7-7c42-4ee0-96c5-ffd24ad7073e: !Template
+    answer_choices: null
+    id: d11a37d7-7c42-4ee0-96c5-ffd24ad7073e
+    jinja: '{% set shuffled_order = [0, 1] | random %}
+
+      Which one of the following sentences is grammatical? Please answer A or B.
+
+      {% if shuffled_order == 0 %}
+
+      A: {{ sentence_good }}
+
+      B: {{ sentence_bad }}
+
+      {% else %}
+
+      A: {{ sentence_bad }}
+
+      B: {{ sentence_good }}
+
+      {% endif %}
+
+      |||
+
+      {% if shuffled_order == 0 %}
+
+      A
+
+      {% else %}
+
+      B
+
+      {% endif %}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
+      original_task: true
+    name: random_choice_A_B
     reference: ''
