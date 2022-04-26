@@ -113,7 +113,7 @@ def filter_english_datasets():
 
     Also includes the datasets of any users listed in INCLUDED_USERS
     """
-    english_datasets = ['lince']
+    english_datasets = ["lince"]
 
     response = requests.get("https://huggingface.co/api/datasets?full=true")
     tags = response.json()
