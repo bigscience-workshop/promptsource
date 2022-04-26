@@ -26,7 +26,7 @@ env.globals.update(zip=zip)
 
 # These are users whose datasets should be included in the results returned by
 # filter_english_datasets (regardless of their metadata)
-INCLUDED_USERS = {"Zaid", "craffel", "GEM"}
+INCLUDED_USERS = {"Zaid", "craffel"}
 
 
 def highlight(input):
@@ -518,4 +518,3 @@ def get_templates_data_frame():
             data["jinja"].append(template.jinja)
 
     return pd.DataFrame(data)
-    
