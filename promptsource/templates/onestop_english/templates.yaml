@@ -17,7 +17,8 @@ templates:
       {{ answer_choices [label] }}'
     metadata: !TemplateMetadata
       choices_in_prompt: true
-      metrics: []
+      metrics:
+      - Accuracy
       original_task: true
     name: esl_context
     reference: ''
@@ -28,7 +29,7 @@ templates:
 
 
       How would you rate the difficulty level of the passage above for automatic readability
-      assessment? {{"Elementary"}}, {{"Intermediate"}} or {{"Advanced"}} level?
+      assessment? {{"Elementary"}},  {{"Intermediate"}} or {{"Advanced"}} level?
 
 
       |||
@@ -37,9 +38,35 @@ templates:
       {{ answer_choices [label] }}'
     metadata: !TemplateMetadata
       choices_in_prompt: true
-      metrics: []
+      metrics:
+      - Accuracy
       original_task: true
     name: ara_context
+    reference: ''
+  b0b076b8-b72b-4b71-8dd0-0b20877e001c: !Template
+    answer_choices: Elementary ||| Intermediate ||| Advanced
+    id: b0b076b8-b72b-4b71-8dd0-0b20877e001c
+    jinja: 'Look at the first three sentences of a story shown here: {{text.strip().split(''\n'')[:3]|join("\n")}}
+
+
+
+      Based on these three sentences alone, can you predict whether the entire story
+      is on the {{"Elementary"}}, {{"Intermediate"}} or {{"Advanced"}} level?
+
+
+
+
+
+      |||
+
+
+      {{ answer_choices [label] }}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
+      original_task: false
+    name: determine_reading_level_from_the_first_three_sentences
     reference: ''
   de75ccb8-c0ba-4510-abf8-649b42019cd5: !Template
     answer_choices: Elementary ||| Intermediate ||| Advanced
@@ -60,7 +87,8 @@ templates:
       {{ answer_choices [label] }}'
     metadata: !TemplateMetadata
       choices_in_prompt: true
-      metrics: []
+      metrics:
+      - Accuracy
       original_task: true
     name: esl_variation
     reference: ''
@@ -80,7 +108,8 @@ templates:
       {{ answer_choices [label] }}'
     metadata: !TemplateMetadata
       choices_in_prompt: true
-      metrics: []
+      metrics:
+      - Accuracy
       original_task: true
     name: assess
     reference: ''
@@ -88,12 +117,13 @@ templates:
     answer_choices: Elementary ||| Intermediate ||| Advanced
     id: fdc96a76-6415-437b-bf61-ef6d1d1b8645
     jinja: "Consider the following text passage: \n\n\"{{text}}\"\n\nHow would you\
-      \ assess the difficulty level for the task of generating a simplified version\
-      \ of the text passage above? Would it be at the {{\"Elementary\"}}, {{\"Intermediate\"\
-      }} or {{\"Advanced\"}} level?\n\n|||\n\n{{ answer_choices [label] }}"
+      \ assess the difficulty level for the task of simplifying the text passage above?\
+      \ Would it be at the {{\"Elementary\"}}, {{\"Intermediate\"}} or {{\"Advanced\"\
+      }} level?\n\n|||\n\n{{ answer_choices [label] }}"
     metadata: !TemplateMetadata
       choices_in_prompt: true
-      metrics: []
+      metrics:
+      - Accuracy
       original_task: true
     name: ats
     reference: ''

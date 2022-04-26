@@ -1,8 +1,10 @@
 # coding=utf-8
+import os
 
 import datasets
 import requests
 
+from promptsource import DEFAULT_PROMPTSOURCE_CACHE_HOME
 from promptsource.templates import INCLUDED_USERS
 
 
@@ -33,12 +35,12 @@ def renameDatasetColumn(dataset):
 
 def get_dataset_builder(path, conf=None):
     "Get a dataset builder from name and conf."
-    module_path = datasets.load.prepare_module(path, dataset=True)
-    builder_cls = datasets.load.import_main_class(module_path[0], dataset=True)
+    module_path = datasets.load.dataset_module_factory(path)
+    builder_cls = datasets.load.import_main_class(module_path.module_path, dataset=True)
     if conf:
-        builder_instance = builder_cls(name=conf, cache_dir=None, hash=module_path[1])
+        builder_instance = builder_cls(name=conf, cache_dir=None, hash=module_path.hash)
     else:
-        builder_instance = builder_cls(cache_dir=None, hash=module_path[1])
+        builder_instance = builder_cls(cache_dir=None, hash=module_path.hash)
     return builder_instance
 
 
@@ -49,14 +51,35 @@ def get_dataset(path, conf=None):
         builder_instance.download_and_prepare()
         return builder_instance.as_dataset()
     else:
-        return datasets.load_dataset(path, conf)
+        return load_dataset(path, conf)
+
+
+def load_dataset(dataset_name, subset_name):
+    try:
+        return datasets.load_dataset(dataset_name, subset_name)
+    except datasets.builder.ManualDownloadError:
+        cache_root_dir = (
+            os.environ["PROMPTSOURCE_MANUAL_DATASET_DIR"]
+            if "PROMPTSOURCE_MANUAL_DATASET_DIR" in os.environ
+            else DEFAULT_PROMPTSOURCE_CACHE_HOME
+        )
+        data_dir = (
+            f"{cache_root_dir}/{dataset_name}"
+            if subset_name is None
+            else f"{cache_root_dir}/{dataset_name}/{subset_name}"
+        )
+        return datasets.load_dataset(
+            dataset_name,
+            subset_name,
+            data_dir=data_dir,
+        )
 
 
 def get_dataset_confs(path):
     "Get the list of confs for a dataset."
-    module_path = datasets.load.prepare_module(path, dataset=True)
+    module_path = datasets.load.dataset_module_factory(path).module_path
     # Get dataset builder class from the processing script
-    builder_cls = datasets.load.import_main_class(module_path[0], dataset=True)
+    builder_cls = datasets.load.import_main_class(module_path, dataset=True)
     # Instantiate the dataset builder
     confs = builder_cls.BUILDER_CONFIGS
     if confs and len(confs) > 1:
@@ -105,9 +128,9 @@ def filter_english_datasets():
                 english_datasets.append(dataset_name)
             continue
 
-        if "card_data" not in dataset:
+        if "cardData" not in dataset:
             continue
-        metadata = dataset["card_data"]
+        metadata = dataset["cardData"]
 
         if "languages" not in metadata:
             continue
