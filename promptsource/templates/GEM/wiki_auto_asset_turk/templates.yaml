@@ -1,0 +1,245 @@
+dataset: GEM/wiki_auto_asset_turk
+templates:
+  1718a90d-5feb-4117-a2ba-455f5bc37f74: !Template
+    answer_choices: null
+    id: 1718a90d-5feb-4117-a2ba-455f5bc37f74
+    jinja: '{% set real_simplifications = [] %}{% for text in references %}{% if text|length
+      < source |length %}{{real_simplifications.append(text) | default("", True)}}{%
+      endif %}{% endfor %}
+
+      {% if real_simplifications %}
+
+      Make a more intricate version of the passage below:
+
+
+      {{references | choice}}
+
+
+      |||
+
+
+      {{source}}
+
+      {% endif %}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      - Accuracy
+      original_task: false
+    name: simplification-to-intricate
+    reference: more-intricate
+  310f6c1f-1cf7-4232-9c60-7fce5d3b245d: !Template
+    answer_choices: null
+    id: 310f6c1f-1cf7-4232-9c60-7fce5d3b245d
+    jinja: 'I''d like to explain to my child "{{source}}". How would I do so?
+
+
+      |||
+
+
+      {{references | choice}}
+
+      '
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      - ROUGE
+      original_task: true
+    name: original-task-implicit
+    reference: implicit-child-explanation
+  4decf2de-8775-4ee4-990e-4bc9b9aab13c: !Template
+    answer_choices: A ||| B
+    id: 4decf2de-8775-4ee4-990e-4bc9b9aab13c
+    jinja: '{% set rand_num = range(0,2) | choice  %}
+
+      {% set real_simplifications = references %}
+
+      {% if real_simplifications %}
+
+      Which would you say of A and B is the more intricate text?
+
+      {% if rand_num %}
+
+      A: {{real_simplifications | choice}}
+
+
+      B: {{source}}
+
+      {% else %}
+
+      A: {{source}}
+
+
+      B: {{real_simplifications | choice}}
+
+      {% endif %}
+
+      |||
+
+      {{ answer_choices[rand_num] }}
+
+      {% endif %}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
+      original_task: false
+    name: choose-intricate
+    reference: ''
+  5a9e75b2-fd42-421e-a15c-094fd1ca1241: !Template
+    answer_choices: null
+    id: 5a9e75b2-fd42-421e-a15c-094fd1ca1241
+    jinja: '{% set real_simplifications = [] %}{% for text in references %}{% if text|length
+      < source |length %}{{real_simplifications.append(text) | default("", True)}}{%
+      endif %}{% endfor %}
+
+      {% if real_simplifications %}
+
+      Make the sentence below more verbose:
+
+
+      {{references | choice}}
+
+
+      |||
+
+
+      {{source}}
+
+      {% endif %}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      - ROUGE
+      original_task: false
+    name: simplification-to-verbose
+    reference: Make the simplified text more verbose
+  7c74a045-3b5e-4a5d-922c-f9c13da27fbc: !Template
+    answer_choices: A ||| B
+    id: 7c74a045-3b5e-4a5d-922c-f9c13da27fbc
+    jinja: '{% set rand_num = range(0,2) | choice %}
+
+      {% set real_simplifications = references %}
+
+      {% if real_simplifications %}
+
+      One of the following two sentences is more simple than the other. Which one
+      is it?
+
+      {% if rand_num %}
+
+      A: {{real_simplifications | choice}}
+
+
+      B: {{source}}
+
+      {% else %}
+
+      A: {{source}}
+
+
+      B: {{real_simplifications | choice}}
+
+      {% endif %}
+
+      |||
+
+      {{ answer_choices[1-rand_num] }}
+
+      {% endif %}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      metrics: []
+      original_task: false
+    name: choose-simplification
+    reference: ''
+  85fc6db4-cdb1-4f9a-95d4-700c70025d19: !Template
+    answer_choices: null
+    id: 85fc6db4-cdb1-4f9a-95d4-700c70025d19
+    jinja: "{{source}}\n\nELI5 this passage:\n\n      |||\n\n      {{references |\
+      \ choice}}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      - ROUGE
+      original_task: true
+    name: ELI5
+    reference: ELI5
+  a38ba780-e0a3-4353-b22f-930acfe0dcdd: !Template
+    answer_choices: A ||| B
+    id: a38ba780-e0a3-4353-b22f-930acfe0dcdd
+    jinja: '{% set rand_num = range(0,2) | choice  %}
+
+      {% set real_simplifications = references %}
+
+      {% if real_simplifications %}
+
+      One of the following two sentences is more verbose than the other. Which one
+      is it?
+
+      {% if rand_num %}
+
+      A: {{real_simplifications | choice}}
+
+
+      B: {{source}}
+
+      {% else %}
+
+      A: {{source}}
+
+
+      B: {{real_simplifications | choice}}
+
+      {% endif %}
+
+      |||
+
+      {{ answer_choices[rand_num] }}
+
+      {% endif %}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
+      original_task: false
+    name: choose-verbose
+    reference: Identify Verbose Text
+  a7fc008f-8abe-4adc-852b-40b080eb9251: !Template
+    answer_choices: null
+    id: a7fc008f-8abe-4adc-852b-40b080eb9251
+    jinja: ' "{{source}}"
+
+
+      Please explain this in a more easily understandable way.
+
+
+      |||
+
+
+      {{references | choice}}
+
+      '
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics: []
+      original_task: false
+    name: explanation-implicit
+    reference: ''
+  ae3fa65b-d9c2-4611-804c-3b078eb13ae7: !Template
+    answer_choices: null
+    id: ae3fa65b-d9c2-4611-804c-3b078eb13ae7
+    jinja: "Rewrite the following text in simple English:\n\n\"{{source}}\"\n\n  \
+      \    |||\n\n      {{references | choice}}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      - ROUGE
+      original_task: true
+    name: simple-english
+    reference: ''
