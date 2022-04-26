@@ -1,0 +1,63 @@
+dataset: lince
+subset: sa_spaeng
+templates:
+  24eba864-8859-4a15-a7a9-0fdf42d9f6cf: !Template
+    answer_choices: null
+    id: 24eba864-8859-4a15-a7a9-0fdf42d9f6cf
+    jinja: '{{words | join(" ") }} What is the sentiment expressed by the original
+      poster? ||| {{ sa }}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - Accuracy
+      original_task: true
+    name: original poster expressed sentiment
+    reference: imdb
+  29756194-c221-48b8-8d25-db1e681d9eeb: !Template
+    answer_choices: null
+    id: 29756194-c221-48b8-8d25-db1e681d9eeb
+    jinja: '{{words | join(" ") }} What sentiment is this post trying to express?
+      ||| {{ sa }}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - Accuracy
+      original_task: true
+    name: sentiment trying to express
+    reference: ''
+  52708ad1-0029-4d97-a5e9-e179da16e452: !Template
+    answer_choices: positive ||| negative ||| neutral
+    id: 52708ad1-0029-4d97-a5e9-e179da16e452
+    jinja: "{{ words | join(\" \") }} This is definitely \n||| \n{% if sa == \"negative\"\
+      \ %} \nnot a positive post. \n{% elif sa == \"positive\" %} \nnot a negative\
+      \ post. \n{% else %} \na neutral post.\n{% endif %}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - Accuracy
+      original_task: true
+    name: negation template
+    reference: imdb
+  5dd871bc-140e-43a1-bf8d-6139863d85cd: !Template
+    answer_choices: null
+    id: 5dd871bc-140e-43a1-bf8d-6139863d85cd
+    jinja: The following post expresses what sentiment? {{words | join(" ") }} |||
+      {{ sa }}
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - Accuracy
+      original_task: true
+    name: express sentiment
+    reference: imdb
+  a036a20f-8192-4af8-83cd-e56f60fd6a0f: !Template
+    answer_choices: null
+    id: a036a20f-8192-4af8-83cd-e56f60fd6a0f
+    jinja: '{{ words | join(" ") }} The sentiment expressed in this post is ||| {{
+      sa }}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics: []
+      original_task: false
+    name: express sentiment 2
+    reference: ''
