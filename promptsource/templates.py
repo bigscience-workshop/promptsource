@@ -62,14 +62,12 @@ class Template(yaml.YAMLObject):
     def __init__(self, name, jinja, reference, metadata=None, answer_choices=None):
         """
         Creates a prompt template.
-
         A prompt template is expressed in Jinja. It is rendered using an example
         from the corresponding Hugging Face datasets library (a dictionary). The
         separator ||| should appear once to divide the template into prompt and
         output. Generally, the prompt should provide information on the desired
         behavior, e.g., text passage and instructions, and the output should be
         a desired response.
-
         :param name: unique name (per dataset) for template
         :param jinja: template expressed in Jinja
         :param reference: string describing author or paper reference for template
@@ -91,7 +89,6 @@ class Template(yaml.YAMLObject):
     def get_id(self):
         """
         Returns the id of the template
-
         :return: unique id for template
         """
         return self.id
@@ -99,7 +96,6 @@ class Template(yaml.YAMLObject):
     def get_name(self):
         """
         Returns the name of the template
-
         :return: unique (per dataset) name for template
         """
         return self.name
@@ -107,7 +103,6 @@ class Template(yaml.YAMLObject):
     def get_reference(self):
         """
         Returns the bibliographic reference (or author) for the template
-
         :return: reference as a string
         """
         return self.reference
@@ -115,7 +110,6 @@ class Template(yaml.YAMLObject):
     def get_answer_choices_expr(self):
         """
         Returns a Jinja expression for computing the answer choices from an example.
-
         :return: String, or None if no answer choices
         """
         return self.answer_choices
@@ -123,7 +117,6 @@ class Template(yaml.YAMLObject):
     def get_answer_choices_list(self, example):
         """
         Returns a list of answer choices for a given example
-
         :return: list of strings, or None if get_answer_choices_expr is None
         """
         jinja = self.get_answer_choices_expr()
@@ -156,7 +149,6 @@ class Template(yaml.YAMLObject):
     def apply(self, example, truncate=True, highlight_variables=False):
         """
         Creates a prompt by applying this template to an example
-
         :param example: the dataset example to create a prompt for
         :param truncate: if True, example fields will be truncated to TEXT_VAR_LENGTH chars
         :param highlight_variables: highlight the added variables
@@ -223,11 +215,9 @@ class Template(yaml.YAMLObject):
         ):
             """
             Initializes template metadata.
-
             In the following, trivial choices are defined as Yes/No, True/False,
             etc. and nontrivial choices are other types of choices denoted in
             the answer_choices field.
-
             :param original_task: If True, this prompt asks a model to perform the original task designed for
                 this dataset.
             :param choices_in_prompt: If True, the answer choices are included in the templates such that models
@@ -265,7 +255,6 @@ class TemplateCollection:
     def _collect_datasets(self) -> Dict[Tuple[str, str], "DatasetTemplates"]:
         """
         Initialize a DatasetTemplates object for each templates.yaml detected in the templates folder
-
         Returns: a dict with key=(dataset_name, subset_name)
         """
         dataset_folders = os.listdir(TEMPLATES_FOLDER_PATH)
@@ -275,10 +264,7 @@ class TemplateCollection:
         for dataset in dataset_folders:
             if dataset in INCLUDED_USERS:
                 for filename in os.listdir(os.path.join(TEMPLATES_FOLDER_PATH, dataset)):
-                    output = {
-                        **output,
-                        **self._collect_dataset(dataset + "/" + filename),
-                    }
+                    output = {**output, **self._collect_dataset(dataset + "/" + filename)}
             else:
                 output = {**output, **self._collect_dataset(dataset)}
         return output
@@ -297,7 +283,6 @@ class TemplateCollection:
     def get_dataset(self, dataset_name: str, subset_name: Optional[str] = None) -> "DatasetTemplates":
         """
         Return the DatasetTemplates object corresponding to the dataset name
-
         :param dataset_name: name of the dataset to get
         :param subset_name: name of the subset
         """
@@ -310,7 +295,6 @@ class TemplateCollection:
     def get_templates_count(self) -> Dict:
         """
         Return the overall number count over all datasets
-
         NB: we don't breakdown datasets into subsets for the count, i.e subsets count are included
         into the dataset count
         """
@@ -372,10 +356,7 @@ class DatasetTemplates:
         """
         Create a formatted dictionary for the class attributes
         """
-        formatted_dict = {
-            self.DATASET_KEY: self.dataset_name,
-            self.TEMPLATES_KEY: self.templates,
-        }
+        formatted_dict = {self.DATASET_KEY: self.dataset_name, self.TEMPLATES_KEY: self.templates}
         if self.subset_name:
             formatted_dict[self.SUBSET_KEY] = self.subset_name
         return formatted_dict
@@ -410,7 +391,6 @@ class DatasetTemplates:
     def add_template(self, template: "Template") -> None:
         """
         Adds a new template for the dataset
-
         :param template: template
         """
         self.templates[template.get_id()] = template
@@ -420,7 +400,6 @@ class DatasetTemplates:
     def remove_template(self, template_name: str) -> None:
         """
         Deletes a template
-
         :param template_name: name of template to remove
         """
 
@@ -448,7 +427,6 @@ class DatasetTemplates:
     ) -> None:
         """
         Updates a pre-existing template and writes changes
-
         :param current_template_name: current name of the template stored in self.templates
         :param new_template_name: new name for the template
         :param jinja: new jinja entry
@@ -490,7 +468,6 @@ class DatasetTemplates:
 def get_templates_data_frame():
     """
     Gathers all template information into a Pandas DataFrame.
-
     :return: Pandas DataFrame
     """
     data = {
