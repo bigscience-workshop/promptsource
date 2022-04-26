@@ -26,7 +26,7 @@ env.globals.update(zip=zip)
 
 # These are users whose datasets should be included in the results returned by
 # filter_english_datasets (regardless of their metadata)
-INCLUDED_USERS = {"Zaid", "craffel","GEM"}
+INCLUDED_USERS = {"Zaid", "craffel", "GEM"}
 
 
 def highlight(input):
@@ -133,7 +133,10 @@ class Template(yaml.YAMLObject):
         rtemplate = env.from_string(jinja)
         protected_example = self._escape_pipe(example)
         rendered_choices = rtemplate.render(**protected_example)
-        return [self._unescape_pipe(answer_choice.strip()) for answer_choice in rendered_choices.split("|||")]
+        return [
+            self._unescape_pipe(answer_choice.strip())
+            for answer_choice in rendered_choices.split("|||")
+        ]
 
     def get_fixed_answer_choices_list(self):
         """
@@ -149,7 +152,9 @@ class Template(yaml.YAMLObject):
         if len(variables) == 0:
             rtemplate = env.from_string(jinja)
             rendered_choices = rtemplate.render()
-            return [answer_choice.strip() for answer_choice in rendered_choices.split("|||")]
+            return [
+                answer_choice.strip() for answer_choice in rendered_choices.split("|||")
+            ]
         else:
             return None
 
@@ -166,9 +171,7 @@ class Template(yaml.YAMLObject):
 
         # Truncates the prompt if needed
         if truncate:
-            trunc_command = (
-                f" | string | truncate({TEXT_VAR_LENGTH}) }}}}"  # Escaping curly braces requires doubling them
-            )
+            trunc_command = f" | string | truncate({TEXT_VAR_LENGTH}) }}}}"  # Escaping curly braces requires doubling them
             jinja = jinja.replace("}}", trunc_command)
 
         # Highlights text that was substituted for variables, if requested
@@ -189,7 +192,9 @@ class Template(yaml.YAMLObject):
 
         # Splits on the separator, and then replaces back any occurrences of the
         # separator in the original example
-        return [self._unescape_pipe(part).strip() for part in rendered_example.split("|||")]
+        return [
+            self._unescape_pipe(part).strip() for part in rendered_example.split("|||")
+        ]
 
     pipe_protector = "3ed2dface8203c4c9dfb1a5dc58e41e0"
 
@@ -198,7 +203,9 @@ class Template(yaml.YAMLObject):
         # Replaces any occurrences of the "|||" separator in the example, which
         # which will be replaced back after splitting
         protected_example = {
-            key: value.replace("|||", cls.pipe_protector) if isinstance(value, str) else value
+            key: value.replace("|||", cls.pipe_protector)
+            if isinstance(value, str)
+            else value
             for key, value in example.items()
         }
         return protected_example
@@ -250,7 +257,9 @@ class TemplateCollection:
     def __init__(self):
 
         # Dict of all the DatasetTemplates, key is the tuple (dataset_name, subset_name)
-        self.datasets_templates: Dict[(str, Optional[str]), DatasetTemplates] = self._collect_datasets()
+        self.datasets_templates: Dict[
+            (str, Optional[str]), DatasetTemplates
+        ] = self._collect_datasets()
 
     @property
     def keys(self):
@@ -269,13 +278,20 @@ class TemplateCollection:
         Returns: a dict with key=(dataset_name, subset_name)
         """
         dataset_folders = os.listdir(TEMPLATES_FOLDER_PATH)
-        dataset_folders = [folder for folder in dataset_folders if not folder.startswith(".")]
+        dataset_folders = [
+            folder for folder in dataset_folders if not folder.startswith(".")
+        ]
 
         output = {}  # format is {(dataset_name, subset_name): DatasetsTemplates}
         for dataset in dataset_folders:
             if dataset in INCLUDED_USERS:
-                for filename in os.listdir(os.path.join(TEMPLATES_FOLDER_PATH, dataset)):
-                    output = {**output, **self._collect_dataset(dataset + "/" + filename)}
+                for filename in os.listdir(
+                    os.path.join(TEMPLATES_FOLDER_PATH, dataset)
+                ):
+                    output = {
+                        **output,
+                        **self._collect_dataset(dataset + "/" + filename),
+                    }
             else:
                 output = {**output, **self._collect_dataset(dataset)}
         return output
@@ -288,10 +304,14 @@ class TemplateCollection:
                 output[(dataset, None)] = DatasetTemplates(dataset)
             else:
                 # This is a subfolder, and its name corresponds to the subset name
-                output[(dataset, filename)] = DatasetTemplates(dataset_name=dataset, subset_name=filename)
+                output[(dataset, filename)] = DatasetTemplates(
+                    dataset_name=dataset, subset_name=filename
+                )
         return output
 
-    def get_dataset(self, dataset_name: str, subset_name: Optional[str] = None) -> "DatasetTemplates":
+    def get_dataset(
+        self, dataset_name: str, subset_name: Optional[str] = None
+    ) -> "DatasetTemplates":
         """
         Return the DatasetTemplates object corresponding to the dataset name
 
@@ -300,7 +320,9 @@ class TemplateCollection:
         """
         # if the dataset does not exist, we add it
         if dataset_name not in self.keys:
-            self.datasets_templates[(dataset_name, subset_name)] = DatasetTemplates(dataset_name, subset_name)
+            self.datasets_templates[(dataset_name, subset_name)] = DatasetTemplates(
+                dataset_name, subset_name
+            )
 
         return self.datasets_templates[(dataset_name, subset_name)]
 
@@ -345,7 +367,9 @@ class DatasetTemplates:
         """
         Re-compute the name_to_id_mapping to ensure it is in sync with self.templates
         """
-        self.name_to_id_mapping = {template.name: template.id for template in self.templates.values()}
+        self.name_to_id_mapping = {
+            template.name: template.id for template in self.templates.values()
+        }
 
     @property
     def all_template_names(self) -> List[str]:
@@ -357,7 +381,9 @@ class DatasetTemplates:
     @property
     def folder_path(self) -> str:
         if self.subset_name:
-            return os.path.join(TEMPLATES_FOLDER_PATH, self.dataset_name, self.subset_name)
+            return os.path.join(
+                TEMPLATES_FOLDER_PATH, self.dataset_name, self.subset_name
+            )
         else:
             return os.path.join(TEMPLATES_FOLDER_PATH, self.dataset_name)
 
@@ -369,7 +395,10 @@ class DatasetTemplates:
         """
         Create a formatted dictionary for the class attributes
         """
-        formatted_dict = {self.DATASET_KEY: self.dataset_name, self.TEMPLATES_KEY: self.templates}
+        formatted_dict = {
+            self.DATASET_KEY: self.dataset_name,
+            self.TEMPLATES_KEY: self.templates,
+        }
         if self.subset_name:
             formatted_dict[self.SUBSET_KEY] = self.subset_name
         return formatted_dict
@@ -380,7 +409,11 @@ class DatasetTemplates:
         """
 
         if not os.path.exists(self.yaml_path):
-            dataset_name = f"{self.dataset_name} {self.subset_name}" if self.subset_name else self.dataset_name
+            dataset_name = (
+                f"{self.dataset_name} {self.subset_name}"
+                if self.subset_name
+                else self.dataset_name
+            )
             logging.warning(
                 f"Tried instantiating `DatasetTemplates` for {dataset_name}, but no prompts found. "
                 "Please ignore this warning if you are creating new prompts for this dataset."
@@ -420,7 +453,9 @@ class DatasetTemplates:
 
         # Even if we have an ID, we want to check for duplicate names
         if template_name not in self.all_template_names:
-            raise ValueError(f"No template with name {template_name} for dataset {self.dataset_name} exists.")
+            raise ValueError(
+                f"No template with name {template_name} for dataset {self.dataset_name} exists."
+            )
 
         del self.templates[self.name_to_id_mapping[template_name]]
 
