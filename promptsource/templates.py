@@ -518,3 +518,4 @@ def get_templates_data_frame():
             data["jinja"].append(template.jinja)
 
     return pd.DataFrame(data)
+    
