@@ -380,6 +380,7 @@ class DatasetTemplates:
         """
 
         if not os.path.exists(self.yaml_path):
+            print('============yaml path============', self.yaml_path)
             dataset_name = f"{self.dataset_name} {self.subset_name}" if self.subset_name else self.dataset_name
             logging.warning(
                 f"Tried instantiating `DatasetTemplates` for {dataset_name}, but no prompts found. "
