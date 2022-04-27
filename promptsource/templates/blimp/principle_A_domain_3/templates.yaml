@@ -1,30 +1,31 @@
 dataset: blimp
 subset: principle_A_domain_3
 templates:
-  03fe1aff-95fe-49a1-ab6e-5c4c16b22181: !Template
+  062eb369-a1b9-4ae5-8f89-f500ccddb0a8: !Template
     answer_choices: A ||| B
-    id: 03fe1aff-95fe-49a1-ab6e-5c4c16b22181
+    id: 062eb369-a1b9-4ae5-8f89-f500ccddb0a8
     jinja: '{% set shuffled_order = [0, 1] | random %}
 
-      Between the two sentences, which one is grammatical? Please answer A or B.
+      {% set shuffled_order_options = [0, 1] | random %}
+
+      Read the following two sentences.
 
       {% if shuffled_order == 0 %}
 
-      A: {{ sentence_good }}
+      Sentence A: {{ sentence_good }}
 
-      B: {{ sentence_bad }}
+      Sentence B: {{ sentence_bad }}
 
       {% else %}
 
-      A: {{ sentence_bad }}
+      Sentence A: {{ sentence_bad }}
 
-      B: {{ sentence_good }}
+      Sentence B: {{ sentence_good }}
 
       {% endif %}
 
-      |||
-
-      {% if shuffled_order == 0 %}
+      Which one is a better sentence of English, {% if shuffled_order_options == 0
+      %}A or B{% else %}B or A{% endif %}? ||| {% if shuffled_order == 0 %}
 
       {{ answer_choices[0] }}
 
@@ -38,85 +39,17 @@ templates:
       metrics:
       - Accuracy
       original_task: true
-    name: grammatical_between_A_B
+    name: better_A_B
     reference: ''
-  13a812d9-c450-40bd-9a25-481208c79b90: !Template
-    answer_choices: A ||| B
-    id: 13a812d9-c450-40bd-9a25-481208c79b90
-    jinja: '{% set shuffled_order = [0, 1] | random %}
-
-      Which one of the following sentences is grammatical? Please answer A or B.
-
-      {% if shuffled_order == 0 %}
-
-      A: {{ sentence_good }}
-
-      B: {{ sentence_bad }}
-
-      {% else %}
-
-      A: {{ sentence_bad }}
-
-      B: {{ sentence_good }}
-
-      {% endif %}
-
-      |||
-
-      {% if shuffled_order == 0 %}
-
-      {{ answer_choices[0] }}
-
-      {% else %}
-
-      {{ answer_choices[1] }}
-
-      {% endif %}'
-    metadata: !TemplateMetadata
-      choices_in_prompt: true
-      metrics:
-      - Accuracy
-      original_task: true
-    name: grammatical_which_one_A_B
-    reference: ''
-  146f4806-61a9-43ff-8ac4-ff7f9f5dcc2c: !Template
-    answer_choices: Yes ||| No
-    id: 146f4806-61a9-43ff-8ac4-ff7f9f5dcc2c
-    jinja: '"{% set shuffled_order = [0, 1] | random %}{% if shuffled_order == 0 %}{{
-      sentence_good }}{% else %}{{ sentence_bad }}{% endif %}"
-
-      Is this sentence a bad sentence of English, No or Yes? ||| {% if shuffled_order
-      == 0 %} {{ answer_choices[1] }} {% else %} {{ answer_choices[0] }} {% endif
-      %}'
-    metadata: !TemplateMetadata
-      choices_in_prompt: true
-      metrics:
-      - Accuracy
-      original_task: false
-    name: single_sentence_bad_no_yes
-    reference: ''
-  25f4d436-274a-4b53-a2d7-63b80bec29c4: !Template
-    answer_choices: Yes ||| No
-    id: 25f4d436-274a-4b53-a2d7-63b80bec29c4
-    jinja: '"{% set shuffled_order = [0, 1] | random %}{% if shuffled_order == 0 %}{{
-      sentence_good }}{% else %}{{ sentence_bad }}{% endif %}"
-
-      Is this sentence a bad sentence of English, Yes or No? ||| {% if shuffled_order
-      == 0 %} {{ answer_choices[1] }} {% else %} {{ answer_choices[0] }} {% endif
-      %}'
-    metadata: !TemplateMetadata
-      choices_in_prompt: true
-      metrics:
-      - Accuracy
-      original_task: false
-    name: single_sentence_bad_yes_no
-    reference: ''
-  3f900e5b-df69-459d-b305-364aa5442c77: !Template
+  54dbeaa7-cfcf-40d3-b2a8-a022b79761e4: !Template
     answer_choices: 1 ||| 2
-    id: 3f900e5b-df69-459d-b305-364aa5442c77
+    id: 54dbeaa7-cfcf-40d3-b2a8-a022b79761e4
     jinja: '{% set shuffled_order = [0, 1] | random %}
 
-      Between the two sentences, which one is grammatical? Please answer 1 or 2.
+      {% set shuffled_order_options = [0, 1] | random %}
+
+      Between the two sentences, which one is grammatical? Please answer {% if shuffled_order_options
+      == 0 %}1 or 2{% else %}2 or 1{% endif %}.
 
       {% if shuffled_order == 0 %}
 
@@ -150,45 +83,33 @@ templates:
       original_task: true
     name: grammatical_between_1_2
     reference: ''
-  417732f2-c7e3-4984-84f5-4f6c97027b67: !Template
-    answer_choices: Yes ||| No
-    id: 417732f2-c7e3-4984-84f5-4f6c97027b67
-    jinja: '"{% set shuffled_order = [0, 1] | random %}{% if shuffled_order == 0 %}{{
-      sentence_good }}{% else %}{{ sentence_bad }}{% endif %}"
-
-      Is this sentence a good sentence of English, Yes or No? ||| {% if shuffled_order
-      == 0 %} {{ answer_choices[0] }} {% else %} {{ answer_choices[1] }} {% endif
-      %}'
-    metadata: !TemplateMetadata
-      choices_in_prompt: true
-      metrics:
-      - Accuracy
-      original_task: false
-    name: single_sentence_good_yes_no
-    reference: ''
-  57f604f4-f765-4362-908a-251b0c5fa157: !Template
+  580024a2-37e4-4b2b-b8a3-42ce82e95fe8: !Template
     answer_choices: A ||| B
-    id: 57f604f4-f765-4362-908a-251b0c5fa157
+    id: 580024a2-37e4-4b2b-b8a3-42ce82e95fe8
     jinja: '{% set shuffled_order = [0, 1] | random %}
 
-      Read the following two sentences.
+      {% set shuffled_order_options = [0, 1] | random %}
+
+      Between the two sentences, which one is grammatical? Please answer {% if shuffled_order_options
+      == 0 %}A or B{% else %}B or A{% endif %}.
 
       {% if shuffled_order == 0 %}
 
-      Sentence A: {{ sentence_good }}
+      A: {{ sentence_good }}
 
-      Sentence B: {{ sentence_bad }}
+      B: {{ sentence_bad }}
 
       {% else %}
 
-      Sentence A: {{ sentence_bad }}
+      A: {{ sentence_bad }}
 
-      Sentence B: {{ sentence_good }}
+      B: {{ sentence_good }}
 
       {% endif %}
 
-      Which one is a better sentence of English, A or B? ||| {% if shuffled_order
-      == 0 %}
+      |||
+
+      {% if shuffled_order == 0 %}
 
       {{ answer_choices[0] }}
 
@@ -202,14 +123,110 @@ templates:
       metrics:
       - Accuracy
       original_task: true
-    name: better_A_B
+    name: grammatical_between_A_B
     reference: ''
-  57fb6288-488c-42af-b259-681edc6222a7: !Template
-    answer_choices: 1 ||| 2
-    id: 57fb6288-488c-42af-b259-681edc6222a7
+  72a0475b-45ca-4a3f-a2a9-89be9ba1a1dd: !Template
+    answer_choices: '{{ sentence_good }} ||| {{sentence_bad}}'
+    id: 72a0475b-45ca-4a3f-a2a9-89be9ba1a1dd
+    jinja: ' ||| {{ sentence_good }}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - Accuracy
+      original_task: true
+    name: null_prompt
+    reference: ''
+  a4f146f4-99fb-4461-9d0c-fa53a29d5dae: !Template
+    answer_choices: Yes ||| No
+    id: a4f146f4-99fb-4461-9d0c-fa53a29d5dae
     jinja: '{% set shuffled_order = [0, 1] | random %}
 
-      Which one of the following sentences is grammatical? Please answer 1 or 2.
+      {% set shuffled_order_options = [0, 1] | random %}
+
+      "{% if shuffled_order == 0 %}{{ sentence_good }}{% else %}{{ sentence_bad }}{%
+      endif %}"
+
+      Is this sentence a good sentence of English, {% if shuffled_order_options ==
+      0 %}Yes or No{% else %}No or Yes{% endif %}? ||| {% if shuffled_order == 0 %}
+      {{ answer_choices[0] }} {% else %} {{ answer_choices[1] }} {% endif %}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
+      original_task: false
+    name: single_sentence_good_yes_no
+    reference: ''
+  b9c16798-57fe-4958-82f4-d7d3e508909c: !Template
+    answer_choices: A ||| B
+    id: b9c16798-57fe-4958-82f4-d7d3e508909c
+    jinja: '{% set shuffled_order = [0, 1] | random %}
+
+      {% set shuffled_order_options = [0, 1] | random %}
+
+      Which one of the following sentences is grammatical? Please answer {% if shuffled_order_options
+      == 0 %}A or B{% else %}B or A{% endif %}.
+
+      {% if shuffled_order == 0 %}
+
+      A: {{ sentence_good }}
+
+      B: {{ sentence_bad }}
+
+      {% else %}
+
+      A: {{ sentence_bad }}
+
+      B: {{ sentence_good }}
+
+      {% endif %}
+
+      |||
+
+      {% if shuffled_order == 0 %}
+
+      {{ answer_choices[0] }}
+
+      {% else %}
+
+      {{ answer_choices[1] }}
+
+      {% endif %}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
+      original_task: true
+    name: grammatical_which_one_A_B
+    reference: ''
+  eb65f770-e750-4948-879f-654edc782d5f: !Template
+    answer_choices: Yes ||| No
+    id: eb65f770-e750-4948-879f-654edc782d5f
+    jinja: '{% set shuffled_order = [0, 1] | random %}
+
+      {% set shuffled_order_options = [0, 1] | random %}
+
+      "{% if shuffled_order == 0 %}{{ sentence_good }}{% else %}{{ sentence_bad }}{%
+      endif %}"
+
+      Is this sentence a bad sentence of English, {% if shuffled_order_options ==
+      0 %}Yes or No{% else %}No or Yes{% endif %}? ||| {% if shuffled_order == 0 %}
+      {{ answer_choices[1] }} {% else %} {{ answer_choices[0] }} {% endif %}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
+      original_task: false
+    name: single_sentence_bad_yes_no
+    reference: ''
+  f00d14a7-110c-4ee6-98e8-24437696bff2: !Template
+    answer_choices: 1 ||| 2
+    id: f00d14a7-110c-4ee6-98e8-24437696bff2
+    jinja: '{% set shuffled_order = [0, 1] | random %}
+
+      {% set shuffled_order_options = [0, 1] | random %}
+
+      Which one of the following sentences is grammatical? Please answer {% if shuffled_order_options
+      == 0 %}1 or 2{% else %}2 or 1{% endif %}.
 
       {% if shuffled_order == 0 %}
 
@@ -242,80 +259,4 @@ templates:
       - Accuracy
       original_task: true
     name: grammatical_which_one_1_2
-    reference: ''
-  683faa0d-31fc-465f-ad84-da5a62b83a83: !Template
-    answer_choices: A ||| B
-    id: 683faa0d-31fc-465f-ad84-da5a62b83a83
-    jinja: '{% set shuffled_order = [0, 1] | random %}
-
-      Read the following two sentences.
-
-      {% if shuffled_order == 0 %}
-
-      Sentence A: {{ sentence_good }}
-
-      Sentence B: {{ sentence_bad }}
-
-      {% else %}
-
-      Sentence A: {{ sentence_bad }}
-
-      Sentence B: {{ sentence_good }}
-
-      {% endif %}
-
-      Which one is a better sentence of English, B or A? ||| {% if shuffled_order
-      == 0 %}
-
-      {{ answer_choices[0] }}
-
-      {% else %}
-
-      {{ answer_choices[1] }}
-
-      {% endif %}'
-    metadata: !TemplateMetadata
-      choices_in_prompt: true
-      metrics:
-      - Accuracy
-      original_task: true
-    name: better_B_A
-    reference: ''
-  77c5d27f-4438-4fd2-a1a8-896da83de7d0: !Template
-    answer_choices: '{{ sentence_good }} ||| {{sentence_bad}}'
-    id: 77c5d27f-4438-4fd2-a1a8-896da83de7d0
-    jinja: ' ||| {{ sentence_good }}'
-    metadata: !TemplateMetadata
-      choices_in_prompt: false
-      metrics:
-      - Accuracy
-      original_task: true
-    name: true_null_prompt
-    reference: ''
-  846c2936-6e97-43a9-9e4a-1fe40387bffb: !Template
-    answer_choices: '{{ sentence_good }} ||| {{sentence_bad}}'
-    id: 846c2936-6e97-43a9-9e4a-1fe40387bffb
-    jinja: '" ||| {{ sentence_good }}'
-    metadata: !TemplateMetadata
-      choices_in_prompt: false
-      metrics:
-      - Accuracy
-      original_task: true
-    name: null_prompt
-    reference: ''
-  a56dac22-38e6-4752-873a-51d024298c21: !Template
-    answer_choices: Yes ||| No
-    id: a56dac22-38e6-4752-873a-51d024298c21
-    jinja: '"{% set shuffled_order = [0, 1] | random %}{% if shuffled_order == 0 %}{{
-      sentence_good }}{% else %}{{ sentence_bad }}{% endif %}"
-
-      Is this sentence a good sentence of English, No or Yes? ||| {% if shuffled_order
-      == 0 %} {{ answer_choices[0] }} {% else %} {{ answer_choices[1] }} {% endif
-      %}'
-    metadata: !TemplateMetadata
-      choices_in_prompt: true
-      metrics:
-      - Accuracy
-      original_task: false
-    name: single_sentence_good_no_yes
     reference: ''
