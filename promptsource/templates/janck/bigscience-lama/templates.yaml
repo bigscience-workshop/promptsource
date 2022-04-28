@@ -1,5 +1,17 @@
 dataset: janck/bigscience-lama
 templates:
+  22ae7b22-f3d6-4b95-9094-251210b1841f: !Template
+    answer_choices: null
+    id: 22ae7b22-f3d6-4b95-9094-251210b1841f
+    jinja: "{{ template | replace(\"[X]\",sub_label) | replace(\"[Y] \", \"[MASK]\"\
+      )}} What could be a missing word at [MASK]?\n ||| {{obj_label}}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - Accuracy
+      original_task: false
+    name: fill mask template 2
+    reference: ''
   45e1b98e-6c2e-4ea9-b4f1-f34322c6b5ac: !Template
     answer_choices: null
     id: 45e1b98e-6c2e-4ea9-b4f1-f34322c6b5ac
@@ -13,6 +25,41 @@ templates:
       original_task: false
     name: fill mask template
     reference: adapted original prompts
+  48d509af-dad0-47aa-a865-00feeffe4b4c: !Template
+    answer_choices: null
+    id: 48d509af-dad0-47aa-a865-00feeffe4b4c
+    jinja: "{{ question | replace(\"[X]\",sub_label) }} \n||| {{obj_label}}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - Accuracy
+      original_task: false
+    name: question prompt 2
+    reference: ''
+  bdec8e41-8b88-441d-80a2-47f808a9aecc: !Template
+    answer_choices: null
+    id: bdec8e41-8b88-441d-80a2-47f808a9aecc
+    jinja: "Please provide a single answer to this question: {{ question | replace(\"\
+      [X]\",sub_label) }} \n      ||| {{obj_label}}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - Accuracy
+      original_task: false
+    name: question prompt 3
+    reference: ''
+  d1459985-bc75-4779-b6a1-a5fee106bd13: !Template
+    answer_choices: null
+    id: d1459985-bc75-4779-b6a1-a5fee106bd13
+    jinja: "{{ template | replace(\"[X]\",sub_label) | replace(\"[Y] \", \"[MASK]\"\
+      )}} Suggest a missing word at [MASK].\n ||| {{obj_label}}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - Accuracy
+      original_task: false
+    name: fill mask template 3
+    reference: ''
   e2706c67-b83d-4425-9859-bdba13ca6dc2: !Template
     answer_choices: null
     id: e2706c67-b83d-4425-9859-bdba13ca6dc2
