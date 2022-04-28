@@ -25,6 +25,7 @@ templates:
       choices_in_prompt: false
       metrics:
       - BLEU
+      - ROUGE
       original_task: false
     name: simplification-to-intricate
     reference: more-intricate
@@ -48,6 +49,46 @@ templates:
       original_task: true
     name: original-task-implicit
     reference: implicit-child-explanation
+  4decf2de-8775-4ee4-990e-4bc9b9aab13c: !Template
+    answer_choices: A ||| B
+    id: 4decf2de-8775-4ee4-990e-4bc9b9aab13c
+    jinja: '{% set rand_num = range(0,2) | choice  %}
+
+      {% set real_simplifications = references %}
+
+      {% if real_simplifications %}
+
+      Which would you say of A and B is the more intricate text?
+
+      {% if rand_num %}
+
+      A: {{real_simplifications | choice}}
+
+
+      B: {{source}}
+
+      {% else %}
+
+      A: {{source}}
+
+
+      B: {{real_simplifications | choice}}
+
+      {% endif %}
+
+      |||
+
+      {{ answer_choices[rand_num] }}
+
+      {% endif %}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      metrics:
+      - BLEU
+      - ROUGE
+      original_task: false
+    name: choose-intricate
+    reference: ''
   5a9e75b2-fd42-421e-a15c-094fd1ca1241: !Template
     answer_choices: null
     id: 5a9e75b2-fd42-421e-a15c-094fd1ca1241
@@ -129,6 +170,47 @@ templates:
       original_task: true
     name: ELI5
     reference: ELI5
+  a38ba780-e0a3-4353-b22f-930acfe0dcdd: !Template
+    answer_choices: A ||| B
+    id: a38ba780-e0a3-4353-b22f-930acfe0dcdd
+    jinja: '{% set rand_num = range(0,2) | choice  %}
+
+      {% set real_simplifications = references %}
+
+      {% if real_simplifications %}
+
+      One of the following two sentences is more verbose than the other. Which one
+      is it?
+
+      {% if rand_num %}
+
+      A: {{real_simplifications | choice}}
+
+
+      B: {{source}}
+
+      {% else %}
+
+      A: {{source}}
+
+
+      B: {{real_simplifications | choice}}
+
+      {% endif %}
+
+      |||
+
+      {{ answer_choices[rand_num] }}
+
+      {% endif %}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      metrics:
+      - BLEU
+      - ROUGE
+      original_task: false
+    name: choose-verbose
+    reference: Identify Verbose Text
   a7fc008f-8abe-4adc-852b-40b080eb9251: !Template
     answer_choices: null
     id: a7fc008f-8abe-4adc-852b-40b080eb9251
