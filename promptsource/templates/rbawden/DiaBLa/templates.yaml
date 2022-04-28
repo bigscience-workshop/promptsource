@@ -51,10 +51,10 @@ templates:
   123f36ee-c808-4cf0-aa5c-ed1f03ac3b69: !Template
     answer_choices: yes || no
     id: 123f36ee-c808-4cf0-aa5c-ed1f03ac3b69
-    jinja: "{% if utterance_meta.lang == \"english\" %}\n{% set options = [\"word\
-      \ choice\", \"grammar\", \"style\", \"coherence\", \"meaning\"] %}\n{% set label\
-      \ = range(0,5)|random %}\n{% if options[label] in utterance_meta.eval_problems\
-      \ %}{% set reply=0 %}{% else %}{% set reply=1 %}{% endif %}\n{% if utterance_meta.eval_problems|length\
+    jinja: "{% set options = [\"word choice\", \"grammar\", \"style\", \"coherence\"\
+      , \"meaning\"] %}\n{% set label = range(0,5)|random %}\n{% if utterance_meta.lang\
+      \ == \"english\" %}\n{% if options[label] in utterance_meta.eval_problems %}{%\
+      \ set reply=0 %}{% else %}{% set reply=1 %}{% endif %}\n{% if utterance_meta.eval_problems|length\
       \ > 0 %}\n{% if dialogue_history|length > 0 %}\nGiven the following dialogue\
       \ between person A and person B:\n\n{% set first_lang=dialogue_history[-5:][0].utterance_meta.lang\
       \ %}{% for previous in dialogue_history[-5:] %}{% if previous.utterance_meta.lang\
@@ -191,7 +191,7 @@ templates:
   6a01fbe6-d5ec-4ad9-a2ee-3c48ed095885: !Template
     answer_choices: null
     id: 6a01fbe6-d5ec-4ad9-a2ee-3c48ed095885
-    jinja: '{% set previous_ref = "" %}
+    jinja: '{% set previous_ref = "" %}{% set other_lang = "" %}
 
       {% if dialogue_history|length > 0 %}{% if utterance_meta.lang == "french" %}{%
       set other_lang = "English" %}{% else %}{% set other_lang = "French" %}{% endif
@@ -367,11 +367,11 @@ templates:
   ac4c63da-32d2-40ac-aa7a-632e8ba42b4a: !Template
     answer_choices: A ||| B
     id: ac4c63da-32d2-40ac-aa7a-632e8ba42b4a
-    jinja: '{% if ref != mt %}
+    jinja: '{% set label = range(0,2)|random %}
+
+      {% if ref != mt %}
 
       Which of the following translations of "{{ orig }}" is produced automatically?
-
-      {% set label = range(0,2)|random %}
 
       {{ "A" }}) {% if label == 0 %}{{ ref }}{% else %}{{ mt }}{% endif %}
 
@@ -431,10 +431,10 @@ templates:
   dddd6f35-5a01-431b-b59b-e9a8e76377aa: !Template
     answer_choices: yes || no
     id: dddd6f35-5a01-431b-b59b-e9a8e76377aa
-    jinja: "{% if utterance_meta.lang == \"french\" %}\n{% set options = [\"word choice\"\
-      , \"grammar\", \"style\", \"coherence\", \"meaning\"] %}\n{% set label = range(0,5)|random\
-      \ %}\n{% if options[label] in utterance_meta.eval_problems %}{% set reply=0\
-      \ %}{% else %}{% set reply=1 %}{% endif %}\n{% if utterance_meta.eval_problems|length\
+    jinja: "{% set options = [\"word choice\", \"grammar\", \"style\", \"coherence\"\
+      , \"meaning\"] %}\n{% set label = range(0,5)|random %}\n{% if utterance_meta.lang\
+      \ == \"french\" %}\n{% if options[label] in utterance_meta.eval_problems %}{%\
+      \ set reply=0 %}{% else %}{% set reply=1 %}{% endif %}\n{% if utterance_meta.eval_problems|length\
       \ > 0 %}\n{% if dialogue_history|length > 0 %}\nGiven the following dialogue\
       \ between person A and person B:\n\n{% set first_lang=dialogue_history[-5:][0].utterance_meta.lang\
       \ %}{% for previous in dialogue_history[-5:] %}{% if previous.utterance_meta.lang\
@@ -455,7 +455,7 @@ templates:
   eea8f47e-9bf5-4423-980b-58a9635c1f49: !Template
     answer_choices: 1 previous context (same language) used for analogy, both directions
     id: eea8f47e-9bf5-4423-980b-58a9635c1f49
-    jinja: '{% set previous_ref = "" %}
+    jinja: '{% set previous_ref = "" %}{% set other_lang = "" %}
 
       {% if dialogue_history|length > 0 %}
 
