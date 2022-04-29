@@ -4,8 +4,9 @@ templates:
   38342608-5cd7-4ce7-b2e1-905ecd7f4c80: !Template
     answer_choices: null
     id: 38342608-5cd7-4ce7-b2e1-905ecd7f4c80
-    jinja: "{{input | join(\", \")}}\nThe above is a collection of relations. Write\
-      \ descriptive English that contains this information.\n ||| {{references | choice}}"
+    jinja: "{{input | join(\"; \")}}\nThe above is a collection of relations. Write\
+      \ descriptive English that contains this information.\n{% for i in references\
+      \ %}\n  ||| {{ i }} \n{% endfor %}"
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
@@ -14,17 +15,33 @@ templates:
       original_task: true
     name: implicit-graph-description
     reference: ''
+  3e41305c-5461-4cf3-853d-8a6fb5747623: !Template
+    answer_choices: null
+    id: 3e41305c-5461-4cf3-853d-8a6fb5747623
+    jinja: "I will verbalize an abstract representation of a sentence in natural language.\
+      \ To do so, I will first show the representation and then the natural language.\
+      \ The text needs to include all of the information in the representation.\n\n\
+      {{input | join(\", \")}} {% for i in references %}\n  ||| {{ i }} \n{% endfor\
+      \ %}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      - ROUGE
+      original_task: true
+    name: PALM_prompt
+    reference: used-in-PALM
   426b682e-e801-4e8d-9ac3-5b676c9d3da2: !Template
     answer_choices: null
     id: 426b682e-e801-4e8d-9ac3-5b676c9d3da2
-    jinja: "A semantic triple, or RDF triple or simply triple, is the atomic data\
-      \ entity in the Resource Description Framework (RDF) data model. As its name\
-      \ indicates, a triple is a set of three entities that codifies a statement about\
-      \ semantic data in the form of subject\u2013predicate\u2013object expressions.\
-      \ (e.g., \"Bob | is | 35\", or \"Bob | knows | John\"). \n\nA graph can be formed\
-      \ from a set of these triples. An example is {{input | join(\", \")}}. \n\n\
-      Write grammatical text expressing all the relations succinctly and fluently.\n\
-      \ ||| {{references | choice}}\n\n"
+    jinja: "A semantic triple is the atomic data entity in the Resource Description\
+      \ Framework (RDF) data model. As its name indicates, a triple is a set of three\
+      \ entities that codifies a statement about semantic data in the form of subject\u2013\
+      predicate\u2013object expressions. (e.g., \"Bob | is | 35\", or \"Bob | knows\
+      \ | John\"). \n\nA graph can be formed from a set of these triples. An example\
+      \ is {{input | join(\", \")}}. \n\nWrite grammatical text expressing all the\
+      \ relations succinctly and fluently.\n{% for i in references %}\n  ||| {{ i\
+      \ }} \n{% endfor %}\n\n"
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
@@ -36,14 +53,13 @@ templates:
   471c94de-2db2-48bf-a61f-89aedad19f56: !Template
     answer_choices: null
     id: 471c94de-2db2-48bf-a61f-89aedad19f56
-    jinja: "A semantic triple, or RDF triple or simply triple, is the atomic data\
-      \ entity in the Resource Description Framework (RDF) data model. As its name\
-      \ indicates, a triple is a set of three entities that codifies a statement about\
-      \ semantic data in the form of subject\u2013predicate\u2013object expressions.\
+    jinja: "A semantic triple is a set of three entities that codifies a statement\
+      \ about semantic data in the form of subject\u2013predicate\u2013object expressions.\
       \ (e.g., \"Bob | is | 35\", or \"Bob | knows | John\"). \n\nA graph to do with\
       \ {{category}}  can be formed from a set of these triples. An example is {{input\
       \ | join(\", \")}}. \n\nWrite grammatical text expressing all the relations\
-      \ succinctly and fluently.\n ||| {{references | choice}}\n\n"
+      \ succinctly and fluently.\n{% for i in references %}\n  ||| {{ i }} \n{% endfor\
+      \ %}\n\n"
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
@@ -55,9 +71,10 @@ templates:
   9415bd8a-685f-4fa4-803a-f09bd47d4603: !Template
     answer_choices: null
     id: 9415bd8a-685f-4fa4-803a-f09bd47d4603
-    jinja: 'Take the following triple set as part of a Data-to-Text task: {{input
-      | join(", ")}}. Make a lexicalization of the triple set into English sentences.
-      ||| {{references| choice}}'
+    jinja: "I am taking this tabluar data, where each row is separated by a \"|\"\
+      \ and expresses a relation between an object and a predicate : {{input | join(\"\
+      , \")}}. \n\nNow, I will produce a  of the tabular into English sentences. {%\
+      \ for i in references %}\n  ||| {{ i }} \n{% endfor %}"
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
@@ -69,10 +86,10 @@ templates:
   af519494-2a6a-4d83-a440-ee6d24df00e3: !Template
     answer_choices: null
     id: af519494-2a6a-4d83-a440-ee6d24df00e3
-    jinja: "Take the following graph comprising triple sets, where each element of\
-      \ a triple is separated  by \"|\" and each triple set by \",\": {{input | join(\"\
-      , \")}}. \n\nMake a verbalization of the triple set into plain text. ||| {{references\
-      \ | choice}}"
+    jinja: "I will take the following graph formed from relations (triples) separated\
+      \  by \"|\": {{input | join(\", \")}}. \n\nThen, I will verbalise the triple\
+      \ set into plain text. {% for i in references %}\n  ||| {{ i }} \n{% endfor\
+      \ %}"
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
@@ -85,8 +102,8 @@ templates:
     answer_choices: null
     id: afeec167-f75f-4687-a775-1efde7d04780
     jinja: "{{input | join(\", \")}}. \n\nThe above is a set of subject | predicate\
-      \ | object expressions separated by commas: \nExpress it in plain text. |||\
-      \ {{references | choice}}"
+      \ | object expressions separated by commas: \nWrite all the information in proper\
+      \ sentences.  {% for i in references %}\n  ||| {{ i }} \n{% endfor %}"
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
