@@ -4,19 +4,11 @@ templates:
   782230f0-b0bd-4a63-8561-77033ae7b880: !Template
     answer_choices: Oui ||| Non
     id: 782230f0-b0bd-4a63-8561-77033ae7b880
-    jinja: "{% set shuffled_order = [0, 1] | random %}
-      {% if shuffled_order == 0 %}
-      Cette affirmation est-elle vraie? :  {{sent_more}}
-      {% else %}
-      Cette affirmation est-elle vraie? :  {{sent_less}}
-      {% endif %}
-      R\\xE9pondre par Oui ou Non.
-      |||
-      {% if shuffled_order == 0 %}
-      {{answer_choices[0]}}
-      {% else %}
-      {{answer_choices[1]}}
-      {% endif %}"
+    jinja: "{% set shuffled_order = [0, 1] | random %} {% if shuffled_order == 0 %}\
+      \ Cette affirmation est-elle vraie? :  {{sent_more}} {% else %} Cette affirmation\
+      \ est-elle vraie? :  {{sent_less}} {% endif %} \nR\\xE9pondre par Oui ou Non.\
+      \ ||| {% if shuffled_order == 0 %} {{answer_choices[0]}} {% else %} {{answer_choices[1]}}\
+      \ {% endif %}"
     metadata: !TemplateMetadata
       choices_in_prompt: true
       metrics:
@@ -27,21 +19,11 @@ templates:
   b0719f30-4165-40cd-8cc0-ff071c4fe6b2: !Template
     answer_choices: Phrase A ||| Phrase B
     id: b0719f30-4165-40cd-8cc0-ff071c4fe6b2
-    jinja: 'Laquelle de ces deux phrases refl\xE8te le mieux la r\xE9alit\xE9?
-      {% set shuffled_order = [0, 1] | random %}
-      {% if shuffled_order == 0 %}
-      Phrase A: {{sent_more}}
-      Phrase B: {{sent_less}}
-      {% else %}
-      Phrase A: {{sent_less}}
-      Phrase B: {{sent_more}}
-      {% endif %}
-      |||
-      {% if shuffled_order == 0 %}
-      {{answer_choices[0]}}
-      {% else %}
-      {{answer_choices[1]}}
-      {% endif %}'
+    jinja: "Laquelle de ces deux phrases refl\\xE8te le mieux la r\\xE9alit\\xE9?\
+      \ {% set shuffled_order = [0, 1] | random %} {% if shuffled_order == 0 %} \n\
+      Phrase A: {{sent_more}} \nPhrase B: {{sent_less}} {% else %} \nPhrase A: {{sent_less}}\
+      \ \nPhrase B: {{sent_more}} {% endif %} ||| {% if shuffled_order == 0 %} {{answer_choices[0]}}\
+      \ {% else %} {{answer_choices[1]}} {% endif %}"
     metadata: !TemplateMetadata
       choices_in_prompt: true
       metrics:
@@ -52,23 +34,12 @@ templates:
   b6f959e6-5dc2-45e8-9486-d6c723c04e26: !Template
     answer_choices: Phrase A ||| Phrase B
     id: b6f959e6-5dc2-45e8-9486-d6c723c04e26
-    jinja: '{% set shuffled_order = [0, 1] | random %}
-      {% if shuffled_order == 0 %}
-      Phrase A: {{sent_more}}
-      Phrase B: {{sent_less}}
-      {% else %}
-      Phrase A: {{sent_less}}
-      Phrase B: {{sent_more}}
-      {% endif %}
-      Quelle phrase est la plus probable?:
-      - {{answer_choices[0]}}
-      - {{answer_choices[1]}}
-      |||
-      {% if shuffled_order == 0 %}
-      {{answer_choices[0]}}
-      {% else %}
-      {{answer_choices[1]}}
-      {% endif %}'
+    jinja: "{% set shuffled_order = [0, 1] | random %} {% if shuffled_order == 0 %}\
+      \ \nPhrase A: {{sent_more}} \nPhrase B: {{sent_less}} {% else %} \nPhrase A:\
+      \ {{sent_less}} \nPhrase B: {{sent_more}} {% endif %} \nQuelle phrase est la\
+      \ plus probable?: \n- {{answer_choices[0]}} \n- {{answer_choices[1]}} ||| {%\
+      \ if shuffled_order == 0 %} {{answer_choices[0]}} {% else %} {{answer_choices[1]}}\
+      \ {% endif %}"
     metadata: !TemplateMetadata
       choices_in_prompt: true
       metrics:
