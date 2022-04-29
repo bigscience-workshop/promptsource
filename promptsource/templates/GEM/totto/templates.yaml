@@ -3,24 +3,12 @@ templates:
   281a24d1-d4ef-46c7-8759-f3f3168426ab: !Template
     answer_choices: null
     id: 281a24d1-d4ef-46c7-8759-f3f3168426ab
-    jinja: 'Given the following details:
-
-      Table Section Title: {{table_section_title}},
-
-      {% if table_section_text != "" %}
-
-      Table Section Text: {{table_section_text}},
-
-      {% endif %}
-
-      Guess the table''s page title!
-
-      |||
-
-      {{table_page_title}}
-
-
-      '
+    jinja: "{% if table_page_title != \"\" %}\nGiven the following details:\nTable\
+      \ Section Title: {{table_section_title}},\n{% if table_section_text != \"\"\
+      \ %}\nTable Section Text: {{table_section_text}},\n{% endif %}\nand the following\
+      \ original text describing the highlighted cell of the table: \n{{sentence_annotations[0][\"\
+      original_sentence\"]}},\nCan you guess the table's page title?\n|||\n{{table_page_title}}\n\
+      {% endif %}\n\n"
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
@@ -34,6 +22,8 @@ templates:
     id: 2f1c60e2-6cd6-44c3-a722-8ccc185bce34
     jinja: 'Given the following details:
 
+      {% if table_webpage_url != "" %}
+
       Table Page Title: {{table_page_title}},
 
       Table Section Title: {{table_section_title}},
@@ -44,11 +34,17 @@ templates:
 
       {% endif %}
 
+      and the following original text describing the highlighted cell of the table:
+
+      {{sentence_annotations[0]["original_sentence"]}},
+
       Guess the URL from which this table has been extracted!
 
       |||
 
       {{table_webpage_url}}
+
+      {% endif %}
 
 
       '
@@ -63,7 +59,9 @@ templates:
   7a2fb34a-c792-41b3-9682-fcda15f1d100: !Template
     answer_choices: null
     id: 7a2fb34a-c792-41b3-9682-fcda15f1d100
-    jinja: 'Given the following details:
+    jinja: '{% if table_section_title != "" %}
+
+      Given the following details:
 
       Table Page Title: {{table_page_title}},
 
@@ -71,14 +69,19 @@ templates:
 
       Table Section Text: {{table_section_text}},
 
-      {% endif %}
+      {% endif %},
 
-      Guess the table''s section title
+      and the following original text describing the highlighted cell of the table:
+
+      {{sentence_annotations[0]["original_sentence"]}},
+
+      Can you guess the table''s section title?
 
       |||
 
       {{table_section_title}}
 
+      {% endif %}
 
       '
     metadata: !TemplateMetadata
@@ -100,7 +103,11 @@ templates:
 
       Table Section Title: {{table_section_title}},
 
-      Guess the table''s section text!
+      and the following original text describing the highlighted cell of the table:
+
+      {{sentence_annotations[0]["original_sentence"]}},
+
+      Can you guess the table''s section text?
 
       |||
 
@@ -120,7 +127,9 @@ templates:
   d2fd58d2-b7dc-4eae-b1a4-63b89126445c: !Template
     answer_choices: null
     id: d2fd58d2-b7dc-4eae-b1a4-63b89126445c
-    jinja: 'Given the following details:
+    jinja: '{% if sentence_annotations[0]["final_sentence"] != "" %}
+
+      Given the following details:
 
       Table Page Title: {{table_page_title}},
 
@@ -136,12 +145,14 @@ templates:
 
       {{sentence_annotations[0]["original_sentence"]}},
 
-      Generate a final text taking into account the context from the details given
-      above!
+      Can you generate a final text taking into account the context from the details
+      given above?
 
       |||
 
       {{sentence_annotations[0]["final_sentence"]}}
+
+      {% endif %}
 
 
       '
