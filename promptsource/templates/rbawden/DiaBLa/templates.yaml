@@ -3,25 +3,13 @@ templates:
   0e55b858-92b0-4e5b-923b-0d23518035e3: !Template
     answer_choices: null
     id: 0e55b858-92b0-4e5b-923b-0d23518035e3
-    jinja: '{% set previous_ref = "" %}
-
-      {% if utterance_meta.lang == "french" %}
-
-      {% if dialogue_history|length > 0 %}
-
-
-      "{% if utterance_meta.lang == dialogue_history[-1].utterance_meta.lang %}{{
-      dialogue_history[-1].orig }}{% set previous_ref = dialogue_history[-1].ref %}{%
-      else %}{{ dialogue_history[-1].ref }}{% set previous_ref = dialogue_history[-1].orig
-      %}{% endif %}" translates into English as: {{ previous_ref }}
-
-
-      "{{ orig }}" translates into English as: ||| {{ ref }}
-
-
-      {% endif %}
-
-      {% endif %}'
+    jinja: "{% set previous_ref = \"\" %}\n{% if dialogue_history|length > 0 %}\n\"\
+      {% if utterance_meta.lang == dialogue_history[-1].utterance_meta.lang %}{{ dialogue_history[-1].orig\
+      \ }}{% set previous_ref = dialogue_history[-1].ref %}{% else %}{{ dialogue_history[-1].ref\
+      \ }}{% set previous_ref = dialogue_history[-1].orig %}{% endif %}\" translates\
+      \ into French as: {{ previous_ref }}{% endif %}\n\n\"{{ orig }}\" translates\
+      \ into English as: ||| \n{% if utterance_meta.lang == \"french\" %}\n{% if dialogue_history|length\
+      \ > 0 %}\n{{ ref }}\n{% endif %}\n{% endif %}"
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
@@ -32,16 +20,15 @@ templates:
   0e841022-eb3c-4f5a-b57a-0cbd3d628b68: !Template
     answer_choices: null
     id: 0e841022-eb3c-4f5a-b57a-0cbd3d628b68
-    jinja: "{% set first_lang=\"\" %}\n{% if utterance_meta.lang == \"english\" %}\n\
-      {% if dialogue_history|length > 0 %}\nGiven the following dialogue between person\
-      \ A and person B:\n\n{% set first_lang=dialogue_history[-5:][0].utterance_meta.lang\
+    jinja: "{% set first_lang=\"\" %}\n{% if dialogue_history|length > 0 %}\nGiven\
+      \ the following dialogue between person A and person B:\n\n{% set first_lang=dialogue_history[-5:][0].utterance_meta.lang\
       \ %}{% for previous in dialogue_history[-5:] %}{% if previous.utterance_meta.lang\
-      \ == first_lang %}A{% else %}B{% endif %}: {{ previous.orig }}\n{% endfor %}\
-      \ \nTranslate the next utterance in the dialogue into {% if utterance_meta.lang\
-      \ == \"english\" %}French{% else %}English{% endif %}:\n{% if utterance_meta.lang\
-      \ == first_lang %}A{% else %}B{% endif %}: {{ orig }}\n\n||| {% if utterance_meta.lang\
-      \ == first_lang %}A{% else %}B{% endif %}: {{ ref }}\n{% endif %}\n{% endif\
-      \ %}"
+      \ == first_lang %}A{% else %}B{% endif %}: {{ previous.orig }}\n{% endfor %}{%\
+      \ endif %}\nTranslate the next utterance in the dialogue into French:\n{% if\
+      \ utterance_meta.lang == first_lang %}A{% else %}B{% endif %}: {{ orig }}\n\n\
+      ||| \n{% if utterance_meta.lang == \"english\" %}\n{% if dialogue_history|length\
+      \ > 0 %}\n{% if utterance_meta.lang == first_lang %}A{% else %}B{% endif %}:\
+      \ {{ ref }}\n{% endif %}\n{% endif %}"
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
@@ -52,20 +39,44 @@ templates:
   123f36ee-c808-4cf0-aa5c-ed1f03ac3b69: !Template
     answer_choices: yes || no
     id: 123f36ee-c808-4cf0-aa5c-ed1f03ac3b69
-    jinja: "{% set options = [\"word choice\", \"grammar\", \"style\", \"coherence\"\
-      , \"meaning\"] %}\n{% set label = range(0,5)|random %}\n{% set reply=0 %}\n\
-      {% set first_lang=\"\" %}\n{% if utterance_meta.lang == \"english\" %}\n{% if\
-      \ options[label] in utterance_meta.eval_problems %}{% set reply=0 %}{% else\
-      \ %}{% set reply=1 %}{% endif %}\n{% if utterance_meta.eval_problems|length\
-      \ > 0 %}\n{% if dialogue_history|length > 0 %}\nGiven the following dialogue\
-      \ between person A and person B:\n\n{% set first_lang=dialogue_history[-5:][0].utterance_meta.lang\
-      \ %}{% for previous in dialogue_history[-5:] %}{% if previous.utterance_meta.lang\
-      \ == first_lang %}A{% else %}B{% endif %}: {% if previous.utterance_meta.lang\
-      \ != utterance_meta.lang %}{{ previous.orig }}{% else %}{{ previous.mt }}{%\
-      \ endif %}{% endfor %} \n{% if utterance_meta.lang == first_lang %}A{% else\
-      \ %}B{% endif %}: {{ mt }}\n\nDoes the last utterance contain a {{ options[label]\
-      \ }} problem, {{ \"yes\" }} or {{ \"no\" }}?\n\n||| {{ [\"yes\", \"no\" ][reply]\
-      \ }}\n{% endif %}\n{% endif %}\n{% endif %}"
+    jinja: '{% set options = ["word choice", "grammar", "style", "coherence", "meaning"]
+      %}
+
+      {% set label = range(0,5)|random %}
+
+      {% set reply=0 %}
+
+      {% set first_lang="" %}
+
+
+      {% if options[label] in utterance_meta.eval_problems %}{% set reply=0 %}{% else
+      %}{% set reply=1 %}{% endif %}
+
+      {% if utterance_meta.eval_problems|length > 0 %}
+
+
+      Given the following dialogue between person A and person B:
+
+      {% if dialogue_history|length > 0 %}{% set first_lang=dialogue_history[-5:][0].utterance_meta.lang
+      %}{% for previous in dialogue_history[-5:] %}
+
+      {% if previous.utterance_meta.lang == first_lang %}A{% else %}B{% endif %}:
+      {% if previous.utterance_meta.lang != utterance_meta.lang %}{{ previous.orig
+      }}{% else %}{{ previous.mt }}{% endif %}{% endfor %}{% endif %}
+
+      {% if utterance_meta.lang == first_lang %}A{% else %}B{% endif %}: {{ mt }}
+
+
+      Does the last utterance contain a {{ options[label] }} problem, {{ "yes" }}
+      or {{ "no" }}?
+
+
+      ||| {% if utterance_meta.eval_problems|length > 0 %}{% if utterance_meta.lang
+      == "english" %}{{ ["yes", "no" ][reply] }}{% endif %}
+
+      {% endif %}
+
+      {% endif %}'
     metadata: !TemplateMetadata
       choices_in_prompt: true
       metrics:
@@ -77,17 +88,16 @@ templates:
   1798dee9-8a9c-45ed-87d8-237ec7dbf5ca: !Template
     answer_choices: null
     id: 1798dee9-8a9c-45ed-87d8-237ec7dbf5ca
-    jinja: "{% set first_lang=\"\" %}\n{% if utterance_meta.lang == \"english\" %}\n\
-      {% if dialogue_history|length > 0 %}\nGiven the following dialogue between person\
-      \ A and person B:\n\n{% set first_lang=dialogue_history[-5:][0].utterance_meta.lang\
+    jinja: "{% set first_lang=\"\" %}\n{% if dialogue_history|length > 0 %}\nGiven\
+      \ the following dialogue between person A and person B:\n\n{% set first_lang=dialogue_history[-5:][0].utterance_meta.lang\
       \ %}{% for previous in dialogue_history[-5:] %}{% if previous.utterance_meta.lang\
       \ == first_lang %}A{% else %}B{% endif %}: {% if previous.utterance_meta.lang\
       \ == utterance_meta.lang %}{{ previous.orig }}{% else %}{{ previous.ref }}{%\
-      \ endif %}\n{% endfor %} \nTranslate the next utterance in the dialogue into\
-      \ {% if utterance_meta.lang == \"english\" %}French{% else %}English{% endif\
-      \ %}:\n{% if utterance_meta.lang == first_lang %}A{% else %}B{% endif %}: {{\
-      \ orig }}\n\n||| {% if utterance_meta.lang == first_lang %}A{% else %}B{% endif\
-      \ %}: {{ ref }}\n{% endif %}\n{% endif %}\n"
+      \ endif %}\n{% endfor %}{% endif %}\nTranslate the next utterance in the dialogue\
+      \ into French:\n{% if utterance_meta.lang == first_lang %}A{% else %}B{% endif\
+      \ %}: {{ orig }}\n\n||| \n{% if utterance_meta.lang == \"english\" %}\n{% if\
+      \ dialogue_history|length > 0 %}\n{% if utterance_meta.lang == first_lang %}A{%\
+      \ else %}B{% endif %}: {{ ref }}\n{% endif %}\n{% endif %}\n"
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
@@ -141,22 +151,13 @@ templates:
   2abc728f-e7fc-44fc-ba2a-ad78ae2469a9: !Template
     answer_choices: null
     id: 2abc728f-e7fc-44fc-ba2a-ad78ae2469a9
-    jinja: '{% set previous_ref = "" %}{% if utterance_meta.lang == "english" %}
-
-      {% if dialogue_history|length > 0 %}
-
-      "{% if utterance_meta.lang == dialogue_history[-1].utterance_meta.lang %}{{
-      dialogue_history[-1].orig }}{% set previous_ref = dialogue_history[-1].ref %}{%
-      else %}{{ dialogue_history[-1].ref }}{% set previous_ref = dialogue_history[-1].orig
-      %}{% endif %}" translates as: {{ previous_ref }}
-
-
-      "{{ orig }}" translates as: ||| {{ ref }}
-
-
-      {% endif %}
-
-      {% endif %}'
+    jinja: "{% set previous_ref = \"\" %}\n{% if dialogue_history|length > 0 %}\n\"\
+      {% if utterance_meta.lang == dialogue_history[-1].utterance_meta.lang %}{{ dialogue_history[-1].orig\
+      \ }}{% set previous_ref = dialogue_history[-1].ref %}{% else %}{{ dialogue_history[-1].ref\
+      \ }}{% set previous_ref = dialogue_history[-1].orig %}{% endif %}\" translates\
+      \ as: {{ previous_ref }}{% endif %}\n\n\"{{ orig }}\" translates as: ||| \n\
+      {% if dialogue_history|length > 0 %}\n{% if utterance_meta.lang == \"english\"\
+      \ %}\n{{ ref }}\n{% endif %}\n{% endif %}"
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
@@ -167,22 +168,13 @@ templates:
   40c1ee21-3cf4-4efc-b902-d3aab0a79c40: !Template
     answer_choices: null
     id: 40c1ee21-3cf4-4efc-b902-d3aab0a79c40
-    jinja: '{% set previous_ref = "" %}{% if utterance_meta.lang == "french" %}
-
-      {% if dialogue_history|length > 0 %}
-
-      "{% if utterance_meta.lang == dialogue_history[-1].utterance_meta.lang %}{{
-      dialogue_history[-1].orig }}{% set previous_ref = dialogue_history[-1].ref %}{%
-      else %}{{ dialogue_history[-1].ref }}{% set previous_ref = dialogue_history[-1].orig
-      %}{% endif %}" translates as: {{ previous_ref }}
-
-
-      "{{ orig }}" translates as: ||| {{ ref }}
-
-
-      {% endif %}
-
-      {% endif %}'
+    jinja: "{% set previous_ref = \"\" %}\n{% if dialogue_history|length > 0 %}\n\"\
+      {% if utterance_meta.lang == dialogue_history[-1].utterance_meta.lang %}{{ dialogue_history[-1].orig\
+      \ }}{% set previous_ref = dialogue_history[-1].ref %}{% else %}{{ dialogue_history[-1].ref\
+      \ }}{% set previous_ref = dialogue_history[-1].orig %}{% endif %}\" translates\
+      \ as: {{ previous_ref }}{% endif %}\n\n\"{{ orig }}\" translates as: ||| \n\
+      {% if dialogue_history|length > 0 %}\n{% if utterance_meta.lang == \"french\"\
+      \ %}\n{{ ref }}\n{% endif %}\n{% endif %}"
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
@@ -219,17 +211,16 @@ templates:
   702f1f50-d6b0-4e65-a8e6-b449257f1e35: !Template
     answer_choices: null
     id: 702f1f50-d6b0-4e65-a8e6-b449257f1e35
-    jinja: "{% set first_lang=\"\" %}\n{% if utterance_meta.lang == \"french\" %}\n\
-      {% if dialogue_history|length > 0 %}\nGiven the following dialogue between person\
-      \ A and person B:\n\n{% set first_lang=dialogue_history[-5:][0].utterance_meta.lang\
+    jinja: "{% set first_lang=\"\" %}\n{% if dialogue_history|length > 0 %}\nGiven\
+      \ the following dialogue between person A and person B:\n\n{% set first_lang=dialogue_history[-5:][0].utterance_meta.lang\
       \ %}{% for previous in dialogue_history[-5:] %}{% if previous.utterance_meta.lang\
       \ == first_lang %}A{% else %}B{% endif %}: {% if previous.utterance_meta.lang\
       \ == utterance_meta.lang %}{{ previous.orig }}{% else %}{{ previous.ref }}{%\
-      \ endif %}\n{% endfor %} \nTranslate the next utterance in the dialogue into\
-      \ {% if utterance_meta.lang == \"english\" %}French{% else %}English{% endif\
-      \ %}:\n{% if utterance_meta.lang == first_lang %}A{% else %}B{% endif %}: {{\
-      \ orig }}\n\n||| {% if utterance_meta.lang == first_lang %}A{% else %}B{% endif\
-      \ %}: {{ ref }}\n{% endif %}\n{% endif %}\n"
+      \ endif %}\n{% endfor %}{% endif %}\nTranslate the next utterance in the dialogue\
+      \ into English:\n{% if utterance_meta.lang == first_lang %}A{% else %}B{% endif\
+      \ %}: {{ orig }}\n\n||| \n{% if utterance_meta.lang == \"french\" %}\n{% if\
+      \ dialogue_history|length > 0 %}\n{% if utterance_meta.lang == first_lang %}A{%\
+      \ else %}B{% endif %}: {{ ref }}\n{% endif %}\n{% endif %}\n"
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
@@ -240,17 +231,16 @@ templates:
   72759632-7764-4493-9a6e-8f1c8b337bde: !Template
     answer_choices: null
     id: 72759632-7764-4493-9a6e-8f1c8b337bde
-    jinja: "{% set first_lang=\"\" %}\n{% if utterance_meta.lang == \"french\" %}\n\
-      {% if dialogue_history|length > 0 %}\nGiven the following dialogue between person\
-      \ A and person B:\n\n{% set first_lang=dialogue_history[-5:][0].utterance_meta.lang\
+    jinja: "{% set first_lang=\"\" %}\n\n{% if dialogue_history|length > 0 %}\nGiven\
+      \ the following dialogue between person A and person B:\n\n{% set first_lang=dialogue_history[-5:][0].utterance_meta.lang\
       \ %}{% for previous in dialogue_history[-5:] %}{% if previous.utterance_meta.lang\
       \ == first_lang %}A{% else %}B{% endif %}: {% if previous.utterance_meta.lang\
       \ == utterance_meta.lang %}{{ previous.orig }}{% else %}{{ previous.mt }}{%\
-      \ endif %}\n{% endfor %} \nTranslate the next utterance in the dialogue into\
-      \ {% if utterance_meta.lang == \"english\" %}French{% else %}English{% endif\
-      \ %}:\n{% if utterance_meta.lang == first_lang %}A{% else %}B{% endif %}: {{\
-      \ orig }}\n\n||| {% if utterance_meta.lang == first_lang %}A{% else %}B{% endif\
-      \ %}: {{ ref }}\n{% endif %}\n{% endif %}\n"
+      \ endif %}\n{% endfor %}{% endif %}\nTranslate the next utterance in the dialogue\
+      \ into English:\n{% if utterance_meta.lang == first_lang %}A{% else %}B{% endif\
+      \ %}: {{ orig }}\n\n||| \n{% if utterance_meta.lang == \"french\" %}\n{% if\
+      \ dialogue_history|length > 0 %}\n{% if utterance_meta.lang == first_lang %}A{%\
+      \ else %}B{% endif %}: {{ ref }}\n{% endif %}\n{% endif %}\n"
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
@@ -261,11 +251,8 @@ templates:
   72c1cbbd-956f-4721-9cee-fd50148cf77d: !Template
     answer_choices: null
     id: 72c1cbbd-956f-4721-9cee-fd50148cf77d
-    jinja: '{% if utterance_meta.lang == "french"  %}
-
-      Translate the following into English: "{{ orig }}" ||| {{ ref }}
-
-      {% endif %}'
+    jinja: 'Translate the following into English: "{{ orig }}" ||| {% if utterance_meta.lang
+      == "french"  %}{{ ref }}{% endif %}'
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
@@ -276,16 +263,15 @@ templates:
   836c5096-2fd6-478c-89e8-39a050347d28: !Template
     answer_choices: null
     id: 836c5096-2fd6-478c-89e8-39a050347d28
-    jinja: "{% set first_lang=\"\" %}\n{% if utterance_meta.lang == \"french\" %}\n\
-      {% if dialogue_history|length > 0 %}\nGiven the following dialogue between person\
-      \ A and person B:\n\n{% set first_lang=dialogue_history[-5:][0].utterance_meta.lang\
+    jinja: "{% set first_lang=\"\" %}\n\n{% if dialogue_history|length > 0 %}\nGiven\
+      \ the following dialogue between person A and person B:\n\n{% set first_lang=dialogue_history[-5:][0].utterance_meta.lang\
       \ %}{% for previous in dialogue_history[-5:] %}{% if previous.utterance_meta.lang\
-      \ == first_lang %}A{% else %}B{% endif %}: {{ previous.orig }}\n{% endfor %}\
-      \ \nTranslate the next utterance in the dialogue into {% if utterance_meta.lang\
-      \ == \"english\" %}French{% else %}English{% endif %}:\n{% if utterance_meta.lang\
-      \ == first_lang %}A{% else %}B{% endif %}: {{ orig }}\n\n||| {% if utterance_meta.lang\
-      \ == first_lang %}A{% else %}B{% endif %}: {{ ref }}\n{% endif %}\n{% endif\
-      \ %}"
+      \ == first_lang %}A{% else %}B{% endif %}: {{ previous.orig }}\n{% endfor %}{%\
+      \ endif %}\nTranslate the next utterance in the dialogue into English:\n{% if\
+      \ utterance_meta.lang == first_lang %}A{% else %}B{% endif %}: {{ orig }}\n\n\
+      ||| \n\n{% if utterance_meta.lang == \"french\" %}\n{% if dialogue_history|length\
+      \ > 0 %}\n{% if utterance_meta.lang == first_lang %}A{% else %}B{% endif %}:\
+      \ {{ ref }}\n{% endif %}\n{% endif %}"
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
@@ -326,11 +312,8 @@ templates:
   96da9c0e-e606-4283-8494-7129c75b4d02: !Template
     answer_choices: null
     id: 96da9c0e-e606-4283-8494-7129c75b4d02
-    jinja: '{% if utterance_meta.lang == "english"  %}
-
-      Translate the following into French: "{{ orig }}" ||| {{ ref }}
-
-      {% endif %}'
+    jinja: 'Translate the following into French: "{{ orig }}" ||| {% if utterance_meta.lang
+      == "english"  %}{{ ref }}{% endif %}'
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
@@ -341,25 +324,13 @@ templates:
   97d56019-a7df-4733-aed0-332c222e9079: !Template
     answer_choices: null
     id: 97d56019-a7df-4733-aed0-332c222e9079
-    jinja: '{% set previous_ref = "" %}
-
-      {% if utterance_meta.lang == "english" %}
-
-      {% if dialogue_history|length > 0 %}
-
-
-      "{% if utterance_meta.lang == dialogue_history[-1].utterance_meta.lang %}{{
-      dialogue_history[-1].orig }}{% set previous_ref = dialogue_history[-1].ref %}{%
-      else %}{{ dialogue_history[-1].ref }}{% set previous_ref = dialogue_history[-1].orig
-      %}{% endif %}" translates into French as: {{ previous_ref }}
-
-
-      "{{ orig }}" translates into French as: ||| {{ ref }}
-
-
-      {% endif %}
-
-      {% endif %}'
+    jinja: "{% set previous_ref = \"\" %}\n{% if dialogue_history|length > 0 %}\n\"\
+      {% if utterance_meta.lang == dialogue_history[-1].utterance_meta.lang %}{{ dialogue_history[-1].orig\
+      \ }}{% set previous_ref = dialogue_history[-1].ref %}{% else %}{{ dialogue_history[-1].ref\
+      \ }}{% set previous_ref = dialogue_history[-1].orig %}{% endif %}\" translates\
+      \ into French as: {{ previous_ref }}{% endif %}\n\n\"{{ orig }}\" translates\
+      \ into French as: ||| \n{% if utterance_meta.lang == \"english\" %}\n{% if dialogue_history|length\
+      \ > 0 %}\n{{ ref }}\n{% endif %}\n{% endif %}"
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
@@ -413,17 +384,16 @@ templates:
   d068ba77-ce75-4de3-a170-ca0a7cd3f8d1: !Template
     answer_choices: null
     id: d068ba77-ce75-4de3-a170-ca0a7cd3f8d1
-    jinja: "{% set first_lang=\"\" %}\n{% if utterance_meta.lang == \"english\" %}\n\
-      {% if dialogue_history|length > 0 %}\nGiven the following dialogue between person\
-      \ A and person B:\n\n{% set first_lang=dialogue_history[-5:][0].utterance_meta.lang\
+    jinja: "{% set first_lang=\"\" %}\n{% if dialogue_history|length > 0 %}\nGiven\
+      \ the following dialogue between person A and person B:\n\n{% set first_lang=dialogue_history[-5:][0].utterance_meta.lang\
       \ %}{% for previous in dialogue_history[-5:] %}{% if previous.utterance_meta.lang\
       \ == first_lang %}A{% else %}B{% endif %}: {% if previous.utterance_meta.lang\
       \ == utterance_meta.lang %}{{ previous.orig }}{% else %}{{ previous.mt }}{%\
-      \ endif %}\n{% endfor %} \nTranslate the next utterance in the dialogue into\
-      \ {% if utterance_meta.lang == \"english\" %}French{% else %}English{% endif\
-      \ %}:\n{% if utterance_meta.lang == first_lang %}A{% else %}B{% endif %}: {{\
-      \ orig }}\n\n||| {% if utterance_meta.lang == first_lang %}A{% else %}B{% endif\
-      \ %}: {{ ref }}\n{% endif %}\n{% endif %}\n"
+      \ endif %}\n{% endfor %}{% endif %}\nTranslate the next utterance in the dialogue\
+      \ into French:\n{% if utterance_meta.lang == first_lang %}A{% else %}B{% endif\
+      \ %}: {{ orig }}\n\n||| \n{% if utterance_meta.lang == \"english\" %}\n{% if\
+      \ dialogue_history|length > 0 %}\n{% if utterance_meta.lang == first_lang %}A{%\
+      \ else %}B{% endif %}: {{ ref }}\n{% endif %}\n{% endif %}\n"
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
@@ -434,20 +404,44 @@ templates:
   dddd6f35-5a01-431b-b59b-e9a8e76377aa: !Template
     answer_choices: yes || no
     id: dddd6f35-5a01-431b-b59b-e9a8e76377aa
-    jinja: "{% set options = [\"word choice\", \"grammar\", \"style\", \"coherence\"\
-      , \"meaning\"] %}\n{% set label = range(0,5)|random %}\n{% set reply=0 %}\n\
-      {% set first_lang=\"\" %}\n{% if utterance_meta.lang == \"french\" %}\n{% if\
-      \ options[label] in utterance_meta.eval_problems %}{% set reply=0 %}{% else\
-      \ %}{% set reply=1 %}{% endif %}\n{% if utterance_meta.eval_problems|length\
-      \ > 0 %}\n{% if dialogue_history|length > 0 %}\nGiven the following dialogue\
-      \ between person A and person B:\n\n{% set first_lang=dialogue_history[-5:][0].utterance_meta.lang\
-      \ %}{% for previous in dialogue_history[-5:] %}{% if previous.utterance_meta.lang\
-      \ == first_lang %}A{% else %}B{% endif %}: {% if previous.utterance_meta.lang\
-      \ != utterance_meta.lang %}{{ previous.orig }}{% else %}{{ previous.mt }}{%\
-      \ endif %}{% endfor %} \n{% if utterance_meta.lang == first_lang %}A{% else\
-      \ %}B{% endif %}: {{ mt }}\n\nDoes the last utterance contain a {{ options[label]\
-      \ }} problem, {{ \"yes\" }} or {{ \"no\" }}?\n\n||| {{ [\"yes\", \"no\" ][reply]\
-      \ }}\n{% endif %}\n{% endif %}\n{% endif %}"
+    jinja: '{% set options = ["word choice", "grammar", "style", "coherence", "meaning"]
+      %}
+
+      {% set label = range(0,5)|random %}
+
+      {% set reply=0 %}
+
+      {% set first_lang="" %}
+
+
+      {% if options[label] in utterance_meta.eval_problems %}{% set reply=0 %}{% else
+      %}{% set reply=1 %}{% endif %}
+
+      {% if utterance_meta.eval_problems|length > 0 %}
+
+
+      Given the following dialogue between person A and person B:
+
+      {% if dialogue_history|length > 0 %}{% set first_lang=dialogue_history[-5:][0].utterance_meta.lang
+      %}{% for previous in dialogue_history[-5:] %}
+
+      {% if previous.utterance_meta.lang == first_lang %}A{% else %}B{% endif %}:
+      {% if previous.utterance_meta.lang != utterance_meta.lang %}{{ previous.orig
+      }}{% else %}{{ previous.mt }}{% endif %}{% endfor %}{% endif %}
+
+      {% if utterance_meta.lang == first_lang %}A{% else %}B{% endif %}: {{ mt }}
+
+
+      Does the last utterance contain a {{ options[label] }} problem, {{ "yes" }}
+      or {{ "no" }}?
+
+
+      ||| {% if utterance_meta.eval_problems|length > 0 %}{% if utterance_meta.lang
+      == "french" %}{{ ["yes", "no" ][reply] }}{% endif %}
+
+      {% endif %}
+
+      {% endif %}'
     metadata: !TemplateMetadata
       choices_in_prompt: true
       metrics:
