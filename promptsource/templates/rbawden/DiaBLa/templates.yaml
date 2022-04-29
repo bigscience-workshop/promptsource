@@ -77,17 +77,17 @@ templates:
   1798dee9-8a9c-45ed-87d8-237ec7dbf5ca: !Template
     answer_choices: null
     id: 1798dee9-8a9c-45ed-87d8-237ec7dbf5ca
-    jinja: "{% if utterance_meta.lang == \"english\" %}\n{% if dialogue_history|length\
-      \ > 0 %}\nGiven the following dialogue between person A and person B:\n\n{%\
-      \ set first_lang=dialogue_history[-5:][0].utterance_meta.lang %}{% for previous\
-      \ in dialogue_history[-5:] %}{% if previous.utterance_meta.lang == first_lang\
-      \ %}A{% else %}B{% endif %}: {% if previous.utterance_meta.lang == utterance_meta.lang\
-      \ %}{{ previous.orig }}{% else %}{{ previous.ref }}{% endif %}\n{% endfor %}\
-      \ \nTranslate the next utterance in the dialogue into {% if utterance_meta.lang\
-      \ == \"english\" %}French{% else %}English{% endif %}:\n{% if utterance_meta.lang\
-      \ == first_lang %}A{% else %}B{% endif %}: {{ orig }}\n\n||| {% if utterance_meta.lang\
-      \ == first_lang %}A{% else %}B{% endif %}: {{ ref }}\n{% endif %}\n{% endif\
-      \ %}\n"
+    jinja: "{% set first_lang=\"\" %}\n{% if utterance_meta.lang == \"english\" %}\n\
+      {% if dialogue_history|length > 0 %}\nGiven the following dialogue between person\
+      \ A and person B:\n\n{% set first_lang=dialogue_history[-5:][0].utterance_meta.lang\
+      \ %}{% for previous in dialogue_history[-5:] %}{% if previous.utterance_meta.lang\
+      \ == first_lang %}A{% else %}B{% endif %}: {% if previous.utterance_meta.lang\
+      \ == utterance_meta.lang %}{{ previous.orig }}{% else %}{{ previous.ref }}{%\
+      \ endif %}\n{% endfor %} \nTranslate the next utterance in the dialogue into\
+      \ {% if utterance_meta.lang == \"english\" %}French{% else %}English{% endif\
+      \ %}:\n{% if utterance_meta.lang == first_lang %}A{% else %}B{% endif %}: {{\
+      \ orig }}\n\n||| {% if utterance_meta.lang == first_lang %}A{% else %}B{% endif\
+      \ %}: {{ ref }}\n{% endif %}\n{% endif %}\n"
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
