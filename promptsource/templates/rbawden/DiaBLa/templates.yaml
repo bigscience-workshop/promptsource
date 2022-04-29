@@ -68,8 +68,6 @@ templates:
       {% if options[label] in utterance_meta.eval_problems %}{% set reply=0 %}{% else
       %}{% set reply=1 %}{% endif %}
 
-      {% if utterance_meta.eval_problems|length > 0 %}
-
 
       Given the following dialogue between person A and person B:
 
@@ -88,11 +86,7 @@ templates:
 
 
       ||| {% if utterance_meta.eval_problems|length > 0 %}{% if utterance_meta.lang
-      == "english" %}{{ ["yes", "no" ][reply] }}{% endif %}
-
-      {% endif %}
-
-      {% endif %}'
+      == "english" %}{{ ["yes", "no" ][reply] }}{% endif %}{% endif %}'
     metadata: !TemplateMetadata
       choices_in_prompt: true
       metrics:
@@ -142,11 +136,11 @@ templates:
       \ %}{% for previous in dialogue_history[-5:] %}{% if previous.utterance_meta.lang\
       \ == first_lang %}A{% else %}B{% endif %}: {% if previous.utterance_meta.lang\
       \ == utterance_meta.lang %}{{ previous.orig }}{% else %}{{ previous.ref }}{%\
-      \ endif %}\n{% endfor %} \nTranslate the next utterance in the dialogue into\
-      \ {% if utterance_meta.lang == \"english\" %}French{% else %}English{% endif\
-      \ %}:\n{% if utterance_meta.lang == first_lang %}A{% else %}B{% endif %}: {{\
-      \ orig }}\n\n||| {% if utterance_meta.lang == first_lang %}A{% else %}B{% endif\
-      \ %}: {{ ref }}{% endif %}"
+      \ endif %}\n{% endfor %}{% endif %} \nTranslate the next utterance in the dialogue\
+      \ into {% if utterance_meta.lang == \"english\" %}French{% else %}English{%\
+      \ endif %}:\n{% if utterance_meta.lang == first_lang %}A{% else %}B{% endif\
+      \ %}: {{ orig }}\n\n||| {% if utterance_meta.lang == first_lang %}A{% else %}B{%\
+      \ endif %}: {{ ref }}"
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
@@ -160,16 +154,16 @@ templates:
     jinja: "{% set options = [\"word choice\", \"grammar\", \"style\", \"coherence\"\
       , \"meaning\"] %}\n{% set label = range(0,5)|random %}\n{% set reply=0 %}\n\
       {% set first_lang=\"\" %}\n{% if options[label] in utterance_meta.eval_problems\
-      \ %}{% set reply=0 %}{% else %}{% set reply=1 %}{% endif %}\n{% if utterance_meta.eval_problems|length\
-      \ > 0 %}\n{% if dialogue_history|length > 0 %}\nGiven the following dialogue\
-      \ between person A and person B:\n\n{% set first_lang=dialogue_history[-5:][0].utterance_meta.lang\
-      \ %}{% for previous in dialogue_history[-5:] %}{% if previous.utterance_meta.lang\
-      \ == first_lang %}A{% else %}B{% endif %}: {% if previous.utterance_meta.lang\
-      \ != utterance_meta.lang %}{{ previous.orig }}{% else %}{{ previous.mt }}{%\
-      \ endif %}{% endfor %} \n{% if utterance_meta.lang == first_lang %}A{% else\
-      \ %}B{% endif %}: {{ mt }}\n\nDoes the last utterance contain a {{ options[label]\
-      \ }} problem, {{ \"yes\" }} or {{ \"no\" }}?\n\n||| {{ [\"yes\", \"no\" ][reply]\
-      \ }}\n{% endif %}\n{% endif %}"
+      \ %}{% set reply=0 %}{% else %}{% set reply=1 %}{% endif %}\n{% if dialogue_history|length\
+      \ > 0 %}\nGiven the following dialogue between person A and person B:\n\n{%\
+      \ set first_lang=dialogue_history[-5:][0].utterance_meta.lang %}{% for previous\
+      \ in dialogue_history[-5:] %}{% if previous.utterance_meta.lang == first_lang\
+      \ %}A{% else %}B{% endif %}: {% if previous.utterance_meta.lang != utterance_meta.lang\
+      \ %}{{ previous.orig }}{% else %}{{ previous.mt }}{% endif %}{% endfor %}{%\
+      \ endif %} \n{% if utterance_meta.lang == first_lang %}A{% else %}B{% endif\
+      \ %}: {{ mt }}\n\nDoes the last utterance contain a {{ options[label] }} problem,\
+      \ {{ \"yes\" }} or {{ \"no\" }}?\n\n||| {% if utterance_meta.eval_problems|length\
+      \ > 0 %}{{ [\"yes\", \"no\" ][reply] }}{% endif %}"
     metadata: !TemplateMetadata
       choices_in_prompt: true
       metrics:
@@ -190,8 +184,8 @@ templates:
       %}{% endif %}" translates as: {{ previous_ref }}{% endif %}
 
 
-      "{{ orig }}" translates as: ||| {% if utterance_meta.lang == "english" %}{{
-      ref }}{% endif %}'
+      "{{ orig }}" translates as: ||| {% if dialogue_history|length > 0 %}{% if utterance_meta.lang
+      == "english" %}{{ ref }}{% endif %}{% endif %}'
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
@@ -227,9 +221,9 @@ templates:
     jinja: '{% set previous_ref = "" %}{% set other_lang = "" %}
 
       {% if utterance_meta.lang == "french" %}{% set other_lang = "English" %}{% else
-      %}{% set other_lang = "French" %}
+      %}{% set other_lang = "French" %}{% endif %}
 
-      {% if dialogue_history|length > 0 %}{% endif %}
+      {% if dialogue_history|length > 0 %}
 
       "{% if utterance_meta.lang == dialogue_history[-1].utterance_meta.lang %}{{
       dialogue_history[-1].orig }}{% set previous_ref = dialogue_history[-1].ref %}{%
@@ -440,17 +434,13 @@ templates:
     id: ac4c63da-32d2-40ac-aa7a-632e8ba42b4a
     jinja: '{% set label = range(0,2)|random %}
 
-      {% if ref != mt %}
-
       Which of the following translations of "{{ orig }}" is produced automatically?
 
       {{ "A" }}) {% if label == 0 %}{{ ref }}{% else %}{{ mt }}{% endif %}
 
       {{ "B" }}) {% if label == 0 %}{{ mt }}{% else %}{{ ref }}{% endif %}
 
-      ||| {{ ["A", "B"][label] }}
-
-      {% endif %}'
+      ||| {% if ref != mt %}{{ ["A", "B"][label] }}{% endif %}'
     metadata: !TemplateMetadata
       choices_in_prompt: true
       metrics:
@@ -539,8 +529,6 @@ templates:
       {% if options[label] in utterance_meta.eval_problems %}{% set reply=0 %}{% else
       %}{% set reply=1 %}{% endif %}
 
-      {% if utterance_meta.eval_problems|length > 0 %}
-
 
       Given the following dialogue between person A and person B:
 
@@ -559,11 +547,9 @@ templates:
 
 
       ||| {% if utterance_meta.eval_problems|length > 0 %}{% if utterance_meta.lang
-      == "french" %}{{ ["yes", "no" ][reply] }}{% endif %}
+      == "french" %}{{ ["yes", "no" ][reply] }}{% endif %}{% endif %}
 
-      {% endif %}
-
-      {% endif %}'
+      '
     metadata: !TemplateMetadata
       choices_in_prompt: true
       metrics:
@@ -588,7 +574,8 @@ templates:
       %}{% endif %}" translates as: {{ previous_ref }}{% endif %}
 
 
-      "{{ orig }}" translates as: ||| {{ ref }}
+      "{{ orig }}" translates as: ||| {% if dialogue_history|length > 0 %}{{ ref }}{%
+      endif %}
 
       '
     metadata: !TemplateMetadata
