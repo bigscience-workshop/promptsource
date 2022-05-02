@@ -1,4 +1,21 @@
-dataset: tydiqa
+    jinja: '{% if language == "english" %}
+
+      I wonder {{question_text}}.
+
+      Help me answer this question with "{{answer_choices[0]}}" or "{{answer_choices[1]}}"
+      or "{{answer_choices[2]}}" if none of the first two answers apply.
+
+      Here''s what I found on the internet:
+
+      Topic: {{document_title}}
+
+      Article: {{document_plaintext}}
+
+      |||
+
+      {{annotations.yes_no_answer[0] | capitalize}}
+
+      {% endif %}'dataset: tydiqa
 subset: primary_task
 templates:
   16f11e56-a78d-4e33-bba1-586f9947baf7: !Template
@@ -30,18 +47,10 @@ templates:
   297fc59f-bd92-493b-ae61-3c3adcb46eb3: !Template
     answer_choices: Yes ||| No ||| None
     id: 297fc59f-bd92-493b-ae61-3c3adcb46eb3
-    jinja: 'Question: {{question_text}}
-
-      Answer the question with {{"Yes"}} or {{"No"}}. If it is not possible then answer
-      {{"None"}}.
-
-      Hint: {{document_plaintext}}
-
-      |||
-
-      {{annotations.yes_no_answer[0] | capitalize}}
-
-      '
+    jinja: "{% if language == \"english\" %} \nQuestion: {{question_text}}\nAnswer\
+      \ the question with {{\"Yes\"}} or {{\"No\"}}. If it is not possible then answer\
+      \ {{\"None\"}}.\nHint: {{document_plaintext}}\n|||\n{{annotations.yes_no_answer[0]\
+      \ | capitalize}}\n{% endif %}"
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
@@ -52,9 +61,10 @@ templates:
   4b21e3be-fba4-49b7-beb1-a61de26eb0ac: !Template
     answer_choices: Yes ||| No
     id: 4b21e3be-fba4-49b7-beb1-a61de26eb0ac
-    jinja: " {% if annotations.yes_no_answer[0] == \"YES\" or annotations.yes_no_answer[0]\
-      \ == \"NO\" %} \nAnswer the question about {{document_title}}. {{question_text}}\n\
-      ||| \n{{annotations.yes_no_answer[0] | capitalize}} \n    {% endif %} "
+    jinja: "{% if language == \"english\" %} \n    {% if annotations.yes_no_answer[0]\
+      \ == \"YES\" or annotations.yes_no_answer[0] == \"NO\" %} \nAnswer the question\
+      \ about {{document_title}}. {{question_text}}\n||| \n{{annotations.yes_no_answer[0]\
+      \ | capitalize}} \n    {% endif %} \n{% endif %} "
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
@@ -65,7 +75,9 @@ templates:
   6835dd64-96bd-4bf8-9ba5-645d6a7b8472: !Template
     answer_choices: Yes ||| No
     id: 6835dd64-96bd-4bf8-9ba5-645d6a7b8472
-    jinja: '{{question_text}}
+    jinja: '{% if language == "english" %}
+
+      {{question_text}}
 
       Is this a "Yes/No" question?
 
@@ -79,6 +91,8 @@ templates:
 
       Yes
 
+      {% endif %}
+
       {% endif %}'
     metadata: !TemplateMetadata
       choices_in_prompt: false
@@ -90,7 +104,9 @@ templates:
   7b8b7707-dbad-40d2-a5c2-430e6ace10bb: !Template
     answer_choices: Yes ||| No ||| None
     id: 7b8b7707-dbad-40d2-a5c2-430e6ace10bb
-    jinja: 'Answer the following question with "{{answer_choices[0]}}" or "{{answer_choices[1]}}"
+    jinja: '{% if language == "english" %}
+
+      Answer the following question with "{{answer_choices[0]}}" or "{{answer_choices[1]}}"
       or "{{answer_choices[2]}}" if none of the first two answers apply.
 
       Question: {{question_text}}
@@ -103,7 +119,7 @@ templates:
 
       {{annotations.yes_no_answer[0] | capitalize}}
 
-      '
+      {% endif %}'
     metadata: !TemplateMetadata
       choices_in_prompt: true
       metrics:
@@ -114,10 +130,11 @@ templates:
   9c42e3fd-d46e-4149-bb60-4b3118104d95: !Template
     answer_choices: Yes ||| No
     id: 9c42e3fd-d46e-4149-bb60-4b3118104d95
-    jinja: "\n {% if annotations.yes_no_answer[0] == \"YES\" or annotations.yes_no_answer[0]\
-      \ == \"NO\" %} \nAfter reading the following text snippet from Wikipedia, please\
-      \ answer the question: {{question_text}} \n{{document_plaintext}}\n||| \n{{annotations.yes_no_answer[0]\
-      \ | capitalize}}\n{% endif %}\n"
+    jinja: "{% if language == \"english\" %} \n    {% if annotations.yes_no_answer[0]\
+      \ == \"YES\" or annotations.yes_no_answer[0] == \"NO\" %} \nAfter reading the\
+      \ following text snippet from Wikipedia, please answer the question: {{question_text}}\
+      \ \n{{document_plaintext}}\n||| \n{{annotations.yes_no_answer[0] | capitalize}}\n\
+      \    {% endif %}\n{% endif %}"
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
@@ -128,10 +145,10 @@ templates:
   b4f7c441-41b1-4665-93f9-f2e875aed92a: !Template
     answer_choices: Yes ||| No
     id: b4f7c441-41b1-4665-93f9-f2e875aed92a
-    jinja: " {% if annotations.yes_no_answer[0] == \"YES\" or annotations.yes_no_answer[0]\
-      \ == \"NO\" %} \nAnswer the question about {{document_title}}.\nQuestion: {{question_text}}.\
-      \ Yes or No?\n||| \n{{annotations.yes_no_answer[0] | capitalize}}\n    {% endif\
-      \ %}"
+    jinja: "{% if language == \"english\" %} \n    {% if annotations.yes_no_answer[0]\
+      \ == \"YES\" or annotations.yes_no_answer[0] == \"NO\" %} \nAnswer the question\
+      \ about {{document_title}}.\nQuestion: {{question_text}}. Yes or No?\n||| \n\
+      {{annotations.yes_no_answer[0] | capitalize}}\n    {% endif %}\n{% endif %}"
     metadata: !TemplateMetadata
       choices_in_prompt: true
       metrics:
@@ -142,9 +159,10 @@ templates:
   e593017f-9bcf-4442-944d-fcdf2edcb4f7: !Template
     answer_choices: Yes ||| No
     id: e593017f-9bcf-4442-944d-fcdf2edcb4f7
-    jinja: "\n    {% if annotations.yes_no_answer[0] == \"YES\" or annotations.yes_no_answer[0]\
-      \ == \"NO\" %} \nBased on the following text snippet, {{question_text}} \n{{document_plaintext}}\n\
-      ||| \n{{annotations.yes_no_answer[0] | capitalize}}\n    {% endif %}\n"
+    jinja: "{% if language == \"english\" %} \n    {% if annotations.yes_no_answer[0]\
+      \ == \"YES\" or annotations.yes_no_answer[0] == \"NO\" %} \nBased on the following\
+      \ text snippet, {{question_text}} \n{{document_plaintext}}\n||| \n{{annotations.yes_no_answer[0]\
+      \ | capitalize}}\n    {% endif %}\n{% endif %}"
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
