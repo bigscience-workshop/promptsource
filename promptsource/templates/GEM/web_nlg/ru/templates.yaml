@@ -1,0 +1,114 @@
+dataset: GEM/web_nlg
+subset: ru
+templates:
+  0ae50994-e1d6-4a59-8169-aa3daf45ae60: !Template
+    answer_choices: null
+    id: 0ae50994-e1d6-4a59-8169-aa3daf45ae60
+    jinja: "{{input | join(\", \")}}. \n\nThe above is a set of subject | predicate\
+      \ | object expressions separated by commas: \nDescribe all the information in\
+      \ plain Russian text. {% for i in references %}\n  ||| {{ i }} \n{% endfor %}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - ROUGE
+      - BLEU
+      original_task: true
+    name: explicit-graph-description2
+    reference: " subject\u2013predicate\u2013object "
+  900dcfbe-9b64-4430-b45b-2166af52754b: !Template
+    answer_choices: null
+    id: 900dcfbe-9b64-4430-b45b-2166af52754b
+    jinja: "{{input | join(\", \")}}\n\nThe above is a collection of relations. Write\
+      \ descriptive Russian (no English) that contains this information:\n\n{% for\
+      \ i in references %}\n  ||| {{ i }} \n{% endfor %}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - ROUGE
+      - BLEU
+      original_task: true
+    name: implicit-graph-description
+    reference: ''
+  934b5ff1-4f4d-4fb5-96c0-f38dbd0c7ab7: !Template
+    answer_choices: null
+    id: 934b5ff1-4f4d-4fb5-96c0-f38dbd0c7ab7
+    jinja: "A semantic triple is the atomic data entity in the Resource Description\
+      \ Framework (RDF) data model. As its name indicates, a triple is a set of three\
+      \ entities that codifies a statement about semantic data in the form of subject\u2013\
+      predicate\u2013object expressions. (e.g., \"Bob | is | 35\", or \"Bob | knows\
+      \ | John\"). \n\nA graph can be formed from a set of these triples. An example\
+      \ is {{input | join(\", \")}}. \n\nWrite grammatical text expressing all the\
+      \ relations succinctly and fluently in Russian (No English).\n{% for i in references\
+      \ %}\n  ||| {{ i }} \n{% endfor %}\n\n"
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - ROUGE
+      - BLEU
+      original_task: true
+    name: very-explicit-description
+    reference: ''
+  948cce00-3d6e-4917-bf00-2d82d6dc323e: !Template
+    answer_choices: null
+    id: 948cce00-3d6e-4917-bf00-2d82d6dc323e
+    jinja: "A semantic triple is a set of three entities that codifies a statement\
+      \ about semantic data in the form of subject\u2013predicate\u2013object expressions.\
+      \ (e.g., \"Bob | is | 35\", or \"Bob | knows | John\"). \n\nA graph to do with\
+      \ {{category}}  can be formed from a set of these triples. An example is {{input\
+      \ | join(\", \")}}. \n\nWrite Russian grammatical text expressing all the relations\
+      \ succinctly and fluently.\n{% for i in references %}\n  ||| {{ i }} \n{% endfor\
+      \ %}\n\n"
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - ROUGE
+      - BLEU
+      original_task: true
+    name: use-category
+    reference: ''
+  bedf36fe-a3d7-427b-b962-e4e3f71a3eb8: !Template
+    answer_choices: null
+    id: bedf36fe-a3d7-427b-b962-e4e3f71a3eb8
+    jinja: "I am taking this tabluar data, where each row is separated by a \"|\"\
+      \ and expresses a relation between an object and a predicate : {{input | join(\"\
+      , \")}}. \n\nNow, I will produce a  of the tabular into Russian sentences. {%\
+      \ for i in references %}\n  ||| {{ i }} \n{% endfor %}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      - ROUGE
+      original_task: true
+    name: non-explicit-description
+    reference: ''
+  bfa17744-ecd6-493c-bae3-725b0f3a99a9: !Template
+    answer_choices: null
+    id: bfa17744-ecd6-493c-bae3-725b0f3a99a9
+    jinja: "I will verbalize an abstract representation of a sentence in natural language.\
+      \ To do so, I will first show the representation and then the natural language.\
+      \ The text needs to include all of the information in the representation and\
+      \ it will be in Russian.\n\n{{input | join(\", \")}} {% for i in references\
+      \ %}\n  ||| {{ i }} \n{% endfor %}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      - ROUGE
+      original_task: true
+    name: PALM_prompt
+    reference: used-in-PALM
+  e5239d0b-110b-4710-afa6-3a2a52169eb7: !Template
+    answer_choices: null
+    id: e5239d0b-110b-4710-afa6-3a2a52169eb7
+    jinja: "I will take the following graph formed from relations (triples) separated\
+      \  by \"|\": {{input | join(\", \")}}. \n\nThen, I will verbalise the triple\
+      \ set into plain Russian text. {% for i in references %}\n  ||| {{ i }} \n{%\
+      \ endfor %}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - ROUGE
+      - BLEU
+      original_task: true
+    name: explicit-graph-description
+    reference: 'Explicit Graph Description: verbalization.'
