@@ -98,7 +98,7 @@ def test_dataset(dataset):
         # Check 2: Prompt/output separator present?
         if "|||" not in template.jinja:
             raise ValueError(f"Template for dataset {dataset_name}/{subset_name} "
-                             f"with uuid {template.get_id()} has no prompt/output separator.")
+                             f"with uuid {template.get_id()} has no input/target separator.")
 
         # Check 3: Unique names and templates?
         if template.get_name() in template_name_set:
