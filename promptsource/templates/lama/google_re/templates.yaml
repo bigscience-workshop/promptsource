@@ -19,26 +19,26 @@ templates:
   9f787820-5443-4778-ba23-5fd9f894233c: !Template
     answer_choices: null
     id: 9f787820-5443-4778-ba23-5fd9f894233c
-    jinja: '{{masked_sentence}} Fill the mask with {{ pred | replace("/people/person/","")  |
-      replace("_"," ") }}. ||| {{obj_label}}'
+    jinja: '{{masked_sentence | replace("[MASK]", "_") }} Fill in the blank with a
+      correct word ||| {{obj_label}}'
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
       - Accuracy
       original_task: true
-    name: fill_mask_with
+    name: after_fill_blank
     reference: ''
   b7cf6ce2-0036-41eb-8658-9afa89a0a497: !Template
     answer_choices: null
     id: b7cf6ce2-0036-41eb-8658-9afa89a0a497
-    jinja: 'Fill the blanks in the following sentence with the correct word: {{ template
+    jinja: 'Fill in the blank in the following sentence with suitable word: {{ template
       | replace("[X]", sub_label) | replace("[Y]" ,"_" ) }} ||| {{obj_label}}'
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
       - Accuracy
-      original_task: false
-    name: fill_the_blanks
+      original_task: true
+    name: fill_blank
     reference: ''
   dc08c925-a9fa-4cad-938f-a6e3ec83871a: !Template
     answer_choices: null
