@@ -1,0 +1,273 @@
+dataset: GEM/totto
+templates:
+  16573c01-b34f-4dcb-b56e-5b2bb782c42c: !Template
+    answer_choices: null
+    id: 16573c01-b34f-4dcb-b56e-5b2bb782c42c
+    jinja: "{% if target != \"\" %}\nTable Page Title: {{table_page_title}} \nTable\
+      \ Section : {{table_section_title}}\nTable:\n{% for row in table %}{% for column\
+      \ in row %}   {{column[\"value\"] }} | {% endfor %}\n{% endfor %}\nFor the above\
+      \ table and the following highlighted cells, how can you best summarize the\
+      \ highlighted cells in a sentence?\n\nHighlighted Cells:\n{% for cell in highlighted_cells\
+      \ %}\n{{cell}}{% endfor %}\n|||\n{{target}}\n{% endif %}\n"
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      - ROUGE
+      original_task: true
+    name: table_to_text
+    reference: ''
+  281a24d1-d4ef-46c7-8759-f3f3168426ab: !Template
+    answer_choices: null
+    id: 281a24d1-d4ef-46c7-8759-f3f3168426ab
+    jinja: "{% if table_page_title != \"\" %}\nGiven the following details:\nTable\
+      \ Section Title: {{table_section_title}},\n{% if table_section_text != \"\"\
+      \ %}\nTable Section Text: {{table_section_text}},\n{% endif %}\nand the following\
+      \ original text describing the highlighted cell of the table: \n{{sentence_annotations[0][\"\
+      original_sentence\"]}},\nCan you guess the table's page title?\n|||\n{{table_page_title}}\n\
+      {% endif %}\n\n"
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      - ROUGE
+      original_task: false
+    name: guess the table page title
+    reference: ''
+  2f1c60e2-6cd6-44c3-a722-8ccc185bce34: !Template
+    answer_choices: null
+    id: 2f1c60e2-6cd6-44c3-a722-8ccc185bce34
+    jinja: 'Given the following details:
+
+      {% if table_webpage_url != "" %}
+
+      Table Page Title: {{table_page_title}},
+
+      Table Section Title: {{table_section_title}},
+
+      {% if table_section_text != "" %}
+
+      Table Section Text: {{table_section_text}},
+
+      {% endif %}
+
+      and the following original text describing the highlighted cell of the table:
+
+      {{sentence_annotations[0]["original_sentence"]}},
+
+      Guess the URL from which this table has been extracted!
+
+      |||
+
+      {{table_webpage_url}}
+
+      {% endif %}
+
+
+      '
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      - ROUGE
+      original_task: false
+    name: guess the table webpage url
+    reference: ''
+  484004fa-baf7-4757-a796-aba9f8c887a8: !Template
+    answer_choices: null
+    id: 484004fa-baf7-4757-a796-aba9f8c887a8
+    jinja: "{% if target != \"\" %}\nTable Page Title: {{table_page_title}} \nTable\
+      \ Section : {{table_section_title}}\n\nHow can you best use the above information\
+      \ and convert the  below highlighted cells of a table to a sentence?\n\nHighlighted\
+      \ Cells:\n{% for cell in highlighted_cells: %}\n{% if table[0]|length >= cell[1]\
+      \ and table[0]|length >= cell[0] %}\n{{table[0][cell[1]][\"value\"]}}: {{table[cell[0]][cell[1]][\"\
+      value\"]}}{% endif %}{% endfor %}\n|||\n{{target}}\n{% endif %}\n"
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      - ROUGE
+      original_task: true
+    name: best_describe_highlighted_sentence
+    reference: ''
+  4ef9e76e-7c03-4869-abdc-40ace4ce4c1c: !Template
+    answer_choices: null
+    id: 4ef9e76e-7c03-4869-abdc-40ace4ce4c1c
+    jinja: "{% if target != \"\" %}\nGiven the following information about a table\
+      \ and summarize the information from the highlighted cell:\nTable Page Title:\
+      \ {{table_page_title}} \nTable Section : {{table_section_title}}\"\nValues from\
+      \ Highlighted Cells: \n{% for cell in highlighted_cells: %}\n{% if table[0]|length\
+      \ >= cell[1] and table[0]|length >= cell[0] %}\n{{table[0][cell[1]][\"value\"\
+      ]}}: {{table[cell[0]][cell[1]][\"value\"]}}{% endif %}{% endfor %}\n|||\n{{target}}\n\
+      {% endif %}\n"
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      - ROUGE
+      original_task: true
+    name: summarize_the_highlighted_cell
+    reference: ''
+  7a2fb34a-c792-41b3-9682-fcda15f1d100: !Template
+    answer_choices: null
+    id: 7a2fb34a-c792-41b3-9682-fcda15f1d100
+    jinja: '{% if table_section_title != "" %}
+
+      Given the following details:
+
+      Table Page Title: {{table_page_title}},
+
+      {% if table_section_text != "" %}
+
+      Table Section Text: {{table_section_text}},
+
+      {% endif %},
+
+      and the following original text describing the highlighted cell of the table:
+
+      {{sentence_annotations[0]["original_sentence"]}},
+
+      Can you guess the table''s section title?
+
+      |||
+
+      {{table_section_title}}
+
+      {% endif %}
+
+      '
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      - ROUGE
+      original_task: false
+    name: guess the table section title
+    reference: ''
+  97930f85-12ae-4636-96ce-95edd05b66bf: !Template
+    answer_choices: null
+    id: 97930f85-12ae-4636-96ce-95edd05b66bf
+    jinja: '{% if target != "" %}
+
+      A table named "{{table_page_title}}" with section "{{table_section_title}}"
+      has the following highlighted cells:
+
+      {% for cell in highlighted_cells: %}
+
+      {% if table[0]|length >= cell[1] and table[0]|length >= cell[0] %}
+
+      {{table[0][cell[1]]["value"]}}: {{table[cell[0]][cell[1]]["value"]}}{% endif
+      %}{% endfor %}
+
+      Using the below text as reference, can you generate a summary depicting the
+      above information?
+
+
+      Text: {{sentence_annotations[0]["original_sentence"]}}
+
+      |||
+
+      {{target}}
+
+      {% endif %}
+
+      '
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      - ROUGE
+      original_task: true
+    name: given_highlighted_cells_give_target_sentence
+    reference: ''
+  a78e0a87-c722-463f-bef6-c231108f8fdf: !Template
+    answer_choices: null
+    id: a78e0a87-c722-463f-bef6-c231108f8fdf
+    jinja: '{% if table_section_text != "" %}
+
+      Given the following details:
+
+      Table Page Title: {{table_page_title}},
+
+      Table Section Title: {{table_section_title}},
+
+      and the following original text describing the highlighted cell of the table:
+
+      {{sentence_annotations[0]["original_sentence"]}},
+
+      Can you guess the table''s section text?
+
+      |||
+
+      {{table_section_text}}
+
+      {% endif %}
+
+      '
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      - ROUGE
+      original_task: false
+    name: guess the table section text
+    reference: ''
+  b25d135f-7c3a-4123-af40-2083a28a7add: !Template
+    answer_choices: null
+    id: b25d135f-7c3a-4123-af40-2083a28a7add
+    jinja: 'Convert the given linearized representation of a table to a coherent sentence:
+
+
+      {{linearized_input}}
+
+      |||
+
+      {{target}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      - ROUGE
+      original_task: true
+    name: convert_linearized_input_to_sent
+    reference: ''
+  d2fd58d2-b7dc-4eae-b1a4-63b89126445c: !Template
+    answer_choices: null
+    id: d2fd58d2-b7dc-4eae-b1a4-63b89126445c
+    jinja: '{% if sentence_annotations[0]["final_sentence"] != "" %}
+
+      Given the following details:
+
+      Table Page Title: {{table_page_title}},
+
+      Table Section Title: {{table_section_title}},
+
+      {% if table_section_text != "" %}
+
+      Table Section Text: {{table_section_text}},
+
+      {% endif %}
+
+      and the following original text describing the highlighted cell of the table:
+
+      {{sentence_annotations[0]["original_sentence"]}},
+
+      Can you generate a final text taking into account the context from the details
+      given above?
+
+      |||
+
+      {{sentence_annotations[0]["final_sentence"]}}
+
+      {% endif %}
+
+
+      '
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      - ROUGE
+      original_task: true
+    name: final_text_describing_table
+    reference: ''
