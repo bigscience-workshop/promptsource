@@ -38,13 +38,11 @@ templates:
 
       {% endfor %}{% endif %}
 
-      Translate the next utterance in the dialogue into French:
+      Translate {% if utterance_meta.lang == first_lang %}A{% else %}B{% endif %}''s
+      next utterance into French: {{ orig }}
 
-      {% if utterance_meta.lang == first_lang %}A{% else %}B{% endif %}: {{ orig }}
 
-
-      ||| {% if utterance_meta.lang == "english" %}{% if utterance_meta.lang == first_lang
-      %}A{% else %}B{% endif %}: {{ ref }}{% endif %}'
+      ||| {% if utterance_meta.lang == "english" %}{{ ref }}{% endif %}'
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
@@ -85,8 +83,8 @@ templates:
       or {{ "no" }}?
 
 
-      ||| {% if utterance_meta.eval_problems|length > 0 %}{% if utterance_meta.lang
-      == "english" %}{{ ["yes", "no" ][reply] }}{% endif %}{% endif %}'
+      ||| {% if utterance_meta.lang == "english" %}{{ ["yes", "no" ][reply] }}{% endif
+      %}'
     metadata: !TemplateMetadata
       choices_in_prompt: true
       metrics:
@@ -112,13 +110,11 @@ templates:
 
       {% endfor %}{% endif %}
 
-      Translate the next utterance in the dialogue into French:
+      Translate {% if utterance_meta.lang == first_lang %}A{% else %}B{% endif %}''s
+      next utterance into French: {{ orig }}
 
-      {% if utterance_meta.lang == first_lang %}A{% else %}B{% endif %}: {{ orig }}
 
-
-      ||| {% if utterance_meta.lang == "english" %}{% if utterance_meta.lang == first_lang
-      %}A{% else %}B{% endif %}: {{ ref }}{% endif %}
+      ||| {% if utterance_meta.lang == "english" %} {{ ref }}{% endif %}
 
       '
     metadata: !TemplateMetadata
@@ -136,11 +132,10 @@ templates:
       \ %}{% for previous in dialogue_history[-5:] %}{% if previous.utterance_meta.lang\
       \ == first_lang %}A{% else %}B{% endif %}: {% if previous.utterance_meta.lang\
       \ == utterance_meta.lang %}{{ previous.orig }}{% else %}{{ previous.ref }}{%\
-      \ endif %}\n{% endfor %}{% endif %} \nTranslate the next utterance in the dialogue\
-      \ into {% if utterance_meta.lang == \"english\" %}French{% else %}English{%\
-      \ endif %}:\n{% if utterance_meta.lang == first_lang %}A{% else %}B{% endif\
-      \ %}: {{ orig }}\n\n||| {% if utterance_meta.lang == first_lang %}A{% else %}B{%\
-      \ endif %}: {{ ref }}"
+      \ endif %}\n{% endfor %}{% endif %} \nTranslate {% if utterance_meta.lang ==\
+      \ first_lang %}A{% else %}B{% endif %}'s next utterance in the dialogue into\
+      \ {% if utterance_meta.lang == \"english\" %}French{% else %}English{% endif\
+      \ %}: {{ orig }}\n\n||| {{ ref }}"
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
@@ -157,13 +152,12 @@ templates:
       \ %}{% set reply=0 %}{% else %}{% set reply=1 %}{% endif %}\n{% if dialogue_history|length\
       \ > 0 %}\nGiven the following dialogue between person A and person B:\n\n{%\
       \ set first_lang=dialogue_history[-5:][0].utterance_meta.lang %}{% for previous\
-      \ in dialogue_history[-5:] %}{% if previous.utterance_meta.lang == first_lang\
+      \ in dialogue_history[-5:] %}\n{% if previous.utterance_meta.lang == first_lang\
       \ %}A{% else %}B{% endif %}: {% if previous.utterance_meta.lang != utterance_meta.lang\
       \ %}{{ previous.orig }}{% else %}{{ previous.mt }}{% endif %}{% endfor %}{%\
       \ endif %} \n{% if utterance_meta.lang == first_lang %}A{% else %}B{% endif\
       \ %}: {{ mt }}\n\nDoes the last utterance contain a {{ options[label] }} problem,\
-      \ {{ \"yes\" }} or {{ \"no\" }}?\n\n||| {% if utterance_meta.eval_problems|length\
-      \ > 0 %}{{ [\"yes\", \"no\" ][reply] }}{% endif %}"
+      \ {{ \"yes\" }} or {{ \"no\" }}?\n\n||| {{ [\"yes\", \"no\" ][reply] }}"
     metadata: !TemplateMetadata
       choices_in_prompt: true
       metrics:
@@ -193,6 +187,60 @@ templates:
       original_task: true
     name: MT_1-context-analogy_infer-lang_en2fr
     reference: 1 previous context (same language) used for analogy, English-to-French
+  35822dda-6f09-418a-a2a3-2178d94203de: !Template
+    answer_choices: null
+    id: 35822dda-6f09-418a-a2a3-2178d94203de
+    jinja: '{% set target_lang = "english" %}{% if utterance_meta.lang == "english"
+      %}{% set target_lang = "french" %}{% endif %}
+
+      {% for previous in dialogue_history[-2:] %}
+
+      {{ previous.orig }}{% endfor %}
+
+      {{ orig }}
+
+
+      The {% if utterance_meta.lang == "english" %}French{% else %}English{% endif
+      %} translation is:
+
+      {% for previous in dialogue_history[-2:] %}{% if previous.utterance_meta.lang
+      == target_lang %}{{ previous.orig }}{% else %}{{ previous.mt }}{% endif %}
+
+      {% endfor %} ||| {% if utterance_meta.lang =="french" %}{{ ref }}{% endif %}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      original_task: true
+    name: MT-2-context-complete-translation-orig-fr2en
+    reference: 2 previous contexts (orig language) complete translation, French-to-English
+  35aba14e-1b84-41a2-8150-e0adfd1684a2: !Template
+    answer_choices: null
+    id: 35aba14e-1b84-41a2-8150-e0adfd1684a2
+    jinja: '{% set target_lang = "english" %}{% if utterance_meta.lang == "english"
+      %}{% set target_lang = "french" %}{% endif %}
+
+      {% for previous in dialogue_history[-2:] %}
+
+      {{ previous.orig }}{% endfor %}
+
+      {{ orig }}
+
+
+      The {% if utterance_meta.lang == "english" %}French{% else %}English{% endif
+      %} translation is:
+
+      {% for previous in dialogue_history[-2:] %}{% if previous.utterance_meta.lang
+      == target_lang %}{{ previous.orig }}{% else %}{{ previous.mt }}{% endif %}
+
+      {% endfor %} ||| {% if utterance_meta.lang =="french" %}{{ ref }}{% endif %}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      original_task: true
+    name: MT-1-context-complete-translation-orig-fr2en
+    reference: 1 previous context (orig language) complete translation, French-to-English
   40c1ee21-3cf4-4efc-b902-d3aab0a79c40: !Template
     answer_choices: null
     id: 40c1ee21-3cf4-4efc-b902-d3aab0a79c40
@@ -259,13 +307,11 @@ templates:
 
       {% endfor %}{% endif %}
 
-      Translate the next utterance in the dialogue into English:
+      Translate {% if utterance_meta.lang == first_lang %}A{% else %}B{% endif %}''s
+      next utterance into English: {{ orig }}
 
-      {% if utterance_meta.lang == first_lang %}A{% else %}B{% endif %}: {{ orig }}
 
-
-      ||| {% if utterance_meta.lang == "french" %}{% if utterance_meta.lang == first_lang
-      %}A{% else %}B{% endif %}: {{ ref }}{% endif %}
+      ||| {% if utterance_meta.lang == "french" %} {{ ref }}{% endif %}
 
       '
     metadata: !TemplateMetadata
@@ -293,13 +339,11 @@ templates:
 
       {% endfor %}{% endif %}
 
-      Translate the next utterance in the dialogue into English:
+      Translate {% if utterance_meta.lang == first_lang %}A{% else %}B{% endif %}''s
+      next utterance into English: {{ orig }}
 
-      {% if utterance_meta.lang == first_lang %}A{% else %}B{% endif %}: {{ orig }}
 
-
-      ||| {% if utterance_meta.lang == "french" %}{% if utterance_meta.lang == first_lang
-      %}A{% else %}B{% endif %}: {{ ref }}{% endif %}
+      ||| {% if utterance_meta.lang == "french" %}{{ ref }}{% endif %}
 
       '
     metadata: !TemplateMetadata
@@ -312,7 +356,7 @@ templates:
   72c1cbbd-956f-4721-9cee-fd50148cf77d: !Template
     answer_choices: null
     id: 72c1cbbd-956f-4721-9cee-fd50148cf77d
-    jinja: 'Translate the following into English: "{{ orig }}" ||| {% if utterance_meta.lang
+    jinja: 'Translate this into English: {{ orig }} ||| {% if utterance_meta.lang
       == "french"  %}{{ ref }}{% endif %}'
     metadata: !TemplateMetadata
       choices_in_prompt: false
@@ -321,6 +365,33 @@ templates:
       original_task: true
     name: MT_sent_fr2en
     reference: Sentence-level, French-to-English
+  7c67ca68-f4bc-428e-a708-487809492fcc: !Template
+    answer_choices: null
+    id: 7c67ca68-f4bc-428e-a708-487809492fcc
+    jinja: '{% set target_lang = "english" %}{% if utterance_meta.lang == "english"
+      %}{% set target_lang = "french" %}{% endif %}
+
+      {% for previous in dialogue_history[-2:] %}
+
+      {{ previous.orig }}{% endfor %}
+
+      {{ orig }}
+
+
+      The {% if utterance_meta.lang == "english" %}French{% else %}English{% endif
+      %} translation is:
+
+      {% for previous in dialogue_history[-2:] %}{% if previous.utterance_meta.lang
+      == target_lang %}{{ previous.orig }}{% else %}{{ previous.mt }}{% endif %}
+
+      {% endfor %} ||| {% if utterance_meta.lang =="english" %}{{ ref }}{% endif %}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      original_task: true
+    name: MT-2-context-complete-translation-orig-en2fr
+    reference: 2 previous contexts (orig language) complete translation, English-to-French
   836c5096-2fd6-478c-89e8-39a050347d28: !Template
     answer_choices: null
     id: 836c5096-2fd6-478c-89e8-39a050347d28
@@ -338,13 +409,11 @@ templates:
 
       {% endfor %}{% endif %}
 
-      Translate the next utterance in the dialogue into English:
+      Translate {% if utterance_meta.lang == first_lang %}A{% else %}B{% endif %}''s
+      next utterance in the dialogue into English: {{ orig }}
 
-      {% if utterance_meta.lang == first_lang %}A{% else %}B{% endif %}: {{ orig }}
 
-
-      ||| {% if utterance_meta.lang == "french" %}{% if utterance_meta.lang == first_lang
-      %}A{% else %}B{% endif %}: {{ ref }}{% endif %}'
+      ||| {% if utterance_meta.lang == "french" %}{{ ref }}{% endif %}'
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
@@ -355,7 +424,7 @@ templates:
   842dc41a-8af0-4dca-8b55-a87026bfac31: !Template
     answer_choices: null
     id: 842dc41a-8af0-4dca-8b55-a87026bfac31
-    jinja: 'Translate the following into {% if utterance_meta.lang == "english"  %}French{%
+    jinja: 'Translate this into {% if utterance_meta.lang == "english"  %}French{%
       else %}English{% endif %}: "{{ orig }}"? ||| {{ ref }}'
     metadata: !TemplateMetadata
       choices_in_prompt: false
@@ -380,14 +449,12 @@ templates:
 
       {% endfor %}{% endif %}
 
-      Translate the next utterance in the dialogue into {% if utterance_meta.lang
-      == "english" %}French{% else %}English{% endif %}:
+      Translate {% if utterance_meta.lang == first_lang %}A{% else %}B{% endif %}''s
+      next utterance into {% if utterance_meta.lang == "english" %}French{% else %}English{%
+      endif %}: {{ orig }}
 
-      {% if utterance_meta.lang == first_lang %}A{% else %}B{% endif %}: {{ orig }}
 
-
-      ||| {% if utterance_meta.lang == first_lang %}A{% else %}B{% endif %}: {{ ref
-      }}'
+      ||| {{ ref }}'
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
@@ -398,8 +465,8 @@ templates:
   96da9c0e-e606-4283-8494-7129c75b4d02: !Template
     answer_choices: null
     id: 96da9c0e-e606-4283-8494-7129c75b4d02
-    jinja: 'Translate the following into French: "{{ orig }}" ||| {% if utterance_meta.lang
-      == "english"  %}{{ ref }}{% endif %}'
+    jinja: 'Translate this into French: {{ orig }} ||| {% if utterance_meta.lang ==
+      "english"  %}{{ ref }}{% endif %}'
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
@@ -429,6 +496,33 @@ templates:
       original_task: true
     name: MT_1-context-analogy_lang-given_en2fr
     reference: 1 previous context (same language) used for analogy, English-to-French
+  a7511f73-dd28-449f-bc6c-9609b736bb40: !Template
+    answer_choices: null
+    id: a7511f73-dd28-449f-bc6c-9609b736bb40
+    jinja: '{% set target_lang = "english" %}{% if utterance_meta.lang == "english"
+      %}{% set target_lang = "french" %}{% endif %}
+
+      {% for previous in dialogue_history[-2:] %}
+
+      {{ previous.orig }}{% endfor %}
+
+      {{ orig }}
+
+
+      The {% if utterance_meta.lang == "english" %}French{% else %}English{% endif
+      %} translation is:
+
+      {% for previous in dialogue_history[-2:] %}{% if previous.utterance_meta.lang
+      == target_lang %}{{ previous.orig }}{% else %}{{ previous.mt }}{% endif %}
+
+      {% endfor %} ||| {{ ref }}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      metrics:
+      - BLEU
+      original_task: true
+    name: MT-2-context-complete-translation-orig-both-directions
+    reference: 2 previous contexts (orig language) complete translation, both directions
   ac4c63da-32d2-40ac-aa7a-632e8ba42b4a: !Template
     answer_choices: A ||| B
     id: ac4c63da-32d2-40ac-aa7a-632e8ba42b4a
@@ -465,14 +559,12 @@ templates:
 
       {% endfor %}{% endif %}
 
-      Translate the next utterance in the dialogue into {% if utterance_meta.lang
-      == "english" %}French{% else %}English{% endif %}:
+      Translate {% if utterance_meta.lang == first_lang %}A{% else %}B{% endif %}''s
+      next utterance into {% if utterance_meta.lang == "english" %}French{% else %}English{%
+      endif %}: {{ orig }}
 
-      {% if utterance_meta.lang == first_lang %}A{% else %}B{% endif %}: {{ orig }}
 
-
-      ||| {% if utterance_meta.lang == first_lang %}A{% else %}B{% endif %}: {{ ref
-      }}'
+      ||| {{ ref }}'
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
@@ -480,6 +572,33 @@ templates:
       original_task: true
     name: MT_5-context_same-lang-mt_both-directions
     reference: Up to 5 previous sentences (same language, MT), both language directions
+  ca6d7d89-e32d-4993-a73d-ba7b09f1597f: !Template
+    answer_choices: null
+    id: ca6d7d89-e32d-4993-a73d-ba7b09f1597f
+    jinja: '{% set target_lang = "english" %}{% if utterance_meta.lang == "english"
+      %}{% set target_lang = "french" %}{% endif %}
+
+      {% for previous in dialogue_history[-2:] %}
+
+      {{ previous.orig }}{% endfor %}
+
+      {{ orig }}
+
+
+      The {% if utterance_meta.lang == "english" %}French{% else %}English{% endif
+      %} translation is:
+
+      {% for previous in dialogue_history[-2:] %}{% if previous.utterance_meta.lang
+      == target_lang %}{{ previous.orig }}{% else %}{{ previous.mt }}{% endif %}
+
+      {% endfor %} ||| {% if utterance_meta.lang =="english" %}{{ ref }}{% endif %}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      original_task: true
+    name: MT-1-context-complete-translation-orig-en2fr
+    reference: 1 previous context (orig language) complete translation, English-to-French
   d068ba77-ce75-4de3-a170-ca0a7cd3f8d1: !Template
     answer_choices: null
     id: d068ba77-ce75-4de3-a170-ca0a7cd3f8d1
@@ -497,13 +616,11 @@ templates:
 
       {% endfor %}{% endif %}
 
-      Translate the next utterance in the dialogue into French:
+      Translate {% if utterance_meta.lang == first_lang %}A{% else %}B{% endif %}''s
+      next utterance into French: {{ orig }}
 
-      {% if utterance_meta.lang == first_lang %}A{% else %}B{% endif %}: {{ orig }}
 
-
-      ||| {% if utterance_meta.lang == "english" %}{% if utterance_meta.lang == first_lang
-      %}A{% else %}B{% endif %}: {{ ref }}{% endif %}
+      ||| {% if utterance_meta.lang == "english" %}{{ ref }}{% endif %}
 
       '
     metadata: !TemplateMetadata
@@ -546,8 +663,8 @@ templates:
       or {{ "no" }}?
 
 
-      ||| {% if utterance_meta.eval_problems|length > 0 %}{% if utterance_meta.lang
-      == "french" %}{{ ["yes", "no" ][reply] }}{% endif %}{% endif %}
+      ||| {% if utterance_meta.lang == "french" %}{{ ["yes", "no" ][reply] }}{% endif
+      %}
 
       '
     metadata: !TemplateMetadata
@@ -558,6 +675,33 @@ templates:
     name: classify-errors_same-lang_en
     reference: Identify presence of notable errors, same language context (5), English
       translation
+  e9f5dfda-42b5-4698-8e8d-9fc9924e2e29: !Template
+    answer_choices: null
+    id: e9f5dfda-42b5-4698-8e8d-9fc9924e2e29
+    jinja: '{% set target_lang = "english" %}{% if utterance_meta.lang == "english"
+      %}{% set target_lang = "french" %}{% endif %}
+
+      {% for previous in dialogue_history[-1:] %}
+
+      {{ previous.orig }}{% endfor %}
+
+      {{ orig }}
+
+
+      The {% if utterance_meta.lang == "english" %}French{% else %}English{% endif
+      %} translation is:
+
+      {% for previous in dialogue_history[-1:] %}{% if previous.utterance_meta.lang
+      == target_lang %}{{ previous.orig }}{% else %}{{ previous.mt }}{% endif %}
+
+      {% endfor %} ||| {{ ref }}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      original_task: true
+    name: MT-1-context-complete-translation-orig-both-directions
+    reference: 1 previous context (orig language) complete translation, both directions
   eea8f47e-9bf5-4423-980b-58a9635c1f49: !Template
     answer_choices: null
     id: eea8f47e-9bf5-4423-980b-58a9635c1f49
