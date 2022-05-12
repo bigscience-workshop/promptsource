@@ -11,10 +11,16 @@ from datasets import get_dataset_infos
 from pygments import highlight
 from pygments.formatters import HtmlFormatter
 from pygments.lexers import DjangoLexer
-from templates import INCLUDED_USERS
 
 from promptsource.session import _get_state
-from promptsource.templates import DatasetTemplates, Template, TemplateCollection
+from promptsource.templates import (
+    DatasetTemplates,
+    INCLUDED_USERS,
+    LANGUAGES,
+    METRICS,
+    Template,
+    TemplateCollection
+)
 from promptsource.utils import (
     get_dataset,
     get_dataset_confs,
@@ -539,33 +545,25 @@ def run_app():
                                 help="Prompt explicitly lists choices in the template for the output.",
                             )
 
-                            # Metrics from here:
-                            # https://github.com/google-research/text-to-text-transfer-transformer/blob/4b580f23968c2139be7fb1cd53b22c7a7f686cdf/t5/evaluation/metrics.py
-                            metrics_choices = [
-                                "BLEU",
-                                "ROUGE",
-                                "Squad",
-                                "Trivia QA",
-                                "Accuracy",
-                                "Pearson Correlation",
-                                "Spearman Correlation",
-                                "MultiRC",
-                                "AUC",
-                                "COQA F1",
-                                "Edit Distance",
-                            ]
-                            # Add mean reciprocal rank
-                            metrics_choices.append("Mean Reciprocal Rank")
-                            # Add generic other
-                            metrics_choices.append("Other")
-                            # Sort alphabetically
-                            metrics_choices = sorted(metrics_choices)
                             state.metadata.metrics = st.multiselect(
                                 "Metrics",
-                                metrics_choices,
+                                sorted(METRICS),
                                 default=template.metadata.metrics,
                                 help="Select all metrics that are commonly used (or should "
                                 "be used if a new task) to evaluate this prompt.",
+                            )
+
+                            def format_language(key):
+                                return key + " (" + LANGUAGES[key] + ")"
+
+                            state.metadata.metrics = st.multiselect(
+                                "Languages",
+                                sorted(LANGUAGES.keys()),
+                                # default=template.metadata.languages,
+                                format_func=format_language,
+                                help="Select all languages used in this prompt. "
+                                "This annotation is independent from the language(s) "
+                                "of the dataset.",
                             )
 
                             # Answer choices

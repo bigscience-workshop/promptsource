@@ -28,6 +28,52 @@ env.globals.update(zip=zip)
 # filter_english_datasets (regardless of their metadata)
 INCLUDED_USERS = {"Zaid", "craffel"}
 
+# These are the metrics with which templates can be tagged
+METRICS = {
+    "BLEU", "ROUGE", "Squad", "Trivia QA", "Accuracy", "Pearson Correlation",
+    "Spearman Correlation", "MultiRC", "AUC", "COQA F1", "Edit Distance",
+    "Mean Reciprocal Rank", "Other"
+}
+
+# These are the languages with which templates can be tagged. Keys are IETF
+# primary language subtags, which are the actual tags we use. Values are English
+# names shown in the UI for convenience.
+LANGUAGES = {
+    "af": "Afrikaans", "am": "Amharic", "ar": "Arabic", "arn": "Mapudungun",
+    "as": "Assamese", "az": "Azeri", "ba": "Bashkir", "be": "Belarusian",
+    "bg": "Bulgarian", "bn": "Bengali", "bo": "Tibetan", "br": "Breton",
+    "bs": "Bosnian", "ca": "Catalan", "co": "Corsican", "cs": "Czech",
+    "cy": "Welsh", "da": "Danish", "de": "German", "dsb": "Lower Sorbian",
+    "dv": "Divehi", "el": "Greek", "en": "English", "es": "Spanish",
+    "et": "Estonian", "eu": "Basque", "fa": "Persian", "fi": "Finnish",
+    "fil": "Filipino", "fo": "Faroese", "fr": "French", "fy": "Frisian",
+    "ga": "Irish", "gd": "Scottish Gaelic", "gl": "Galician", "gsw": "Alsatian",
+    "gu": "Gujarati", "ha": "Hausa", "he": "Hebrew", "hi": "Hindi",
+    "hr": "Croatian", "hsb": "Upper Sorbian", "hu": "Hungarian",
+    "hy": "Armenian", "id": "Indonesian", "ig": "Igbo", "ii": "Yi",
+    "is": "Icelandic", "it": "Italian", "iu": "Inuktitut", "ja": "Japanese",
+    "ka": "Georgian", "kk": "Kazakh", "kl": "Greenlandic", "km": "Khmer",
+    "kn": "Kannada", "ko": "Korean", "kok": "Konkani", "ky": "Kyrgyz",
+    "lb": "Luxembourgish", "lo": "Lao", "lt": "Lithuanian", "lv": "Latvian",
+    "mi": "Maori", "mk": "Macedonian", "ml": "Malayalam", "mn": "Mongolian",
+    "moh": "Mohawk", "mr": "Marathi", "ms": "Malay", "mt": "Maltese",
+    "my": "Burmese", "nb": "Norwegian (Bokmål)", "ne": "Nepali", "nl": "Dutch",
+    "nn": "Norwegian (Nynorsk)", "no": "Norwegian", "nso": "Sesotho",
+    "oc": "Occitan", "or": "Oriya", "pa": "Punjabi", "pl": "Polish",
+    "prs": "Dari", "ps": "Pashto", "pt": "Portuguese", "quc": "K'iche",
+    "quz": "Quechua", "rm": "Romansh", "ro": "Romanian", "ru": "Russian",
+    "rw": "Kinyarwanda", "sa": "Sanskrit", "sah": "Yakut",
+    "se": "Sami (Northern)", "si": "Sinhala", "sk": "Slovak", "sl": "Slovenian",
+    "sma": "Sami (Southern)", "smj": "Sami (Lule)", "smn": "Sami (Inari)",
+    "sms": "Sami (Skolt)", "sq": "Albanian", "sr": "Serbian", "sv": "Swedish",
+    "sw": "Kiswahili", "syr": "Syriac", "ta": "Tamil", "te": "Telugu",
+    "tg": "Tajik", "th": "Thai", "tk": "Turkmen", "tn": "Setswana",
+    "tr": "Turkish", "tt": "Tatar", "tzm": "Tamazight", "ug": "Uyghur",
+    "uk": "Ukrainian", "ur": "Urdu", "uz": "Uzbek", "vi": "Vietnamese",
+    "wo": "Wolof", "xh": "isiXhosa", "yo": "Yoruba", "zh": "Chinese",
+    "zu": "isiZulu",
+}
+
 
 def highlight(input):
     return "<span style='color: #F08080'>" + input + "</span>"
