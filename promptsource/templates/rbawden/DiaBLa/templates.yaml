@@ -51,7 +51,7 @@ templates:
     name: MT_5-context_orig-lang_en2fr
     reference: Up to 5 previous sentences (original language), English-to-French
   123f36ee-c808-4cf0-aa5c-ed1f03ac3b69: !Template
-    answer_choices: yes || no
+    answer_choices: yes ||| no
     id: 123f36ee-c808-4cf0-aa5c-ed1f03ac3b69
     jinja: '{% set options = ["word choice", "grammar", "style", "coherence", "meaning"]
       %}
@@ -144,7 +144,7 @@ templates:
     name: MT_5-context_same-lang-ref_both-directions
     reference: Up to 5 previous sentences (same language, ref), both language directions
   28ea04f4-338e-40cf-8730-4a794b5b64b2: !Template
-    answer_choices: yes || no
+    answer_choices: yes ||| no
     id: 28ea04f4-338e-40cf-8730-4a794b5b64b2
     jinja: "{% set options = [\"word choice\", \"grammar\", \"style\", \"coherence\"\
       , \"meaning\"] %}\n{% set label = range(0,5)|random %}\n{% set reply=0 %}\n\
@@ -226,8 +226,7 @@ templates:
       {{ orig }}
 
 
-      The {% if utterance_meta.lang == "english" %}French{% else %}English{% endif
-      %} translation is:
+      The English translation is:
 
       {% for previous in dialogue_history[-2:] %}{% if previous.utterance_meta.lang
       == target_lang %}{{ previous.orig }}{% else %}{{ previous.mt }}{% endif %}
@@ -525,7 +524,7 @@ templates:
   ac4c63da-32d2-40ac-aa7a-632e8ba42b4a: !Template
     answer_choices: A ||| B
     id: ac4c63da-32d2-40ac-aa7a-632e8ba42b4a
-    jinja: '{% set label = range(0,2)|random %}
+    jinja: '{% set label = 0 %}
 
       Which of the following translations of "{{ orig }}" is produced automatically?
 
@@ -539,8 +538,8 @@ templates:
       metrics:
       - Accuracy
       original_task: false
-    name: discriminate-mt-ref
-    reference: Identify-MT-output
+    name: discriminate-mt-ref-A
+    reference: Identify-MT-output, answer=A
   b61c81ec-29eb-47f8-a1c6-561264ac04f3: !Template
     answer_choices: null
     id: b61c81ec-29eb-47f8-a1c6-561264ac04f3
@@ -584,8 +583,7 @@ templates:
       {{ orig }}
 
 
-      The {% if utterance_meta.lang == "english" %}French{% else %}English{% endif
-      %} translation is:
+      The French translation is:
 
       {% for previous in dialogue_history[-2:] %}{% if previous.utterance_meta.lang
       == target_lang %}{{ previous.orig }}{% else %}{{ previous.mt }}{% endif %}
@@ -598,6 +596,25 @@ templates:
       original_task: true
     name: MT-1-context-complete-translation-orig-en2fr
     reference: 1 previous context (orig language) complete translation, English-to-French
+  cfed1937-b4a5-4100-b489-3d8d9cd84423: !Template
+    answer_choices: A ||| B
+    id: cfed1937-b4a5-4100-b489-3d8d9cd84423
+    jinja: '{% set label = 1 %}
+
+      Which of the following translations of "{{ orig }}" is produced automatically?
+
+      {{ "A" }}) {% if label == 0 %}{{ ref }}{% else %}{{ mt }}{% endif %}
+
+      {{ "B" }}) {% if label == 0 %}{{ mt }}{% else %}{{ ref }}{% endif %}
+
+      ||| {% if ref != mt %}{{ ["A", "B"][label] }}{% endif %}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
+      original_task: false
+    name: discriminate-mt-ref-B
+    reference: Identify-MT-output, answer=B
   d068ba77-ce75-4de3-a170-ca0a7cd3f8d1: !Template
     answer_choices: null
     id: d068ba77-ce75-4de3-a170-ca0a7cd3f8d1
@@ -630,7 +647,7 @@ templates:
     name: MT_5-context_same-lang-mt_en2fr
     reference: Up to 5 previous sentences (same language, MT), English-to-French
   dddd6f35-5a01-431b-b59b-e9a8e76377aa: !Template
-    answer_choices: yes || no
+    answer_choices: yes ||| no
     id: dddd6f35-5a01-431b-b59b-e9a8e76377aa
     jinja: '{% set options = ["word choice", "grammar", "style", "coherence", "meaning"]
       %}
