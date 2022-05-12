@@ -13,14 +13,7 @@ from pygments.formatters import HtmlFormatter
 from pygments.lexers import DjangoLexer
 
 from promptsource.session import _get_state
-from promptsource.templates import (
-    DatasetTemplates,
-    INCLUDED_USERS,
-    LANGUAGES,
-    METRICS,
-    Template,
-    TemplateCollection
-)
+from promptsource.templates import INCLUDED_USERS, LANGUAGES, METRICS, DatasetTemplates, Template, TemplateCollection
 from promptsource.utils import (
     get_dataset,
     get_dataset_confs,
