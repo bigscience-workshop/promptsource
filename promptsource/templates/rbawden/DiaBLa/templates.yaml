@@ -219,7 +219,7 @@ templates:
     jinja: '{% set target_lang = "english" %}{% if utterance_meta.lang == "english"
       %}{% set target_lang = "french" %}{% endif %}
 
-      {% for previous in dialogue_history[-2:] %}
+      {% for previous in dialogue_history[-1:] %}
 
       {{ previous.orig }}{% endfor %}
 
@@ -228,7 +228,7 @@ templates:
 
       The English translation is:
 
-      {% for previous in dialogue_history[-2:] %}{% if previous.utterance_meta.lang
+      {% for previous in dialogue_history[-1:] %}{% if previous.utterance_meta.lang
       == target_lang %}{{ previous.orig }}{% else %}{{ previous.mt }}{% endif %}
 
       {% endfor %} ||| {% if utterance_meta.lang =="french" %}{{ ref }}{% endif %}'
@@ -576,7 +576,7 @@ templates:
     jinja: '{% set target_lang = "english" %}{% if utterance_meta.lang == "english"
       %}{% set target_lang = "french" %}{% endif %}
 
-      {% for previous in dialogue_history[-2:] %}
+      {% for previous in dialogue_history[-1:] %}
 
       {{ previous.orig }}{% endfor %}
 
@@ -585,7 +585,7 @@ templates:
 
       The French translation is:
 
-      {% for previous in dialogue_history[-2:] %}{% if previous.utterance_meta.lang
+      {% for previous in dialogue_history[-1:] %}{% if previous.utterance_meta.lang
       == target_lang %}{{ previous.orig }}{% else %}{{ previous.mt }}{% endif %}
 
       {% endfor %} ||| {% if utterance_meta.lang =="english" %}{{ ref }}{% endif %}'
