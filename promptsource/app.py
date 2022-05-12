@@ -40,6 +40,17 @@ def get_infos(all_infos, d_name):
     all_infos[d_name] = get_dataset_infos(d_name)
 
 
+def format_language(tag):
+    """
+    Formats a language tag for display in the UI.
+
+    For example, if the tag is "en", then the function returns "en (English)"
+    :param tag: language tag
+    :return: formatted language name
+    """
+    return tag + " (" + LANGUAGES[tag] + ")"
+
+
 # add an argument for read-only
 # At the moment, streamlit does not handle python script arguments gracefully.
 # Thus, for read-only mode, you have to type one of the below two:
@@ -402,6 +413,11 @@ def run_app():
                     st.text(template.metadata.choices_in_prompt)
                     st.markdown("##### Metrics")
                     st.text(", ".join(template.metadata.metrics) if template.metadata.metrics else None)
+                    st.markdown("##### Languages")
+                    if template.metadata.languages:
+                        st.text(", ".join([format_language(tag) for tag in template.metadata.languages]))
+                    else:
+                        st.text(None)
                     st.markdown("##### Answer Choices")
                     if template.get_answer_choices_expr() is not None:
                         show_jinja(template.get_answer_choices_expr())
@@ -545,9 +561,6 @@ def run_app():
                                 help="Select all metrics that are commonly used (or should "
                                 "be used if a new task) to evaluate this prompt.",
                             )
-
-                            def format_language(key):
-                                return key + " (" + LANGUAGES[key] + ")"
 
                             state.metadata.languages = st.multiselect(
                                 "Languages",
