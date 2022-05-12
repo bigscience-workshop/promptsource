@@ -26,7 +26,7 @@ env.globals.update(zip=zip)
 
 # These are users whose datasets should be included in the results returned by
 # filter_english_datasets (regardless of their metadata)
-INCLUDED_USERS = {"Zaid", "craffel"}
+INCLUDED_USERS = {"Zaid", "craffel", "GEM"}
 
 
 def highlight(input):
@@ -153,14 +153,14 @@ class Template(yaml.YAMLObject):
         else:
             return None
 
-    def apply(self, example, truncate=True, highlight_variables=False):
+    def apply(self, example, truncate=True, highlight_variables=False) -> Tuple[str, List[str]]:
         """
         Creates a prompt by applying this template to an example
 
         :param example: the dataset example to create a prompt for
         :param truncate: if True, example fields will be truncated to TEXT_VAR_LENGTH chars
         :param highlight_variables: highlight the added variables
-        :return: tuple of 2 strings, for prompt and output
+        :return: tuple of a string and a list of strings, for input and targets
         """
         jinja = self.jinja
 
@@ -189,7 +189,11 @@ class Template(yaml.YAMLObject):
 
         # Splits on the separator, and then replaces back any occurrences of the
         # separator in the original example
-        return [self._unescape_pipe(part).strip() for part in rendered_example.split("|||")]
+        parts = [self._unescape_pipe(part).strip() for part in rendered_example.split("|||")]
+        if len(parts) < 2:
+            raise ValueError("Prompt did not produce an input and at least one target.")
+
+        return parts[0], parts[1:]
 
     pipe_protector = "3ed2dface8203c4c9dfb1a5dc58e41e0"
 
