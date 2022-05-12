@@ -368,6 +368,7 @@ class Template(yaml.YAMLObject):
             original_task: Optional[bool] = None,
             choices_in_prompt: Optional[bool] = None,
             metrics: Optional[List[str]] = None,
+            languages: Optional[List[str]] = None,
         ):
             """
             Initializes template metadata.
@@ -381,10 +382,12 @@ class Template(yaml.YAMLObject):
             :param choices_in_prompt: If True, the answer choices are included in the templates such that models
                 see those choices in the input. Only applicable to classification tasks.
             :param metrics: List of strings denoting metrics to use for evaluation
+            :param metrics: List of strings denoting languages used in the prompt (not the associated dataset!)
             """
             self.original_task = original_task
             self.choices_in_prompt = choices_in_prompt
             self.metrics = metrics
+            self.languages = languages
 
 
 class TemplateCollection:
@@ -644,6 +647,7 @@ def get_templates_data_frame():
         "original_task": [],
         "choices_in_prompt": [],
         "metrics": [],
+        "languages": [],
         "answer_choices": [],
         "jinja": [],
     }
@@ -662,6 +666,7 @@ def get_templates_data_frame():
             data["original_task"].append(template.metadata.original_task)
             data["choices_in_prompt"].append(template.metadata.choices_in_prompt)
             data["metrics"].append(template.metadata.metrics)
+            data["languages"].append(template.metadata.languages)
             data["answer_choices"].append(template.get_answer_choices_expr())
             data["jinja"].append(template.jinja)
 

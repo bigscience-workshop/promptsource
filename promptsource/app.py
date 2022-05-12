@@ -549,10 +549,10 @@ def run_app():
                             def format_language(key):
                                 return key + " (" + LANGUAGES[key] + ")"
 
-                            state.metadata.metrics = st.multiselect(
+                            state.metadata.languages = st.multiselect(
                                 "Languages",
                                 sorted(LANGUAGES.keys()),
-                                # default=template.metadata.languages,
+                                default=template.metadata.languages,
                                 format_func=format_language,
                                 help="Select all languages used in this prompt. "
                                 "This annotation is independent from the language(s) "

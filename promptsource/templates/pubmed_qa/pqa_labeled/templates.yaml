@@ -9,6 +9,8 @@ templates:
       \ answered by the above research abstract? \n|||\n{{question}} "
     metadata: !TemplateMetadata
       choices_in_prompt: false
+      languages:
+      - en
       metrics:
       - BLEU
       - ROUGE
@@ -22,6 +24,8 @@ templates:
       \ this question: \"{{question}}\" \n||| \n{{long_answer}}\n"
     metadata: !TemplateMetadata
       choices_in_prompt: false
+      languages:
+      - en
       metrics:
       - BLEU
       - ROUGE
@@ -36,6 +40,8 @@ templates:
       \ is the question answered by the above research abstract? \n|||\n{{question}} "
     metadata: !TemplateMetadata
       choices_in_prompt: false
+      languages:
+      - en
       metrics:
       - BLEU
       - ROUGE
@@ -43,12 +49,14 @@ templates:
     name: 'Generate Question Title '
     reference: Given abstract, generate title (which is in the form of a question)
   1e0a77f8-0eb4-40a1-814d-8a111df66e5e: !Template
-    answer_choices: 'Yes ||| No ||| Maybe'
+    answer_choices: Yes ||| No ||| Maybe
     id: 1e0a77f8-0eb4-40a1-814d-8a111df66e5e
     jinja: "Question: \"{{ question }}\" \n\nAnswer: \"{{ long_answer }}\"\n\nSummarize\
       \ the above answer as YES, NO, or MAYBE? \n|||\n{{final_decision}}"
     metadata: !TemplateMetadata
       choices_in_prompt: true
+      languages:
+      - en
       metrics:
       - Accuracy
       original_task: false
@@ -65,6 +73,8 @@ templates:
       {{ context.labels[choice] }}\n"
     metadata: !TemplateMetadata
       choices_in_prompt: false
+      languages:
+      - en
       metrics:
       - Accuracy
       original_task: false
@@ -74,9 +84,12 @@ templates:
     answer_choices: null
     id: 45cb344c-bb36-492a-ace0-7cfc897e127a
     jinja: "Given a PubMed abstract:{{ context.contexts | join(\", \") }}\n\nWhat\
-      \ are the MeSH (Medical Subject Headings) terms for this? \n|||\n{{ context.meshes | join(\", \") }}"
+      \ are the MeSH (Medical Subject Headings) terms for this? \n|||\n{{ context.meshes\
+      \ | join(\", \") }}"
     metadata: !TemplateMetadata
       choices_in_prompt: false
+      languages:
+      - en
       metrics:
       - BLEU
       - ROUGE
@@ -88,10 +101,12 @@ templates:
     answer_choices: null
     id: 48ee58bb-6a4a-4667-9d9c-69618408c6ce
     jinja: "Given a research abstract: {{ context.contexts | join(\", \") }}\nAnd\
-      \ given long answer of a question: {{long_answer}}.\n \nWhat is the question asked by this research paper?\
-      \ \n|||\n{{question}} "
+      \ given long answer of a question: {{long_answer}}.\n \nWhat is the question\
+      \ asked by this research paper? \n|||\n{{question}} "
     metadata: !TemplateMetadata
       choices_in_prompt: false
+      languages:
+      - en
       metrics:
       - BLEU
       - ROUGE
@@ -99,13 +114,15 @@ templates:
     name: Generate Question Title with long answer
     reference: ''
   91d481e5-fac6-4532-b013-5ac1235b6e1a: !Template
-    answer_choices: 'Yes ||| No ||| Maybe'
+    answer_choices: Yes ||| No ||| Maybe
     id: 91d481e5-fac6-4532-b013-5ac1235b6e1a
     jinja: "Given a PubMed abstract: {{ context.contexts | join(\", \") }}\n\nAnswer\
       \ the question: \"{{question}}\" as YES, NO, MAYBE.\n||| \n{{final_decision}}\n\
       \n"
     metadata: !TemplateMetadata
       choices_in_prompt: false
+      languages:
+      - en
       metrics:
       - Accuracy
       original_task: true
