@@ -30,7 +30,6 @@ env.globals.update(zip=zip)
 INCLUDED_USERS = {"Zaid", "craffel", "GEM", "aps", "rbawden"}
 
 
-
 def highlight(input):
     return "<span style='color: #F08080'>" + input + "</span>"
 
