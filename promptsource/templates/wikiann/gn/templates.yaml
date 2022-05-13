@@ -1,0 +1,189 @@
+dataset: wikiann
+subset: gn
+templates:
+  081871e7-951a-484b-bcc2-1ee2950b57a1: !Template
+    answer_choices: True || False
+    id: 081871e7-951a-484b-bcc2-1ee2950b57a1
+    jinja: 'Given the following information:
+
+
+      {{'' ''.join(tokens)}}
+
+
+      True or false: is {{spans[0].split('':'')[1]}} an organization?
+
+
+      |||
+
+      {{spans[0][:3] == ''ORG''}}
+
+      '
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - AUC
+      - COQA F1
+      - Accuracy
+      - Other
+      original_task: true
+    name: is_organization_bool
+    reference: ''
+  379897ae-1a32-4692-9f4f-7048286b6f8a: !Template
+    answer_choices: Yes ||| No
+    id: 379897ae-1a32-4692-9f4f-7048286b6f8a
+    jinja: 'Given, "{{''  ''.join(tokens)}}", is {{spans[0].split('':'')[1]}} an organization?
+
+
+      |||
+
+      {% if spans[0][:3] == ''ORG'' %}
+
+      Yes
+
+      {% else %}
+
+      No
+
+      {% endif %}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - AUC
+      - Accuracy
+      - COQA F1
+      - Other
+      original_task: true
+    name: is_organization
+    reference: ''
+  5460e05a-1c6f-44f3-b528-198955b11572: !Template
+    answer_choices: True || False
+    id: 5460e05a-1c6f-44f3-b528-198955b11572
+    jinja: 'Given the following information:
+
+
+      {{'' ''.join(tokens)}}
+
+
+      True or false: is {{spans[0].split('':'')[1]}} a person?
+
+      |||
+
+      {{spans[0][:3] == "PER"}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - AUC
+      - BLEU
+      - COQA F1
+      - Accuracy
+      - Other
+      original_task: true
+    name: is_person_bool
+    reference: alt. is person question
+  548eefc7-8583-46cd-9023-89c92f04998c: !Template
+    answer_choices: True ||| False
+    id: 548eefc7-8583-46cd-9023-89c92f04998c
+    jinja: 'Given the following information:
+
+
+      {{'' ''.join(tokens)}}
+
+
+      True or false: is {{spans[0].split('':'')[1]}} a location?
+
+      |||
+
+      {{spans[0][:3] == "LOC"}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - AUC
+      - Accuracy
+      - COQA F1
+      - Other
+      original_task: true
+    name: is_location_bool
+    reference: ''
+  8f102b1d-4943-42e4-9764-ea3a4dc1a109: !Template
+    answer_choices: Yes ||| No
+    id: 8f102b1d-4943-42e4-9764-ea3a4dc1a109
+    jinja: 'Given, "{{''  ''.join(tokens)}}", is {{spans[0].split('':'')[1]}} a location?
+
+
+      |||
+
+      {% if spans[0][:3] == ''LOC'' %}
+
+      Yes
+
+      {% else %}
+
+      No
+
+      {% endif %}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - AUC
+      - COQA F1
+      - Other
+      - Accuracy
+      original_task: true
+    name: is_location
+    reference: ''
+  b3325876-bbfe-48c7-94dc-74eea85a5910: !Template
+    answer_choices: person ||| organization ||| location
+    id: b3325876-bbfe-48c7-94dc-74eea85a5910
+    jinja: 'Given, "{{''  ''.join(tokens)}}", is {{spans[0].split('':'')[1]}} a person,
+      organization, or location?
+
+
+      |||
+
+      {% if spans[0][:3] == ''PER'' %}
+
+      person
+
+      {% elif spans[0][:3] == ''LOC'' %}
+
+      location
+
+      {%else%}
+
+      organization
+
+      {% endif %}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - Accuracy
+      original_task: true
+    name: multiple_choice
+    reference: ''
+  d22914f3-20b7-4c07-80bf-3df525317820: !Template
+    answer_choices: Yes ||| No
+    id: d22914f3-20b7-4c07-80bf-3df525317820
+    jinja: 'Given, "{{''  ''.join(tokens)}}", is {{spans[0].split('':'')[1]}} a person?
+
+
+      |||
+
+      {% if spans[0][:3] == ''PER'' %}
+
+      Yes
+
+      {% else %}
+
+      No
+
+      {% endif %}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - Other
+      - AUC
+      - COQA F1
+      - Accuracy
+      original_task: true
+    name: is_person
+    reference: formatting version one to ask if the  highlighted string is a person

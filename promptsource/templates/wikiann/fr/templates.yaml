@@ -1,0 +1,189 @@
+dataset: wikiann
+subset: fr
+templates:
+  2d439013-74a4-4032-8a71-ab5f16cd0dc5: !Template
+    answer_choices: Yes ||| No
+    id: 2d439013-74a4-4032-8a71-ab5f16cd0dc5
+    jinja: 'Given, "{{''  ''.join(tokens)}}", is {{spans[0].split('':'')[1]}} a person?
+
+
+      |||
+
+      {% if spans[0][:3] == ''PER'' %}
+
+      Yes
+
+      {% else %}
+
+      No
+
+      {% endif %}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - Other
+      - AUC
+      - COQA F1
+      - Accuracy
+      original_task: true
+    name: is_person
+    reference: formatting version one to ask if the  highlighted string is a person
+  3ecdeded-4ea6-44ad-9294-b1d68007b8c7: !Template
+    answer_choices: True || False
+    id: 3ecdeded-4ea6-44ad-9294-b1d68007b8c7
+    jinja: 'Given the following information:
+
+
+      {{'' ''.join(tokens)}}
+
+
+      True or false: is {{spans[0].split('':'')[1]}} a person?
+
+      |||
+
+      {{spans[0][:3] == "PER"}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - AUC
+      - BLEU
+      - COQA F1
+      - Accuracy
+      - Other
+      original_task: true
+    name: is_person_bool
+    reference: alt. is person question
+  61d0f757-0ee5-46c0-bdf4-b85d5bd1fa9e: !Template
+    answer_choices: True || False
+    id: 61d0f757-0ee5-46c0-bdf4-b85d5bd1fa9e
+    jinja: 'Given the following information:
+
+
+      {{'' ''.join(tokens)}}
+
+
+      True or false: is {{spans[0].split('':'')[1]}} an organization?
+
+
+      |||
+
+      {{spans[0][:3] == ''ORG''}}
+
+      '
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - AUC
+      - COQA F1
+      - Accuracy
+      - Other
+      original_task: true
+    name: is_organization_bool
+    reference: ''
+  72d28c21-d9e0-489d-ae42-557d1b4d6b85: !Template
+    answer_choices: Yes ||| No
+    id: 72d28c21-d9e0-489d-ae42-557d1b4d6b85
+    jinja: 'Given, "{{''  ''.join(tokens)}}", is {{spans[0].split('':'')[1]}} a location?
+
+
+      |||
+
+      {% if spans[0][:3] == ''LOC'' %}
+
+      Yes
+
+      {% else %}
+
+      No
+
+      {% endif %}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - AUC
+      - COQA F1
+      - Other
+      - Accuracy
+      original_task: true
+    name: is_location
+    reference: ''
+  ad41d3d7-71d7-413c-bd5a-22a31f6bb843: !Template
+    answer_choices: True ||| False
+    id: ad41d3d7-71d7-413c-bd5a-22a31f6bb843
+    jinja: 'Given the following information:
+
+
+      {{'' ''.join(tokens)}}
+
+
+      True or false: is {{spans[0].split('':'')[1]}} a location?
+
+      |||
+
+      {{spans[0][:3] == "LOC"}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - AUC
+      - Accuracy
+      - COQA F1
+      - Other
+      original_task: true
+    name: is_location_bool
+    reference: ''
+  dad4d7c6-2069-4315-a1bf-235fa26dbb07: !Template
+    answer_choices: Yes ||| No
+    id: dad4d7c6-2069-4315-a1bf-235fa26dbb07
+    jinja: 'Given, "{{''  ''.join(tokens)}}", is {{spans[0].split('':'')[1]}} an organization?
+
+
+      |||
+
+      {% if spans[0][:3] == ''ORG'' %}
+
+      Yes
+
+      {% else %}
+
+      No
+
+      {% endif %}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - AUC
+      - Accuracy
+      - COQA F1
+      - Other
+      original_task: true
+    name: is_organization
+    reference: ''
+  ea0f729c-1baf-45ae-b5ac-5767c12f8f40: !Template
+    answer_choices: person ||| organization ||| location
+    id: ea0f729c-1baf-45ae-b5ac-5767c12f8f40
+    jinja: 'Given, "{{''  ''.join(tokens)}}", is {{spans[0].split('':'')[1]}} a person,
+      organization, or location?
+
+
+      |||
+
+      {% if spans[0][:3] == ''PER'' %}
+
+      person
+
+      {% elif spans[0][:3] == ''LOC'' %}
+
+      location
+
+      {%else%}
+
+      organization
+
+      {% endif %}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - Accuracy
+      original_task: true
+    name: multiple_choice
+    reference: ''

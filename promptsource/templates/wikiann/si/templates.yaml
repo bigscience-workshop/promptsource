@@ -1,0 +1,189 @@
+dataset: wikiann
+subset: si
+templates:
+  1cbbce71-178c-4b54-9983-2f234bb9c9bd: !Template
+    answer_choices: Yes ||| No
+    id: 1cbbce71-178c-4b54-9983-2f234bb9c9bd
+    jinja: 'Given, "{{''  ''.join(tokens)}}", is {{spans[0].split('':'')[1]}} a location?
+
+
+      |||
+
+      {% if spans[0][:3] == ''LOC'' %}
+
+      Yes
+
+      {% else %}
+
+      No
+
+      {% endif %}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - AUC
+      - COQA F1
+      - Other
+      - Accuracy
+      original_task: true
+    name: is_location
+    reference: ''
+  6e2f1493-01b6-4090-beec-2bb57ea5a5fa: !Template
+    answer_choices: Yes ||| No
+    id: 6e2f1493-01b6-4090-beec-2bb57ea5a5fa
+    jinja: 'Given, "{{''  ''.join(tokens)}}", is {{spans[0].split('':'')[1]}} an organization?
+
+
+      |||
+
+      {% if spans[0][:3] == ''ORG'' %}
+
+      Yes
+
+      {% else %}
+
+      No
+
+      {% endif %}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - AUC
+      - Accuracy
+      - COQA F1
+      - Other
+      original_task: true
+    name: is_organization
+    reference: ''
+  813662c9-ad25-422b-9cf7-b22a357ecdc1: !Template
+    answer_choices: True || False
+    id: 813662c9-ad25-422b-9cf7-b22a357ecdc1
+    jinja: 'Given the following information:
+
+
+      {{'' ''.join(tokens)}}
+
+
+      True or false: is {{spans[0].split('':'')[1]}} a person?
+
+      |||
+
+      {{spans[0][:3] == "PER"}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - AUC
+      - BLEU
+      - COQA F1
+      - Accuracy
+      - Other
+      original_task: true
+    name: is_person_bool
+    reference: alt. is person question
+  a22217aa-5706-4ceb-b2c5-df845d944d9c: !Template
+    answer_choices: True ||| False
+    id: a22217aa-5706-4ceb-b2c5-df845d944d9c
+    jinja: 'Given the following information:
+
+
+      {{'' ''.join(tokens)}}
+
+
+      True or false: is {{spans[0].split('':'')[1]}} a location?
+
+      |||
+
+      {{spans[0][:3] == "LOC"}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - AUC
+      - Accuracy
+      - COQA F1
+      - Other
+      original_task: true
+    name: is_location_bool
+    reference: ''
+  b089d13b-9361-40ca-bea2-816d6c1de007: !Template
+    answer_choices: Yes ||| No
+    id: b089d13b-9361-40ca-bea2-816d6c1de007
+    jinja: 'Given, "{{''  ''.join(tokens)}}", is {{spans[0].split('':'')[1]}} a person?
+
+
+      |||
+
+      {% if spans[0][:3] == ''PER'' %}
+
+      Yes
+
+      {% else %}
+
+      No
+
+      {% endif %}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - Other
+      - AUC
+      - COQA F1
+      - Accuracy
+      original_task: true
+    name: is_person
+    reference: formatting version one to ask if the  highlighted string is a person
+  b4f7519f-f55d-4048-91d1-3a959be976c0: !Template
+    answer_choices: person ||| organization ||| location
+    id: b4f7519f-f55d-4048-91d1-3a959be976c0
+    jinja: 'Given, "{{''  ''.join(tokens)}}", is {{spans[0].split('':'')[1]}} a person,
+      organization, or location?
+
+
+      |||
+
+      {% if spans[0][:3] == ''PER'' %}
+
+      person
+
+      {% elif spans[0][:3] == ''LOC'' %}
+
+      location
+
+      {%else%}
+
+      organization
+
+      {% endif %}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - Accuracy
+      original_task: true
+    name: multiple_choice
+    reference: ''
+  cb66ad3e-9982-47a2-a2be-d250cd8ce0b1: !Template
+    answer_choices: True || False
+    id: cb66ad3e-9982-47a2-a2be-d250cd8ce0b1
+    jinja: 'Given the following information:
+
+
+      {{'' ''.join(tokens)}}
+
+
+      True or false: is {{spans[0].split('':'')[1]}} an organization?
+
+
+      |||
+
+      {{spans[0][:3] == ''ORG''}}
+
+      '
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - AUC
+      - COQA F1
+      - Accuracy
+      - Other
+      original_task: true
+    name: is_organization_bool
+    reference: ''

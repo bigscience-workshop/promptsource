@@ -1,0 +1,189 @@
+dataset: wikiann
+subset: sco
+templates:
+  4ab9b7a7-40b8-4c8b-8769-b0d625df44a0: !Template
+    answer_choices: True || False
+    id: 4ab9b7a7-40b8-4c8b-8769-b0d625df44a0
+    jinja: 'Given the following information:
+
+
+      {{'' ''.join(tokens)}}
+
+
+      True or false: is {{spans[0].split('':'')[1]}} a person?
+
+      |||
+
+      {{spans[0][:3] == "PER"}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - AUC
+      - BLEU
+      - COQA F1
+      - Accuracy
+      - Other
+      original_task: true
+    name: is_person_bool
+    reference: alt. is person question
+  5b576f24-4322-47bc-9383-f3087dd2d5ae: !Template
+    answer_choices: Yes ||| No
+    id: 5b576f24-4322-47bc-9383-f3087dd2d5ae
+    jinja: 'Given, "{{''  ''.join(tokens)}}", is {{spans[0].split('':'')[1]}} a location?
+
+
+      |||
+
+      {% if spans[0][:3] == ''LOC'' %}
+
+      Yes
+
+      {% else %}
+
+      No
+
+      {% endif %}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - AUC
+      - COQA F1
+      - Other
+      - Accuracy
+      original_task: true
+    name: is_location
+    reference: ''
+  a579aaed-c2b8-4252-8f3d-a47860d58310: !Template
+    answer_choices: person ||| organization ||| location
+    id: a579aaed-c2b8-4252-8f3d-a47860d58310
+    jinja: 'Given, "{{''  ''.join(tokens)}}", is {{spans[0].split('':'')[1]}} a person,
+      organization, or location?
+
+
+      |||
+
+      {% if spans[0][:3] == ''PER'' %}
+
+      person
+
+      {% elif spans[0][:3] == ''LOC'' %}
+
+      location
+
+      {%else%}
+
+      organization
+
+      {% endif %}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - Accuracy
+      original_task: true
+    name: multiple_choice
+    reference: ''
+  a5eefb7c-bc37-4703-9978-f1b7bc222c85: !Template
+    answer_choices: Yes ||| No
+    id: a5eefb7c-bc37-4703-9978-f1b7bc222c85
+    jinja: 'Given, "{{''  ''.join(tokens)}}", is {{spans[0].split('':'')[1]}} an organization?
+
+
+      |||
+
+      {% if spans[0][:3] == ''ORG'' %}
+
+      Yes
+
+      {% else %}
+
+      No
+
+      {% endif %}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - AUC
+      - Accuracy
+      - COQA F1
+      - Other
+      original_task: true
+    name: is_organization
+    reference: ''
+  d5921c5a-f856-4925-961f-e26dc67e1a13: !Template
+    answer_choices: True || False
+    id: d5921c5a-f856-4925-961f-e26dc67e1a13
+    jinja: 'Given the following information:
+
+
+      {{'' ''.join(tokens)}}
+
+
+      True or false: is {{spans[0].split('':'')[1]}} an organization?
+
+
+      |||
+
+      {{spans[0][:3] == ''ORG''}}
+
+      '
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - AUC
+      - COQA F1
+      - Accuracy
+      - Other
+      original_task: true
+    name: is_organization_bool
+    reference: ''
+  dd076edb-a918-421d-a165-27aa9e8f3797: !Template
+    answer_choices: Yes ||| No
+    id: dd076edb-a918-421d-a165-27aa9e8f3797
+    jinja: 'Given, "{{''  ''.join(tokens)}}", is {{spans[0].split('':'')[1]}} a person?
+
+
+      |||
+
+      {% if spans[0][:3] == ''PER'' %}
+
+      Yes
+
+      {% else %}
+
+      No
+
+      {% endif %}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - Other
+      - AUC
+      - COQA F1
+      - Accuracy
+      original_task: true
+    name: is_person
+    reference: formatting version one to ask if the  highlighted string is a person
+  e60ad781-e66d-4dd9-9864-8788b389ec19: !Template
+    answer_choices: True ||| False
+    id: e60ad781-e66d-4dd9-9864-8788b389ec19
+    jinja: 'Given the following information:
+
+
+      {{'' ''.join(tokens)}}
+
+
+      True or false: is {{spans[0].split('':'')[1]}} a location?
+
+      |||
+
+      {{spans[0][:3] == "LOC"}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - AUC
+      - Accuracy
+      - COQA F1
+      - Other
+      original_task: true
+    name: is_location_bool
+    reference: ''
