@@ -28,8 +28,9 @@ templates:
       & Arts|||  Education
     id: 21973a70-f643-4172-a5f3-624aaf0d339a
     jinja: "Given the following news headline and short description: \n{{headline}}\n\
-      {{short_description}} \nWhat is a correct category class from the following\
-      \ list {{answer_choices}}? ||| {{answer_choices[label]}}"
+      {{short_description}} \nWhat is a correct category? Please choose from the list\
+      \ of options below: \n\u2022 {{answer_choices | join(\",\") |replace(\",\",\"\
+      \\n\u2022 \") }} \n||| {{answer_choices[label]}}"
     metadata: !TemplateMetadata
       choices_in_prompt: true
       metrics:
@@ -46,9 +47,9 @@ templates:
       News|||  Arts & Culture|||  Environment|||  College|||  Latino Voices|||  Culture
       & Arts|||  Education
     id: 3a782f3e-7a67-4e46-ad46-57d4491a91c5
-    jinja: "Given the following list of news categories: {{answer_choices}}.\nClassify\
-      \ the following news to the correct category: \n{{headline}}\n{{short_description}}\
-      \ \n||| {{answer_choices[label]}}"
+    jinja: "Given the following list of news categories: \n- {{answer_choices | join(\"\
+      ,\") |replace(\",\",\"\\n- \") }}\nClassify the following news to the correct\
+      \ category: \n{{headline}}\n{{short_description}} \n||| {{answer_choices[label]}}"
     metadata: !TemplateMetadata
       choices_in_prompt: true
       metrics:
@@ -65,16 +66,9 @@ templates:
       News|||  Arts & Culture|||  Environment|||  College|||  Latino Voices|||  Culture
       & Arts|||  Education
     id: ab757ddf-0c94-49b4-89a6-e7ead4ab5a58
-    jinja: '{{headline}}
-
-      {{date}}
-
-      {{short_description}}
-
-      What is a correct category for this news from the following list {{answer_choices}}
-      ? |||
-
-      {{answer_choices[label]}}'
+    jinja: "{{headline}}\n{{date}}\n{{short_description}}\nWhat is a correct category\
+      \ for this news from the following list of options:  \n- {{answer_choices |\
+      \ join(\",\") |replace(\",\",\"\\n- \") }} |||\n{{answer_choices[label]}}"
     metadata: !TemplateMetadata
       choices_in_prompt: true
       metrics:
