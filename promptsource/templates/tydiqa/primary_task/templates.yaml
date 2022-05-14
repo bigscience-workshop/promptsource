@@ -1,6 +1,42 @@
 dataset: tydiqa
 subset: primary_task
 templates:
+  011c71dc-519a-49ff-829a-1e1501dc7bb2: !Template
+    answer_choices: "\u0646\u0639\u0645 ||| \u0644\u0627 ||| \u0644\u064A\u0633 \u0645\
+      \u0645\u0627 \u0633\u0628\u0642"
+    id: 011c71dc-519a-49ff-829a-1e1501dc7bb2
+    jinja: "{% if language == \"arabic\" %}\n\u0633\u0624\u0627\u0644: {{question_text}}\n\
+      \u0623\u062C\u0628 \u0639\u0646 \u0627\u0644\u0633\u0624\u0627\u0644 \u0628\
+      {{answer_choices[0]}} \u0623\u0648 {{answer_choices[1]}}. \u0627\u0630\u0627\
+      \ \u0644\u0645 \u064A\u0643\u0646 \u0628\u0627\u0644\u0625\u0645\u0643\u0627\
+      \u0646 \u0630\u0644\u0643 \u0623\u062C\u0628 \u0628\u0640  {{answer_choices[2]}}\
+      \ .\nHint: {{document_plaintext}}\n|||\n{{annotations.yes_no_answer[0] |replace(\"\
+      NONE\",\"\u0644\u064A\u0633 \u0645\u0645\u0627 \u0633\u0628\u0642\")| replace(\"\
+      NO\",\"\u0644\u0627\")| replace(\"YES\",\" \u0646\u0639\u0645\") }}\n{% endif\
+      \ %}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
+      original_task: true
+    name: yes_no_none_ar
+    reference: ''
+  11aa0d9b-0d3e-4df0-8d83-16477adbbc06: !Template
+    answer_choices: "\u0646\u0639\u0645 ||| \u0644\u0627"
+    id: 11aa0d9b-0d3e-4df0-8d83-16477adbbc06
+    jinja: "{% if language == \"arabic\" %}\n{% if annotations.yes_no_answer[0] ==\
+      \ \"YES\" or annotations.yes_no_answer[0] == \"NO\" %} \n\u0628\u0646\u0627\u0621\
+      \ \u0639\u0644\u0649 \u0627\u0644\u0646\u0635 \u0627\u0644\u0645\u0642\u062A\
+      \u0637\u0639, {{question_text}} \n{{document_plaintext}}\n||| \n{{annotations.yes_no_answer[0]\
+      \ | replace(\"NO\",\"\u0644\u0627\")| replace(\"YES\",\" \u0646\u0639\u0645\"\
+      ) }}\n{% endif %}\n{% endif%}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - Accuracy
+      original_task: true
+    name: based_on_the_text_ar
+    reference: ''
   16f11e56-a78d-4e33-bba1-586f9947baf7: !Template
     answer_choices: Yes ||| No ||| None
     id: 16f11e56-a78d-4e33-bba1-586f9947baf7
@@ -43,7 +79,7 @@ templates:
 
       '
     metadata: !TemplateMetadata
-      choices_in_prompt: false
+      choices_in_prompt: true
       metrics:
       - Accuracy
       original_task: true
@@ -62,6 +98,27 @@ templates:
       original_task: false
     name: open_domain_qa_without_choices
     reference: Answer Yes/No question
+  60c9aadf-dcd9-4f06-bd0a-6a5a178dae6e: !Template
+    answer_choices: "\u0646\u0639\u0645 ||| \u0644\u0627 ||| \u0644\u0627 \u0634\u064A\
+      \u0621 \u0645\u0645\u0627 \u0633\u0628\u0642"
+    id: 60c9aadf-dcd9-4f06-bd0a-6a5a178dae6e
+    jinja: "{% if language ==\"arabic\" %}\n\u0623\u062C\u0628 \u0628{{answer_choices[0]}}\
+      \  \u0623\u0648 {{answer_choices[1]}} \u0623\u0648 {{answer_choices[2]}} \u0627\
+      \u0630\u0627 \u0644\u0645 \u064A\u0643\u0646 \u0628\u0627\u0644\u0625\u0645\u0643\
+      \u0627\u0646 \u0627\u0644\u0625\u062C\u0627\u0628\u0629 \u0628\u0646\u0639\u0645\
+      \ \u0623\u0648 \u0644\u0627.\n\u0633\u0624\u0627\u0644: {{question_text}}\n\u0627\
+      \u0644\u0645\u0648\u0636\u0648\u0639: {{document_title}}\n\u0627\u0644\u0645\
+      \u0642\u0627\u0644\u0629: {{document_plaintext}}\n|||\n{{annotations.yes_no_answer[0]\
+      \ |replace(\"NONE\",\"\u0644\u0627 \u0634\u064A\u0621 \u0645\u0645\u0627 \u0633\
+      \u0628\u0642\")| replace(\"NO\",\"\u0644\u0627\")| replace(\"YES\",\" \u0646\
+      \u0639\u0645\") }}\n{% endif %}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
+      original_task: true
+    name: read_and_answer_ar
+    reference: ''
   6835dd64-96bd-4bf8-9ba5-645d6a7b8472: !Template
     answer_choices: Yes ||| No
     id: 6835dd64-96bd-4bf8-9ba5-645d6a7b8472
@@ -125,6 +182,31 @@ templates:
       original_task: true
     name: after_reading_the_text
     reference: Reading Comprehension
+  a85a2b12-f360-4fcc-9a40-f150476bdfe8: !Template
+    answer_choices: "\u0646\u0639\u0645 ||| \u0644\u0627 ||| \u0644\u0627 \u0634\u064A\
+      \u0621 \u0645\u0645\u0627 \u0633\u0628\u0642"
+    id: a85a2b12-f360-4fcc-9a40-f150476bdfe8
+    jinja: "{% if language == \"arabic\" %}\n\u0623\u062A\u0633\u0627\u0626\u0644\
+      \ {{question_text}}.\n\u0633\u0627\u0639\u062F\u0646\u064A \u0628\u0625\u062C\
+      \u0627\u0628\u0629 \u0647\u0630\u0627 \u0627\u0644\u0633\u0624\u0627\u0644 \u0628\
+      \u0640 \"{{answer_choices[0]}}\" \u0623\u0648 \"{{answer_choices[1]}}\" \u0623\
+      \u0648 \"{{answer_choices[2]}}\" \u0641\u064A \u062D\u0627\u0644 \u0644\u0645\
+      \ \u064A\u0643\u0646 \u0628\u0627\u0644\u0625\u0645\u0643\u0627\u0646 \u0627\
+      \u0644\u0625\u062C\u0627\u0628\u0629 \u0628\u0646\u0639\u0645 \u0623\u0648 \uFEFB\
+      .\n\u0647\u0630\u0627 \u0645\u0627 \u0648\u062C\u062F\u062A\u0647 \u0645\u0646\
+      \ \u0645\u0639\u0644\u0648\u0645\u0627\u062A \u0641\u064A \u0627\u0644\u0625\
+      \u0646\u062A\u0631\u0646\u062A:\n\u0627\u0644\u0645\u0648\u0636\u0648\u0639\
+      : {{document_title}}\n\u0627\u0644\u0645\u0642\u0627\u0644\u0629: {{document_plaintext}}\n\
+      |||\n{{annotations.yes_no_answer[0] |replace(\"NONE\",\"\u0644\u0627 \u0634\u064A\
+      \u0621 \u0645\u0645\u0627 \u0633\u0628\u0642\")| replace(\"NO\",\"\u0644\u0627\
+      \")| replace(\"YES\",\" \u0646\u0639\u0645\") }}\n{% endif %}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
+      original_task: true
+    name: heres_what_I_found_ar
+    reference: ''
   b4f7c441-41b1-4665-93f9-f2e875aed92a: !Template
     answer_choices: Yes ||| No
     id: b4f7c441-41b1-4665-93f9-f2e875aed92a
@@ -139,12 +221,29 @@ templates:
       original_task: false
     name: open_domain_qa
     reference: Ask Yes/No question
+  d9888ddb-c3e3-47a5-94ab-845057c98dac: !Template
+    answer_choices: "\u0646\u0639\u0645 ||| \uFEFB"
+    id: d9888ddb-c3e3-47a5-94ab-845057c98dac
+    jinja: "{% if language == \"arabic\" %}\n {% if annotations.yes_no_answer[0] ==\
+      \ \"YES\" or annotations.yes_no_answer[0] == \"NO\" %} \n\u0628\u0639\u062F\
+      \ \u0642\u0631\u0627\u0621\u0629 \u0627\u0644\u0646\u0635 \u0627\u0644\u0645\
+      \u0642\u062A\u0637\u0639 \u0645\u0646 \u0648\u064A\u0643\u0628\u064A\u062F\u064A\
+      \u0627 \u0623\u062C\u0628 \u0639\u0646 \u0627\u0644\u0633\u0624\u0627\u0644\
+      \ \u0627\u0644\u062A\u0627\u0644\u064A:\n{{question_text}} \n{{document_plaintext}}\n\
+      ||| \n{{annotations.yes_no_answer[0] | replace(\"NO\",\"\u0644\u0627\")| replace(\"\
+      YES\",\" \u0646\u0639\u0645\") }}\n{% endif %}\n\n{% endif %}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics: []
+      original_task: true
+    name: after_reading_the_text_ar
+    reference: ''
   e593017f-9bcf-4442-944d-fcdf2edcb4f7: !Template
     answer_choices: Yes ||| No
     id: e593017f-9bcf-4442-944d-fcdf2edcb4f7
-    jinja: "\n    {% if annotations.yes_no_answer[0] == \"YES\" or annotations.yes_no_answer[0]\
+    jinja: "{% if annotations.yes_no_answer[0] == \"YES\" or annotations.yes_no_answer[0]\
       \ == \"NO\" %} \nBased on the following text snippet, {{question_text}} \n{{document_plaintext}}\n\
-      ||| \n{{annotations.yes_no_answer[0] | capitalize}}\n    {% endif %}\n"
+      ||| \n{{annotations.yes_no_answer[0] | capitalize}}\n{% endif %}"
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
