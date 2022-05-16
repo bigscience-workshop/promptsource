@@ -524,15 +524,13 @@ templates:
   ac4c63da-32d2-40ac-aa7a-632e8ba42b4a: !Template
     answer_choices: A ||| B
     id: ac4c63da-32d2-40ac-aa7a-632e8ba42b4a
-    jinja: '{% set label = 0 %}
+    jinja: 'Which of the following translations of "{{ orig }}" is produced automatically?
 
-      Which of the following translations of "{{ orig }}" is produced automatically?
+      {{ "A" }}) {{ mt }}
 
-      {{ "A" }}) {% if label == 0 %}{{ ref }}{% else %}{{ mt }}{% endif %}
+      {{ "B" }}) {{ ref }}
 
-      {{ "B" }}) {% if label == 0 %}{{ mt }}{% else %}{{ ref }}{% endif %}
-
-      ||| {% if ref != mt %}{{ ["A", "B"][label] }}{% endif %}'
+      |||{{ ["A", "B"][0] }}'
     metadata: !TemplateMetadata
       choices_in_prompt: true
       metrics:
@@ -599,15 +597,13 @@ templates:
   cfed1937-b4a5-4100-b489-3d8d9cd84423: !Template
     answer_choices: A ||| B
     id: cfed1937-b4a5-4100-b489-3d8d9cd84423
-    jinja: '{% set label = 1 %}
+    jinja: 'Which of the following translations of "{{ orig }}" is produced automatically?
 
-      Which of the following translations of "{{ orig }}" is produced automatically?
+      {{ "A" }}) {{ ref }}
 
-      {{ "A" }}) {% if label == 0 %}{{ ref }}{% else %}{{ mt }}{% endif %}
+      {{ "B" }}) {{ mt }}
 
-      {{ "B" }}) {% if label == 0 %}{{ mt }}{% else %}{{ ref }}{% endif %}
-
-      ||| {% if ref != mt %}{{ ["A", "B"][label] }}{% endif %}'
+      |||{{ ["A", "B"][1] }}'
     metadata: !TemplateMetadata
       choices_in_prompt: true
       metrics:
