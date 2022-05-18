@@ -2,7 +2,7 @@ dataset: aps/dynahate
 subset: 0.2.3
 templates:
   04f4e96b-df7f-4c25-873e-1a20f033fed7: !Template
-    answer_choices: noHate ||| hate
+    answer_choices: not hate ||| hate
     id: 04f4e96b-df7f-4c25-873e-1a20f033fed7
     jinja: '{% if label in [0, 1] %}
 
@@ -15,7 +15,7 @@ templates:
       metrics:
       - Accuracy
       original_task: true
-    name: hate_or_noHate_sentiment_analysis
+    name: hate_or_not_hate_sentiment_analysis
     reference: ''
   25a374b9-c3d9-42b8-90e8-38eafba67926: !Template
     answer_choices: no ||| yes
@@ -30,9 +30,9 @@ templates:
     name: following sentence
     reference: ''
   32ebf212-28fe-407a-b92f-a00d4760e748: !Template
-    answer_choices: noHate ||| hate
+    answer_choices: not hate ||| hate
     id: 32ebf212-28fe-407a-b92f-a00d4760e748
-    jinja: 'Is the sentence: "{{text}}" a {{"hate"}} speech or {{"noHate"}} speech?
+    jinja: 'Is the sentence: "{{text}}" a {{"hate"}} speech or {{"not hate"}} speech?
 
       |||
 
@@ -42,7 +42,7 @@ templates:
       metrics:
       - Accuracy
       original_task: true
-    name: hate_or_nohate simple
+    name: hate_or_not_hate simple
     reference: ''
   3941fb66-092a-4456-bb3c-bbba0de39ded: !Template
     answer_choices: no ||| yes
@@ -71,19 +71,4 @@ templates:
       - Accuracy
       original_task: true
     name: true_false
-    reference: ''
-  d4e77f87-c412-4dd7-9d06-443e95909db2: !Template
-    answer_choices: positive ||| negative
-    id: d4e77f87-c412-4dd7-9d06-443e95909db2
-    jinja: 'Is the sentiment for sentence: "{{text}}" {{"positive"}} or {{"negative"}}?
-
-      |||
-
-      {{answer_choices[label]}}'
-    metadata: !TemplateMetadata
-      choices_in_prompt: true
-      metrics:
-      - Accuracy
-      original_task: true
-    name: sentiment positive negative
     reference: ''
