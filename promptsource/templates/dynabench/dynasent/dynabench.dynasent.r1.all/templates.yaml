@@ -1,0 +1,93 @@
+dataset: dynabench/dynasent
+subset: dynabench.dynasent.r1.all
+templates:
+  0514a97d-0bbc-4f78-bcaa-622f2898fd8b: !Template
+    answer_choices: negative ||| positive ||| neutral ||| mixed
+    id: 0514a97d-0bbc-4f78-bcaa-622f2898fd8b
+    jinja: 'I''m reading a review that says "{{sentence}}".
+
+
+      Do you think the review is {{"positive"}} or {{"negative"}} or {{"neutral"}}
+      or {{"mixed"}}? ||| {{gold_label}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
+      original_task: true
+    name: review
+    reference: ''
+  4acb117e-e2f5-46a1-9cd5-17d9d175c1e4: !Template
+    answer_choices: bad ||| good ||| neutral ||| mixed
+    id: 4acb117e-e2f5-46a1-9cd5-17d9d175c1e4
+    jinja: 'Someone sent me an email with the sentence "{{sentence}}". Do you think
+      they are feeling {{"good"}} or {{"bad"}} or {{"neutral"}} or {{"mixed"}}?
+
+      |||
+
+      {% if gold_label == "positive" %}
+
+      good
+
+      {% elif gold_label == "negative" %}
+
+      bad
+
+      {% else %}
+
+      {{gold_label}}
+
+      {% endif %}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
+      original_task: true
+    name: happy or mad
+    reference: ''
+  51534992-1a8a-42c7-9d94-fd330942cbf5: !Template
+    answer_choices: negative ||| positive ||| neutral ||| mixed
+    id: 51534992-1a8a-42c7-9d94-fd330942cbf5
+    jinja: 'Does the following sentence have a {{"positive"}} or {{"negative"}} or
+      {{"neutral"}} or {{"mixed"}} sentiment?
+
+
+      {{sentence}}
+
+      |||
+
+      {{gold_label}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
+      original_task: true
+    name: following positive negative
+    reference: ''
+  9a3b1472-5a1b-4bed-859e-59a78a89b5ec: !Template
+    answer_choices: sad ||| happy ||| neutral ||| mixed
+    id: 9a3b1472-5a1b-4bed-859e-59a78a89b5ec
+    jinja: "Someone just said to me \"{{sentence}}\".\n\nDo you think they have {{\"\
+      sad\"}} or {{\"happy\"}} or {{\"neutral\"}} or {{\"mixed\"}} feelings? ||| \n\
+      {% if gold_label == \"positive\" %}\nhappy\n{% elif gold_label == \"negative\"\
+      \ %}\nsad\n{% else %} {{gold_label}} {% endif %}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
+      original_task: true
+    name: said
+    reference: ''
+  e01f2a07-8d72-4e1e-9ae6-d08b3f348101: !Template
+    answer_choices: negative ||| positive ||| neutral ||| mixed
+    id: e01f2a07-8d72-4e1e-9ae6-d08b3f348101
+    jinja: '{{sentence}}
+
+      Question: Was that sentence {{"positive"}} or {{"negative"}} or {{"neutral"}}
+      or {{"mixed"}}? Answer: ||| {{gold_label}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
+      original_task: true
+    name: positive negative after
+    reference: ''

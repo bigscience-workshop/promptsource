@@ -1,0 +1,74 @@
+dataset: aps/dynahate
+subset: 0.2.3
+templates:
+  04f4e96b-df7f-4c25-873e-1a20f033fed7: !Template
+    answer_choices: not hate ||| hate
+    id: 04f4e96b-df7f-4c25-873e-1a20f033fed7
+    jinja: '{% if label in [0, 1] %}
+
+      {{text}} Is the sentiment that the previous sentence expresses a {{answer_choices[1]}}
+      speech or {{answer_choices[0]}} speech? ||| {{answer_choices[label]}}
+
+      {% endif %}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
+      original_task: true
+    name: hate_or_not_hate_sentiment_analysis
+    reference: ''
+  25a374b9-c3d9-42b8-90e8-38eafba67926: !Template
+    answer_choices: no ||| yes
+    id: 25a374b9-c3d9-42b8-90e8-38eafba67926
+    jinja: "Would you consider the following sentence as hateful? yes or no? {{text}}\
+      \ \n|||\n{{answer_choices[label]}}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
+      original_task: true
+    name: following sentence
+    reference: ''
+  32ebf212-28fe-407a-b92f-a00d4760e748: !Template
+    answer_choices: not hate ||| hate
+    id: 32ebf212-28fe-407a-b92f-a00d4760e748
+    jinja: 'Is the sentence: "{{text}}" a {{"hate"}} speech or {{"not hate"}} speech?
+
+      |||
+
+      {{answer_choices[label]}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
+      original_task: true
+    name: hate_or_not_hate simple
+    reference: ''
+  3941fb66-092a-4456-bb3c-bbba0de39ded: !Template
+    answer_choices: no ||| yes
+    id: 3941fb66-092a-4456-bb3c-bbba0de39ded
+    jinja: 'Someone sent me an email with message: {{text}} Is this hateful? Yes or
+      no? |||
+
+      {{answer_choices[label]}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
+      original_task: true
+    name: email
+    reference: ''
+  be600a50-351c-4e12-ad6f-1246779665fe: !Template
+    answer_choices: false ||| true
+    id: be600a50-351c-4e12-ad6f-1246779665fe
+    jinja: '{{text}}. The previous sentence is hateful, true or false? |||
+
+
+      {{answer_choices[label]}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
+      original_task: true
+    name: true_false
+    reference: ''
