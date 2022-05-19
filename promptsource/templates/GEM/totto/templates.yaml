@@ -23,9 +23,10 @@ templates:
     jinja: "{% if target != \"\" %}\nTable Page Title: {{table_page_title}} \nTable\
       \ Section : {{table_section_title}}\n\nHow can you best use the above information\
       \ and convert the  below highlighted cells of a table to a sentence?\n\nHighlighted\
-      \ Cells:\n{% for cell in highlighted_cells: %}\n{% if table[0]|length >= cell[1]\
-      \ and table[0]|length >= cell[0] %}\n{{table[0][cell[1]][\"value\"]}}: {{table[cell[0]][cell[1]][\"\
-      value\"]}}{% endif %}{% endfor %}\n|||\n{{target}}\n{% endif %}\n"
+      \ Cells:\n{% for cell in highlighted_cells: %}\n{% if table[0]|length > cell[1]\
+      \ %}  {{table[0][cell[1]][\"value\"]}}: {{table[cell[0]][cell[1]][\"value\"\
+      ]}} {% else %} {{table[1][cell[1]][\"value\"]}}: {{table[cell[0]][cell[1]][\"\
+      value\"]}} {% endif %} {% endfor %}\n|||\n{{target}}\n{% endif %}\n"
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
@@ -41,9 +42,9 @@ templates:
       \ and summarize the information from the highlighted cell:\nTable Page Title:\
       \ {{table_page_title}} \nTable Section : {{table_section_title}}\"\nValues from\
       \ Highlighted Cells: \n{% for cell in highlighted_cells: %}\n{% if table[0]|length\
-      \ >= cell[1] and table[0]|length >= cell[0] %}\n{{table[0][cell[1]][\"value\"\
-      ]}}: {{table[cell[0]][cell[1]][\"value\"]}}{% endif %}{% endfor %}\n|||\n{{target}}\n\
-      {% endif %}\n"
+      \ > cell[1] %}  {{table[0][cell[1]][\"value\"]}}: {{table[cell[0]][cell[1]][\"\
+      value\"]}} {% else %} {{table[1][cell[1]][\"value\"]}}: {{table[cell[0]][cell[1]][\"\
+      value\"]}} {% endif %} {% endfor %}\n|||\n{{target}}\n{% endif %}\n"
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
@@ -62,10 +63,10 @@ templates:
 
       {% for cell in highlighted_cells: %}
 
-      {% if table[0]|length >= cell[1] and table[0]|length >= cell[0] %}
+      {% if table[0]|length > cell[1] %}  {{table[0][cell[1]]["value"]}}: {{table[cell[0]][cell[1]]["value"]}}
+      {% else %} {{table[1][cell[1]]["value"]}}: {{table[cell[0]][cell[1]]["value"]}}
+      {% endif %} {% endfor %}
 
-      {{table[0][cell[1]]["value"]}}: {{table[cell[0]][cell[1]]["value"]}}{% endif
-      %}{% endfor %}
 
       Using the below text as reference, can you generate a summary depicting the
       above information?
@@ -118,15 +119,13 @@ templates:
 
       Table Section Title: {{table_section_title}},
 
-      {% if table_section_text != "" %}
-
-      Table Section Text: {{table_section_text}},
-
+      {% if table_section_text != "" %}Table Section Text: {{table_section_text}},
       {% endif %}
 
       and the following original text describing the highlighted cell of the table:
 
       {{sentence_annotations[0]["original_sentence"]}},
+
 
       Can you generate a simple sentence taking into account the context from the
       details given above?
