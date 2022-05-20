@@ -199,7 +199,7 @@ def run_app():
 
                 try:
                     split_sizes = {k: v.num_examples for k, v in subset_infos.splits.items()}
-                except:
+                except Exception:
                     # Fixing bug in some community datasets.
                     # For simplicity, just filling `split_sizes` with nothing, so the displayed split sizes will be 0.
                     split_sizes = {}
