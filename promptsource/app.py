@@ -48,13 +48,13 @@ def get_infos(all_infos, d_name):
     d_name_hash = sha256(d_name_bytes)
     foldername = os.path.join(DATASET_INFOS_CACHE_DIR, d_name_hash.hexdigest())
     if os.path.isdir(foldername):
-        infos = DatasetInfosDict.from_directory(foldername)
+        infos_dict = DatasetInfosDict.from_directory(foldername)
     else:
         infos = get_dataset_infos(d_name)
         infos_dict = DatasetInfosDict(infos)
         os.makedirs(foldername)
         infos_dict.write_to_directory(foldername)
-    all_infos[d_name] = infos
+    all_infos[d_name] = infos_dict
 
 
 # add an argument for read-only
