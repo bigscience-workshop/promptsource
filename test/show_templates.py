@@ -62,7 +62,7 @@ else:
                 print("\tExample ", example)
                 print("\t--------")
                 output = template.apply(example)
-                if output[0].strip() == "" or (len(output) > 1 and output[1].strip() == ""):
+                if output[0].strip() == "" or (len(output) > 1 and output[1][0].strip() == ""):
                     print("\t Blank result")
                     continue
 
@@ -73,8 +73,12 @@ else:
                     print("\t", line.replace("\n", "\n\t"))
                 print()
                 print("\tY")
-                for line in textwrap.wrap(yp, width=width, replace_whitespace=False):
-                    print("\t", line.replace("\n", "\n\t"))
+                for i, y in enumerate(yp):
+                    if i > 0:
+                        print()
+                        print("\tY")
+                    for line in textwrap.wrap(y, width=width, replace_whitespace=False):
+                        print("\t", line.replace("\n", "\n\t"))
 
                 print_counter += 1
                 if print_counter >= 10:
