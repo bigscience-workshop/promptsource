@@ -1,0 +1,76 @@
+dataset: shanya/crd3
+templates:
+  20ccbfa4-2375-4cae-8589-4d0c5ef3dab8: !Template
+    answer_choices: null
+    id: 20ccbfa4-2375-4cae-8589-4d0c5ef3dab8
+    jinja: "{% set diff = turn_end - turn_start + 1 %}\nFollowing is a conversation\
+      \ with {{ diff }} distinct turns. Go through each of them and generate a paragraph\
+      \ to succinctly describe the main points.\n\n{% for turn in turns%} \n{{turn['names'][0]}}\
+      \ :  {% for utterance in turn[\"utterances\"] %}{{utterance}} {% endfor %}\n\
+      {% endfor %} ||| \n{{chunk}} \n\n"
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      - ROUGE
+      original_task: true
+    name: conversation_with_n_turns
+    reference: ''
+  26ea0e66-eafe-4d0f-9d0d-1eccf2229e13: !Template
+    answer_choices: null
+    id: 26ea0e66-eafe-4d0f-9d0d-1eccf2229e13
+    jinja: "Summarize the conversation given below:\n\n {% for turn in turns%} \n\
+      {{turn['names'][0]}} :  {% for utterance in turn[\"utterances\"] %}{{utterance}}\
+      \ {% endfor %}\n{% endfor %} ||| {{chunk}} "
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      - ROUGE
+      original_task: true
+    name: summarize_conversation
+    reference: ''
+  7ae30717-def0-458c-b160-9f05f2486206: !Template
+    answer_choices: null
+    id: 7ae30717-def0-458c-b160-9f05f2486206
+    jinja: "From the conversation given below, condense the information in a few sentences:\
+      \ \n{% for turn in turns%} \n{{turn['names'][0]}} :  {% for utterance in turn[\"\
+      utterances\"] %}{{utterance}} {% endfor %}\n{% endfor %}\n||| \n{{chunk}} "
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      - ROUGE
+      original_task: true
+    name: condense_the_conversation
+    reference: ''
+  833f8e28-9560-44a1-b529-aaa6a0c402a8: !Template
+    answer_choices: null
+    id: 833f8e28-9560-44a1-b529-aaa6a0c402a8
+    jinja: "Go through the conversation below and write a brief summary describing\
+      \ it.\n\nConversation:\n{% for turn in turns%} \n{{turn['names'][0]}} :  {%\
+      \ for utterance in turn[\"utterances\"] %}{{utterance}} {% endfor %}\n{% endfor\
+      \ %} \nSummary: ||| {{chunk}} "
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      - ROUGE
+      original_task: true
+    name: conversation_to_summary
+    reference: ''
+  e082d477-12f1-45da-927c-57c4e12470b0: !Template
+    answer_choices: null
+    id: e082d477-12f1-45da-927c-57c4e12470b0
+    jinja: "Following is a set of dialogues from a conversation. Can you generate\
+      \ a few sentences to summarize the most important details from it?\n\nConversation:\n\
+      \ {% for turn in turns%} \n{{turn['names'][0]}} :  {% for utterance in turn[\"\
+      utterances\"] %}{{utterance}} {% endfor %}\n{% endfor %} \nSummary: ||| {{chunk}} "
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      - ROUGE
+      original_task: true
+    name: generate_summary
+    reference: ''

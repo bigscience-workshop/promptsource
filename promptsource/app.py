@@ -431,8 +431,9 @@ def run_app():
                     st.markdown("###### Input template")
                     show_jinja(splitted_template[0].strip())
                     if len(splitted_template) > 1:
-                        st.markdown("###### Target template")
-                        show_jinja(splitted_template[1].strip())
+                        for splitted_target in splitted_template[1:]:
+                            st.markdown("###### Target template")
+                            show_jinja(splitted_target.strip())
                     st.markdown("***")
 
                 #
@@ -455,8 +456,9 @@ def run_app():
                                 st.write("Input")
                                 show_text(prompt[0])
                                 if len(prompt) > 1:
-                                    st.write("Target")
-                                    show_text(prompt[1])
+                                    for target in prompt[1]:
+                                        st.write("Target")
+                                        show_text(target)
                     st.markdown("***")
             else:  # mode = Sourcing
                 st.markdown("## Prompt Creator")
@@ -645,8 +647,9 @@ def run_app():
                             st.write("Input")
                             show_text(prompt[0], width=40)
                             if len(prompt) > 1:
-                                st.write("Target")
-                                show_text(prompt[1], width=40)
+                                for target in prompt[1]:
+                                    st.write("Target")
+                                    show_text(target, width=40)
 
     #
     # Must sync state at end
