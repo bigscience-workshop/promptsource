@@ -1,25 +1,24 @@
 dataset: wmt16
 subset: ru-en
 templates:
-  12af9256-262a-4b74-91be-ff32c1afbd3c: !Template
+  03d02f14-f91d-421e-8fae-a91fc908dbab: !Template
     answer_choices: null
-    id: 12af9256-262a-4b74-91be-ff32c1afbd3c
-    jinja: 'Given the following source text in English: {{translation["en"]}} , a
-      good Russian translation is:
+    id: 03d02f14-f91d-421e-8fae-a91fc908dbab
+    jinja: '{{translation["ru"]}}  translates into English as:
 
-      ||| {{translation["ru"]}}'
+      ||| {{translation["en"]}}'
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
       - BLEU
       original_task: true
     name: !!python/tuple
-    - a_good_translation-en-ru-source+target
+    - translate_as_ru-en-target
     reference: ''
-  1c5d3480-e1a4-44f1-9549-d5b3d5d8490e: !Template
+  05d68683-b85b-43e4-9b61-7f293c736ea0: !Template
     answer_choices: null
-    id: 1c5d3480-e1a4-44f1-9549-d5b3d5d8490e
-    jinja: 'Translate into Russian: {{translation["en"]}}
+    id: 05d68683-b85b-43e4-9b61-7f293c736ea0
+    jinja: 'What is the Russian translation of: {{translation["en"]}}
 
       |||  {{translation["ru"]}}'
     metadata: !TemplateMetadata
@@ -28,11 +27,25 @@ templates:
       - BLEU
       original_task: true
     name: !!python/tuple
-    - translate-en-ru-target
-    reference: ''
-  2069bf34-0c3f-4512-b87a-71a4e051e10e: !Template
+    - gpt-3-en-ru-target
+    reference: GPT-3 paper
+  1666915a-19e0-47a1-a935-52645db05501: !Template
     answer_choices: null
-    id: 2069bf34-0c3f-4512-b87a-71a4e051e10e
+    id: 1666915a-19e0-47a1-a935-52645db05501
+    jinja: 'Translate  Russian into English: {{translation["ru"]}}
+
+      |||  {{translation["en"]}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      original_task: true
+    name: !!python/tuple
+    - translate-ru-en-source+target
+    reference: https://arxiv.org/pdf/1910.10683.pdf
+  19c0c34c-25a8-481a-8c7e-74d6032a1e26: !Template
+    answer_choices: null
+    id: 19c0c34c-25a8-481a-8c7e-74d6032a1e26
     jinja: 'If the original version says: {{translation["ru"]}}; then the English
       version should say:
 
@@ -45,9 +58,37 @@ templates:
     name: !!python/tuple
     - version-ru-en-target
     reference: ''
-  267de81e-0791-419f-b9be-f9461b70fc4b: !Template
+  1c3f4328-4b9c-45a8-a62b-97839c9b5429: !Template
     answer_choices: null
-    id: 267de81e-0791-419f-b9be-f9461b70fc4b
+    id: 1c3f4328-4b9c-45a8-a62b-97839c9b5429
+    jinja: 'Translate English into Russian: {{translation["en"]}}
+
+      |||  {{translation["ru"]}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      original_task: true
+    name: !!python/tuple
+    - translate-en-ru-source+starget
+    reference: ''
+  28128ce4-3426-4fdc-84c7-9861387933d3: !Template
+    answer_choices: null
+    id: 28128ce4-3426-4fdc-84c7-9861387933d3
+    jinja: 'What is the English translation of the Russian  sentence: {{translation["ru"]}}
+
+      |||  {{translation["en"]}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      original_task: true
+    name: !!python/tuple
+    - gpt-3-ru-en-source+target
+    reference: GPT-3 paper
+  2e10725a-66ab-41d7-af3b-23013e99d4f7: !Template
+    answer_choices: null
+    id: 2e10725a-66ab-41d7-af3b-23013e99d4f7
     jinja: 'Given the following passage:  {{translation["ru"]}} , a good English translation
       is:
 
@@ -60,37 +101,10 @@ templates:
     name: !!python/tuple
     - a_good_translation-ru-en-target
     reference: ''
-  2825d558-0af8-4259-9258-372254a5f7c6: !Template
+  36d643f8-5e9f-4536-ad88-fb72c317b576: !Template
     answer_choices: null
-    id: 2825d558-0af8-4259-9258-372254a5f7c6
-    jinja: 'Given the following passage: {{translation["en"]}} , a good Russian translation
-      is: ||| {{translation["ru"]}}'
-    metadata: !TemplateMetadata
-      choices_in_prompt: false
-      metrics:
-      - BLEU
-      original_task: true
-    name: !!python/tuple
-    - a_good_translation-en-ru-target
-    reference: ''
-  2c197bee-b468-4fa8-a2a9-07d023a86e36: !Template
-    answer_choices: null
-    id: 2c197bee-b468-4fa8-a2a9-07d023a86e36
-    jinja: 'Translate English into Russian: {{translation["en"]}}
-
-      |||  {{translation["ru"]}}'
-    metadata: !TemplateMetadata
-      choices_in_prompt: false
-      metrics:
-      - BLEU
-      original_task: true
-    name: !!python/tuple
-    - translate-en-ru-src+starget
-    reference: ''
-  3e92539c-1589-4684-a0d8-fef5451727d0: !Template
-    answer_choices: null
-    id: 3e92539c-1589-4684-a0d8-fef5451727d0
-    jinja: 'Russian:  {{translation["ru"]}}  translates into English as:
+    id: 36d643f8-5e9f-4536-ad88-fb72c317b576
+    jinja: 'Russian: {{translation["ru"]}} = English:
 
       ||| {{translation["en"]}}'
     metadata: !TemplateMetadata
@@ -99,96 +113,39 @@ templates:
       - BLEU
       original_task: true
     name: !!python/tuple
-    - translate_as_ru-en-source+target
-    reference: ''
-  43e99736-f6f3-4b11-aec1-3629f7b4d924: !Template
+    - xglm-ru-en-source+target
+    reference: XGLM paper https://arxiv.org/abs/2112.10668
+  3cbae036-ede7-47dd-b3bb-eeecaaaf47c0: !Template
     answer_choices: null
-    id: 43e99736-f6f3-4b11-aec1-3629f7b4d924
-    jinja: 'Translate into English: {{translation["ru"]}}
+    id: 3cbae036-ede7-47dd-b3bb-eeecaaaf47c0
+    jinja: '{{translation["en"]}} = Russian:
 
-      |||  {{translation["en"]}}'
+      ||| {{translation["ru"]}}'
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
       - BLEU
       original_task: true
     name: !!python/tuple
-    - translate-ru-en-target
-    reference: ''
-  4e5de29d-81f1-4742-8c47-4a7185639afd: !Template
+    - xglm-en-ru-target
+    reference: XGLM paper https://arxiv.org/abs/2112.10668
+  65300887-6919-4804-9594-c7e9880fb62c: !Template
     answer_choices: null
-    id: 4e5de29d-81f1-4742-8c47-4a7185639afd
-    jinja: 'What is the English translation of : {{translation["ru"]}}
+    id: 65300887-6919-4804-9594-c7e9880fb62c
+    jinja: 'How do you say {{translation["ru"]}} in English?
 
-      |||  {{translation["en"]}}'
+      ||| {{translation["en"]}}'
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
       - BLEU
       original_task: true
     name: !!python/tuple
-    - gpt-3-ru-en-target
+    - how_to_say-ru-en-target
     reference: ''
-  4f3a5dd7-6180-4140-b70d-f455dc5b9908: !Template
+  6fde4437-43c8-4e4e-9a64-b961036b8977: !Template
     answer_choices: null
-    id: 4f3a5dd7-6180-4140-b70d-f455dc5b9908
-    jinja: 'What is the Russian translation of the English sentence: {{translation["en"]}}
-
-      |||  {{translation["ru"]}}'
-    metadata: !TemplateMetadata
-      choices_in_prompt: false
-      metrics:
-      - BLEU
-      original_task: true
-    name: !!python/tuple
-    - gpt-3-en-ru-src+target
-    reference: ''
-  4f9cc10f-b20f-4fbb-8677-717a6dd075c2: !Template
-    answer_choices: null
-    id: 4f9cc10f-b20f-4fbb-8677-717a6dd075c2
-    jinja: 'If the English version says: {{translation["en"]}}; then the Russian version
-      should say:
-
-      |||   {{translation["ru"]}}'
-    metadata: !TemplateMetadata
-      choices_in_prompt: false
-      metrics:
-      - BLEU
-      original_task: true
-    name: !!python/tuple
-    - version-en-ru-source+target
-    reference: ''
-  60858979-aa78-427a-9a7f-d60d92ae4dc2: !Template
-    answer_choices: null
-    id: 60858979-aa78-427a-9a7f-d60d92ae4dc2
-    jinja: 'What is the English translation of the Russian  sentence: {{translation["ru"]}}
-
-      |||  {{translation["en"]}}'
-    metadata: !TemplateMetadata
-      choices_in_prompt: false
-      metrics:
-      - BLEU
-      original_task: true
-    name: !!python/tuple
-    - gpt-3-ru-en-src+target
-    reference: ''
-  635bee5f-d63b-465e-adf7-b21528af3ebe: !Template
-    answer_choices: null
-    id: 635bee5f-d63b-465e-adf7-b21528af3ebe
-    jinja: 'What is the Russian translation of: {{translation["en"]}}
-
-      |||  {{translation["ru"]}}'
-    metadata: !TemplateMetadata
-      choices_in_prompt: false
-      metrics:
-      - BLEU
-      original_task: true
-    name: !!python/tuple
-    - gpt-3-en-ru-target
-    reference: ''
-  6828bba2-fb1f-4ffb-b775-2d8cde0e24a9: !Template
-    answer_choices: null
-    id: 6828bba2-fb1f-4ffb-b775-2d8cde0e24a9
+    id: 6fde4437-43c8-4e4e-9a64-b961036b8977
     jinja: 'If the original version says: {{translation["en"]}}; then the Russian
       version should say:
 
@@ -201,24 +158,26 @@ templates:
     name: !!python/tuple
     - version-en-ru-target
     reference: ''
-  74ab5d76-1cdc-4864-b10f-6d40f9676717: !Template
+  76eea0de-6fd9-485f-9ebf-bc4a51e4d600: !Template
     answer_choices: null
-    id: 74ab5d76-1cdc-4864-b10f-6d40f9676717
-    jinja: '{{translation["ru"]}}  translates into English as:
+    id: 76eea0de-6fd9-485f-9ebf-bc4a51e4d600
+    jinja: 'If the English version says: {{translation["en"]}}; then the Russian version
+      should say:
 
-      ||| {{translation["en"]}}'
+      |||   {{translation["ru"]}}'
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
       - BLEU
       original_task: true
     name: !!python/tuple
-    - translate_as_ru-en-target
+    - version-en-ru-source+target
     reference: ''
-  75dd6cf8-1b57-4976-9691-2e9e0ddc5c37: !Template
+  773390d4-3602-46e5-b76a-c09ac8e957ca: !Template
     answer_choices: null
-    id: 75dd6cf8-1b57-4976-9691-2e9e0ddc5c37
-    jinja: 'English:  {{translation["en"]}}  translates into Russian as:
+    id: 773390d4-3602-46e5-b76a-c09ac8e957ca
+    jinja: 'Given the following source text in English: {{translation["en"]}} , a
+      good Russian translation is:
 
       ||| {{translation["ru"]}}'
     metadata: !TemplateMetadata
@@ -227,11 +186,93 @@ templates:
       - BLEU
       original_task: true
     name: !!python/tuple
-    - translate_as_en-ru-source+target
+    - a_good_translation-en-ru-source+target
     reference: ''
-  8c18f538-d59a-4bcc-bab7-b655ba847372: !Template
+  78c8a6cc-24b3-4c2c-a9ce-daf57b1c712c: !Template
     answer_choices: null
-    id: 8c18f538-d59a-4bcc-bab7-b655ba847372
+    id: 78c8a6cc-24b3-4c2c-a9ce-daf57b1c712c
+    jinja: 'What is the English translation of : {{translation["ru"]}}
+
+      |||  {{translation["en"]}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      original_task: true
+    name: !!python/tuple
+    - gpt-3-ru-en-target
+    reference: GPT-3 paper
+  7cf6777c-e32c-4cd9-b794-fc86e29e8083: !Template
+    answer_choices: null
+    id: 7cf6777c-e32c-4cd9-b794-fc86e29e8083
+    jinja: 'Given the following passage: {{translation["en"]}} , a good Russian translation
+      is: ||| {{translation["ru"]}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      original_task: true
+    name: !!python/tuple
+    - a_good_translation-en-ru-target
+    reference: ''
+  90c0449c-8364-4663-bee9-8217770fcea0: !Template
+    answer_choices: null
+    id: 90c0449c-8364-4663-bee9-8217770fcea0
+    jinja: 'Translate into Russian: {{translation["en"]}}
+
+      |||  {{translation["ru"]}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      original_task: true
+    name: !!python/tuple
+    - translate-en-ru-target
+    reference: ''
+  a0d1d119-df3c-437a-8940-a84fa73b9eeb: !Template
+    answer_choices: null
+    id: a0d1d119-df3c-437a-8940-a84fa73b9eeb
+    jinja: '{{translation["ru"]}} = English:
+
+      ||| {{translation["en"]}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      original_task: true
+    name: !!python/tuple
+    - xglm-ru-en-target
+    reference: XGLM paper https://arxiv.org/abs/2112.10668
+  a8afdc6f-1b33-4773-8bda-37a01030cef2: !Template
+    answer_choices: null
+    id: a8afdc6f-1b33-4773-8bda-37a01030cef2
+    jinja: 'Given the following source text in Russian: {{translation["ru"]}} , a
+      good English translation is: ||| {{translation["en"]}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      original_task: true
+    name: !!python/tuple
+    - a_good_translation-ru-en-source+target
+    reference: ''
+  aa4db5da-1829-40c2-9ca4-634f0279b579: !Template
+    answer_choices: null
+    id: aa4db5da-1829-40c2-9ca4-634f0279b579
+    jinja: 'Russian:  {{translation["ru"]}}  translates into English as:
+
+      ||| {{translation["en"]}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      original_task: true
+    name: !!python/tuple
+    - translate_as_ru-en-source+target
+    reference: ''
+  b191cdab-98c6-44cf-a864-1fa8a73c0f78: !Template
+    answer_choices: null
+    id: b191cdab-98c6-44cf-a864-1fa8a73c0f78
     jinja: 'If the Russian version says: {{translation["ru"]}}; then the English version
       should say:
 
@@ -244,50 +285,9 @@ templates:
     name: !!python/tuple
     - version-ru-en-source+target
     reference: ''
-  cd6e3dbd-36fa-4774-9bac-78d8d2b50a0d: !Template
+  c94ef825-4ad3-4128-9cba-29581906ccdf: !Template
     answer_choices: null
-    id: cd6e3dbd-36fa-4774-9bac-78d8d2b50a0d
-    jinja: 'Translate  Russian into English: {{translation["ru"]}}
-
-      |||  {{translation["en"]}}'
-    metadata: !TemplateMetadata
-      choices_in_prompt: false
-      metrics:
-      - BLEU
-      original_task: true
-    name: !!python/tuple
-    - translate-ru-en-source+target
-    reference: https://arxiv.org/pdf/1910.10683.pdf
-  eb4dcd70-1bf3-4a96-abaf-38521fa957ee: !Template
-    answer_choices: null
-    id: eb4dcd70-1bf3-4a96-abaf-38521fa957ee
-    jinja: 'Given the following source text in Russian: {{translation["ru"]}} , a
-      good English translation is: ||| {{translation["en"]}}'
-    metadata: !TemplateMetadata
-      choices_in_prompt: false
-      metrics:
-      - BLEU
-      original_task: true
-    name: !!python/tuple
-    - a_good_translation-ru-en-source+target
-    reference: ''
-  edef1b19-1f34-4a6c-bc06-516a0f5baab4: !Template
-    answer_choices: null
-    id: edef1b19-1f34-4a6c-bc06-516a0f5baab4
-    jinja: 'How do you say {{translation["en"]}} in Russian?
-
-      ||| {{translation["ru"]}}'
-    metadata: !TemplateMetadata
-      choices_in_prompt: false
-      metrics:
-      - BLEU
-      original_task: true
-    name: !!python/tuple
-    - how_to_say-en-ru-target
-    reference: ''
-  ee42c631-6217-4bf5-b0a4-0a1dfa2c4651: !Template
-    answer_choices: null
-    id: ee42c631-6217-4bf5-b0a4-0a1dfa2c4651
+    id: c94ef825-4ad3-4128-9cba-29581906ccdf
     jinja: ' {{translation["en"]}}  translates into Russian as:
 
       ||| {{translation["ru"]}}'
@@ -299,17 +299,73 @@ templates:
     name: !!python/tuple
     - translate_as_en-ru-target
     reference: ''
-  f31e5d99-55c7-4369-a07c-0efa4d5e4ef3: !Template
+  e46bf114-cad8-4e1f-a5bc-230fc7da194e: !Template
     answer_choices: null
-    id: f31e5d99-55c7-4369-a07c-0efa4d5e4ef3
-    jinja: 'How do you say {{translation["ru"]}} in English?
+    id: e46bf114-cad8-4e1f-a5bc-230fc7da194e
+    jinja: 'What is the Russian translation of the English sentence: {{translation["en"]}}
 
-      ||| {{translation["en"]}}'
+      |||  {{translation["ru"]}}'
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
       - BLEU
       original_task: true
     name: !!python/tuple
-    - how_to_say-ru-en-target
+    - gpt-3-en-ru-source+target
+    reference: GPT 3 paper
+  ef0bdff5-c6d9-4fdd-8269-d67bbbebedd6: !Template
+    answer_choices: null
+    id: ef0bdff5-c6d9-4fdd-8269-d67bbbebedd6
+    jinja: 'English: {{translation["en"]}} = Russian:
+
+      ||| {{translation["ru"]}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      original_task: true
+    name: !!python/tuple
+    - xglm-en-ru-source-target
+    reference: Adapted from XGLM paper on few shot evaluation https://arxiv.org/abs/2112.10668
+  f0c55f7b-9021-4811-8966-000e2654cd39: !Template
+    answer_choices: null
+    id: f0c55f7b-9021-4811-8966-000e2654cd39
+    jinja: 'How do you say {{translation["en"]}} in Russian?
+
+      ||| {{translation["ru"]}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      original_task: true
+    name: !!python/tuple
+    - how_to_say-en-ru-target
+    reference: ''
+  f42e0011-a338-47d6-971f-57cf1de83a82: !Template
+    answer_choices: null
+    id: f42e0011-a338-47d6-971f-57cf1de83a82
+    jinja: 'English:  {{translation["en"]}}  translates into Russian as:
+
+      ||| {{translation["ru"]}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      original_task: true
+    name: !!python/tuple
+    - translate_as_en-ru-source+target
+    reference: ''
+  f9c2e846-0274-4933-bd9f-615e572e376d: !Template
+    answer_choices: null
+    id: f9c2e846-0274-4933-bd9f-615e572e376d
+    jinja: 'Translate into English: {{translation["ru"]}}
+
+      |||  {{translation["en"]}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      original_task: true
+    name: !!python/tuple
+    - translate-ru-en-target
     reference: ''

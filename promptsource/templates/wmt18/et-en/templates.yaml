@@ -1,23 +1,37 @@
 dataset: wmt18
 subset: et-en
 templates:
-  181992c7-17cc-4be2-9071-21e72add55bb: !Template
+  09b66a7c-f6ef-448b-bcfd-0fa8e2ca7d05: !Template
     answer_choices: null
-    id: 181992c7-17cc-4be2-9071-21e72add55bb
-    jinja: 'What is the Estonian translation of: {{translation["en"]}}
+    id: 09b66a7c-f6ef-448b-bcfd-0fa8e2ca7d05
+    jinja: '{{translation["et"]}}  translates into English as:
 
-      |||  {{translation["et"]}}'
+      ||| {{translation["en"]}}'
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
       - BLEU
       original_task: true
     name: !!python/tuple
-    - gpt-3-en-et-target
+    - translate_as_et-en-target
     reference: ''
-  26187d14-713a-4ffc-b8c6-9cb6c28286b2: !Template
+  12e126e6-87e4-4606-998f-274d75c0cdd4: !Template
     answer_choices: null
-    id: 26187d14-713a-4ffc-b8c6-9cb6c28286b2
+    id: 12e126e6-87e4-4606-998f-274d75c0cdd4
+    jinja: 'English:  {{translation["en"]}}  translates into Estonian as:
+
+      ||| {{translation["et"]}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      original_task: true
+    name: !!python/tuple
+    - translate_as_en-et-source+target
+    reference: ''
+  242d8884-3fab-4304-ae12-75f543979729: !Template
+    answer_choices: null
+    id: 242d8884-3fab-4304-ae12-75f543979729
     jinja: 'If the original version says: {{translation["en"]}}; then the Estonian
       version should say:
 
@@ -30,22 +44,23 @@ templates:
     name: !!python/tuple
     - version-en-et-target
     reference: ''
-  39760f5a-2458-4d34-8d98-2c59799002ea: !Template
+  3346e459-02ab-4a67-a0f3-0c4a97a5c7bc: !Template
     answer_choices: null
-    id: 39760f5a-2458-4d34-8d98-2c59799002ea
-    jinja: 'Given the following passage: {{translation["en"]}} , a good Estonian translation
-      is: ||| {{translation["et"]}}'
+    id: 3346e459-02ab-4a67-a0f3-0c4a97a5c7bc
+    jinja: '{{translation["en"]}} = Estonian:
+
+      ||| {{translation["et"]}}'
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
       - BLEU
       original_task: true
     name: !!python/tuple
-    - a_good_translation-en-et-target
-    reference: ''
-  3f96bd3d-73fa-4b75-9013-2ece6fdbd375: !Template
+    - xglm-en-et-target
+    reference: XGLM paper https://arxiv.org/abs/2112.10668
+  367e49e9-b71a-4255-b213-a956c4e53dbc: !Template
     answer_choices: null
-    id: 3f96bd3d-73fa-4b75-9013-2ece6fdbd375
+    id: 367e49e9-b71a-4255-b213-a956c4e53dbc
     jinja: 'What is the English translation of : {{translation["et"]}}
 
       |||  {{translation["en"]}}'
@@ -56,67 +71,24 @@ templates:
       original_task: true
     name: !!python/tuple
     - gpt-3-et-en-target
-    reference: ''
-  4bacbd39-c66d-4cb5-9b09-083276033257: !Template
+    reference: GPT-3 paper
+  389fba3f-84b8-4d49-825a-af276178fef4: !Template
     answer_choices: null
-    id: 4bacbd39-c66d-4cb5-9b09-083276033257
-    jinja: 'How do you say {{translation["en"]}} in Estonian?
+    id: 389fba3f-84b8-4d49-825a-af276178fef4
+    jinja: 'What is the Estonian translation of: {{translation["en"]}}
 
-      ||| {{translation["et"]}}'
+      |||  {{translation["et"]}}'
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
       - BLEU
       original_task: true
     name: !!python/tuple
-    - how_to_say-en-et-target
-    reference: ''
-  5e548820-5c6d-41d3-bef1-6a004798efb0: !Template
+    - gpt-3-en-et-target
+    reference: GPT-3 paper
+  4c2d841d-a772-4de2-9eec-d777cde53d0a: !Template
     answer_choices: null
-    id: 5e548820-5c6d-41d3-bef1-6a004798efb0
-    jinja: 'If the Estonian version says: {{translation["et"]}}; then the English
-      version should say:
-
-      |||   {{translation["en"]}}'
-    metadata: !TemplateMetadata
-      choices_in_prompt: false
-      metrics:
-      - BLEU
-      original_task: true
-    name: !!python/tuple
-    - version-et-en-source+target
-    reference: ''
-  63f48c14-f8da-4c6f-b5aa-52680a0fc260: !Template
-    answer_choices: null
-    id: 63f48c14-f8da-4c6f-b5aa-52680a0fc260
-    jinja: 'How do you say {{translation["et"]}} in English?
-
-      ||| {{translation["en"]}}'
-    metadata: !TemplateMetadata
-      choices_in_prompt: false
-      metrics:
-      - BLEU
-      original_task: true
-    name: !!python/tuple
-    - how_to_say-et-en-target
-    reference: ''
-  691c6136-2efb-40b5-9645-f2f69b935ed1: !Template
-    answer_choices: null
-    id: 691c6136-2efb-40b5-9645-f2f69b935ed1
-    jinja: '{{translation["et"]}}  translates into English as:
-
-      ||| {{translation["en"]}}'
-    metadata: !TemplateMetadata
-      choices_in_prompt: false
-      metrics:
-      - BLEU
-      original_task: true
-    name: !!python/tuple
-    - translate_as_et-en-target
-    reference: ''
-  71b4588d-75f8-4df8-ade4-30f7399f0d41: !Template
-    answer_choices: null
-    id: 71b4588d-75f8-4df8-ade4-30f7399f0d41
+    id: 4c2d841d-a772-4de2-9eec-d777cde53d0a
     jinja: 'Given the following source text in English: {{translation["en"]}} , a
       good Estonian translation is:
 
@@ -129,94 +101,9 @@ templates:
     name: !!python/tuple
     - a_good_translation-en-et-source+target
     reference: ''
-  85f4a8ae-1fbf-4bc0-b4c7-e3859e181b9a: !Template
+  4d314556-2f70-4987-9537-0011e29f371f: !Template
     answer_choices: null
-    id: 85f4a8ae-1fbf-4bc0-b4c7-e3859e181b9a
-    jinja: 'English:  {{translation["en"]}}  translates into Estonian as:
-
-      ||| {{translation["et"]}}'
-    metadata: !TemplateMetadata
-      choices_in_prompt: false
-      metrics:
-      - BLEU
-      original_task: true
-    name: !!python/tuple
-    - translate_as_en-et-source+target
-    reference: ''
-  87e69c86-0234-4d01-ae70-98a75a86f271: !Template
-    answer_choices: null
-    id: 87e69c86-0234-4d01-ae70-98a75a86f271
-    jinja: 'Given the following source text in Estonian: {{translation["et"]}} , a
-      good English translation is: ||| {{translation["en"]}}'
-    metadata: !TemplateMetadata
-      choices_in_prompt: false
-      metrics:
-      - BLEU
-      original_task: true
-    name: !!python/tuple
-    - a_good_translation-et-en-source+target
-    reference: ''
-  94caadd3-0ef3-4ad5-912c-7074a7eb7896: !Template
-    answer_choices: null
-    id: 94caadd3-0ef3-4ad5-912c-7074a7eb7896
-    jinja: 'If the original version says: {{translation["et"]}}; then the English
-      version should say:
-
-      |||   {{translation["en"]}}'
-    metadata: !TemplateMetadata
-      choices_in_prompt: false
-      metrics:
-      - BLEU
-      original_task: true
-    name: !!python/tuple
-    - version-et-en-target
-    reference: ''
-  99758e66-c941-4daf-b474-bd3e0a88a940: !Template
-    answer_choices: null
-    id: 99758e66-c941-4daf-b474-bd3e0a88a940
-    jinja: 'If the English version says: {{translation["en"]}}; then the Estonian
-      version should say:
-
-      |||   {{translation["et"]}}'
-    metadata: !TemplateMetadata
-      choices_in_prompt: false
-      metrics:
-      - BLEU
-      original_task: true
-    name: !!python/tuple
-    - version-en-et-source+target
-    reference: ''
-  9b21eeec-25e7-47ba-af98-dc52bd9f3b38: !Template
-    answer_choices: null
-    id: 9b21eeec-25e7-47ba-af98-dc52bd9f3b38
-    jinja: 'Translate English into Estonian: {{translation["en"]}}
-
-      |||  {{translation["et"]}}'
-    metadata: !TemplateMetadata
-      choices_in_prompt: false
-      metrics:
-      - BLEU
-      original_task: true
-    name: !!python/tuple
-    - translate-en-et-src+starget
-    reference: ''
-  9f64040b-b37d-43f8-af82-b09d6225af41: !Template
-    answer_choices: null
-    id: 9f64040b-b37d-43f8-af82-b09d6225af41
-    jinja: 'What is the Estonian translation of the English sentence: {{translation["en"]}}
-
-      |||  {{translation["et"]}}'
-    metadata: !TemplateMetadata
-      choices_in_prompt: false
-      metrics:
-      - BLEU
-      original_task: true
-    name: !!python/tuple
-    - gpt-3-en-et-src+target
-    reference: ''
-  ae103af1-9d75-4e11-95e0-f14a1701c43a: !Template
-    answer_choices: null
-    id: ae103af1-9d75-4e11-95e0-f14a1701c43a
+    id: 4d314556-2f70-4987-9537-0011e29f371f
     jinja: ' {{translation["en"]}}  translates into Estonian as:
 
       ||| {{translation["et"]}}'
@@ -228,9 +115,51 @@ templates:
     name: !!python/tuple
     - translate_as_en-et-target
     reference: ''
-  b28fed6e-1099-43d0-af47-4329efa3ca10: !Template
+  4f053278-5fb1-4162-bf2b-3feb99630ef8: !Template
     answer_choices: null
-    id: b28fed6e-1099-43d0-af47-4329efa3ca10
+    id: 4f053278-5fb1-4162-bf2b-3feb99630ef8
+    jinja: 'Estonian: {{translation["et"]}} = English:
+
+      ||| {{translation["en"]}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      original_task: true
+    name: !!python/tuple
+    - xglm-et-en-source+target
+    reference: XGLM paper https://arxiv.org/abs/2112.10668
+  5287cf78-f2ab-41ec-a611-b516bf1dbe0f: !Template
+    answer_choices: null
+    id: 5287cf78-f2ab-41ec-a611-b516bf1dbe0f
+    jinja: 'Translate into Estonian: {{translation["en"]}}
+
+      |||  {{translation["et"]}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      original_task: true
+    name: !!python/tuple
+    - translate-en-et-target
+    reference: ''
+  64ac7d67-94f2-4aa7-89b1-bc9247224fe1: !Template
+    answer_choices: null
+    id: 64ac7d67-94f2-4aa7-89b1-bc9247224fe1
+    jinja: 'How do you say {{translation["en"]}} in Estonian?
+
+      ||| {{translation["et"]}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      original_task: true
+    name: !!python/tuple
+    - how_to_say-en-et-target
+    reference: ''
+  65487caf-8d6f-4e36-965c-5bb8f75ab058: !Template
+    answer_choices: null
+    id: 65487caf-8d6f-4e36-965c-5bb8f75ab058
     jinja: 'What is the English translation of the Estonian  sentence: {{translation["et"]}}
 
       |||  {{translation["en"]}}'
@@ -240,25 +169,11 @@ templates:
       - BLEU
       original_task: true
     name: !!python/tuple
-    - gpt-3-et-en-src+target
-    reference: ''
-  b41477f3-05c1-49d6-831a-1e8518f158e0: !Template
+    - gpt-3-et-en-source+target
+    reference: GPT-3 paper
+  6591adaf-63ec-4b7f-ab45-f9647eeba93a: !Template
     answer_choices: null
-    id: b41477f3-05c1-49d6-831a-1e8518f158e0
-    jinja: 'Translate  Estonian into English: {{translation["et"]}}
-
-      |||  {{translation["en"]}}'
-    metadata: !TemplateMetadata
-      choices_in_prompt: false
-      metrics:
-      - BLEU
-      original_task: true
-    name: !!python/tuple
-    - translate-et-en-source+target
-    reference: https://arxiv.org/pdf/1910.10683.pdf
-  b6c2be75-43eb-4fc4-b279-c8503ca90bcc: !Template
-    answer_choices: null
-    id: b6c2be75-43eb-4fc4-b279-c8503ca90bcc
+    id: 6591adaf-63ec-4b7f-ab45-f9647eeba93a
     jinja: 'Given the following passage:  {{translation["et"]}} , a good English translation
       is:
 
@@ -271,9 +186,150 @@ templates:
     name: !!python/tuple
     - a_good_translation-et-en-target
     reference: ''
-  ba2b61ec-1a12-43e3-a055-b99917fc8ab0: !Template
+  6831b64b-a425-49df-8f49-447f9dc0bb49: !Template
     answer_choices: null
-    id: ba2b61ec-1a12-43e3-a055-b99917fc8ab0
+    id: 6831b64b-a425-49df-8f49-447f9dc0bb49
+    jinja: 'English: {{translation["en"]}} = Estonian:
+
+      ||| {{translation["et"]}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      original_task: true
+    name: !!python/tuple
+    - xglm-en-et-source-target
+    reference: Adapted from XGLM paper on few shot evaluation https://arxiv.org/abs/2112.10668
+  6ff1f5f8-4e88-4ed2-a8dd-9064eec947b4: !Template
+    answer_choices: null
+    id: 6ff1f5f8-4e88-4ed2-a8dd-9064eec947b4
+    jinja: 'How do you say {{translation["et"]}} in English?
+
+      ||| {{translation["en"]}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      original_task: true
+    name: !!python/tuple
+    - how_to_say-et-en-target
+    reference: ''
+  727c22ba-ee38-4d39-b7c2-5d3adf65bfb3: !Template
+    answer_choices: null
+    id: 727c22ba-ee38-4d39-b7c2-5d3adf65bfb3
+    jinja: 'If the original version says: {{translation["et"]}}; then the English
+      version should say:
+
+      |||   {{translation["en"]}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      original_task: true
+    name: !!python/tuple
+    - version-et-en-target
+    reference: ''
+  7d4c2271-06ba-443c-bdef-dfccc748c723: !Template
+    answer_choices: null
+    id: 7d4c2271-06ba-443c-bdef-dfccc748c723
+    jinja: 'What is the Estonian translation of the English sentence: {{translation["en"]}}
+
+      |||  {{translation["et"]}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      original_task: true
+    name: !!python/tuple
+    - gpt-3-en-et-source+target
+    reference: GPT 3 paper
+  81f0eb3e-7cc7-4bbc-bda1-cd2f2e688bc2: !Template
+    answer_choices: null
+    id: 81f0eb3e-7cc7-4bbc-bda1-cd2f2e688bc2
+    jinja: '{{translation["et"]}} = English:
+
+      ||| {{translation["en"]}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      original_task: true
+    name: !!python/tuple
+    - xglm-et-en-target
+    reference: XGLM paper https://arxiv.org/abs/2112.10668
+  88c79995-83fa-4930-a3e1-676e352ea988: !Template
+    answer_choices: null
+    id: 88c79995-83fa-4930-a3e1-676e352ea988
+    jinja: 'Given the following passage: {{translation["en"]}} , a good Estonian translation
+      is: ||| {{translation["et"]}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      original_task: true
+    name: !!python/tuple
+    - a_good_translation-en-et-target
+    reference: ''
+  8d1af6df-6641-4507-b611-70391e922292: !Template
+    answer_choices: null
+    id: 8d1af6df-6641-4507-b611-70391e922292
+    jinja: 'Translate  Estonian into English: {{translation["et"]}}
+
+      |||  {{translation["en"]}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      original_task: true
+    name: !!python/tuple
+    - translate-et-en-source+target
+    reference: https://arxiv.org/pdf/1910.10683.pdf
+  8e26f017-66be-4590-81f6-6e9ff144e1f4: !Template
+    answer_choices: null
+    id: 8e26f017-66be-4590-81f6-6e9ff144e1f4
+    jinja: 'Translate English into Estonian: {{translation["en"]}}
+
+      |||  {{translation["et"]}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      original_task: true
+    name: !!python/tuple
+    - translate-en-et-source+starget
+    reference: ''
+  90ab0154-7745-4620-8b45-f655bee6a8e3: !Template
+    answer_choices: null
+    id: 90ab0154-7745-4620-8b45-f655bee6a8e3
+    jinja: 'Estonian:  {{translation["et"]}}  translates into English as:
+
+      ||| {{translation["en"]}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      original_task: true
+    name: !!python/tuple
+    - translate_as_et-en-source+target
+    reference: ''
+  a09ab74f-34b1-4a62-b8d1-6fbd29afb941: !Template
+    answer_choices: null
+    id: a09ab74f-34b1-4a62-b8d1-6fbd29afb941
+    jinja: 'If the English version says: {{translation["en"]}}; then the Estonian
+      version should say:
+
+      |||   {{translation["et"]}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      original_task: true
+    name: !!python/tuple
+    - version-en-et-source+target
+    reference: ''
+  c67279dc-b013-460f-b2dd-b046166faca2: !Template
+    answer_choices: null
+    id: c67279dc-b013-460f-b2dd-b046166faca2
     jinja: 'Translate into English: {{translation["et"]}}
 
       |||  {{translation["en"]}}'
@@ -285,31 +341,31 @@ templates:
     name: !!python/tuple
     - translate-et-en-target
     reference: ''
-  dce3295f-f22f-47b3-8d6c-464b5eb4dc82: !Template
+  e2cc5691-e61d-4bb6-8c61-d7fb67f3e88c: !Template
     answer_choices: null
-    id: dce3295f-f22f-47b3-8d6c-464b5eb4dc82
-    jinja: 'Translate into Estonian: {{translation["en"]}}
+    id: e2cc5691-e61d-4bb6-8c61-d7fb67f3e88c
+    jinja: 'If the Estonian version says: {{translation["et"]}}; then the English
+      version should say:
 
-      |||  {{translation["et"]}}'
+      |||   {{translation["en"]}}'
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
       - BLEU
       original_task: true
     name: !!python/tuple
-    - translate-en-et-target
+    - version-et-en-source+target
     reference: ''
-  eaf56de6-ee11-472f-8fa1-c9aca0025e16: !Template
+  f263fce4-4f4a-46e3-983f-3d78dd73bbb9: !Template
     answer_choices: null
-    id: eaf56de6-ee11-472f-8fa1-c9aca0025e16
-    jinja: 'Estonian:  {{translation["et"]}}  translates into English as:
-
-      ||| {{translation["en"]}}'
+    id: f263fce4-4f4a-46e3-983f-3d78dd73bbb9
+    jinja: 'Given the following source text in Estonian: {{translation["et"]}} , a
+      good English translation is: ||| {{translation["en"]}}'
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
       - BLEU
       original_task: true
     name: !!python/tuple
-    - translate_as_et-en-source+target
+    - a_good_translation-et-en-source+target
     reference: ''

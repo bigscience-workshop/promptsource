@@ -1,10 +1,10 @@
 dataset: wmt18
 subset: fi-en
 templates:
-  0a3bcad5-23df-419a-9fe6-4743aa9db2be: !Template
+  024c1b4c-8c16-48bf-aa67-77b20793023b: !Template
     answer_choices: null
-    id: 0a3bcad5-23df-419a-9fe6-4743aa9db2be
-    jinja: 'Translate English into Finnish: {{translation["en"]}}
+    id: 024c1b4c-8c16-48bf-aa67-77b20793023b
+    jinja: 'What is the Finnish translation of: {{translation["en"]}}
 
       |||  {{translation["fi"]}}'
     metadata: !TemplateMetadata
@@ -13,11 +13,25 @@ templates:
       - BLEU
       original_task: true
     name: !!python/tuple
-    - translate-en-fi-src+starget
-    reference: ''
-  210d9576-5a70-4c26-82fc-7b1bfbe01117: !Template
+    - gpt-3-en-fi-target
+    reference: GPT-3 paper
+  04b5ce95-a44f-4088-8236-f4620f34f680: !Template
     answer_choices: null
-    id: 210d9576-5a70-4c26-82fc-7b1bfbe01117
+    id: 04b5ce95-a44f-4088-8236-f4620f34f680
+    jinja: 'English: {{translation["en"]}} = Finnish:
+
+      ||| {{translation["fi"]}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      original_task: true
+    name: !!python/tuple
+    - xglm-en-fi-source-target
+    reference: Adapted from XGLM paper on few shot evaluation https://arxiv.org/abs/2112.10668
+  0b1028e7-82bd-4017-9cf7-9709338aec4e: !Template
+    answer_choices: null
+    id: 0b1028e7-82bd-4017-9cf7-9709338aec4e
     jinja: 'Given the following passage: {{translation["en"]}} , a good Finnish translation
       is: ||| {{translation["fi"]}}'
     metadata: !TemplateMetadata
@@ -28,9 +42,78 @@ templates:
     name: !!python/tuple
     - a_good_translation-en-fi-target
     reference: ''
-  22b11d6c-e589-436b-b98a-e150d8d0efb8: !Template
+  0fd8d2ba-6751-4f27-a52f-e17aaa390a88: !Template
     answer_choices: null
-    id: 22b11d6c-e589-436b-b98a-e150d8d0efb8
+    id: 0fd8d2ba-6751-4f27-a52f-e17aaa390a88
+    jinja: 'How do you say {{translation["en"]}} in Finnish?
+
+      ||| {{translation["fi"]}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      original_task: true
+    name: !!python/tuple
+    - how_to_say-en-fi-target
+    reference: ''
+  19b94af0-cbb8-462c-8d3e-e0f9325931be: !Template
+    answer_choices: null
+    id: 19b94af0-cbb8-462c-8d3e-e0f9325931be
+    jinja: 'Given the following source text in Finnish: {{translation["fi"]}} , a
+      good English translation is: ||| {{translation["en"]}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      original_task: true
+    name: !!python/tuple
+    - a_good_translation-fi-en-source+target
+    reference: ''
+  2d1ae41e-155c-4bc7-8795-0954d0d64136: !Template
+    answer_choices: null
+    id: 2d1ae41e-155c-4bc7-8795-0954d0d64136
+    jinja: 'Finnish:  {{translation["fi"]}}  translates into English as:
+
+      ||| {{translation["en"]}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      original_task: true
+    name: !!python/tuple
+    - translate_as_fi-en-source+target
+    reference: ''
+  39b1cc28-71b1-4f0b-9f4e-49655855dfd2: !Template
+    answer_choices: null
+    id: 39b1cc28-71b1-4f0b-9f4e-49655855dfd2
+    jinja: 'How do you say {{translation["fi"]}} in English?
+
+      ||| {{translation["en"]}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      original_task: true
+    name: !!python/tuple
+    - how_to_say-fi-en-target
+    reference: ''
+  3ca1c531-f22a-4497-95fe-83c85d6bd0a9: !Template
+    answer_choices: null
+    id: 3ca1c531-f22a-4497-95fe-83c85d6bd0a9
+    jinja: 'What is the English translation of : {{translation["fi"]}}
+
+      |||  {{translation["en"]}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      original_task: true
+    name: !!python/tuple
+    - gpt-3-fi-en-target
+    reference: GPT-3 paper
+  494f82a7-2d20-4786-b1b6-08d985b8f1a5: !Template
+    answer_choices: null
+    id: 494f82a7-2d20-4786-b1b6-08d985b8f1a5
     jinja: 'If the original version says: {{translation["en"]}}; then the Finnish
       version should say:
 
@@ -43,81 +126,9 @@ templates:
     name: !!python/tuple
     - version-en-fi-target
     reference: ''
-  2350c901-a800-414a-b1dc-4b794aba207c: !Template
+  4f12e1fb-7363-4357-a92a-8f1f8e5f5f9c: !Template
     answer_choices: null
-    id: 2350c901-a800-414a-b1dc-4b794aba207c
-    jinja: 'What is the Finnish translation of: {{translation["en"]}}
-
-      |||  {{translation["fi"]}}'
-    metadata: !TemplateMetadata
-      choices_in_prompt: false
-      metrics:
-      - BLEU
-      original_task: true
-    name: !!python/tuple
-    - gpt-3-en-fi-target
-    reference: ''
-  30297da2-9cf8-4dc8-83c2-ad06db26b79c: !Template
-    answer_choices: null
-    id: 30297da2-9cf8-4dc8-83c2-ad06db26b79c
-    jinja: 'If the original version says: {{translation["fi"]}}; then the English
-      version should say:
-
-      |||   {{translation["en"]}}'
-    metadata: !TemplateMetadata
-      choices_in_prompt: false
-      metrics:
-      - BLEU
-      original_task: true
-    name: !!python/tuple
-    - version-fi-en-target
-    reference: ''
-  58fdc500-1ebf-47a0-85ba-4d556f80a168: !Template
-    answer_choices: null
-    id: 58fdc500-1ebf-47a0-85ba-4d556f80a168
-    jinja: 'If the English version says: {{translation["en"]}}; then the Finnish version
-      should say:
-
-      |||   {{translation["fi"]}}'
-    metadata: !TemplateMetadata
-      choices_in_prompt: false
-      metrics:
-      - BLEU
-      original_task: true
-    name: !!python/tuple
-    - version-en-fi-source+target
-    reference: ''
-  6177d95f-6abe-402d-96e9-bf4a7b720fa8: !Template
-    answer_choices: null
-    id: 6177d95f-6abe-402d-96e9-bf4a7b720fa8
-    jinja: 'What is the English translation of the Finnish  sentence: {{translation["fi"]}}
-
-      |||  {{translation["en"]}}'
-    metadata: !TemplateMetadata
-      choices_in_prompt: false
-      metrics:
-      - BLEU
-      original_task: true
-    name: !!python/tuple
-    - gpt-3-fi-en-src+target
-    reference: ''
-  8952e807-1e6a-4935-92d4-c6cd07610ddc: !Template
-    answer_choices: null
-    id: 8952e807-1e6a-4935-92d4-c6cd07610ddc
-    jinja: 'How do you say {{translation["en"]}} in Finnish?
-
-      ||| {{translation["fi"]}}'
-    metadata: !TemplateMetadata
-      choices_in_prompt: false
-      metrics:
-      - BLEU
-      original_task: true
-    name: !!python/tuple
-    - how_to_say-en-fi-target
-    reference: ''
-  979d391d-cfb8-410c-ac44-6911e716aea7: !Template
-    answer_choices: null
-    id: 979d391d-cfb8-410c-ac44-6911e716aea7
+    id: 4f12e1fb-7363-4357-a92a-8f1f8e5f5f9c
     jinja: 'Given the following source text in English: {{translation["en"]}} , a
       good Finnish translation is:
 
@@ -130,11 +141,11 @@ templates:
     name: !!python/tuple
     - a_good_translation-en-fi-source+target
     reference: ''
-  98a3ad8d-e40f-4804-8fea-895424a78cd1: !Template
+  5386e7c0-40b2-4c0e-b85c-a2d4b7305937: !Template
     answer_choices: null
-    id: 98a3ad8d-e40f-4804-8fea-895424a78cd1
-    jinja: 'If the Finnish version says: {{translation["fi"]}}; then the English version
-      should say:
+    id: 5386e7c0-40b2-4c0e-b85c-a2d4b7305937
+    jinja: 'If the original version says: {{translation["fi"]}}; then the English
+      version should say:
 
       |||   {{translation["en"]}}'
     metadata: !TemplateMetadata
@@ -143,39 +154,11 @@ templates:
       - BLEU
       original_task: true
     name: !!python/tuple
-    - version-fi-en-source+target
+    - version-fi-en-target
     reference: ''
-  a73902fc-d455-48b2-9ab9-3924abfe005c: !Template
+  6b8fc7a5-a109-4fcd-9e36-a52851cacd7d: !Template
     answer_choices: null
-    id: a73902fc-d455-48b2-9ab9-3924abfe005c
-    jinja: 'How do you say {{translation["fi"]}} in English?
-
-      ||| {{translation["en"]}}'
-    metadata: !TemplateMetadata
-      choices_in_prompt: false
-      metrics:
-      - BLEU
-      original_task: true
-    name: !!python/tuple
-    - how_to_say-fi-en-target
-    reference: ''
-  ad09a495-727a-4d09-b6bb-f2bf92d33c23: !Template
-    answer_choices: null
-    id: ad09a495-727a-4d09-b6bb-f2bf92d33c23
-    jinja: 'What is the English translation of : {{translation["fi"]}}
-
-      |||  {{translation["en"]}}'
-    metadata: !TemplateMetadata
-      choices_in_prompt: false
-      metrics:
-      - BLEU
-      original_task: true
-    name: !!python/tuple
-    - gpt-3-fi-en-target
-    reference: ''
-  b1505a0a-fb50-47ca-815b-645eb93780e7: !Template
-    answer_choices: null
-    id: b1505a0a-fb50-47ca-815b-645eb93780e7
+    id: 6b8fc7a5-a109-4fcd-9e36-a52851cacd7d
     jinja: 'Given the following passage:  {{translation["fi"]}} , a good English translation
       is:
 
@@ -188,9 +171,9 @@ templates:
     name: !!python/tuple
     - a_good_translation-fi-en-target
     reference: ''
-  b59c382b-457f-4d6a-9b63-7a8caf569ab7: !Template
+  6bef34c4-2e32-4f0c-b916-dc4c82626023: !Template
     answer_choices: null
-    id: b59c382b-457f-4d6a-9b63-7a8caf569ab7
+    id: 6bef34c4-2e32-4f0c-b916-dc4c82626023
     jinja: '{{translation["fi"]}}  translates into English as:
 
       ||| {{translation["en"]}}'
@@ -202,22 +185,9 @@ templates:
     name: !!python/tuple
     - translate_as_fi-en-target
     reference: ''
-  be8c51f5-7cc7-49b2-9cee-8aecf2abe87b: !Template
+  74535955-e9bf-4450-9f1c-197a90c76f62: !Template
     answer_choices: null
-    id: be8c51f5-7cc7-49b2-9cee-8aecf2abe87b
-    jinja: 'Given the following source text in Finnish: {{translation["fi"]}} , a
-      good English translation is: ||| {{translation["en"]}}'
-    metadata: !TemplateMetadata
-      choices_in_prompt: false
-      metrics:
-      - BLEU
-      original_task: true
-    name: !!python/tuple
-    - a_good_translation-fi-en-source+target
-    reference: ''
-  cdf46e91-2228-4809-8c06-2b2c5b4fd700: !Template
-    answer_choices: null
-    id: cdf46e91-2228-4809-8c06-2b2c5b4fd700
+    id: 74535955-e9bf-4450-9f1c-197a90c76f62
     jinja: 'Translate  Finnish into English: {{translation["fi"]}}
 
       |||  {{translation["en"]}}'
@@ -229,24 +199,25 @@ templates:
     name: !!python/tuple
     - translate-fi-en-source+target
     reference: https://arxiv.org/pdf/1910.10683.pdf
-  e4103f0f-075b-481f-81b8-f3d5a3671c86: !Template
+  7efa59e0-dd55-485e-b70c-8789f97cd7bc: !Template
     answer_choices: null
-    id: e4103f0f-075b-481f-81b8-f3d5a3671c86
-    jinja: 'What is the Finnish translation of the English sentence: {{translation["en"]}}
+    id: 7efa59e0-dd55-485e-b70c-8789f97cd7bc
+    jinja: 'If the Finnish version says: {{translation["fi"]}}; then the English version
+      should say:
 
-      |||  {{translation["fi"]}}'
+      |||   {{translation["en"]}}'
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
       - BLEU
       original_task: true
     name: !!python/tuple
-    - gpt-3-en-fi-src+target
+    - version-fi-en-source+target
     reference: ''
-  ea3c2068-9385-4043-ac48-aef98ef9b26b: !Template
+  896cd18d-d469-414e-959e-5925d12461ed: !Template
     answer_choices: null
-    id: ea3c2068-9385-4043-ac48-aef98ef9b26b
-    jinja: ' {{translation["en"]}}  translates into Finnish as:
+    id: 896cd18d-d469-414e-959e-5925d12461ed
+    jinja: 'English:  {{translation["en"]}}  translates into Finnish as:
 
       ||| {{translation["fi"]}}'
     metadata: !TemplateMetadata
@@ -255,12 +226,12 @@ templates:
       - BLEU
       original_task: true
     name: !!python/tuple
-    - translate_as_en-fi-target
+    - translate_as_en-fi-source+target
     reference: ''
-  ee44f8c4-f689-4182-908a-a47679e31b07: !Template
+  9455177d-c8d8-4106-bf52-239aef915196: !Template
     answer_choices: null
-    id: ee44f8c4-f689-4182-908a-a47679e31b07
-    jinja: 'Finnish:  {{translation["fi"]}}  translates into English as:
+    id: 9455177d-c8d8-4106-bf52-239aef915196
+    jinja: 'Finnish: {{translation["fi"]}} = English:
 
       ||| {{translation["en"]}}'
     metadata: !TemplateMetadata
@@ -269,11 +240,25 @@ templates:
       - BLEU
       original_task: true
     name: !!python/tuple
-    - translate_as_fi-en-source+target
-    reference: ''
-  f0e9c69a-b0ea-46f0-9aa5-55cbbb518741: !Template
+    - xglm-fi-en-source+target
+    reference: XGLM paper https://arxiv.org/abs/2112.10668
+  9488651a-e1ef-42d5-ae82-b5e0b2c8a98c: !Template
     answer_choices: null
-    id: f0e9c69a-b0ea-46f0-9aa5-55cbbb518741
+    id: 9488651a-e1ef-42d5-ae82-b5e0b2c8a98c
+    jinja: '{{translation["en"]}} = Finnish:
+
+      ||| {{translation["fi"]}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      original_task: true
+    name: !!python/tuple
+    - xglm-en-fi-target
+    reference: XGLM paper https://arxiv.org/abs/2112.10668
+  9c3f1a73-4b97-4e9a-b0c8-0657109974d9: !Template
+    answer_choices: null
+    id: 9c3f1a73-4b97-4e9a-b0c8-0657109974d9
     jinja: 'Translate into Finnish: {{translation["en"]}}
 
       |||  {{translation["fi"]}}'
@@ -285,9 +270,37 @@ templates:
     name: !!python/tuple
     - translate-en-fi-target
     reference: ''
-  f458a114-1e5e-43e0-819e-f91cc4a7f8a0: !Template
+  b54d9dfe-bdd3-4c66-b698-d1fef339b856: !Template
     answer_choices: null
-    id: f458a114-1e5e-43e0-819e-f91cc4a7f8a0
+    id: b54d9dfe-bdd3-4c66-b698-d1fef339b856
+    jinja: 'What is the Finnish translation of the English sentence: {{translation["en"]}}
+
+      |||  {{translation["fi"]}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      original_task: true
+    name: !!python/tuple
+    - gpt-3-en-fi-source+target
+    reference: GPT 3 paper
+  bd308723-64e4-4765-951f-6e10317a43fd: !Template
+    answer_choices: null
+    id: bd308723-64e4-4765-951f-6e10317a43fd
+    jinja: 'What is the English translation of the Finnish  sentence: {{translation["fi"]}}
+
+      |||  {{translation["en"]}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      original_task: true
+    name: !!python/tuple
+    - gpt-3-fi-en-source+target
+    reference: GPT-3 paper
+  c28c0e87-cba7-4374-bc79-c0bf36de7a23: !Template
+    answer_choices: null
+    id: c28c0e87-cba7-4374-bc79-c0bf36de7a23
     jinja: 'Translate into English: {{translation["fi"]}}
 
       |||  {{translation["en"]}}'
@@ -299,10 +312,24 @@ templates:
     name: !!python/tuple
     - translate-fi-en-target
     reference: ''
-  fbc1a8bc-2b7c-4cdc-b79c-850dd9f1558b: !Template
+  cb5a91d5-c7ea-464e-8eb2-d5f029d176c2: !Template
     answer_choices: null
-    id: fbc1a8bc-2b7c-4cdc-b79c-850dd9f1558b
-    jinja: 'English:  {{translation["en"]}}  translates into Finnish as:
+    id: cb5a91d5-c7ea-464e-8eb2-d5f029d176c2
+    jinja: '{{translation["fi"]}} = English:
+
+      ||| {{translation["en"]}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      original_task: true
+    name: !!python/tuple
+    - xglm-fi-en-target
+    reference: XGLM paper https://arxiv.org/abs/2112.10668
+  da6870c8-f33e-4809-a446-f72a0f376d40: !Template
+    answer_choices: null
+    id: da6870c8-f33e-4809-a446-f72a0f376d40
+    jinja: ' {{translation["en"]}}  translates into Finnish as:
 
       ||| {{translation["fi"]}}'
     metadata: !TemplateMetadata
@@ -311,5 +338,34 @@ templates:
       - BLEU
       original_task: true
     name: !!python/tuple
-    - translate_as_en-fi-source+target
+    - translate_as_en-fi-target
+    reference: ''
+  f715353e-4152-450b-8e6e-baf34a7b0672: !Template
+    answer_choices: null
+    id: f715353e-4152-450b-8e6e-baf34a7b0672
+    jinja: 'If the English version says: {{translation["en"]}}; then the Finnish version
+      should say:
+
+      |||   {{translation["fi"]}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      original_task: true
+    name: !!python/tuple
+    - version-en-fi-source+target
+    reference: ''
+  fe8a576e-64f0-497a-a831-290cc1b693fd: !Template
+    answer_choices: null
+    id: fe8a576e-64f0-497a-a831-290cc1b693fd
+    jinja: 'Translate English into Finnish: {{translation["en"]}}
+
+      |||  {{translation["fi"]}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      original_task: true
+    name: !!python/tuple
+    - translate-en-fi-source+starget
     reference: ''

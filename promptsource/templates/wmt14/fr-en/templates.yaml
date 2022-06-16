@@ -53,8 +53,8 @@ templates:
       metrics:
       - BLEU
       original_task: true
-    name: gpt-3-fr-en-src+target
-    reference: ''
+    name: gpt-3-fr-en-source+target
+    reference: 'GPT-3 paper'
   280bc983-9f20-4e80-ab02-5f333df90a42: !Template
     answer_choices: null
     id: 280bc983-9f20-4e80-ab02-5f333df90a42
@@ -67,7 +67,20 @@ templates:
       - BLEU
       original_task: true
     name: gpt-3-fr-en-target
-    reference: ''
+    reference: 'GPT-3 paper'
+  2fc841fb-b872-4cc6-9a88-735d6bb7e2e3: !Template
+    answer_choices: null
+    id: 2fc841fb-b872-4cc6-9a88-735d6bb7e2e3
+    jinja: '{{translation["en"]}} = French:
+
+    ||| {{translation["fr"]}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      original_task: true
+    name: xglm-en-fr-target
+    reference: XGLM paper https://arxiv.org/abs/2112.10668
   41e7647e-2b9f-4d86-8987-5abe70000362: !Template
     answer_choices: null
     id: 41e7647e-2b9f-4d86-8987-5abe70000362
@@ -117,7 +130,7 @@ templates:
       - BLEU
       original_task: true
     name: gpt-3-en-fr-target
-    reference: ''
+    reference: 'GPT-3 paper'
   51d41a04-1d90-4bae-b6e5-be7598cdbfb0: !Template
     answer_choices: null
     id: 51d41a04-1d90-4bae-b6e5-be7598cdbfb0
@@ -155,7 +168,7 @@ templates:
       metrics:
       - BLEU
       original_task: true
-    name: translate-en-fr-src+starget
+    name: translate-en-fr-source+starget
     reference: ''
   762c0878-c8fc-43ec-839f-d5d8435a94f6: !Template
     answer_choices: null
@@ -171,6 +184,32 @@ templates:
       original_task: true
     name: a_good_translation-fr-en-target
     reference: ''
+  8713594d-626b-4c5c-a63f-553ddc5444de: !Template
+    answer_choices: null
+    id: 8713594d-626b-4c5c-a63f-553ddc5444de
+    jinja: 'English: {{translation["en"]}} = French: 
+
+    ||| {{translation["fr"]}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      original_task: true
+    name: xglm-en-fr-source-target
+    reference: Adapted from XGLM paper on few shot evaluation https://arxiv.org/abs/2112.10668
+  957b8554-a00a-4652-b080-e9ee3ccae381: !Template
+    answer_choices: null
+    id: 957b8554-a00a-4652-b080-e9ee3ccae381
+    jinja: '{{translation["fr"]}} = English:
+
+    ||| {{translation["en"]}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      original_task: true
+    name: xglm-fr-en-target
+    reference: XGLM paper https://arxiv.org/abs/2112.10668
   9fe6b44b-2dc6-4557-8201-14d6ea7668ff: !Template
     answer_choices: null
     id: 9fe6b44b-2dc6-4557-8201-14d6ea7668ff
@@ -225,6 +264,19 @@ templates:
       original_task: true
     name: translate_as_en-fr-source+target
     reference: ''
+  b0e110eb-4fde-45fd-a561-e8e24ad83916: !Template
+    answer_choices: null
+    id: b0e110eb-4fde-45fd-a561-e8e24ad83916
+    jinja: 'French: {{translation["fr"]}} = English:
+
+    ||| {{translation["en"]}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      original_task: true
+    name: xglm-fr-en-source+target
+    reference: XGLM paper https://arxiv.org/abs/2112.10668
   bc95c647-5979-4522-9e6e-f5eb93b69a00: !Template
     answer_choices: null
     id: bc95c647-5979-4522-9e6e-f5eb93b69a00
@@ -289,5 +341,5 @@ templates:
       metrics:
       - BLEU
       original_task: true
-    name: gpt-3-en-fr-src+target
-    reference: ''
+    name: gpt-3-en-fr-source+target
+    reference: 'GPT 3 paper'

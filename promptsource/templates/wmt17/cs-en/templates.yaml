@@ -1,9 +1,9 @@
 dataset: wmt17
 subset: cs-en
 templates:
-  01a9b4cc-3e7d-4472-bc07-423d85faad52: !Template
+  02a34024-126f-4147-92a4-85b919389b09: !Template
     answer_choices: null
-    id: 01a9b4cc-3e7d-4472-bc07-423d85faad52
+    id: 02a34024-126f-4147-92a4-85b919389b09
     jinja: 'Translate into Czech: {{translation["en"]}}
 
       |||  {{translation["cs"]}}'
@@ -15,38 +15,37 @@ templates:
     name: !!python/tuple
     - translate-en-cs-target
     reference: ''
-  0b196075-faee-4e54-be5c-28cde617bcec: !Template
+  032b917b-7e01-4f7b-9826-48025d460e60: !Template
     answer_choices: null
-    id: 0b196075-faee-4e54-be5c-28cde617bcec
-    jinja: 'If the Czech version says: {{translation["cs"]}}; then the English version
-      should say:
+    id: 032b917b-7e01-4f7b-9826-48025d460e60
+    jinja: 'Translate into English: {{translation["cs"]}}
 
-      |||   {{translation["en"]}}'
+      |||  {{translation["en"]}}'
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
       - BLEU
       original_task: true
     name: !!python/tuple
-    - version-cs-en-source+target
+    - translate-cs-en-target
     reference: ''
-  1deb5592-6867-421c-9421-e2a74a6ebf11: !Template
+  05c1b0e4-2424-434d-9f40-c3d02c88a73b: !Template
     answer_choices: null
-    id: 1deb5592-6867-421c-9421-e2a74a6ebf11
-    jinja: ' {{translation["en"]}}  translates into Czech as:
+    id: 05c1b0e4-2424-434d-9f40-c3d02c88a73b
+    jinja: 'What is the Czech translation of: {{translation["en"]}}
 
-      ||| {{translation["cs"]}}'
+      |||  {{translation["cs"]}}'
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
       - BLEU
       original_task: true
     name: !!python/tuple
-    - translate_as_en-cs-target
-    reference: ''
-  2aaea840-09fa-4496-9ac2-3ce92b739ccb: !Template
+    - gpt-3-en-cs-target
+    reference: GPT-3 paper
+  06e2c6b1-b6d0-4a05-bcec-004a2bfcf2f2: !Template
     answer_choices: null
-    id: 2aaea840-09fa-4496-9ac2-3ce92b739ccb
+    id: 06e2c6b1-b6d0-4a05-bcec-004a2bfcf2f2
     jinja: 'Given the following source text in English: {{translation["en"]}} , a
       good Czech translation is:
 
@@ -59,51 +58,10 @@ templates:
     name: !!python/tuple
     - a_good_translation-en-cs-source+target
     reference: ''
-  40e25397-0a8e-4289-b28a-aeaa1f23ddb2: !Template
+  16492d65-0760-4b86-86b4-2578994dc9d1: !Template
     answer_choices: null
-    id: 40e25397-0a8e-4289-b28a-aeaa1f23ddb2
-    jinja: 'What is the English translation of : {{translation["cs"]}}
-
-      |||  {{translation["en"]}}'
-    metadata: !TemplateMetadata
-      choices_in_prompt: false
-      metrics:
-      - BLEU
-      original_task: true
-    name: !!python/tuple
-    - gpt-3-cs-en-target
-    reference: ''
-  59d1355f-c705-4267-95be-9e98bb5fbb90: !Template
-    answer_choices: null
-    id: 59d1355f-c705-4267-95be-9e98bb5fbb90
-    jinja: 'Given the following passage: {{translation["en"]}} , a good Czech translation
-      is: ||| {{translation["cs"]}}'
-    metadata: !TemplateMetadata
-      choices_in_prompt: false
-      metrics:
-      - BLEU
-      original_task: true
-    name: !!python/tuple
-    - a_good_translation-en-cs-target
-    reference: ''
-  61056233-ad4c-4226-9854-9e4a46cfea3f: !Template
-    answer_choices: null
-    id: 61056233-ad4c-4226-9854-9e4a46cfea3f
-    jinja: 'English:  {{translation["en"]}}  translates into Czech as:
-
-      ||| {{translation["cs"]}}'
-    metadata: !TemplateMetadata
-      choices_in_prompt: false
-      metrics:
-      - BLEU
-      original_task: true
-    name: !!python/tuple
-    - translate_as_en-cs-source+target
-    reference: ''
-  6bec36bf-a843-488c-8843-cae39b644efa: !Template
-    answer_choices: null
-    id: 6bec36bf-a843-488c-8843-cae39b644efa
-    jinja: 'If the original version says: {{translation["en"]}}; then the Czech version
+    id: 16492d65-0760-4b86-86b4-2578994dc9d1
+    jinja: 'If the English version says: {{translation["en"]}}; then the Czech version
       should say:
 
       |||   {{translation["cs"]}}'
@@ -113,11 +71,24 @@ templates:
       - BLEU
       original_task: true
     name: !!python/tuple
-    - version-en-cs-target
+    - version-en-cs-source+target
     reference: ''
-  6e96ba15-9c50-4770-a8df-d4d2e04885cd: !Template
+  17937d5b-1d1e-4856-9f02-1c33d01e7613: !Template
     answer_choices: null
-    id: 6e96ba15-9c50-4770-a8df-d4d2e04885cd
+    id: 17937d5b-1d1e-4856-9f02-1c33d01e7613
+    jinja: 'Given the following source text in Czech: {{translation["cs"]}} , a good
+      English translation is: ||| {{translation["en"]}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      original_task: true
+    name: !!python/tuple
+    - a_good_translation-cs-en-source+target
+    reference: ''
+  1f5e3b84-8516-4c07-a9a0-52842a4a326b: !Template
+    answer_choices: null
+    id: 1f5e3b84-8516-4c07-a9a0-52842a4a326b
     jinja: 'If the original version says: {{translation["cs"]}}; then the English
       version should say:
 
@@ -130,23 +101,38 @@ templates:
     name: !!python/tuple
     - version-cs-en-target
     reference: ''
-  89c49a56-cb7a-4d19-bed9-a4ef79476cca: !Template
+  35fde963-ed17-4cf4-99e9-050a7c501cd2: !Template
     answer_choices: null
-    id: 89c49a56-cb7a-4d19-bed9-a4ef79476cca
-    jinja: 'Translate into English: {{translation["cs"]}}
+    id: 35fde963-ed17-4cf4-99e9-050a7c501cd2
+    jinja: '{{translation["cs"]}} = English:
 
-      |||  {{translation["en"]}}'
+      ||| {{translation["en"]}}'
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
       - BLEU
       original_task: true
     name: !!python/tuple
-    - translate-cs-en-target
-    reference: ''
-  8ffa0081-e870-47e9-99cf-ef649372507b: !Template
+    - xglm-cs-en-target
+    reference: XGLM paper https://arxiv.org/abs/2112.10668
+  4d33c258-1566-47dd-81c0-1dab0499736d: !Template
     answer_choices: null
-    id: 8ffa0081-e870-47e9-99cf-ef649372507b
+    id: 4d33c258-1566-47dd-81c0-1dab0499736d
+    jinja: 'If the Czech version says: {{translation["cs"]}}; then the English version
+      should say:
+
+      |||   {{translation["en"]}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      original_task: true
+    name: !!python/tuple
+    - version-cs-en-source+target
+    reference: ''
+  5926a418-9730-4f3f-a913-16206f7db095: !Template
+    answer_choices: null
+    id: 5926a418-9730-4f3f-a913-16206f7db095
     jinja: 'How do you say {{translation["en"]}} in Czech?
 
       ||| {{translation["cs"]}}'
@@ -158,51 +144,51 @@ templates:
     name: !!python/tuple
     - how_to_say-en-cs-target
     reference: ''
-  930e9528-823c-4d19-8a53-4d1a1534a06d: !Template
+  5ae66026-566f-4d69-80eb-98bfe9a748c5: !Template
     answer_choices: null
-    id: 930e9528-823c-4d19-8a53-4d1a1534a06d
-    jinja: 'What is the Czech translation of: {{translation["en"]}}
+    id: 5ae66026-566f-4d69-80eb-98bfe9a748c5
+    jinja: '{{translation["en"]}} = Czech:
 
-      |||  {{translation["cs"]}}'
+      ||| {{translation["cs"]}}'
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
       - BLEU
       original_task: true
     name: !!python/tuple
-    - gpt-3-en-cs-target
-    reference: ''
-  9f3279de-22db-45e9-989b-22acebdf7f02: !Template
+    - xglm-en-cs-target
+    reference: XGLM paper https://arxiv.org/abs/2112.10668
+  5c5fc3e1-7125-4305-bbcb-1a28f18eb7d9: !Template
     answer_choices: null
-    id: 9f3279de-22db-45e9-989b-22acebdf7f02
-    jinja: 'Translate English into Czech: {{translation["en"]}}
+    id: 5c5fc3e1-7125-4305-bbcb-1a28f18eb7d9
+    jinja: 'Czech: {{translation["cs"]}} = English:
 
-      |||  {{translation["cs"]}}'
+      ||| {{translation["en"]}}'
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
       - BLEU
       original_task: true
     name: !!python/tuple
-    - translate-en-cs-src+starget
-    reference: ''
-  a5d42259-2578-4f0f-ab0d-be7c76122ed6: !Template
+    - xglm-cs-en-source+target
+    reference: XGLM paper https://arxiv.org/abs/2112.10668
+  78702895-3efa-43db-9ecd-866d0b2146e9: !Template
     answer_choices: null
-    id: a5d42259-2578-4f0f-ab0d-be7c76122ed6
-    jinja: 'What is the Czech translation of the English sentence: {{translation["en"]}}
+    id: 78702895-3efa-43db-9ecd-866d0b2146e9
+    jinja: 'English: {{translation["en"]}} = Czech:
 
-      |||  {{translation["cs"]}}'
+      ||| {{translation["cs"]}}'
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
       - BLEU
       original_task: true
     name: !!python/tuple
-    - gpt-3-en-cs-src+target
-    reference: ''
-  ab56af3e-f85b-42e5-a4de-dd791093530d: !Template
+    - xglm-en-cs-source-target
+    reference: Adapted from XGLM paper on few shot evaluation https://arxiv.org/abs/2112.10668
+  88a17d2a-d688-4d0e-8b28-a8b10e5ead48: !Template
     answer_choices: null
-    id: ab56af3e-f85b-42e5-a4de-dd791093530d
+    id: 88a17d2a-d688-4d0e-8b28-a8b10e5ead48
     jinja: 'Given the following passage:  {{translation["cs"]}} , a good English translation
       is:
 
@@ -215,51 +201,79 @@ templates:
     name: !!python/tuple
     - a_good_translation-cs-en-target
     reference: ''
-  aca1630b-8e84-481f-a3a1-4bdaaaa6fcda: !Template
+  8e4a3e22-78a9-4fa7-94b4-1f9e9cf76467: !Template
     answer_choices: null
-    id: aca1630b-8e84-481f-a3a1-4bdaaaa6fcda
-    jinja: 'Czech:  {{translation["cs"]}}  translates into English as:
+    id: 8e4a3e22-78a9-4fa7-94b4-1f9e9cf76467
+    jinja: 'English:  {{translation["en"]}}  translates into Czech as:
 
-      ||| {{translation["en"]}}'
+      ||| {{translation["cs"]}}'
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
       - BLEU
       original_task: true
     name: !!python/tuple
-    - translate_as_cs-en-source+target
+    - translate_as_en-cs-source+target
     reference: ''
-  b847c014-264b-414a-9e84-1a087daefcb9: !Template
+  9003b86f-7c59-459b-a5da-40f1e2ff5782: !Template
     answer_choices: null
-    id: b847c014-264b-414a-9e84-1a087daefcb9
-    jinja: '{{translation["cs"]}}  translates into English as:
-
-      ||| {{translation["en"]}}'
+    id: 9003b86f-7c59-459b-a5da-40f1e2ff5782
+    jinja: 'Given the following passage: {{translation["en"]}} , a good Czech translation
+      is: ||| {{translation["cs"]}}'
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
       - BLEU
       original_task: true
     name: !!python/tuple
-    - translate_as_cs-en-target
+    - a_good_translation-en-cs-target
     reference: ''
-  ba823677-d7cd-4e42-9e55-120ee6b07e66: !Template
+  a0367ec8-1ff9-4d13-9d31-ce212285b2cc: !Template
     answer_choices: null
-    id: ba823677-d7cd-4e42-9e55-120ee6b07e66
-    jinja: 'What is the English translation of the Czech  sentence: {{translation["cs"]}}
+    id: a0367ec8-1ff9-4d13-9d31-ce212285b2cc
+    jinja: 'If the original version says: {{translation["en"]}}; then the Czech version
+      should say:
 
-      |||  {{translation["en"]}}'
+      |||   {{translation["cs"]}}'
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
       - BLEU
       original_task: true
     name: !!python/tuple
-    - gpt-3-cs-en-src+target
+    - version-en-cs-target
     reference: ''
-  bd8b3c35-291e-4b37-b270-c40234c11324: !Template
+  a625334b-415b-4fbb-9b93-2fd523d8d04a: !Template
     answer_choices: null
-    id: bd8b3c35-291e-4b37-b270-c40234c11324
+    id: a625334b-415b-4fbb-9b93-2fd523d8d04a
+    jinja: ' {{translation["en"]}}  translates into Czech as:
+
+      ||| {{translation["cs"]}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      original_task: true
+    name: !!python/tuple
+    - translate_as_en-cs-target
+    reference: ''
+  ab8f812b-5897-4062-bcfa-531d33948297: !Template
+    answer_choices: null
+    id: ab8f812b-5897-4062-bcfa-531d33948297
+    jinja: 'Translate English into Czech: {{translation["en"]}}
+
+      |||  {{translation["cs"]}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      original_task: true
+    name: !!python/tuple
+    - translate-en-cs-source+starget
+    reference: ''
+  b56a417b-b38a-4ee8-b875-905985ca48b1: !Template
+    answer_choices: null
+    id: b56a417b-b38a-4ee8-b875-905985ca48b1
     jinja: 'Translate  Czech into English: {{translation["cs"]}}
 
       |||  {{translation["en"]}}'
@@ -271,22 +285,79 @@ templates:
     name: !!python/tuple
     - translate-cs-en-source+target
     reference: https://arxiv.org/pdf/1910.10683.pdf
-  e2a453da-ab63-4ce4-85fe-6173f3eff740: !Template
+  bb32fabf-50aa-4560-be6d-fd31947b9248: !Template
     answer_choices: null
-    id: e2a453da-ab63-4ce4-85fe-6173f3eff740
-    jinja: 'Given the following source text in Czech: {{translation["cs"]}} , a good
-      English translation is: ||| {{translation["en"]}}'
+    id: bb32fabf-50aa-4560-be6d-fd31947b9248
+    jinja: 'What is the English translation of : {{translation["cs"]}}
+
+      |||  {{translation["en"]}}'
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
       - BLEU
       original_task: true
     name: !!python/tuple
-    - a_good_translation-cs-en-source+target
-    reference: ''
-  f98dbcb7-9da6-4903-893a-c2dd3337f2fe: !Template
+    - gpt-3-cs-en-target
+    reference: GPT-3 paper
+  beaf04b3-d4de-4ccf-a13d-f624ac1beaa1: !Template
     answer_choices: null
-    id: f98dbcb7-9da6-4903-893a-c2dd3337f2fe
+    id: beaf04b3-d4de-4ccf-a13d-f624ac1beaa1
+    jinja: 'Czech:  {{translation["cs"]}}  translates into English as:
+
+      ||| {{translation["en"]}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      original_task: true
+    name: !!python/tuple
+    - translate_as_cs-en-source+target
+    reference: ''
+  d7376547-b699-4bc7-a753-7896092609eb: !Template
+    answer_choices: null
+    id: d7376547-b699-4bc7-a753-7896092609eb
+    jinja: 'What is the Czech translation of the English sentence: {{translation["en"]}}
+
+      |||  {{translation["cs"]}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      original_task: true
+    name: !!python/tuple
+    - gpt-3-en-cs-source+target
+    reference: GPT 3 paper
+  f3b839ed-9535-4714-a10a-12436be1f517: !Template
+    answer_choices: null
+    id: f3b839ed-9535-4714-a10a-12436be1f517
+    jinja: '{{translation["cs"]}}  translates into English as:
+
+      ||| {{translation["en"]}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      original_task: true
+    name: !!python/tuple
+    - translate_as_cs-en-target
+    reference: ''
+  f764a6f3-bddd-4f63-9a63-faf18aab9c3e: !Template
+    answer_choices: null
+    id: f764a6f3-bddd-4f63-9a63-faf18aab9c3e
+    jinja: 'What is the English translation of the Czech  sentence: {{translation["cs"]}}
+
+      |||  {{translation["en"]}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      original_task: true
+    name: !!python/tuple
+    - gpt-3-cs-en-source+target
+    reference: GPT-3 paper
+  ff8c37a8-4b9f-4a12-8e91-46354e5720fb: !Template
+    answer_choices: null
+    id: ff8c37a8-4b9f-4a12-8e91-46354e5720fb
     jinja: 'How do you say {{translation["cs"]}} in English?
 
       ||| {{translation["en"]}}'
@@ -297,19 +368,4 @@ templates:
       original_task: true
     name: !!python/tuple
     - how_to_say-cs-en-target
-    reference: ''
-  fed191b4-e6c1-4d6f-86dc-fcedbccadcf2: !Template
-    answer_choices: null
-    id: fed191b4-e6c1-4d6f-86dc-fcedbccadcf2
-    jinja: 'If the English version says: {{translation["en"]}}; then the Czech version
-      should say:
-
-      |||   {{translation["cs"]}}'
-    metadata: !TemplateMetadata
-      choices_in_prompt: false
-      metrics:
-      - BLEU
-      original_task: true
-    name: !!python/tuple
-    - version-en-cs-source+target
     reference: ''
