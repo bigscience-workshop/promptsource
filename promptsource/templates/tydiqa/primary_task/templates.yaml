@@ -23,20 +23,20 @@ templates:
 
       {% elif language == "japanese" %}
 
-      私 和 疑問 に 思う {{question_text}}.
+      {{question_text}} のか気になります。
 
-      この質問に「はい」または「いいえ」または「なし」で答えるのを手伝ってください
-      最初の2つの答えが当てはまらない場合は、「なし」と答えてください
+      この質問に「はい」または「いいえ」のどちらかで答えてください。
+      どちらもあてはまらない場合、「どちらでもない」と答えてください。
 
-      これが私がインターネットで見つけたものです：
+      インターネットでこんな記事を見つけました：
 
-      トピック： {{document_title}}
+      タイトル： {{document_title}}
 
-      書類： {{document_plaintext}}
+      本文： {{document_plaintext}}
 
       |||
       
-      {{{"NO":"いいえ","YES": "はい", "NONE": "なし"}[annotations.yes_no_answer[0]]}}
+      {{{"NO":"いいえ","YES": "はい", "NONE": "どちらでもない"}[annotations.yes_no_answer[0]]}}
 
       {% endif %}'
     metadata: !TemplateMetadata
@@ -53,9 +53,9 @@ templates:
       \ the question with {{\"Yes\"}} or {{\"No\"}}. If it is not possible then answer\
       \ {{\"None\"}}.\nHint: {{document_plaintext}}\n|||\n{{annotations.yes_no_answer[0]\
       \ | capitalize}}\n\
-      \ {% elif language == \"japanese\" %} \n質問: {{question_text}}\n答え\
-      \ との質問 {{\"はい\"}} or {{\"いいえ\"}}. それが不可能な場合は答えてください\
-      \ {{\"なし\"}}.\nヒント: {{document_plaintext}}\n|||\n{{{\"NO\":\"いいえ\",\"YES\": \"はい\", \"NONE\": \"なし\"}[annotations.yes_no_answer[0]]}}\n{% endif %}"      
+      \ {% elif language == \"japanese\" %} \n質問: {{question_text}}\n質問に\
+      \ {{\"はい\"}}か{{\"いいえ\"}}で答えてください。 どちらもあてはまらない場合は\
+      \ {{\"どちらでもない\"}}と答えてください。\nヒント: {{document_plaintext}}\n|||\n{{{\"NO\":\"いいえ\",\"YES\": \"はい\", \"NONE\": \"どちらでもない\"}[annotations.yes_no_answer[0]]}}\n{% endif %}"      
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
@@ -72,7 +72,7 @@ templates:
       \ | capitalize}} \n    {% endif %} \n\
       \ {% elif language == \"japanese\" %} \n    {% if annotations.yes_no_answer[0]\
       \ == \"YES\" または annotations.yes_no_answer[0] == \"NO\" %} \n\
-      \ に関する質問に答える {{document_title}}. {{question_text}}\n||| \n{{{\"NO\":\"いいえ\",\"YES\": \"はい\", \"NONE\": \"なし\"}[annotations.yes_no_answer[0]]}}\
+      \ {{document_title}}に関する質問に答えてください。{{question_text}}\n||| \n{{{\"NO\":\"いいえ\",\"YES\": \"はい\", \"NONE\": \"どちらでもない\"}[annotations.yes_no_answer[0]]}}\
       \ \n{% endif %} "
     metadata: !TemplateMetadata
       choices_in_prompt: false
@@ -106,7 +106,7 @@ templates:
 
       {{question_text}}
 
-      これは「はい/いいえ」の質問ですか？
+      これは「はい」「いいえ」で答えられる質問ですか？
 
       |||
 
@@ -148,14 +148,15 @@ templates:
 
       {% elif language == "japanese" %}
 
-      答え との質問「はい」または「いいえ」
-      または「なし」と答えてください
+
+      この質問に「はい」または「いいえ」のどちらかで答えてください。
+      どちらもあてはまらない場合、「どちらでもない」と答えてください。
 
       質問: {{question_text}}
 
-      トピック： {{document_title}}
+      タイトル： {{document_title}}
 
-      書類： {{document_plaintext}}
+      本文： {{document_plaintext}}
 
       |||
 
@@ -179,8 +180,8 @@ templates:
       \    {% endif %}\n\
       \ {% if language == \"japanese\" %} \n    {% if annotations.yes_no_answer[0]\
       \ == \"YES\" or annotations.yes_no_answer[0] == \"NO\" %} \n\
-      \ ウィキペディアから次のテキストスニペットを読んだ後、質問に答えてください: {{question_text}}\
-      \ \n{{document_plaintext}}\n||| \n{{{\"NO\":\"いいえ\",\"YES\": \"はい\", \"NONE\": \"なし\"}[annotations.yes_no_answer[0]}}\n\
+      \ ウィキペディアの記事を読んだあと、次の質問に答えてください: {{question_text}}\
+      \ \n{{document_plaintext}}\n||| \n{{{\"NO\":\"いいえ\",\"YES\": \"はい\", \"NONE\": \"どちらでもない\"}[annotations.yes_no_answer[0]}}\n\
       \    {% endif %}\n\
       \ {% endif %}"
     metadata: !TemplateMetadata
@@ -198,9 +199,9 @@ templates:
       \ about {{document_title}}.\nQuestion: {{question_text}}. Yes or No?\n||| \n\
       {{annotations.yes_no_answer[0] | capitalize}}\n    {% endif %}\n\
       {% elif language == \"japanese\" %} \n    {% if annotations.yes_no_answer[0]\
-      \ == \"YES\" or annotations.yes_no_answer[0] == \"NO\" %} \nに関する質問に答える\
-      \ {{document_title}}.\n質問: {{question_text}}. はい or いいえ?\n||| \n\
-      {{{\"NO\":\"いいえ\",\"YES\": \"はい\", \"NONE\": \"なし\"}[annotations.yes_no_answer[0]]}}\n{% endif %}\n\
+      \ == \"YES\" or annotations.yes_no_answer[0] == \"NO\" %} \n\
+      \ {{document_title}}に関する質問に答えてください。\n質問: {{question_text}}「はい」「いいえ」のどちらですか？\n||| \n\
+      {{{\"NO\":\"いいえ\",\"YES\": \"はい\", \"NONE\": \"どちらでもない\"}[annotations.yes_no_answer[0]]}}\n{% endif %}\n\
       \ {% endif %}"
     metadata: !TemplateMetadata
       choices_in_prompt: true
@@ -217,8 +218,8 @@ templates:
       \ text snippet, {{question_text}} \n{{document_plaintext}}\n||| \n{{annotations.yes_no_answer[0]\
       \ | capitalize}}\n    {% endif %}\
       \ {% elif language == \"japanese\" %} \n    {% if annotations.yes_no_answer[0]\
-      \ == \"YES\" or annotations.yes_no_answer[0] == \"NO\" %} \n次のテキストスニペットに基づく\
-      \ , {{question_text}} \n{{document_plaintext}}\n||| \n{{{\"NO\":\"いいえ\",\"YES\": \"はい\", \"NONE\": \"なし\"}[annotations.yes_no_answer[0]]\n    {% endif %}\
+      \ == \"YES\" or annotations.yes_no_answer[0] == \"NO\" %} \n次の文章にもとづくと、\
+      \ , {{question_text}} \n{{document_plaintext}}\n||| \n{{{\"NO\":\"いいえ\",\"YES\": \"はい\", \"NONE\": \"どちらでもない\"}[annotations.yes_no_answer[0]]\n    {% endif %}\
       \ \n{% endif %}"
     metadata: !TemplateMetadata
       choices_in_prompt: false
