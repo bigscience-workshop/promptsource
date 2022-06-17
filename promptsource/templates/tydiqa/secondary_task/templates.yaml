@@ -62,7 +62,7 @@ templates:
 
       {% set _blank=["通路", "文章", "テキストスニペット", "情報"]|random %}
 
-      {% set _position = ["above", "following"] |random %}
+      {% set _position = ["その上", "次の"] |random %}
 
       {% if  _position == "above" %}
 
@@ -136,6 +136,19 @@ templates:
       Can you tell me the answer?
 
       Text: {{context}}
+
+      |||
+
+      {{answers.text | choice}}
+
+      {% elif lang == "japanese" %}
+
+      私は質問への答えを見つけようとしています "{{question}}"
+
+      I found this text about {{title}} on Wikipedia and I think it contains the answer.
+      Can you tell me the answer?
+
+      文章： {{context}}
 
       |||
 
@@ -253,7 +266,7 @@ templates:
 
       {{question}}
 
-      Answer the question above.
+      上記の質問に答えてください。
 
       |||
 
@@ -288,13 +301,13 @@ templates:
 
       {% elif lang == "japanese" %}
 
-      I''ve always wondered: {{question}}
+      私はいつも疑問に思っていました： {{question}}
 
-      I searched Wikipedia and I found the following text snippet about {{title}}.
+      ウィキペディアを検索したところ、次のテキストスニペットが見つかりました {{title}}.
 
-      Snippet: {{context}}
+      スニペット： {{context}}
 
-      What''s the answer?
+      答えは何ですか？
 
       |||
 
