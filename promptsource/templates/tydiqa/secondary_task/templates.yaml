@@ -13,7 +13,7 @@ templates:
       metrics:
       - Squad
       original_task: true
-    name: can_you_answer_the_question
+    name: en_can_you_answer_the_question
     reference: Ask question with Context
   05c99237-0e03-4ec9-95f3-dfde8ae25605: !Template
     answer_choices: null
@@ -50,12 +50,12 @@ templates:
 
       {% endif %}'
     metadata: !TemplateMetadata
-      choices_in_prompt: null
+      choices_in_prompt: false
       metrics:
       - BLEU
       - ROUGE
       original_task: false
-    name: title_generation
+    name: en_title_generation
     reference: Generate title from a passage
   1f4728ba-b25e-450e-975f-6dc8c0cb4bb1: !Template
     answer_choices: null
@@ -78,8 +78,31 @@ templates:
       - BLEU
       - ROUGE
       original_task: false
-    name: end_to_end_question_generation
+    name: en_end_to_end_question_generation
     reference: generate end-to-end question from a passage.
+  29e63c0c-ba49-4f42-a1a5-42edf6dd7074: !Template
+    answer_choices: null
+    id: 29e63c0c-ba49-4f42-a1a5-42edf6dd7074
+    jinja: '{% set lang = id.split(''-'')[0] %}
+
+      {% if lang == "indonesian" %}
+
+      Bisakah kamu buat pertanyaan tentang {{title}} yang jawabannya adalah {{answers.text
+      | choice}} berdasarkan konteks berikut: {{context}}
+
+      |||
+
+      {{question}}
+
+      {% endif %}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      - ROUGE
+      original_task: false
+    name: id_end_to_end_question_generation_with_title
+    reference: generate end-to-end question from a passage with a title
   3d7ee9fe-ac53-4cf3-9913-431425225a5c: !Template
     answer_choices: null
     id: 3d7ee9fe-ac53-4cf3-9913-431425225a5c
@@ -104,7 +127,7 @@ templates:
       metrics:
       - Squad
       original_task: true
-    name: can_you_tell_me_the_answer
+    name: en_can_you_tell_me_the_answer
     reference: Ask question with Context
   696c888c-3419-4e4c-b559-1d9772fa60ab: !Template
     answer_choices: null
@@ -117,8 +140,87 @@ templates:
       metrics:
       - Squad
       original_task: true
-    name: extract_answer
+    name: en_extract_answer
     reference: Ask question with Context
+  6ee41c5b-36ed-45d1-a3f1-3293e8115bda: !Template
+    answer_choices: null
+    id: 6ee41c5b-36ed-45d1-a3f1-3293e8115bda
+    jinja: '{% set _blank2 = ["judul", "topik" ] %}
+
+      {% set _blank1 = ["tebak", "menebak", "menerka", "menentukan", "membuat"] %}
+
+      {% set _blank=["paragraf", "teks", "potongan teks", "konten"]|random %}
+
+      {% set _position = ["di atas", "berikut"] |random %}
+
+      {% set lang = id.split(''-'')[0] %}
+
+      {% if lang == "indonesian" %}
+
+      {% if  _position == "di atas" %}
+
+      {{context}}{{"\n"}}
+
+      {% endif %}
+
+      Bisakah kamu {{_blank1|random}} {{_blank2|random}} dari {{_blank}} {{_position}}?
+
+      {% if  _position == "berikut" %}
+
+      {{"\n"}}{{context}}
+
+      {% endif %}
+
+      |||
+
+      {{title}}
+
+      {% endif %}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      - ROUGE
+      original_task: false
+    name: id_title_generation
+    reference: Generate title from a passage
+  862cfa05-2c63-4535-9d1d-4d4716214e91: !Template
+    answer_choices: null
+    id: 862cfa05-2c63-4535-9d1d-4d4716214e91
+    jinja: "{% set lang = id.split('-')[0] %}\n{% if lang == \"indonesian\" %}\nBerdasarkan\
+      \ paragraf di bawah, ekstraksikan jawaban dari pertanyaan berikut: {{question}}\n\
+      Paragraf tentang {{title}}: {{context}}\n|||\n{{answers.text | choice}} \n{%\
+      \ endif %}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - Squad
+      original_task: true
+    name: id_extract_answer
+    reference: Ask question with Context
+  8d928b6b-0191-4c41-ab63-abbbea56248c: !Template
+    answer_choices: null
+    id: 8d928b6b-0191-4c41-ab63-abbbea56248c
+    jinja: '{% set lang = id.split(''-'')[0] %}
+
+      {% if lang == "indonesian" %}
+
+      Dapatkah kamu membuat pertanyaan yang jawabannya "{{answers.text | choice}}"
+      berdasarkan konteks berikut: {{context}}
+
+      |||
+
+      {{question}}
+
+      {% endif %}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      - ROUGE
+      original_task: false
+    name: id_end_to_end_question_generation
+    reference: generate end-to-end question from a passage.
   c2356ac6-7761-43b8-9fb9-38ed25c0db9b: !Template
     answer_choices: null
     id: c2356ac6-7761-43b8-9fb9-38ed25c0db9b
@@ -141,8 +243,31 @@ templates:
       metrics:
       - Squad
       original_task: true
-    name: testing_students
+    name: en_testing_students
     reference: ''
+  c30a9c94-94b7-4ae3-a006-c74c586684e3: !Template
+    answer_choices: null
+    id: c30a9c94-94b7-4ae3-a006-c74c586684e3
+    jinja: '{% set lang = id.split(''-'')[0] %}
+
+      {% if lang == "indonesian" %}
+
+      {{question}}
+
+      Jawablah pertanyaan di atas.
+
+      |||
+
+      {{answers.text | choice}}
+
+      {% endif %}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - Squad
+      original_task: true
+    name: id_simple_question_odqa
+    reference: Ask question without Context
   d0966d12-6d15-4138-b273-5fe2e1619ff9: !Template
     answer_choices: null
     id: d0966d12-6d15-4138-b273-5fe2e1619ff9
@@ -164,8 +289,85 @@ templates:
       - BLEU
       - ROUGE
       original_task: false
-    name: end_to_end_question_generation_with_title
+    name: en_end_to_end_question_generation_with_title
     reference: generate end-to-end question from a passage with a title
+  d4a0909a-3fcc-459f-9034-cd082b18407f: !Template
+    answer_choices: null
+    id: d4a0909a-3fcc-459f-9034-cd082b18407f
+    jinja: '{% set lang = id.split("-")[0] %}
+
+      {% if lang == "indonesian" %}
+
+      Saya sedang menguji murid saya seputar {{title}}.
+
+      Berdasarkan paragraf konteks ({{context}}), berikut adalah pertanyaan untuk
+      dijawab: {{question}}. Jawabannya terdapat pada paragraf konteks.
+
+      |||
+
+      {{answers.text | choice}}
+
+      {% endif %}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - Squad
+      original_task: true
+    name: id_testing_students
+    reference: ''
+  d76bdfee-c839-409c-830c-9a7644124552: !Template
+    answer_choices: null
+    id: d76bdfee-c839-409c-830c-9a7644124552
+    jinja: '{% set lang = id.split(''-'')[0] %}
+
+      {% if lang == "indonesian" %}
+
+      Aku penasaran sama pertanyaan ini: {{question}}
+
+      Dari Wikipedia, aku ketemu paragraf tentang {{title}}.
+
+      Paragraf: {{context}}
+
+      Apa jawabannya?
+
+      |||
+
+      {{answers.text | choice}}
+
+      {% endif %}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - Squad
+      original_task: true
+    name: id_whats_the_answer
+    reference: Ask question with Context
+  d8ca2cc4-f4e0-4619-a633-5b4a1e91c021: !Template
+    answer_choices: null
+    id: d8ca2cc4-f4e0-4619-a633-5b4a1e91c021
+    jinja: '{% set lang = id.split(''-'')[0] %}
+
+      {% if lang == "indonesian" %}
+
+      Aku lagi cari tau jawaban dari pertanyaan "{{question}}"
+
+      Aku ketemu artikel tentang {{title}} di Wikipedia dan kayaknya jawabannya ada
+      di artikel itu. Kamu bisa kasih tau aku jawabannya?
+
+      Artikel: {{context}}
+
+      |||
+
+      {{answers.text | choice}}
+
+      {% endif %}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - Squad
+      original_task: true
+    name: id_can_you_tell_me_the_answer
+    reference: Ask question with Context
   f276815f-f7c0-4dab-b12e-08e76da6d760: !Template
     answer_choices: null
     id: f276815f-f7c0-4dab-b12e-08e76da6d760
@@ -187,8 +389,22 @@ templates:
       metrics:
       - Squad
       original_task: false
-    name: simple_question_odqa
+    name: en_simple_question_odqa
     reference: Ask question without Context
+  fbb0d332-f7f2-451a-bd5d-b2e90b820df7: !Template
+    answer_choices: null
+    id: fbb0d332-f7f2-451a-bd5d-b2e90b820df7
+    jinja: "{% set lang = id.split('-')[0] %}\n{% if lang == \"indonesian\" %}\nPotongan\
+      \ teks: {{context}}\nSaya tahu bahwa jawaban dari pertanyaan \"{{question}}\"\
+      \ muncul di potongan teks berjudul {{title}} di atas. Bisakah kamu menjawab\
+      \ pertanyaan tadi?\n|||\n{{answers.text | choice}} \n{% endif %}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - Squad
+      original_task: true
+    name: id_can_you_answer_the_question
+    reference: Ask question with Context
   fcf0920f-5599-44a6-bf2a-9ef6bbbe1e64: !Template
     answer_choices: null
     id: fcf0920f-5599-44a6-bf2a-9ef6bbbe1e64
@@ -214,5 +430,5 @@ templates:
       metrics:
       - Squad
       original_task: true
-    name: whats_the_answer
+    name: en_whats_the_answer
     reference: Ask question with Context
