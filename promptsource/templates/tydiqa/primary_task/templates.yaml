@@ -21,26 +21,7 @@ templates:
 
       {{annotations.yes_no_answer[0] | capitalize}}
 
-      {% elif language == "indonesian" %}
-
-      Saya penasaran {{question_text}}.
-
-      Tolong bantu saya menjawab pertanyaan ini dengan "Ya" atau "Tidak" atau "Tidak
-      ada" jika dua opsi pertama tidak bisa diaplikasikan.
-
-      Ini yang saya temukan di internet:
-
-      Topik: {{document_title}}
-
-      Artikel: {{document_plaintext}}
-
-      |||
-
-      {{{"NO":"Tidak","YES": "Ya", "NONE": "Tidak ada"}[annotations.yes_no_answer[0]]}}
-
-      {% endif %}
-
-      '
+      {% endif %}'
     metadata: !TemplateMetadata
       choices_in_prompt: true
       metrics:
@@ -54,11 +35,7 @@ templates:
     jinja: "{% if language == \"english\" %} \nQuestion: {{question_text}}\nAnswer\
       \ the question with {{\"Yes\"}} or {{\"No\"}}. If it is not possible then answer\
       \ {{\"None\"}}.\nHint: {{document_plaintext}}\n|||\n{{annotations.yes_no_answer[0]\
-      \ | capitalize}}\n{% elif language == \"indonesian\" %} \nPertanyaan: {{question_text}}\n\
-      Jawab pertanyaan tersebut dengan {{\"Ya\"}} atau {{\"Tidak\"}}. Jika tidak memungkinkan,\
-      \ jawab dengan {{\"Tidak ada\"}}.\nPetunjuk: {{document_plaintext}}\n|||\n{{{\"\
-      NO\":\"Tidak\",\"YES\": \"Ya\", \"NONE\": \"Tidak ada\"}[annotations.yes_no_answer[0]]}}\n\
-      {% endif %}"
+      \ | capitalize}}\n{% endif %}"
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
@@ -69,13 +46,10 @@ templates:
   4b21e3be-fba4-49b7-beb1-a61de26eb0ac: !Template
     answer_choices: Yes ||| No
     id: 4b21e3be-fba4-49b7-beb1-a61de26eb0ac
-    jinja: "{% if annotations.yes_no_answer[0] == \"YES\" or annotations.yes_no_answer[0]\
-      \ == \"NO\" %} \n{% if language == \"english\" %} \nAnswer the question about\
-      \ {{document_title}}. {{question_text}}\n||| \n{{annotations.yes_no_answer[0]\
-      \ | capitalize}}\n{% elif language == \"indonesian\" %} \nJawab pertanyaan terkait\
-      \ {{document_title}}. {{question_text}}\n||| \n{{{\"NO\":\"Tidak\",\"YES\":\
-      \ \"Ya\", \"NONE\": \"Tidak ada\"}[annotations.yes_no_answer[0]]}}\n{% endif\
-      \ %}\n{% endif %}"
+    jinja: "{% if language == \"english\" %} \n    {% if annotations.yes_no_answer[0]\
+      \ == \"YES\" or annotations.yes_no_answer[0] == \"NO\" %} \nAnswer the question\
+      \ about {{document_title}}. {{question_text}}\n||| \n{{annotations.yes_no_answer[0]\
+      \ | capitalize}} \n    {% endif %} \n{% endif %} "
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
@@ -101,24 +75,6 @@ templates:
       {% else %}
 
       Yes
-
-      {% endif %}
-
-      {% elif language == "indonesian" %}
-
-      {{question_text}}
-
-      Apakah ini termasuk kalimat tanya "Ya/Tidak"?
-
-      |||
-
-      {% if annotations. yes_no_answer[0] == "NONE" %}
-
-      Tidak
-
-      {% else %}
-
-      Ya
 
       {% endif %}
 
@@ -148,21 +104,6 @@ templates:
 
       {{annotations.yes_no_answer[0] | capitalize}}
 
-      {% elif language == "indonesian" %}
-
-      Jawab pertanyaan berikut dengan "Ya" atau "Tidak" atau "Tidak ada" jika dua
-      opsi pertama tidak dapat diaplikasikan.
-
-      Pertanyaan: {{question_text}}
-
-      Topik: {{document_title}}
-
-      Artikel: {{document_plaintext}}
-
-      |||
-
-      {{{"NO":"Tidak","YES": "Ya", "NONE": "Tidak ada"}[annotations.yes_no_answer[0]]}}
-
       {% endif %}'
     metadata: !TemplateMetadata
       choices_in_prompt: true
@@ -174,14 +115,11 @@ templates:
   9c42e3fd-d46e-4149-bb60-4b3118104d95: !Template
     answer_choices: Yes ||| No
     id: 9c42e3fd-d46e-4149-bb60-4b3118104d95
-    jinja: "{% if annotations.yes_no_answer[0] == \"YES\" or annotations.yes_no_answer[0]\
-      \ == \"NO\" %} \n{% if language == \"english\" %} \nAfter reading the following\
-      \ text snippet from Wikipedia, please answer the question: {{question_text}}\
+    jinja: "{% if language == \"english\" %} \n    {% if annotations.yes_no_answer[0]\
+      \ == \"YES\" or annotations.yes_no_answer[0] == \"NO\" %} \nAfter reading the\
+      \ following text snippet from Wikipedia, please answer the question: {{question_text}}\
       \ \n{{document_plaintext}}\n||| \n{{annotations.yes_no_answer[0] | capitalize}}\n\
-      {% elif language == \"indonesian\" %} \nSetelah membaca potongan teks Wikipedia\
-      \ di bawah ini, mohon jawab pertanyaan: \n{{question_text}} \n{{document_plaintext}}\n\
-      ||| \n{{{\"NO\":\"Tidak\",\"YES\": \"Ya\", \"NONE\": \"Tidak ada\"}[annotations.yes_no_answer[0]]}}\n\
-      {% endif %}\n{% endif %}"
+      \    {% endif %}\n{% endif %}"
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
@@ -192,13 +130,10 @@ templates:
   b4f7c441-41b1-4665-93f9-f2e875aed92a: !Template
     answer_choices: Yes ||| No
     id: b4f7c441-41b1-4665-93f9-f2e875aed92a
-    jinja: "{% if annotations.yes_no_answer[0] == \"YES\" or annotations.yes_no_answer[0]\
-      \ == \"NO\" %} \n{% if language == \"english\" %} \nAnswer the question about\
-      \ {{document_title}}.\nQuestion: {{question_text}}. Yes or No?\n||| \n{{annotations.yes_no_answer[0]\
-      \ | capitalize}}\n{% elif language == \"indonesian\" %} \nJawab pertanyaan terkait\
-      \ {{document_title}}.\nPertanyaan: {{question_text}}. Ya atau Tidak?\n||| \n\
-      {{{\"NO\":\"Tidak\",\"YES\": \"Ya\", \"NONE\": \"Tidak ada\"}[annotations.yes_no_answer[0]]}}\n\
-      {% endif %}\n{% endif %}"
+    jinja: "{% if language == \"english\" %} \n    {% if annotations.yes_no_answer[0]\
+      \ == \"YES\" or annotations.yes_no_answer[0] == \"NO\" %} \nAnswer the question\
+      \ about {{document_title}}.\nQuestion: {{question_text}}. Yes or No?\n||| \n\
+      {{annotations.yes_no_answer[0] | capitalize}}\n    {% endif %}\n{% endif %}"
     metadata: !TemplateMetadata
       choices_in_prompt: true
       metrics:
@@ -209,13 +144,10 @@ templates:
   e593017f-9bcf-4442-944d-fcdf2edcb4f7: !Template
     answer_choices: Yes ||| No
     id: e593017f-9bcf-4442-944d-fcdf2edcb4f7
-    jinja: "{% if annotations.yes_no_answer[0] == \"YES\" or annotations.yes_no_answer[0]\
-      \ == \"NO\" %} \n{% if language == \"english\" %} \nBased on the following text\
-      \ snippet, {{question_text}} \n{{document_plaintext}}\n||| \n{{annotations.yes_no_answer[0]\
-      \ | capitalize}}\n{% elif language == \"indonesian\" %} \nMenurut potongan teks\
-      \ berikut, {{question_text}} \n{{document_plaintext}}\n||| \n{{{\"NO\":\"Tidak\"\
-      ,\"YES\": \"Ya\", \"NONE\": \"Tidak ada\"}[annotations.yes_no_answer[0]]}}\n\
-      {% endif %}\n{% endif %}"
+    jinja: "{% if language == \"english\" %} \n    {% if annotations.yes_no_answer[0]\
+      \ == \"YES\" or annotations.yes_no_answer[0] == \"NO\" %} \nBased on the following\
+      \ text snippet, {{question_text}} \n{{document_plaintext}}\n||| \n{{annotations.yes_no_answer[0]\
+      \ | capitalize}}\n    {% endif %}\n{% endif %}"
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
