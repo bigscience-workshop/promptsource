@@ -191,6 +191,10 @@ class Template(yaml.YAMLObject):
         # Splits on the separator, and then replaces back any occurrences of the
         # separator in the original example
         parts = [self._unescape_pipe(part).strip() for part in rendered_example.split("|||")]
+        if parts == [""]:
+            # Handles the case of blank results
+            # Example: `tydiqa` where prompts are conditionned on the language and thus most of the time will return a blank result
+            return parts
         if len(parts) < 2:
             raise ValueError("Prompt did not produce an input and at least one target.")
 
