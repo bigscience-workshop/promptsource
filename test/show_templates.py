@@ -62,7 +62,7 @@ else:
                 print("\tExample ", example)
                 print("\t--------")
                 output = template.apply(example)
-                if output[0].strip() == "" or (len(output) > 1 and output[1][0].strip() == ""):
+                if output == [""]:
                     print("\t Blank result")
                     continue
 
