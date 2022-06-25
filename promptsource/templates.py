@@ -38,6 +38,7 @@ INCLUDED_USERS = {
     "BigScienceBiasEval",
 }
 
+
 def highlight(input):
     return "<span style='color: #F08080'>" + input + "</span>"
 
