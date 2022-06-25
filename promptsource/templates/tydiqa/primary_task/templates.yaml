@@ -21,23 +21,6 @@ templates:
 
       {{annotations.yes_no_answer[0] | capitalize}}
 
-      {% elif language == "japanese" %}
-
-      {{question_text}} のか気になります。
-
-      この質問に「はい」または「いいえ」のどちらかで答えてください。
-      どちらもあてはまらない場合、「どちらでもない」と答えてください。
-
-      インターネットでこんな記事を見つけました：
-
-      タイトル： {{document_title}}
-
-      本文： {{document_plaintext}}
-
-      |||
-      
-      {{{"NO":"いいえ","YES": "はい", "NONE": "どちらでもない"}[annotations.yes_no_answer[0]]}}
-
       {% endif %}'
     metadata: !TemplateMetadata
       choices_in_prompt: true
@@ -52,10 +35,7 @@ templates:
     jinja: "{% if language == \"english\" %} \nQuestion: {{question_text}}\nAnswer\
       \ the question with {{\"Yes\"}} or {{\"No\"}}. If it is not possible then answer\
       \ {{\"None\"}}.\nHint: {{document_plaintext}}\n|||\n{{annotations.yes_no_answer[0]\
-      \ | capitalize}}\n\
-      \ {% elif language == \"japanese\" %} \n質問: {{question_text}}\n質問に\
-      \ {{\"はい\"}}か{{\"いいえ\"}}で答えてください。 どちらもあてはまらない場合は\
-      \ {{\"どちらでもない\"}}と答えてください。\nヒント: {{document_plaintext}}\n|||\n{{{\"NO\":\"いいえ\",\"YES\": \"はい\", \"NONE\": \"どちらでもない\"}[annotations.yes_no_answer[0]]}}\n{% endif %}"      
+      \ | capitalize}}\n{% endif %}"
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
@@ -69,11 +49,7 @@ templates:
     jinja: "{% if language == \"english\" %} \n    {% if annotations.yes_no_answer[0]\
       \ == \"YES\" or annotations.yes_no_answer[0] == \"NO\" %} \nAnswer the question\
       \ about {{document_title}}. {{question_text}}\n||| \n{{annotations.yes_no_answer[0]\
-      \ | capitalize}} \n    {% endif %} \n\
-      \ {% elif language == \"japanese\" %} \n    {% if annotations.yes_no_answer[0]\
-      \ == \"YES\" または annotations.yes_no_answer[0] == \"NO\" %} \n\
-      \ {{document_title}}に関する質問に答えてください。{{question_text}}\n||| \n{{{\"NO\":\"いいえ\",\"YES\": \"はい\", \"NONE\": \"どちらでもない\"}[annotations.yes_no_answer[0]]}}\
-      \ \n{% endif %} "
+      \ | capitalize}} \n    {% endif %} \n{% endif %} "
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
@@ -81,6 +57,28 @@ templates:
       original_task: false
     name: open_domain_qa_without_choices
     reference: Answer Yes/No question
+  590c276c-d649-4296-816a-e759167f3556: !Template
+    answer_choices: "\u306F\u3044 ||| \u3044\u3044\u3048 ||| \u3069\u3061\u3089\u3067\
+      \u3082\u306A\u3044"
+    id: 590c276c-d649-4296-816a-e759167f3556
+    jinja: "{% if language == \"japanese\" %}\n      {{question_text}} \u306E\u304B\
+      \u6C17\u306B\u306A\u308A\u307E\u3059\u3002\n      \u3053\u306E\u8CEA\u554F\u306B\
+      \u300C\u306F\u3044\u300D\u307E\u305F\u306F\u300C\u3044\u3044\u3048\u300D\u306E\
+      \u3069\u3061\u3089\u304B\u3067\u7B54\u3048\u3066\u304F\u3060\u3055\u3044\u3002\
+      \n      \u3069\u3061\u3089\u3082\u3042\u3066\u306F\u307E\u3089\u306A\u3044\u5834\
+      \u5408\u3001\u300C\u3069\u3061\u3089\u3067\u3082\u306A\u3044\u300D\u3068\u7B54\
+      \u3048\u3066\u304F\u3060\u3055\u3044\u3002\n\n      \u30A4\u30F3\u30BF\u30FC\
+      \u30CD\u30C3\u30C8\u3067\u3053\u3093\u306A\u8A18\u4E8B\u3092\u898B\u3064\u3051\
+      \u307E\u3057\u305F\uFF1A\n\n      \u30BF\u30A4\u30C8\u30EB\uFF1A {{document_title}}\n\
+      \n      \u672C\u6587\uFF1A {{document_plaintext}}\n\n      |||\n      \n   \
+      \   {{annotations.yes_no_answer[0]}}\n\n{% endif %}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - Accuracy
+      original_task: false
+    name: jp_heres_what_I_found
+    reference: ''
   6835dd64-96bd-4bf8-9ba5-645d6a7b8472: !Template
     answer_choices: Yes ||| No
     id: 6835dd64-96bd-4bf8-9ba5-645d6a7b8472
@@ -99,24 +97,6 @@ templates:
       {% else %}
 
       Yes
-
-      {% endif %}
-
-      {% elif language == "japanese" %}
-
-      {{question_text}}
-
-      これは「はい」「いいえ」で答えられる質問ですか？
-
-      |||
-
-      {% if annotations. yes_no_answer[0] == "NONE" %}
-
-      いいえ
-
-      {% else %}
-
-      はい
 
       {% endif %}
 
@@ -146,22 +126,6 @@ templates:
 
       {{annotations.yes_no_answer[0] | capitalize}}
 
-      {% elif language == "japanese" %}
-
-
-      この質問に「はい」または「いいえ」のどちらかで答えてください。
-      どちらもあてはまらない場合、「どちらでもない」と答えてください。
-
-      質問: {{question_text}}
-
-      タイトル： {{document_title}}
-
-      本文： {{document_plaintext}}
-
-      |||
-
-      {{annotations.yes_no_answer[0] | capitalize}}
-
       {% endif %}'
     metadata: !TemplateMetadata
       choices_in_prompt: true
@@ -177,13 +141,7 @@ templates:
       \ == \"YES\" or annotations.yes_no_answer[0] == \"NO\" %} \nAfter reading the\
       \ following text snippet from Wikipedia, please answer the question: {{question_text}}\
       \ \n{{document_plaintext}}\n||| \n{{annotations.yes_no_answer[0] | capitalize}}\n\
-      \    {% endif %}\n\
-      \ {% if language == \"japanese\" %} \n    {% if annotations.yes_no_answer[0]\
-      \ == \"YES\" or annotations.yes_no_answer[0] == \"NO\" %} \n\
-      \ ウィキペディアの記事を読んだあと、次の質問に答えてください: {{question_text}}\
-      \ \n{{document_plaintext}}\n||| \n{{{\"NO\":\"いいえ\",\"YES\": \"はい\", \"NONE\": \"どちらでもない\"}[annotations.yes_no_answer[0]}}\n\
-      \    {% endif %}\n\
-      \ {% endif %}"
+      \    {% endif %}\n{% endif %}"
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
@@ -197,12 +155,7 @@ templates:
     jinja: "{% if language == \"english\" %} \n    {% if annotations.yes_no_answer[0]\
       \ == \"YES\" or annotations.yes_no_answer[0] == \"NO\" %} \nAnswer the question\
       \ about {{document_title}}.\nQuestion: {{question_text}}. Yes or No?\n||| \n\
-      {{annotations.yes_no_answer[0] | capitalize}}\n    {% endif %}\n\
-      {% elif language == \"japanese\" %} \n    {% if annotations.yes_no_answer[0]\
-      \ == \"YES\" or annotations.yes_no_answer[0] == \"NO\" %} \n\
-      \ {{document_title}}に関する質問に答えてください。\n質問: {{question_text}}「はい」「いいえ」のどちらですか？\n||| \n\
-      {{{\"NO\":\"いいえ\",\"YES\": \"はい\", \"NONE\": \"どちらでもない\"}[annotations.yes_no_answer[0]]}}\n{% endif %}\n\
-      \ {% endif %}"
+      {{annotations.yes_no_answer[0] | capitalize}}\n    {% endif %}\n{% endif %}"
     metadata: !TemplateMetadata
       choices_in_prompt: true
       metrics:
@@ -216,11 +169,7 @@ templates:
     jinja: "{% if language == \"english\" %} \n    {% if annotations.yes_no_answer[0]\
       \ == \"YES\" or annotations.yes_no_answer[0] == \"NO\" %} \nBased on the following\
       \ text snippet, {{question_text}} \n{{document_plaintext}}\n||| \n{{annotations.yes_no_answer[0]\
-      \ | capitalize}}\n    {% endif %}\
-      \ {% elif language == \"japanese\" %} \n    {% if annotations.yes_no_answer[0]\
-      \ == \"YES\" or annotations.yes_no_answer[0] == \"NO\" %} \n次の文章にもとづくと、\
-      \ , {{question_text}} \n{{document_plaintext}}\n||| \n{{{\"NO\":\"いいえ\",\"YES\": \"はい\", \"NONE\": \"どちらでもない\"}[annotations.yes_no_answer[0]]\n    {% endif %}\
-      \ \n{% endif %}"
+      \ | capitalize}}\n    {% endif %}\n{% endif %}"
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
