@@ -38,8 +38,9 @@ templates:
       \u3048\u3066\u304F\u3060\u3055\u3044\u3002 \u3069\u3061\u3089\u3082\u3042\u3066\
       \u306F\u307E\u3089\u306A\u3044\u5834\u5408\u306F{{\"\u3069\u3061\u3089\u3067\
       \u3082\u306A\u3044\"}}\u3068\u7B54\u3048\u3066\u304F\u3060\u3055\u3044\u3002\
-      \n\u30D2\u30F3\u30C8: {{document_plaintext}}\n|||\n{{annotations.yes_no_answer[0]}}\n\
-      {% endif %}"
+      \n\u30D2\u30F3\u30C8: {{document_plaintext}}\n|||\n{\"YES\":\"\u306F\u3044\"\
+      , \"NO\":\"\u3044\u3044\u3048\", \"NONE\": \"\u3069\u3061\u3089\u3067\u3082\u306A\
+      \u3044\"}[{{annotations.yes_no_answer[0]}}]\n{% endif %}"
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
@@ -89,7 +90,9 @@ templates:
       \u30CD\u30C3\u30C8\u3067\u3053\u3093\u306A\u8A18\u4E8B\u3092\u898B\u3064\u3051\
       \u307E\u3057\u305F\uFF1A\n\n      \u30BF\u30A4\u30C8\u30EB\uFF1A {{document_title}}\n\
       \n      \u672C\u6587\uFF1A {{document_plaintext}}\n\n      |||\n      \n   \
-      \   {{annotations.yes_no_answer[0]}}\n\n{% endif %}"
+      \   {\"YES\":\"\u306F\u3044\", \"NO\":\"\u3044\u3044\u3048\", \"NONE\": \"\u3069\
+      \u3061\u3089\u3067\u3082\u306A\u3044\"}[{{annotations.yes_no_answer[0]}}]\n\n\
+      {% endif %}"
     metadata: !TemplateMetadata
       choices_in_prompt: true
       metrics:
@@ -130,10 +133,12 @@ templates:
     answer_choices: "\u306F\u3044 ||| \u3044\u3044\u3048"
     id: 733a3ff3-6edd-4440-b038-bf9736ebaff7
     jinja: "{% if language == \"japanese\" %}\n    {% if annotations.yes_no_answer[0]\
-      \ == \"\u306F\u3044\" or annotations.yes_no_answer[0] == \"\u3044\u3044\u3048\
-      \" %}\n        \u6B21\u306E\u6587\u7AE0\u306B\u3082\u3068\u3065\u304F\u3068\u3001\
-      \ , {{question_text}} \n        {{document_plaintext}}\n        ||| \n     \
-      \   {{annotations.yes_no_answer[0]}}   \n    {% endif %}\n{% endif %}"
+      \ == \"YES\" or annotations.yes_no_answer[0] == \"NO\" %}\n        \u6B21\u306E\
+      \u6587\u7AE0\u306B\u3082\u3068\u3065\u304F\u3068\u3001 , {{question_text}} \n\
+      \        {{document_plaintext}}\n        ||| \n        {\"YES\":\"\u306F\u3044\
+      \", \"NO\":\"\u3044\u3044\u3048\", \"NONE\": \"\u3069\u3061\u3089\u3067\u3082\
+      \u306A\u3044\"}[{{annotations.yes_no_answer[0]}}]\n    {% endif %}\n{% endif\
+      \ %}"
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
@@ -186,10 +191,11 @@ templates:
     answer_choices: "\u306F\u3044 ||| \u3044\u3044\u3048"
     id: a7260c3e-2c25-4c87-b9a2-5955fdff0c5e
     jinja: "{% if language == \"japanese\" %} \n    {% if annotations.yes_no_answer[0]\
-      \ == \"\u307E\u305F\u306F\"  or annotations.yes_no_answer[0] == \"\u3044\u3044\
-      \u3048\" %}\n        {{document_title}}\u306B\u95A2\u3059\u308B\u8CEA\u554F\u306B\
-      \u7B54\u3048\u3066\u304F\u3060\u3055\u3044\u3002{{question_text}}\n        |||\
-      \ \n        {{annotations.yes_no_answer[0]}}\n    {% endif %}\n{% endif %}"
+      \ == \"YES\"  or annotations.yes_no_answer[0] == \"NO\" %}\n        {{document_title}}\u306B\
+      \u95A2\u3059\u308B\u8CEA\u554F\u306B\u7B54\u3048\u3066\u304F\u3060\u3055\u3044\
+      \u3002{{question_text}}\n        ||| \n        {\"YES\":\"\u306F\u3044\", \"\
+      NO\":\"\u3044\u3044\u3048\", \"NONE\": \"\u3069\u3061\u3089\u3067\u3082\u306A\
+      \u3044\"}[{{annotations.yes_no_answer[0]}}]\n    {% endif %}\n{% endif %}"
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
@@ -215,12 +221,13 @@ templates:
     answer_choices: "\u306F\u3044 ||| \u3044\u3044\u3048"
     id: d160228e-9169-456d-a16a-0f5288452c9a
     jinja: "{% if language == \"japanese\" %}\n    {% if annotations.yes_no_answer[0]\
-      \ == \"\u306F\u3044 \" or annotations.yes_no_answer[0] == \"\u3044\u3044\u3048\
-      \" %} \n        \u30A6\u30A3\u30AD\u30DA\u30C7\u30A3\u30A2\u306E\u8A18\u4E8B\
-      \u3092\u8AAD\u3093\u3060\u3042\u3068\u3001\u6B21\u306E\u8CEA\u554F\u306B\u7B54\
-      \u3048\u3066\u304F\u3060\u3055\u3044: {{question_text}}\n        {{document_plaintext}}\n\
-      \        |||\n        {{annotations.yes_no_answer[0]}}\n    {% endif %}\n{%\
-      \ endif %}"
+      \ == \"YES\" or annotations.yes_no_answer[0] == \"NO\" %} \n        \u30A6\u30A3\
+      \u30AD\u30DA\u30C7\u30A3\u30A2\u306E\u8A18\u4E8B\u3092\u8AAD\u3093\u3060\u3042\
+      \u3068\u3001\u6B21\u306E\u8CEA\u554F\u306B\u7B54\u3048\u3066\u304F\u3060\u3055\
+      \u3044: {{question_text}}\n        {{document_plaintext}}\n        |||\n   \
+      \     {\"YES\":\"\u306F\u3044\", \"NO\":\"\u3044\u3044\u3048\", \"NONE\": \"\
+      \u3069\u3061\u3089\u3067\u3082\u306A\u3044\"}[{{annotations.yes_no_answer[0]}}]\n\
+      \    {% endif %}\n{% endif %}"
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
@@ -232,11 +239,12 @@ templates:
     answer_choices: "\u306F\u3044 ||| \u3044\u3044\u3048"
     id: d942b06e-65d1-497f-8e69-0608c775f020
     jinja: "{% if language == \"japanese\" %}\n    {% if annotations.yes_no_answer[0]\
-      \ == \"\u306F\u3044 \" or annotations.yes_no_answer[0] == \"\u3044\u3044\u3048\
-      \" %}\n        {{document_title}}\u306B\u95A2\u3059\u308B\u8CEA\u554F\u306B\u7B54\
-      \u3048\u3066\u304F\u3060\u3055\u3044\u3002\n        \u8CEA\u554F: {{question_text}}\u300C\
-      \u306F\u3044\u300D\u300C\u3044\u3044\u3048\u300D\u306E\u3069\u3061\u3089\u3067\
-      \u3059\u304B\uFF1F\n        ||| \n        {{annotations.yes_no_answer[0]}}\n\
+      \ == \"YES \" or annotations.yes_no_answer[0] == \"NO\" %}\n        {{document_title}}\u306B\
+      \u95A2\u3059\u308B\u8CEA\u554F\u306B\u7B54\u3048\u3066\u304F\u3060\u3055\u3044\
+      \u3002\n        \u8CEA\u554F: {{question_text}}\u300C\u306F\u3044\u300D\u300C\
+      \u3044\u3044\u3048\u300D\u306E\u3069\u3061\u3089\u3067\u3059\u304B\uFF1F\n \
+      \       ||| \n        {\"YES\":\"\u306F\u3044\", \"NO\":\"\u3044\u3044\u3048\
+      \", \"NONE\": \"\u3069\u3061\u3089\u3067\u3082\u306A\u3044\"}[{{annotations.yes_no_answer[0]}}]\n\
       \  {% endif %}\n{% endif %}"
     metadata: !TemplateMetadata
       choices_in_prompt: true
@@ -256,8 +264,9 @@ templates:
       \u5408\u3001\u300C\u3069\u3061\u3089\u3067\u3082\u306A\u3044\u300D\u3068\u7B54\
       \u3048\u3066\u304F\u3060\u3055\u3044\u3002\n\n      \u8CEA\u554F: {{question_text}}\n\
       \n      \u30BF\u30A4\u30C8\u30EB\uFF1A {{document_title}}\n\n      \u672C\u6587\
-      \uFF1A {{document_plaintext}}\n\n      |||\n\n      {{annotations.yes_no_answer[0]\
-      \ | capitalize}}\n\n{% endif %}"
+      \uFF1A {{document_plaintext}}\n\n      |||\n\n      {\"YES\":\"\u306F\u3044\"\
+      , \"NO\":\"\u3044\u3044\u3048\", \"NONE\": \"\u3069\u3061\u3089\u3067\u3082\u306A\
+      \u3044\"}[{{annotations.yes_no_answer[0]}}]\n\n{% endif %}"
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
