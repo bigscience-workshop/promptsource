@@ -26,11 +26,18 @@ templates:
     name: sentiment trying to express
     reference: ''
   52708ad1-0029-4d97-a5e9-e179da16e452: !Template
-    answer_choices: positive ||| negative ||| neutral
+    answer_choices: not a negative post ||| not a positive post ||| a neutral post
     id: 52708ad1-0029-4d97-a5e9-e179da16e452
-    jinja: "{{ words | join(\" \") }}. This is definitely \n||| \n{% if sa == \"negative\"\
-      \ %} \nnot a positive post. \n{% elif sa == \"positive\" %} \nnot a negative\
-      \ post. \n{% else %} \na neutral post.\n{% endif %}"
+    jinja: "\"{{ words | join(\" \") }}\". This is definitely {{answer_choices[0]}}, \
+      {{answer_choices[1]}}, or {{answer_choices[2]}}?
+      |||
+      {% if sa == \"positive\" %}
+      {{answer_choices[0]}}
+      {% elif sa == \"negative\" %}
+      {{answer_choices[1]}}
+      {% else %}
+      {{answer_choices[2]}}
+      {% endif %}"
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
