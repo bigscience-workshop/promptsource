@@ -26,7 +26,17 @@ env.globals.update(zip=zip)
 
 # These are users whose datasets should be included in the results returned by
 # filter_english_datasets (regardless of their metadata)
-INCLUDED_USERS = {"Zaid", "craffel", "GEM", "aps", "khalidalt", "BigScienceBiasEval"}
+
+INCLUDED_USERS = {
+    "Zaid",
+    "craffel",
+    "GEM",
+    "aps",
+    "khalidalt",
+    "shanya",
+    "rbawden",
+    "BigScienceBiasEval",
+}
 
 
 def highlight(input):
@@ -190,6 +200,10 @@ class Template(yaml.YAMLObject):
         # Splits on the separator, and then replaces back any occurrences of the
         # separator in the original example
         parts = [self._unescape_pipe(part).strip() for part in rendered_example.split("|||")]
+        if parts == [""]:
+            # Handles the case of blank results
+            # Example: `tydiqa` where prompts are conditionned on the language and thus most of the time will return a blank result
+            return parts
         if len(parts) < 2:
             raise ValueError("Prompt did not produce an input and at least one target.")
 
