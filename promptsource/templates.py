@@ -36,9 +36,8 @@ INCLUDED_USERS = {
     "shanya",
     "rbawden",
     "BigScienceBiasEval",
-     "janck",
+    "janck",
 }
-
 
 
 def highlight(input):
