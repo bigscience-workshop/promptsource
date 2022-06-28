@@ -29,6 +29,25 @@ templates:
       original_task: true
     name: en_heres_what_I_found
     reference: ''
+  1aa48c84-f64b-493c-bc9b-e5be15690109: !Template
+    answer_choices: "\u306F\u3044 ||| \u3044\u3044\u3048 ||| \u3069\u3061\u3089\u3067\
+      \u3082\u306A\u3044"
+    id: 1aa48c84-f64b-493c-bc9b-e5be15690109
+    jinja: "{% if language == \"japanese\" %} \n\u8CEA\u554F: {{question_text}}\n\u8CEA\
+      \u554F\u306B {{\"\u306F\u3044\"}}\u304B{{\"\u3044\u3044\u3048\"}}\u3067\u7B54\
+      \u3048\u3066\u304F\u3060\u3055\u3044\u3002 \u3069\u3061\u3089\u3082\u3042\u3066\
+      \u306F\u307E\u3089\u306A\u3044\u5834\u5408\u306F{{\"\u3069\u3061\u3089\u3067\
+      \u3082\u306A\u3044\"}}\u3068\u7B54\u3048\u3066\u304F\u3060\u3055\u3044\u3002\
+      \n\u30D2\u30F3\u30C8: {{document_plaintext}}\n|||\n{{{\"YES\":\"\u306F\u3044\
+      \", \"NO\":\"\u3044\u3044\u3048\", \"NONE\": \"\u3069\u3061\u3089\u3067\u3082\
+      \u306A\u3044\"}[annotations.yes_no_answer[0]]}}\n{% endif %}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - Accuracy
+      original_task: true
+    name: jp_yes_no_none
+    reference: ''
   297fc59f-bd92-493b-ae61-3c3adcb46eb3: !Template
     answer_choices: Yes ||| No ||| None
     id: 297fc59f-bd92-493b-ae61-3c3adcb46eb3
@@ -71,6 +90,30 @@ templates:
       - Accuracy
       original_task: true
     name: id_yes_no_none
+    reference: ''
+  590c276c-d649-4296-816a-e759167f3556: !Template
+    answer_choices: "\u306F\u3044 ||| \u3044\u3044\u3048 ||| \u3069\u3061\u3089\u3067\
+      \u3082\u306A\u3044"
+    id: 590c276c-d649-4296-816a-e759167f3556
+    jinja: "{% if language == \"japanese\" %}\n      {{question_text}} \u306E\u304B\
+      \u6C17\u306B\u306A\u308A\u307E\u3059\u3002\n      \u3053\u306E\u8CEA\u554F\u306B\
+      \u300C\u306F\u3044\u300D\u307E\u305F\u306F\u300C\u3044\u3044\u3048\u300D\u306E\
+      \u3069\u3061\u3089\u304B\u3067\u7B54\u3048\u3066\u304F\u3060\u3055\u3044\u3002\
+      \n      \u3069\u3061\u3089\u3082\u3042\u3066\u306F\u307E\u3089\u306A\u3044\u5834\
+      \u5408\u3001\u300C\u3069\u3061\u3089\u3067\u3082\u306A\u3044\u300D\u3068\u7B54\
+      \u3048\u3066\u304F\u3060\u3055\u3044\u3002\n\n      \u30A4\u30F3\u30BF\u30FC\
+      \u30CD\u30C3\u30C8\u3067\u3053\u3093\u306A\u8A18\u4E8B\u3092\u898B\u3064\u3051\
+      \u307E\u3057\u305F\uFF1A\n\n      \u30BF\u30A4\u30C8\u30EB\uFF1A {{document_title}}\n\
+      \n      \u672C\u6587\uFF1A {{document_plaintext}}\n\n      |||\n      \n   \
+      \   {{{\"YES\":\"\u306F\u3044\", \"NO\":\"\u3044\u3044\u3048\", \"NONE\": \"\
+      \u3069\u3061\u3089\u3067\u3082\u306A\u3044\"}[annotations.yes_no_answer[0]]}}\n\
+      \n{% endif %}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
+      original_task: true
+    name: jp_heres_what_I_found
     reference: ''
   6835dd64-96bd-4bf8-9ba5-645d6a7b8472: !Template
     answer_choices: Yes ||| No
@@ -129,6 +172,22 @@ templates:
       original_task: true
     name: id_heres_what_I_found
     reference: ''
+  733a3ff3-6edd-4440-b038-bf9736ebaff7: !Template
+    answer_choices: "\u306F\u3044 ||| \u3044\u3044\u3048"
+    id: 733a3ff3-6edd-4440-b038-bf9736ebaff7
+    jinja: "{% if language == \"japanese\" %}\n    {% if annotations.yes_no_answer[0]\
+      \ == \"YES\" or annotations.yes_no_answer[0] == \"NO\" %}\n        \u6B21\u306E\
+      \u6587\u7AE0\u306B\u3082\u3068\u3065\u304F\u3068\u3001 , {{question_text}} \n\
+      \        {{document_plaintext}}\n        ||| \n        {{{\"YES\":\"\u306F\u3044\
+      \", \"NO\":\"\u3044\u3044\u3048\", \"NONE\": \"\u3069\u3061\u3089\u3067\u3082\
+      \u306A\u3044\"}[annotations.yes_no_answer[0]]}}\n    {% endif %}\n{% endif %}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - Accuracy
+      original_task: true
+    name: jp_based_on_the_text
+    reference: Binary question without mentioning KB
   7b8b7707-dbad-40d2-a5c2-430e6ace10bb: !Template
     answer_choices: Yes ||| No ||| None
     id: 7b8b7707-dbad-40d2-a5c2-430e6ace10bb
@@ -213,6 +272,22 @@ templates:
       original_task: true
     name: id_read_and_answer
     reference: ''
+  a7260c3e-2c25-4c87-b9a2-5955fdff0c5e: !Template
+    answer_choices: "\u306F\u3044 ||| \u3044\u3044\u3048"
+    id: a7260c3e-2c25-4c87-b9a2-5955fdff0c5e
+    jinja: "{% if language == \"japanese\" %} \n    {% if annotations.yes_no_answer[0]\
+      \ == \"YES\"  or annotations.yes_no_answer[0] == \"NO\" %}\n        {{document_title}}\u306B\
+      \u95A2\u3059\u308B\u8CEA\u554F\u306B\u7B54\u3048\u3066\u304F\u3060\u3055\u3044\
+      \u3002{{question_text}}\n        ||| \n        {{{\"YES\":\"\u306F\u3044\",\
+      \ \"NO\":\"\u3044\u3044\u3048\", \"NONE\": \"\u3069\u3061\u3089\u3067\u3082\u306A\
+      \u3044\"}[annotations.yes_no_answer[0]]}}\n    {% endif %}\n{% endif %}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - Accuracy
+      original_task: false
+    name: jp_open_domain_qa_without_choices
+    reference: Answer Yes/No question
   b4f7c441-41b1-4665-93f9-f2e875aed92a: !Template
     answer_choices: Yes ||| No
     id: b4f7c441-41b1-4665-93f9-f2e875aed92a
@@ -242,6 +317,64 @@ templates:
       original_task: false
     name: id_open_domain_qa_without_choices
     reference: Answer Yes/No question
+  d160228e-9169-456d-a16a-0f5288452c9a: !Template
+    answer_choices: "\u306F\u3044 ||| \u3044\u3044\u3048"
+    id: d160228e-9169-456d-a16a-0f5288452c9a
+    jinja: "{% if language == \"japanese\" %}\n    {% if annotations.yes_no_answer[0]\
+      \ == \"YES\" or annotations.yes_no_answer[0] == \"NO\" %} \n        \u30A6\u30A3\
+      \u30AD\u30DA\u30C7\u30A3\u30A2\u306E\u8A18\u4E8B\u3092\u8AAD\u3093\u3060\u3042\
+      \u3068\u3001\u6B21\u306E\u8CEA\u554F\u306B\u7B54\u3048\u3066\u304F\u3060\u3055\
+      \u3044: {{question_text}}\n        {{document_plaintext}}\n        |||\n   \
+      \     {{{\"YES\":\"\u306F\u3044\", \"NO\":\"\u3044\u3044\u3048\", \"NONE\":\
+      \ \"\u3069\u3061\u3089\u3067\u3082\u306A\u3044\"}[annotations.yes_no_answer[0]]}}\n\
+      \    {% endif %}\n{% endif %}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - Accuracy
+      original_task: true
+    name: jp_after_reading_the_text
+    reference: Reading Comprehension
+  d942b06e-65d1-497f-8e69-0608c775f020: !Template
+    answer_choices: "\u306F\u3044 ||| \u3044\u3044\u3048"
+    id: d942b06e-65d1-497f-8e69-0608c775f020
+    jinja: "{% if language == \"japanese\" %}\n    {% if annotations.yes_no_answer[0]\
+      \ == \"YES \" or annotations.yes_no_answer[0] == \"NO\" %}\n        {{document_title}}\u306B\
+      \u95A2\u3059\u308B\u8CEA\u554F\u306B\u7B54\u3048\u3066\u304F\u3060\u3055\u3044\
+      \u3002\n        \u8CEA\u554F: {{question_text}}\u300C\u306F\u3044\u300D\u300C\
+      \u3044\u3044\u3048\u300D\u306E\u3069\u3061\u3089\u3067\u3059\u304B\uFF1F\n \
+      \       ||| \n        {{{\"YES\":\"\u306F\u3044\", \"NO\":\"\u3044\u3044\u3048\
+      \", \"NONE\": \"\u3069\u3061\u3089\u3067\u3082\u306A\u3044\"}[annotations.yes_no_answer[0]]}}\n\
+      \  {% endif %}\n{% endif %}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
+      original_task: false
+    name: jp_open_domain_qa
+    reference: Ask Yes/No question
+  dd737fa3-3364-49b1-8a7e-9b7fb25f495d: !Template
+    answer_choices: "\u306F\u3044 ||| \u3044\u3044\u3048 ||| \u3069\u3061\u3089\u3067\
+      \u3082\u306A\u3044"
+    id: dd737fa3-3364-49b1-8a7e-9b7fb25f495d
+    jinja: "{% if language == \"japanese\" %}\n      \u3053\u306E\u8CEA\u554F\u306B\
+      \u300C\u306F\u3044\u300D\u307E\u305F\u306F\u300C\u3044\u3044\u3048\u300D\u306E\
+      \u3069\u3061\u3089\u304B\u3067\u7B54\u3048\u3066\u304F\u3060\u3055\u3044\u3002\
+      \n      \u3069\u3061\u3089\u3082\u3042\u3066\u306F\u307E\u3089\u306A\u3044\u5834\
+      \u5408\u3001\u300C\u3069\u3061\u3089\u3067\u3082\u306A\u3044\u300D\u3068\u7B54\
+      \u3048\u3066\u304F\u3060\u3055\u3044\u3002\n\n      \u8CEA\u554F: {{question_text}}\n\
+      \n      \u30BF\u30A4\u30C8\u30EB\uFF1A {{document_title}}\n\n      \u672C\u6587\
+      \uFF1A {{document_plaintext}}\n\n      |||\n\n      {{{\"YES\":\"\u306F\u3044\
+      \", \"NO\":\"\u3044\u3044\u3048\", \"NONE\": \"\u3069\u3061\u3089\u3067\u3082\
+      \u306A\u3044\"}[annotations.yes_no_answer[0]]}}\n\n{% endif %}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - Accuracy
+      original_task: true
+    name: jp_read_and_answer
+    reference: ''
+
   e593017f-9bcf-4442-944d-fcdf2edcb4f7: !Template
     answer_choices: Yes ||| No
     id: e593017f-9bcf-4442-944d-fcdf2edcb4f7
@@ -316,3 +449,19 @@ templates:
       original_task: true
     name: id_based_on_the_text
     reference: Binary question without mentioning KB
+  eba7a853-bd37-45d7-af7d-cf3bd4bc0328: !Template
+    answer_choices: "\u306F\u3044 ||| \u3044\u3044\u3048"
+    id: eba7a853-bd37-45d7-af7d-cf3bd4bc0328
+    jinja: "{% if language == \"japanese\" %}\n\n      {{question_text}}\n\n     \
+      \ \u3053\u308C\u306F\u300C\u306F\u3044\u300D\u300C\u3044\u3044\u3048\u300D\u3067\
+      \u7B54\u3048\u3089\u308C\u308B\u8CEA\u554F\u3067\u3059\u304B\uFF1F\n\n     \
+      \ |||\n\n      {% if annotations. yes_no_answer[0] == \"NONE\" %}\n\n      \u3044\
+      \u3044\u3048\n\n      {% else %}\n\n      \u306F\u3044\n\n      {% endif %}\n\
+      {% endif %}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - Accuracy
+      original_task: false
+    name: jp_yes_no_question
+    reference: Ask if this is a yes no question
