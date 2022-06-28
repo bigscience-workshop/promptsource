@@ -36,6 +36,7 @@ INCLUDED_USERS = {
     "shanya",
     "rbawden",
     "BigScienceBiasEval",
+    "janck",
 }
 
 
