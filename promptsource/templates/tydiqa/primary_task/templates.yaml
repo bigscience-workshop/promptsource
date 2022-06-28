@@ -27,7 +27,7 @@ templates:
       metrics:
       - Accuracy
       original_task: true
-    name: heres_what_I_found
+    name: en_heres_what_I_found
     reference: ''
   1aa48c84-f64b-493c-bc9b-e5be15690109: !Template
     answer_choices: "\u306F\u3044 ||| \u3044\u3044\u3048 ||| \u3069\u3061\u3089\u3067\
@@ -60,7 +60,7 @@ templates:
       metrics:
       - Accuracy
       original_task: true
-    name: yes_no_none
+    name: en_yes_no_none
     reference: ''
   4b21e3be-fba4-49b7-beb1-a61de26eb0ac: !Template
     answer_choices: Yes ||| No
@@ -74,8 +74,23 @@ templates:
       metrics:
       - Accuracy
       original_task: false
-    name: open_domain_qa_without_choices
+    name: en_open_domain_qa_without_choices
     reference: Answer Yes/No question
+  5c48e84c-10e4-44ee-b2b3-94a4d018e833: !Template
+    answer_choices: Ya ||| Tidak ||| Tidak ada
+    id: 5c48e84c-10e4-44ee-b2b3-94a4d018e833
+    jinja: "{% if language == \"indonesian\" %} \nPertanyaan: {{question_text}}\n\
+      Jawab pertanyaan tersebut dengan {{\"Ya\"}} atau {{\"Tidak\"}}. Jika tidak memungkinkan,\
+      \ jawab dengan {{\"Tidak ada\"}}.\nPetunjuk: {{document_plaintext}}\n|||\n{{{\"\
+      NO\":\"Tidak\",\"YES\": \"Ya\", \"NONE\": \"Tidak ada\"}[annotations.yes_no_answer[0]]}}\n\
+      {% endif %}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - Accuracy
+      original_task: true
+    name: id_yes_no_none
+    reference: ''
   590c276c-d649-4296-816a-e759167f3556: !Template
     answer_choices: "\u306F\u3044 ||| \u3044\u3044\u3048 ||| \u3069\u3061\u3089\u3067\
       \u3082\u306A\u3044"
@@ -127,8 +142,36 @@ templates:
       metrics:
       - Accuracy
       original_task: false
-    name: yes_no_question
+    name: en_yes_no_question
     reference: Ask if this is a yes no question
+  764fda4e-dc13-4766-b8ab-eafd79fe875e: !Template
+    answer_choices: Ya ||| Tidak ||| Tidak ada
+    id: 764fda4e-dc13-4766-b8ab-eafd79fe875e
+    jinja: '{% if language == "indonesian" %}
+
+      Saya penasaran {{question_text}}.
+
+      Tolong bantu saya menjawab pertanyaan ini dengan "{{answer_choices[0]}}", "{{answer_choices[1]}}"
+      atau "{{answer_choices[2]}}" jika dua opsi pertama tidak bisa diaplikasikan.
+
+      Ini yang saya temukan di internet:
+
+      Topik: {{document_title}}
+
+      Artikel: {{document_plaintext}}
+
+      |||
+
+      {{{"NO":"Tidak","YES": "Ya", "NONE": "Tidak ada"}[annotations.yes_no_answer[0]]}}
+
+      {% endif %}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
+      original_task: true
+    name: id_heres_what_I_found
+    reference: ''
   733a3ff3-6edd-4440-b038-bf9736ebaff7: !Template
     answer_choices: "\u306F\u3044 ||| \u3044\u3044\u3048"
     id: 733a3ff3-6edd-4440-b038-bf9736ebaff7
@@ -169,8 +212,23 @@ templates:
       metrics:
       - Accuracy
       original_task: true
-    name: read_and_answer
+    name: en_read_and_answer
     reference: ''
+  976fb48f-7135-4344-91c8-cee2e535b8ab: !Template
+    answer_choices: Ya ||| Tidak
+    id: 976fb48f-7135-4344-91c8-cee2e535b8ab
+    jinja: "{% if language == \"indonesian\" %} \n    {% if annotations.yes_no_answer[0]\
+      \ == \"YES\" or annotations.yes_no_answer[0] == \"NO\" %} \nJawab pertanyaan\
+      \ terkait {{document_title}}.\nPertanyaan: {{question_text}}. Ya atau Tidak?\n\
+      ||| \n{{{\"NO\":\"Tidak\",\"YES\": \"Ya\", \"NONE\": \"Tidak ada\"}[annotations.yes_no_answer[0]]}}\n\
+      \    {% endif %}\n{% endif %}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
+      original_task: false
+    name: id_open_domain_qa
+    reference: Ask Yes/No question
   9c42e3fd-d46e-4149-bb60-4b3118104d95: !Template
     answer_choices: Yes ||| No
     id: 9c42e3fd-d46e-4149-bb60-4b3118104d95
@@ -184,8 +242,36 @@ templates:
       metrics:
       - Accuracy
       original_task: true
-    name: after_reading_the_text
+    name: en_after_reading_the_text
     reference: Reading Comprehension
+  b368b4af-b8b1-4b0f-ab72-a4db0649ca65: !Template
+    answer_choices: Ya ||| Tidak ||| Tidak ada
+    id: b368b4af-b8b1-4b0f-ab72-a4db0649ca65
+    jinja: '{% if language == "indonesian" %}
+
+      Jawab pertanyaan berikut dengan "{{answer_choices[0]}}" atau "{{answer_choices[1]}}"
+      atau "{{answer_choices[2]}}" jika dua
+
+      opsi pertama tidak dapat diaplikasikan.
+
+      Pertanyaan: {{question_text}}
+
+      Topik: {{document_title}}
+
+      Artikel: {{document_plaintext}}
+
+      |||
+
+      {{{"NO":"Tidak","YES": "Ya", "NONE": "Tidak ada"}[annotations.yes_no_answer[0]]}}
+
+      {% endif %}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      metrics:
+      - Accuracy
+      original_task: true
+    name: id_read_and_answer
+    reference: ''
   a7260c3e-2c25-4c87-b9a2-5955fdff0c5e: !Template
     answer_choices: "\u306F\u3044 ||| \u3044\u3044\u3048"
     id: a7260c3e-2c25-4c87-b9a2-5955fdff0c5e
@@ -214,8 +300,23 @@ templates:
       metrics:
       - Accuracy
       original_task: false
-    name: open_domain_qa
+    name: en_open_domain_qa
     reference: Ask Yes/No question
+  d6139cbc-7b25-4539-80c7-2b0832183951: !Template
+    answer_choices: Ya ||| Tidak
+    id: d6139cbc-7b25-4539-80c7-2b0832183951
+    jinja: "{% if language == \"indonesian\" %} \n    {% if annotations.yes_no_answer[0]\
+      \ == \"YES\" or annotations.yes_no_answer[0] == \"NO\" %} \nJawab pertanyaan\
+      \ terkait {{document_title}}. {{question_text}}\n||| \n{{{\"NO\":\"Tidak\",\"\
+      YES\": \"Ya\", \"NONE\": \"Tidak ada\"}[annotations.yes_no_answer[0]]}}\n  \
+      \  {% endif %} \n{% endif %} "
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - Accuracy
+      original_task: false
+    name: id_open_domain_qa_without_choices
+    reference: Answer Yes/No question
   d160228e-9169-456d-a16a-0f5288452c9a: !Template
     answer_choices: "\u306F\u3044 ||| \u3044\u3044\u3048"
     id: d160228e-9169-456d-a16a-0f5288452c9a
@@ -273,6 +374,7 @@ templates:
       original_task: true
     name: jp_read_and_answer
     reference: ''
+
   e593017f-9bcf-4442-944d-fcdf2edcb4f7: !Template
     answer_choices: Yes ||| No
     id: e593017f-9bcf-4442-944d-fcdf2edcb4f7
@@ -285,7 +387,67 @@ templates:
       metrics:
       - Accuracy
       original_task: true
-    name: based_on_the_text
+    name: en_based_on_the_text
+    reference: Binary question without mentioning KB
+  ebba1db1-daf2-4e40-9dca-4cbe4298cd3e: !Template
+    answer_choices: Ya ||| Tidak
+    id: ebba1db1-daf2-4e40-9dca-4cbe4298cd3e
+    jinja: '{% if language == "indonesian" %}
+
+      {{question_text}}
+
+      Apakah ini termasuk kalimat tanya "Ya/Tidak"?
+
+      |||
+
+      {% if annotations. yes_no_answer[0] == "NONE" %}
+
+      Tidak
+
+      {% else %}
+
+      Ya
+
+      {% endif %}
+
+      {% endif %}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - Accuracy
+      original_task: false
+    name: id_yes_no_question
+    reference: Ask if this is a yes no question
+  f93c6cde-cd5e-4d25-8549-f186546cea26: !Template
+    answer_choices: Ya ||| Tidak
+    id: f93c6cde-cd5e-4d25-8549-f186546cea26
+    jinja: "{% if language == \"indonesian\" %} \n    {% if annotations.yes_no_answer[0]\
+      \ == \"YES\" or annotations.yes_no_answer[0] == \"NO\" %} \nSetelah membaca\
+      \ potongan teks Wikipedia di bawah ini, mohon jawab pertanyaan: \n{{question_text}}\
+      \ \n{{document_plaintext}}\n||| \n{{{\"NO\":\"Tidak\", \"YES\":\"Ya\", \"NONE\"\
+      : \"Tidak ada\"}[annotations.yes_no_answer[0]]}}\n    {% endif %}\n{% endif\
+      \ %}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - Accuracy
+      original_task: true
+    name: id_after_reading_the_text
+    reference: Reading Comprehension
+  fe910acd-a156-4f46-a757-4382821fcfd2: !Template
+    answer_choices: Ya ||| Tidak
+    id: fe910acd-a156-4f46-a757-4382821fcfd2
+    jinja: "{% if language == \"indonesian\" %} \n    {% if annotations.yes_no_answer[0]\
+      \ == \"YES\" or annotations.yes_no_answer[0] == \"NO\" %} \nMenurut potongan\
+      \ teks berikut, {{question_text}}\n{{document_plaintext}}\n||| \n{{{\"NO\":\"\
+      Tidak\", \"YES\":\"Ya\", \"NONE\": \"Tidak ada\"}[annotations.yes_no_answer[0]]}}\n\
+      \    {% endif %}\n{% endif %}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - Accuracy
+      original_task: true
+    name: id_based_on_the_text
     reference: Binary question without mentioning KB
   eba7a853-bd37-45d7-af7d-cf3bd4bc0328: !Template
     answer_choices: "\u306F\u3044 ||| \u3044\u3044\u3048"
