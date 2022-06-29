@@ -1,39 +1,24 @@
 dataset: wmt19
 subset: de-en
 templates:
-  016f488b-e947-4082-becd-e5ce404ccf71: !Template
+  0342b9f3-02bd-4602-94bf-84df1c89fbf7: !Template
     answer_choices: null
-    id: 016f488b-e947-4082-becd-e5ce404ccf71
-    jinja: 'Translate into English: {{translation["de"]}}
+    id: 0342b9f3-02bd-4602-94bf-84df1c89fbf7
+    jinja: 'Translate this into German: {{translation["en"]}}
 
-      |||  {{translation["en"]}}'
+      |||  {{translation["de"]}}'
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
       - BLEU
       original_task: true
     name: !!python/tuple
-    - translate-de-en-target
+    - translate-en-de-target
     reference: ''
-  0702aabd-283c-455e-bb31-7798d6b6fabe: !Template
+  21cb3e62-e78e-460e-88fd-6895bf1e9faa: !Template
     answer_choices: null
-    id: 0702aabd-283c-455e-bb31-7798d6b6fabe
-    jinja: 'If the original version says: {{translation["de"]}}; then the English
-      version should say:
-
-      |||   {{translation["en"]}}'
-    metadata: !TemplateMetadata
-      choices_in_prompt: false
-      metrics:
-      - BLEU
-      original_task: true
-    name: !!python/tuple
-    - version-de-en-target
-    reference: ''
-  16cceacf-8525-4d04-8d83-4fa4cc9c6d1e: !Template
-    answer_choices: null
-    id: 16cceacf-8525-4d04-8d83-4fa4cc9c6d1e
-    jinja: 'How do you say {{translation["de"]}} in English?
+    id: 21cb3e62-e78e-460e-88fd-6895bf1e9faa
+    jinja: '{{translation["de"]}} = English:
 
       ||| {{translation["en"]}}'
     metadata: !TemplateMetadata
@@ -42,11 +27,80 @@ templates:
       - BLEU
       original_task: true
     name: !!python/tuple
-    - how_to_say-de-en-target
-    reference: ''
-  1add00c0-9413-45ad-9a2b-17579f04abe6: !Template
+    - xglm-de-en-target
+    reference: XGLM paper https://arxiv.org/abs/2112.10668
+  365f80d7-5e4f-40e5-8567-f4e60f2f71d9: !Template
     answer_choices: null
-    id: 1add00c0-9413-45ad-9a2b-17579f04abe6
+    id: 365f80d7-5e4f-40e5-8567-f4e60f2f71d9
+    jinja: 'German:  {{translation["de"]}}  translates into English as:
+
+      ||| {{translation["en"]}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      original_task: true
+    name: !!python/tuple
+    - translate_as_de-en-source+target
+    reference: ''
+  446c8f26-354b-4be8-ad17-df74e46d5527: !Template
+    answer_choices: null
+    id: 446c8f26-354b-4be8-ad17-df74e46d5527
+    jinja: 'German: {{translation["de"]}} = English:
+
+      ||| {{translation["en"]}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      original_task: true
+    name: !!python/tuple
+    - xglm-de-en-source+target
+    reference: XGLM paper https://arxiv.org/abs/2112.10668
+  46e30fb6-b626-4846-85ce-8b66cec0eb70: !Template
+    answer_choices: null
+    id: 46e30fb6-b626-4846-85ce-8b66cec0eb70
+    jinja: 'English: {{translation["en"]}} = German:
+
+      ||| {{translation["de"]}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      original_task: true
+    name: !!python/tuple
+    - xglm-en-de-source-target
+    reference: Adapted from XGLM paper on few shot evaluation https://arxiv.org/abs/2112.10668
+  51f607b9-09c1-430a-a05c-2c0c29e1f27f: !Template
+    answer_choices: null
+    id: 51f607b9-09c1-430a-a05c-2c0c29e1f27f
+    jinja: 'Given the following source text in German: {{translation["de"]}} , a good
+      English translation is: ||| {{translation["en"]}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      original_task: true
+    name: !!python/tuple
+    - a_good_translation-de-en-source+target
+    reference: ''
+  5650e2eb-b31d-4a66-90e5-3dc358b0a152: !Template
+    answer_choices: null
+    id: 5650e2eb-b31d-4a66-90e5-3dc358b0a152
+    jinja: 'What is the English translation of : {{translation["de"]}}
+
+      |||  {{translation["en"]}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      original_task: true
+    name: !!python/tuple
+    - gpt-3-de-en-target
+    reference: GPT-3 paper
+  5cc18e97-9267-4e8c-9f89-354e595880a4: !Template
+    answer_choices: null
+    id: 5cc18e97-9267-4e8c-9f89-354e595880a4
     jinja: 'Given the following source text in English: {{translation["en"]}} , a
       good German translation is:
 
@@ -59,10 +113,10 @@ templates:
     name: !!python/tuple
     - a_good_translation-en-de-source+target
     reference: ''
-  2c81808d-efc4-4d15-aa72-6ef02591c0a9: !Template
+  64a199ac-e338-4a03-9879-1f62c2698dcc: !Template
     answer_choices: null
-    id: 2c81808d-efc4-4d15-aa72-6ef02591c0a9
-    jinja: 'German: {{translation["de"]}} = English:
+    id: 64a199ac-e338-4a03-9879-1f62c2698dcc
+    jinja: 'How do you say {{translation["de"]}} in English?
 
       ||| {{translation["en"]}}'
     metadata: !TemplateMetadata
@@ -71,12 +125,39 @@ templates:
       - BLEU
       original_task: true
     name: !!python/tuple
-    - xglm-de-en-source+target
-    reference: XGLM paper https://arxiv.org/abs/2112.10668
-  323e9cac-0287-4cb3-b8f4-42b91a93e8f4: !Template
+    - how_to_say-de-en-target
+    reference: ''
+  650edf2a-2ddb-4c41-8868-c7b542acf4ba: !Template
     answer_choices: null
-    id: 323e9cac-0287-4cb3-b8f4-42b91a93e8f4
-    jinja: 'Translate English into German: {{translation["en"]}}
+    id: 650edf2a-2ddb-4c41-8868-c7b542acf4ba
+    jinja: 'Given the following passage: {{translation["en"]}} , a good German translation
+      is: ||| {{translation["de"]}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      original_task: true
+    name: !!python/tuple
+    - a_good_translation-en-de-target
+    reference: ''
+  71386534-dabb-4fb4-88ba-86ae0062cab7: !Template
+    answer_choices: null
+    id: 71386534-dabb-4fb4-88ba-86ae0062cab7
+    jinja: 'Translate this into English: {{translation["de"]}}
+
+      |||  {{translation["en"]}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      original_task: true
+    name: !!python/tuple
+    - translate-de-en-target
+    reference: ''
+  71a31bbb-3cd8-4755-95b7-ac7f16d47e7b: !Template
+    answer_choices: null
+    id: 71a31bbb-3cd8-4755-95b7-ac7f16d47e7b
+    jinja: 'What is the German translation of the English sentence: {{translation["en"]}}
 
       |||  {{translation["de"]}}'
     metadata: !TemplateMetadata
@@ -85,11 +166,11 @@ templates:
       - BLEU
       original_task: true
     name: !!python/tuple
-    - translate-en-de-source+starget
-    reference: ''
-  42017cdc-da85-4c29-bf4e-692d20385c16: !Template
+    - gpt-3-en-de-source+target
+    reference: GPT 3 paper
+  78f7787e-47b5-4c9c-afd2-14252b9e006c: !Template
     answer_choices: null
-    id: 42017cdc-da85-4c29-bf4e-692d20385c16
+    id: 78f7787e-47b5-4c9c-afd2-14252b9e006c
     jinja: 'If the original version says: {{translation["en"]}}; then the German version
       should say:
 
@@ -102,177 +183,25 @@ templates:
     name: !!python/tuple
     - version-en-de-target
     reference: ''
-  46272220-d718-4912-885d-b779ba22077a: !Template
+  84e4c8cf-fea3-4b84-9b41-79ea64c1b014: !Template
     answer_choices: null
-    id: 46272220-d718-4912-885d-b779ba22077a
-    jinja: 'What is the English translation of the German  sentence: {{translation["de"]}}
+    id: 84e4c8cf-fea3-4b84-9b41-79ea64c1b014
+    jinja: 'If the original version says: {{translation["de"]}}; then the English
+      version should say:
 
-      |||  {{translation["en"]}}'
+      |||   {{translation["en"]}}'
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
       - BLEU
       original_task: true
     name: !!python/tuple
-    - gpt-3-de-en-source+target
-    reference: GPT-3 paper
-  48ee7f3a-9a61-4106-9a95-7f9182a96ba1: !Template
-    answer_choices: null
-    id: 48ee7f3a-9a61-4106-9a95-7f9182a96ba1
-    jinja: 'How do you say {{translation["en"]}} in German?
-
-      ||| {{translation["de"]}}'
-    metadata: !TemplateMetadata
-      choices_in_prompt: false
-      metrics:
-      - BLEU
-      original_task: true
-    name: !!python/tuple
-    - how_to_say-en-de-target
+    - version-de-en-target
     reference: ''
-  52177d5b-7b94-41e2-bcd9-143b5aab118e: !Template
+  95191307-4681-4973-aa29-3017ac7023fa: !Template
     answer_choices: null
-    id: 52177d5b-7b94-41e2-bcd9-143b5aab118e
-    jinja: '{{translation["en"]}} = German:
-
-      ||| {{translation["de"]}}'
-    metadata: !TemplateMetadata
-      choices_in_prompt: false
-      metrics:
-      - BLEU
-      original_task: true
-    name: !!python/tuple
-    - xglm-en-de-target
-    reference: XGLM paper https://arxiv.org/abs/2112.10668
-  5b09b443-0b71-4406-a4c4-7ca634e18aaf: !Template
-    answer_choices: null
-    id: 5b09b443-0b71-4406-a4c4-7ca634e18aaf
-    jinja: 'Given the following source text in German: {{translation["de"]}} , a good
-      English translation is: ||| {{translation["en"]}}'
-    metadata: !TemplateMetadata
-      choices_in_prompt: false
-      metrics:
-      - BLEU
-      original_task: true
-    name: !!python/tuple
-    - a_good_translation-de-en-source+target
-    reference: ''
-  5d35fa9e-12ec-452b-8c0a-4b5b21c4b107: !Template
-    answer_choices: null
-    id: 5d35fa9e-12ec-452b-8c0a-4b5b21c4b107
-    jinja: '{{translation["de"]}}  translates into English as:
-
-      ||| {{translation["en"]}}'
-    metadata: !TemplateMetadata
-      choices_in_prompt: false
-      metrics:
-      - BLEU
-      original_task: true
-    name: !!python/tuple
-    - translate_as_de-en-target
-    reference: ''
-  5ea19842-e310-4f29-bfe8-40555eb90ecb: !Template
-    answer_choices: null
-    id: 5ea19842-e310-4f29-bfe8-40555eb90ecb
-    jinja: 'Translate  German into English: {{translation["de"]}}
-
-      |||  {{translation["en"]}}'
-    metadata: !TemplateMetadata
-      choices_in_prompt: false
-      metrics:
-      - BLEU
-      original_task: true
-    name: !!python/tuple
-    - translate-de-en-source+target
-    reference: https://arxiv.org/pdf/1910.10683.pdf
-  74d50f3e-7ba9-46ad-a417-c155754e37f4: !Template
-    answer_choices: null
-    id: 74d50f3e-7ba9-46ad-a417-c155754e37f4
-    jinja: 'English:  {{translation["en"]}}  translates into German as:
-
-      ||| {{translation["de"]}}'
-    metadata: !TemplateMetadata
-      choices_in_prompt: false
-      metrics:
-      - BLEU
-      original_task: true
-    name: !!python/tuple
-    - translate_as_en-de-source+target
-    reference: ''
-  a1d31cb0-c10c-43d8-a272-2e9491b4b36d: !Template
-    answer_choices: null
-    id: a1d31cb0-c10c-43d8-a272-2e9491b4b36d
-    jinja: 'German:  {{translation["de"]}}  translates into English as:
-
-      ||| {{translation["en"]}}'
-    metadata: !TemplateMetadata
-      choices_in_prompt: false
-      metrics:
-      - BLEU
-      original_task: true
-    name: !!python/tuple
-    - translate_as_de-en-source+target
-    reference: ''
-  aef2c049-27c2-4786-bc4a-37175592cdf9: !Template
-    answer_choices: null
-    id: aef2c049-27c2-4786-bc4a-37175592cdf9
-    jinja: 'Given the following passage: {{translation["en"]}} , a good German translation
-      is: ||| {{translation["de"]}}'
-    metadata: !TemplateMetadata
-      choices_in_prompt: false
-      metrics:
-      - BLEU
-      original_task: true
-    name: !!python/tuple
-    - a_good_translation-en-de-target
-    reference: ''
-  b2aa1b51-21da-4fc1-80be-d19f12c378d7: !Template
-    answer_choices: null
-    id: b2aa1b51-21da-4fc1-80be-d19f12c378d7
-    jinja: 'Given the following passage:  {{translation["de"]}} , a good English translation
-      is:
-
-      ||| {{translation["en"]}}'
-    metadata: !TemplateMetadata
-      choices_in_prompt: false
-      metrics:
-      - BLEU
-      original_task: true
-    name: !!python/tuple
-    - a_good_translation-de-en-target
-    reference: ''
-  b5c0e8be-bf2f-42d7-84c7-af453179188c: !Template
-    answer_choices: null
-    id: b5c0e8be-bf2f-42d7-84c7-af453179188c
-    jinja: ' {{translation["en"]}}  translates into German as:
-
-      ||| {{translation["de"]}}'
-    metadata: !TemplateMetadata
-      choices_in_prompt: false
-      metrics:
-      - BLEU
-      original_task: true
-    name: !!python/tuple
-    - translate_as_en-de-target
-    reference: ''
-  ba6e29d1-9143-4ac2-ba87-aa9043fa2b17: !Template
-    answer_choices: null
-    id: ba6e29d1-9143-4ac2-ba87-aa9043fa2b17
-    jinja: '{{translation["de"]}} = English:
-
-      ||| {{translation["en"]}}'
-    metadata: !TemplateMetadata
-      choices_in_prompt: false
-      metrics:
-      - BLEU
-      original_task: true
-    name: !!python/tuple
-    - xglm-de-en-target
-    reference: XGLM paper https://arxiv.org/abs/2112.10668
-  c456403b-179d-4653-8e26-bc9fd7b50c2e: !Template
-    answer_choices: null
-    id: c456403b-179d-4653-8e26-bc9fd7b50c2e
-    jinja: 'Translate into German: {{translation["en"]}}
+    id: 95191307-4681-4973-aa29-3017ac7023fa
+    jinja: 'Translate this from English into German: {{translation["en"]}}
 
       |||  {{translation["de"]}}'
     metadata: !TemplateMetadata
@@ -281,68 +210,11 @@ templates:
       - BLEU
       original_task: true
     name: !!python/tuple
-    - translate-en-de-target
+    - translate-en-de-source+starget
     reference: ''
-  c7f170d0-f8a9-4a02-a9b5-e8db22a6b76f: !Template
+  953b1373-2207-4916-a583-9f69ba5af1ff: !Template
     answer_choices: null
-    id: c7f170d0-f8a9-4a02-a9b5-e8db22a6b76f
-    jinja: 'English: {{translation["en"]}} = German:
-
-      ||| {{translation["de"]}}'
-    metadata: !TemplateMetadata
-      choices_in_prompt: false
-      metrics:
-      - BLEU
-      original_task: true
-    name: !!python/tuple
-    - xglm-en-de-source-target
-    reference: Adapted from XGLM paper on few shot evaluation https://arxiv.org/abs/2112.10668
-  c843899a-1292-4129-84a1-7783c5d86184: !Template
-    answer_choices: null
-    id: c843899a-1292-4129-84a1-7783c5d86184
-    jinja: 'If the English version says: {{translation["en"]}}; then the German version
-      should say:
-
-      |||   {{translation["de"]}}'
-    metadata: !TemplateMetadata
-      choices_in_prompt: false
-      metrics:
-      - BLEU
-      original_task: true
-    name: !!python/tuple
-    - version-en-de-source+target
-    reference: ''
-  cad37129-c4f7-4fe7-9697-14ec07ddd78b: !Template
-    answer_choices: null
-    id: cad37129-c4f7-4fe7-9697-14ec07ddd78b
-    jinja: 'What is the German translation of: {{translation["en"]}}
-
-      |||  {{translation["de"]}}'
-    metadata: !TemplateMetadata
-      choices_in_prompt: false
-      metrics:
-      - BLEU
-      original_task: true
-    name: !!python/tuple
-    - gpt-3-en-de-target
-    reference: GPT-3 paper
-  d80689a8-f4da-4416-9939-3220c40c00aa: !Template
-    answer_choices: null
-    id: d80689a8-f4da-4416-9939-3220c40c00aa
-    jinja: 'What is the German translation of the English sentence: {{translation["en"]}}
-
-      |||  {{translation["de"]}}'
-    metadata: !TemplateMetadata
-      choices_in_prompt: false
-      metrics:
-      - BLEU
-      original_task: true
-    name: !!python/tuple
-    - gpt-3-en-de-source+target
-    reference: GPT 3 paper
-  e0b2bece-f655-4279-997b-e893b94b04eb: !Template
-    answer_choices: null
-    id: e0b2bece-f655-4279-997b-e893b94b04eb
+    id: 953b1373-2207-4916-a583-9f69ba5af1ff
     jinja: 'If the German version says: {{translation["de"]}}; then the English version
       should say:
 
@@ -355,10 +227,124 @@ templates:
     name: !!python/tuple
     - version-de-en-source+target
     reference: ''
-  f5accc29-205f-430b-a74e-54434b59b6f6: !Template
+  a0801f73-bba4-46da-a915-26a106d2c4bc: !Template
     answer_choices: null
-    id: f5accc29-205f-430b-a74e-54434b59b6f6
-    jinja: 'What is the English translation of : {{translation["de"]}}
+    id: a0801f73-bba4-46da-a915-26a106d2c4bc
+    jinja: '{{translation["de"]}}  translates into English as:
+
+      ||| {{translation["en"]}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      original_task: true
+    name: !!python/tuple
+    - translate_as_de-en-target
+    reference: ''
+  a8c0831c-d260-4ef6-91e2-6cef49a80858: !Template
+    answer_choices: null
+    id: a8c0831c-d260-4ef6-91e2-6cef49a80858
+    jinja: 'How do you say {{translation["en"]}} in German?
+
+      ||| {{translation["de"]}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      original_task: true
+    name: !!python/tuple
+    - how_to_say-en-de-target
+    reference: ''
+  b324c249-11f6-47e6-8aff-da8f3066a083: !Template
+    answer_choices: null
+    id: b324c249-11f6-47e6-8aff-da8f3066a083
+    jinja: 'What is the German translation of: {{translation["en"]}}
+
+      |||  {{translation["de"]}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      original_task: true
+    name: !!python/tuple
+    - gpt-3-en-de-target
+    reference: GPT-3 paper
+  ba2af4e3-78a6-41b0-bd57-4f58196aa584: !Template
+    answer_choices: null
+    id: ba2af4e3-78a6-41b0-bd57-4f58196aa584
+    jinja: '{{translation["en"]}} = German:
+
+      ||| {{translation["de"]}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      original_task: true
+    name: !!python/tuple
+    - xglm-en-de-target
+    reference: XGLM paper https://arxiv.org/abs/2112.10668
+  d111aea3-c014-4114-9bf9-4135e33181c9: !Template
+    answer_choices: null
+    id: d111aea3-c014-4114-9bf9-4135e33181c9
+    jinja: 'Given the following passage:  {{translation["de"]}} , a good English translation
+      is:
+
+      ||| {{translation["en"]}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      original_task: true
+    name: !!python/tuple
+    - a_good_translation-de-en-target
+    reference: ''
+  d57cbdfd-3380-4318-8755-7f3e66381e1a: !Template
+    answer_choices: null
+    id: d57cbdfd-3380-4318-8755-7f3e66381e1a
+    jinja: ' {{translation["en"]}}  translates into German as:
+
+      ||| {{translation["de"]}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      original_task: true
+    name: !!python/tuple
+    - translate_as_en-de-target
+    reference: ''
+  e10830ef-4e58-4d17-b5e0-20961b960b95: !Template
+    answer_choices: null
+    id: e10830ef-4e58-4d17-b5e0-20961b960b95
+    jinja: 'English:  {{translation["en"]}}  translates into German as:
+
+      ||| {{translation["de"]}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      original_task: true
+    name: !!python/tuple
+    - translate_as_en-de-source+target
+    reference: ''
+  e3c62d5c-373d-45ca-a840-52ad4d6609d4: !Template
+    answer_choices: null
+    id: e3c62d5c-373d-45ca-a840-52ad4d6609d4
+    jinja: 'If the English version says: {{translation["en"]}}; then the German version
+      should say:
+
+      |||   {{translation["de"]}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      original_task: true
+    name: !!python/tuple
+    - version-en-de-source+target
+    reference: ''
+  e3cacbbb-763f-43a4-9ca1-e05d0e914a14: !Template
+    answer_choices: null
+    id: e3cacbbb-763f-43a4-9ca1-e05d0e914a14
+    jinja: 'What is the English translation of the German  sentence: {{translation["de"]}}
 
       |||  {{translation["en"]}}'
     metadata: !TemplateMetadata
@@ -367,5 +353,19 @@ templates:
       - BLEU
       original_task: true
     name: !!python/tuple
-    - gpt-3-de-en-target
+    - gpt-3-de-en-source+target
     reference: GPT-3 paper
+  e9816ae4-4c1c-4c7b-a0a4-5e63bbea6936: !Template
+    answer_choices: null
+    id: e9816ae4-4c1c-4c7b-a0a4-5e63bbea6936
+    jinja: 'Translate this from German into English: {{translation["de"]}}
+
+      |||  {{translation["en"]}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      original_task: true
+    name: !!python/tuple
+    - translate-de-en-source+target
+    reference: https://arxiv.org/pdf/1910.10683.pdf

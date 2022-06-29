@@ -1,37 +1,23 @@
 dataset: wmt19
 subset: lt-en
 templates:
-  09d912d9-54b5-4094-886a-78e9d3622c49: !Template
+  005f744f-cd93-4d4b-8729-56bc2188669d: !Template
     answer_choices: null
-    id: 09d912d9-54b5-4094-886a-78e9d3622c49
-    jinja: 'Given the following passage: {{translation["en"]}} , a good Lithuanian
-      translation is: ||| {{translation["lt"]}}'
-    metadata: !TemplateMetadata
-      choices_in_prompt: false
-      metrics:
-      - BLEU
-      original_task: true
-    name: !!python/tuple
-    - a_good_translation-en-lt-target
-    reference: ''
-  1081536f-f4d4-47b5-9b08-e75756182e0e: !Template
-    answer_choices: null
-    id: 1081536f-f4d4-47b5-9b08-e75756182e0e
-    jinja: 'If the Lithuanian version says: {{translation["lt"]}}; then the English
-      version should say:
+    id: 005f744f-cd93-4d4b-8729-56bc2188669d
+    jinja: 'Translate this from Lithuanian into English: {{translation["lt"]}}
 
-      |||   {{translation["en"]}}'
+      |||  {{translation["en"]}}'
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
       - BLEU
       original_task: true
     name: !!python/tuple
-    - version-lt-en-source+target
-    reference: ''
-  17bcfc14-24c3-410e-861a-9758751339f1: !Template
+    - translate-lt-en-source+target
+    reference: https://arxiv.org/pdf/1910.10683.pdf
+  0380efec-57ed-4437-84dc-a61f79017856: !Template
     answer_choices: null
-    id: 17bcfc14-24c3-410e-861a-9758751339f1
+    id: 0380efec-57ed-4437-84dc-a61f79017856
     jinja: 'Lithuanian:  {{translation["lt"]}}  translates into English as:
 
       ||| {{translation["en"]}}'
@@ -43,80 +29,10 @@ templates:
     name: !!python/tuple
     - translate_as_lt-en-source+target
     reference: ''
-  19f026f2-7bf7-48e7-93f8-d711e746bbbd: !Template
+  0ac8a6cc-615a-4b37-864f-66a223c5dbd9: !Template
     answer_choices: null
-    id: 19f026f2-7bf7-48e7-93f8-d711e746bbbd
-    jinja: 'English:  {{translation["en"]}}  translates into Lithuanian as:
-
-      ||| {{translation["lt"]}}'
-    metadata: !TemplateMetadata
-      choices_in_prompt: false
-      metrics:
-      - BLEU
-      original_task: true
-    name: !!python/tuple
-    - translate_as_en-lt-source+target
-    reference: ''
-  1d31906c-be02-47a3-926f-0bd9c4bf05c9: !Template
-    answer_choices: null
-    id: 1d31906c-be02-47a3-926f-0bd9c4bf05c9
-    jinja: 'What is the English translation of the Lithuanian  sentence: {{translation["lt"]}}
-
-      |||  {{translation["en"]}}'
-    metadata: !TemplateMetadata
-      choices_in_prompt: false
-      metrics:
-      - BLEU
-      original_task: true
-    name: !!python/tuple
-    - gpt-3-lt-en-source+target
-    reference: GPT-3 paper
-  239dec95-271d-4301-8cab-fca10958c97f: !Template
-    answer_choices: null
-    id: 239dec95-271d-4301-8cab-fca10958c97f
-    jinja: ' {{translation["en"]}}  translates into Lithuanian as:
-
-      ||| {{translation["lt"]}}'
-    metadata: !TemplateMetadata
-      choices_in_prompt: false
-      metrics:
-      - BLEU
-      original_task: true
-    name: !!python/tuple
-    - translate_as_en-lt-target
-    reference: ''
-  2486e08b-e932-4f7c-b2fe-a5ff88e4a5a4: !Template
-    answer_choices: null
-    id: 2486e08b-e932-4f7c-b2fe-a5ff88e4a5a4
-    jinja: 'Translate into Lithuanian: {{translation["en"]}}
-
-      |||  {{translation["lt"]}}'
-    metadata: !TemplateMetadata
-      choices_in_prompt: false
-      metrics:
-      - BLEU
-      original_task: true
-    name: !!python/tuple
-    - translate-en-lt-target
-    reference: ''
-  388c481e-9ed2-4860-87b0-00a32b3f5a4e: !Template
-    answer_choices: null
-    id: 388c481e-9ed2-4860-87b0-00a32b3f5a4e
-    jinja: '{{translation["en"]}} = Lithuanian:
-
-      ||| {{translation["lt"]}}'
-    metadata: !TemplateMetadata
-      choices_in_prompt: false
-      metrics:
-      - BLEU
-      original_task: true
-    name: !!python/tuple
-    - xglm-en-lt-target
-    reference: XGLM paper https://arxiv.org/abs/2112.10668
-  3cea9425-dbaa-4c4c-a1b0-133683bcca53: !Template
-    answer_choices: null
-    id: 3cea9425-dbaa-4c4c-a1b0-133683bcca53
-    jinja: '{{translation["lt"]}}  translates into English as:
+    id: 0ac8a6cc-615a-4b37-864f-66a223c5dbd9
+    jinja: 'Lithuanian: {{translation["lt"]}} = English:
 
       ||| {{translation["en"]}}'
     metadata: !TemplateMetadata
@@ -125,11 +41,39 @@ templates:
       - BLEU
       original_task: true
     name: !!python/tuple
-    - translate_as_lt-en-target
-    reference: ''
-  48ed0004-1cf3-42e2-854c-756a73d99eb9: !Template
+    - xglm-lt-en-source+target
+    reference: XGLM paper https://arxiv.org/abs/2112.10668
+  18c81ecf-7582-49a8-a4c8-5bb4281ce98f: !Template
     answer_choices: null
-    id: 48ed0004-1cf3-42e2-854c-756a73d99eb9
+    id: 18c81ecf-7582-49a8-a4c8-5bb4281ce98f
+    jinja: 'What is the Lithuanian translation of the English sentence: {{translation["en"]}}
+
+      |||  {{translation["lt"]}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      original_task: true
+    name: !!python/tuple
+    - gpt-3-en-lt-source+target
+    reference: GPT 3 paper
+  1a6f9056-57b3-41ab-a365-a7932bee428f: !Template
+    answer_choices: null
+    id: 1a6f9056-57b3-41ab-a365-a7932bee428f
+    jinja: 'How do you say {{translation["lt"]}} in English?
+
+      ||| {{translation["en"]}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      original_task: true
+    name: !!python/tuple
+    - how_to_say-lt-en-target
+    reference: ''
+  1ce4b380-5230-41f7-b8bb-824cacdf80ee: !Template
+    answer_choices: null
+    id: 1ce4b380-5230-41f7-b8bb-824cacdf80ee
     jinja: 'If the original version says: {{translation["en"]}}; then the Lithuanian
       version should say:
 
@@ -142,51 +86,36 @@ templates:
     name: !!python/tuple
     - version-en-lt-target
     reference: ''
-  604d7587-c23e-443e-ab71-4c06e55f1463: !Template
+  264b2535-2e7d-4efe-9704-09c2b1332cac: !Template
     answer_choices: null
-    id: 604d7587-c23e-443e-ab71-4c06e55f1463
-    jinja: 'Given the following source text in English: {{translation["en"]}} , a
-      good Lithuanian translation is:
+    id: 264b2535-2e7d-4efe-9704-09c2b1332cac
+    jinja: 'Translate this into Lithuanian: {{translation["en"]}}
 
-      ||| {{translation["lt"]}}'
+      |||  {{translation["lt"]}}'
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
       - BLEU
       original_task: true
     name: !!python/tuple
-    - a_good_translation-en-lt-source+target
+    - translate-en-lt-target
     reference: ''
-  7006b213-cc36-4153-ae89-b85a73ec598e: !Template
+  28987179-bc04-4e63-982a-b959efbd95a5: !Template
     answer_choices: null
-    id: 7006b213-cc36-4153-ae89-b85a73ec598e
-    jinja: 'What is the English translation of : {{translation["lt"]}}
-
-      |||  {{translation["en"]}}'
+    id: 28987179-bc04-4e63-982a-b959efbd95a5
+    jinja: 'Given the following passage: {{translation["en"]}} , a good Lithuanian
+      translation is: ||| {{translation["lt"]}}'
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
       - BLEU
       original_task: true
     name: !!python/tuple
-    - gpt-3-lt-en-target
-    reference: GPT-3 paper
-  79d4fccc-593b-4dce-b6ef-3b3c6c189de4: !Template
-    answer_choices: null
-    id: 79d4fccc-593b-4dce-b6ef-3b3c6c189de4
-    jinja: 'Given the following source text in Lithuanian: {{translation["lt"]}} ,
-      a good English translation is: ||| {{translation["en"]}}'
-    metadata: !TemplateMetadata
-      choices_in_prompt: false
-      metrics:
-      - BLEU
-      original_task: true
-    name: !!python/tuple
-    - a_good_translation-lt-en-source+target
+    - a_good_translation-en-lt-target
     reference: ''
-  8ba668c5-9ad8-4718-aa54-2e5d8b746a73: !Template
+  4bb2c423-342a-46fc-928b-eb4d9a01297c: !Template
     answer_choices: null
-    id: 8ba668c5-9ad8-4718-aa54-2e5d8b746a73
+    id: 4bb2c423-342a-46fc-928b-eb4d9a01297c
     jinja: '{{translation["lt"]}} = English:
 
       ||| {{translation["en"]}}'
@@ -198,52 +127,10 @@ templates:
     name: !!python/tuple
     - xglm-lt-en-target
     reference: XGLM paper https://arxiv.org/abs/2112.10668
-  9d160f00-e1d9-477c-b71a-4ded861367f9: !Template
+  4f5f0594-32a5-4690-81ae-64deb3289f94: !Template
     answer_choices: null
-    id: 9d160f00-e1d9-477c-b71a-4ded861367f9
-    jinja: 'Lithuanian: {{translation["lt"]}} = English:
-
-      ||| {{translation["en"]}}'
-    metadata: !TemplateMetadata
-      choices_in_prompt: false
-      metrics:
-      - BLEU
-      original_task: true
-    name: !!python/tuple
-    - xglm-lt-en-source+target
-    reference: XGLM paper https://arxiv.org/abs/2112.10668
-  c342a4ea-e09b-445c-96f5-c79341d5cb40: !Template
-    answer_choices: null
-    id: c342a4ea-e09b-445c-96f5-c79341d5cb40
-    jinja: 'How do you say {{translation["en"]}} in Lithuanian?
-
-      ||| {{translation["lt"]}}'
-    metadata: !TemplateMetadata
-      choices_in_prompt: false
-      metrics:
-      - BLEU
-      original_task: true
-    name: !!python/tuple
-    - how_to_say-en-lt-target
-    reference: ''
-  c978e375-5b34-45a8-87aa-22b51cccb868: !Template
-    answer_choices: null
-    id: c978e375-5b34-45a8-87aa-22b51cccb868
-    jinja: 'What is the Lithuanian translation of the English sentence: {{translation["en"]}}
-
-      |||  {{translation["lt"]}}'
-    metadata: !TemplateMetadata
-      choices_in_prompt: false
-      metrics:
-      - BLEU
-      original_task: true
-    name: !!python/tuple
-    - gpt-3-en-lt-source+target
-    reference: GPT 3 paper
-  cbc63670-78c7-45d1-9ceb-451b9c22f31d: !Template
-    answer_choices: null
-    id: cbc63670-78c7-45d1-9ceb-451b9c22f31d
-    jinja: 'Translate into English: {{translation["lt"]}}
+    id: 4f5f0594-32a5-4690-81ae-64deb3289f94
+    jinja: 'Translate this into English: {{translation["lt"]}}
 
       |||  {{translation["en"]}}'
     metadata: !TemplateMetadata
@@ -254,9 +141,24 @@ templates:
     name: !!python/tuple
     - translate-lt-en-target
     reference: ''
-  cf64d506-a054-49cf-83f9-57eb3923680e: !Template
+  5afbe8cf-9f27-4482-b936-44a06fae2a21: !Template
     answer_choices: null
-    id: cf64d506-a054-49cf-83f9-57eb3923680e
+    id: 5afbe8cf-9f27-4482-b936-44a06fae2a21
+    jinja: 'If the Lithuanian version says: {{translation["lt"]}}; then the English
+      version should say:
+
+      |||   {{translation["en"]}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      original_task: true
+    name: !!python/tuple
+    - version-lt-en-source+target
+    reference: ''
+  615c0d2b-ead7-458a-b3b8-16092d899d0f: !Template
+    answer_choices: null
+    id: 615c0d2b-ead7-458a-b3b8-16092d899d0f
     jinja: 'If the English version says: {{translation["en"]}}; then the Lithuanian
       version should say:
 
@@ -269,9 +171,37 @@ templates:
     name: !!python/tuple
     - version-en-lt-source+target
     reference: ''
-  d1951cc8-cef9-49ab-9df1-a9a58caa38fc: !Template
+  74fb4a3d-99a1-4bd0-a57d-2bd53732eb35: !Template
     answer_choices: null
-    id: d1951cc8-cef9-49ab-9df1-a9a58caa38fc
+    id: 74fb4a3d-99a1-4bd0-a57d-2bd53732eb35
+    jinja: 'English: {{translation["en"]}} = Lithuanian:
+
+      ||| {{translation["lt"]}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      original_task: true
+    name: !!python/tuple
+    - xglm-en-lt-source-target
+    reference: Adapted from XGLM paper on few shot evaluation https://arxiv.org/abs/2112.10668
+  77a3ab9f-f3ce-4b46-b080-13776b973919: !Template
+    answer_choices: null
+    id: 77a3ab9f-f3ce-4b46-b080-13776b973919
+    jinja: 'How do you say {{translation["en"]}} in Lithuanian?
+
+      ||| {{translation["lt"]}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      original_task: true
+    name: !!python/tuple
+    - how_to_say-en-lt-target
+    reference: ''
+  8d69a032-f7c1-49ff-acea-093b672c9dd6: !Template
+    answer_choices: null
+    id: 8d69a032-f7c1-49ff-acea-093b672c9dd6
     jinja: 'What is the Lithuanian translation of: {{translation["en"]}}
 
       |||  {{translation["lt"]}}'
@@ -283,9 +213,9 @@ templates:
     name: !!python/tuple
     - gpt-3-en-lt-target
     reference: GPT-3 paper
-  dd1e7adb-8331-4a0d-844e-91076648f25a: !Template
+  97a087e8-fd66-4b95-9c75-87250b8e5e5c: !Template
     answer_choices: null
-    id: dd1e7adb-8331-4a0d-844e-91076648f25a
+    id: 97a087e8-fd66-4b95-9c75-87250b8e5e5c
     jinja: 'Given the following passage:  {{translation["lt"]}} , a good English translation
       is:
 
@@ -298,9 +228,79 @@ templates:
     name: !!python/tuple
     - a_good_translation-lt-en-target
     reference: ''
-  de291c64-3989-4104-8c50-655c2fa73969: !Template
+  a09584a3-544a-4508-9890-7db646ec6902: !Template
     answer_choices: null
-    id: de291c64-3989-4104-8c50-655c2fa73969
+    id: a09584a3-544a-4508-9890-7db646ec6902
+    jinja: 'Given the following source text in English: {{translation["en"]}} , a
+      good Lithuanian translation is:
+
+      ||| {{translation["lt"]}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      original_task: true
+    name: !!python/tuple
+    - a_good_translation-en-lt-source+target
+    reference: ''
+  b4b2863d-0eb4-4220-86ba-cd7873a31e33: !Template
+    answer_choices: null
+    id: b4b2863d-0eb4-4220-86ba-cd7873a31e33
+    jinja: 'English:  {{translation["en"]}}  translates into Lithuanian as:
+
+      ||| {{translation["lt"]}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      original_task: true
+    name: !!python/tuple
+    - translate_as_en-lt-source+target
+    reference: ''
+  ba8c242b-aeac-44b0-8ed0-4e108fa46ddc: !Template
+    answer_choices: null
+    id: ba8c242b-aeac-44b0-8ed0-4e108fa46ddc
+    jinja: 'What is the English translation of the Lithuanian  sentence: {{translation["lt"]}}
+
+      |||  {{translation["en"]}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      original_task: true
+    name: !!python/tuple
+    - gpt-3-lt-en-source+target
+    reference: GPT-3 paper
+  bb388f4f-0184-4ee1-b445-6ce35a4566a4: !Template
+    answer_choices: null
+    id: bb388f4f-0184-4ee1-b445-6ce35a4566a4
+    jinja: 'What is the English translation of : {{translation["lt"]}}
+
+      |||  {{translation["en"]}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      original_task: true
+    name: !!python/tuple
+    - gpt-3-lt-en-target
+    reference: GPT-3 paper
+  c2fb9339-44a0-468b-aa07-984aaf09cb9c: !Template
+    answer_choices: null
+    id: c2fb9339-44a0-468b-aa07-984aaf09cb9c
+    jinja: 'Given the following source text in Lithuanian: {{translation["lt"]}} ,
+      a good English translation is: ||| {{translation["en"]}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      original_task: true
+    name: !!python/tuple
+    - a_good_translation-lt-en-source+target
+    reference: ''
+  c8412be4-f223-47d1-ad3f-36c640edaaaa: !Template
+    answer_choices: null
+    id: c8412be4-f223-47d1-ad3f-36c640edaaaa
     jinja: 'If the original version says: {{translation["lt"]}}; then the English
       version should say:
 
@@ -313,10 +313,52 @@ templates:
     name: !!python/tuple
     - version-lt-en-target
     reference: ''
-  dec5fe1c-5d8a-477d-8a63-cdbf1d0374f1: !Template
+  cab29758-8001-4d7f-9eaa-b492cb0aca49: !Template
     answer_choices: null
-    id: dec5fe1c-5d8a-477d-8a63-cdbf1d0374f1
-    jinja: 'Translate English into Lithuanian: {{translation["en"]}}
+    id: cab29758-8001-4d7f-9eaa-b492cb0aca49
+    jinja: '{{translation["lt"]}}  translates into English as:
+
+      ||| {{translation["en"]}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      original_task: true
+    name: !!python/tuple
+    - translate_as_lt-en-target
+    reference: ''
+  da751307-9d0b-4566-bb95-9fa90f0132f5: !Template
+    answer_choices: null
+    id: da751307-9d0b-4566-bb95-9fa90f0132f5
+    jinja: ' {{translation["en"]}}  translates into Lithuanian as:
+
+      ||| {{translation["lt"]}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      original_task: true
+    name: !!python/tuple
+    - translate_as_en-lt-target
+    reference: ''
+  e5b2d433-eff7-4ca6-b10c-5cc3b3c5d662: !Template
+    answer_choices: null
+    id: e5b2d433-eff7-4ca6-b10c-5cc3b3c5d662
+    jinja: '{{translation["en"]}} = Lithuanian:
+
+      ||| {{translation["lt"]}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      original_task: true
+    name: !!python/tuple
+    - xglm-en-lt-target
+    reference: XGLM paper https://arxiv.org/abs/2112.10668
+  f3fbfb49-72a6-4aa6-b48e-f3adf02e54d5: !Template
+    answer_choices: null
+    id: f3fbfb49-72a6-4aa6-b48e-f3adf02e54d5
+    jinja: 'Translate this from English into Lithuanian: {{translation["en"]}}
 
       |||  {{translation["lt"]}}'
     metadata: !TemplateMetadata
@@ -327,45 +369,3 @@ templates:
     name: !!python/tuple
     - translate-en-lt-source+starget
     reference: ''
-  ea94c785-cff2-47f5-a06d-f31ce7885b7f: !Template
-    answer_choices: null
-    id: ea94c785-cff2-47f5-a06d-f31ce7885b7f
-    jinja: 'How do you say {{translation["lt"]}} in English?
-
-      ||| {{translation["en"]}}'
-    metadata: !TemplateMetadata
-      choices_in_prompt: false
-      metrics:
-      - BLEU
-      original_task: true
-    name: !!python/tuple
-    - how_to_say-lt-en-target
-    reference: ''
-  f777af07-abeb-48bb-ad9d-16f490dd1039: !Template
-    answer_choices: null
-    id: f777af07-abeb-48bb-ad9d-16f490dd1039
-    jinja: 'Translate  Lithuanian into English: {{translation["lt"]}}
-
-      |||  {{translation["en"]}}'
-    metadata: !TemplateMetadata
-      choices_in_prompt: false
-      metrics:
-      - BLEU
-      original_task: true
-    name: !!python/tuple
-    - translate-lt-en-source+target
-    reference: https://arxiv.org/pdf/1910.10683.pdf
-  fb7d19ad-16ac-42bf-93a8-3960652f98c9: !Template
-    answer_choices: null
-    id: fb7d19ad-16ac-42bf-93a8-3960652f98c9
-    jinja: 'English: {{translation["en"]}} = Lithuanian:
-
-      ||| {{translation["lt"]}}'
-    metadata: !TemplateMetadata
-      choices_in_prompt: false
-      metrics:
-      - BLEU
-      original_task: true
-    name: !!python/tuple
-    - xglm-en-lt-source-target
-    reference: Adapted from XGLM paper on few shot evaluation https://arxiv.org/abs/2112.10668

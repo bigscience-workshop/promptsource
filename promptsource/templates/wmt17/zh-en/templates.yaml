@@ -1,79 +1,22 @@
 dataset: wmt17
 subset: zh-en
 templates:
-  056b54ef-6044-4fdc-997a-94e7d70c0ae6: !Template
+  01c86605-b157-42a3-acde-419673e43fab: !Template
     answer_choices: null
-    id: 056b54ef-6044-4fdc-997a-94e7d70c0ae6
-    jinja: 'Given the following passage:  {{translation["zh"]}} , a good English translation
-      is:
-
-      ||| {{translation["en"]}}'
+    id: 01c86605-b157-42a3-acde-419673e43fab
+    jinja: 'Given the following source text in Chinese: {{translation["zh"]}} , a
+      good English translation is: ||| {{translation["en"]}}'
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
       - BLEU
       original_task: true
     name: !!python/tuple
-    - a_good_translation-zh-en-target
+    - a_good_translation-zh-en-source+target
     reference: ''
-  1183a3f9-7303-488b-9273-b92e4dc767f0: !Template
+  1022f169-5b09-4efc-bb8c-c80b1476c6ea: !Template
     answer_choices: null
-    id: 1183a3f9-7303-488b-9273-b92e4dc767f0
-    jinja: '{{translation["en"]}} = Chinese:
-
-      ||| {{translation["zh"]}}'
-    metadata: !TemplateMetadata
-      choices_in_prompt: false
-      metrics:
-      - BLEU
-      original_task: true
-    name: !!python/tuple
-    - xglm-en-zh-target
-    reference: XGLM paper https://arxiv.org/abs/2112.10668
-  169b309d-5851-4444-a208-5bb91cde3af3: !Template
-    answer_choices: null
-    id: 169b309d-5851-4444-a208-5bb91cde3af3
-    jinja: 'How do you say {{translation["zh"]}} in English?
-
-      ||| {{translation["en"]}}'
-    metadata: !TemplateMetadata
-      choices_in_prompt: false
-      metrics:
-      - BLEU
-      original_task: true
-    name: !!python/tuple
-    - how_to_say-zh-en-target
-    reference: ''
-  1c810691-6c34-4e80-87ce-653ddb7330c9: !Template
-    answer_choices: null
-    id: 1c810691-6c34-4e80-87ce-653ddb7330c9
-    jinja: 'Given the following passage: {{translation["en"]}} , a good Chinese translation
-      is: ||| {{translation["zh"]}}'
-    metadata: !TemplateMetadata
-      choices_in_prompt: false
-      metrics:
-      - BLEU
-      original_task: true
-    name: !!python/tuple
-    - a_good_translation-en-zh-target
-    reference: ''
-  204091fc-5795-4dea-a245-0816eeb5c525: !Template
-    answer_choices: null
-    id: 204091fc-5795-4dea-a245-0816eeb5c525
-    jinja: 'Chinese: {{translation["zh"]}} = English:
-
-      ||| {{translation["en"]}}'
-    metadata: !TemplateMetadata
-      choices_in_prompt: false
-      metrics:
-      - BLEU
-      original_task: true
-    name: !!python/tuple
-    - xglm-zh-en-source+target
-    reference: XGLM paper https://arxiv.org/abs/2112.10668
-  21880c27-4a9e-4676-a4c3-3685b4ea9d7d: !Template
-    answer_choices: null
-    id: 21880c27-4a9e-4676-a4c3-3685b4ea9d7d
+    id: 1022f169-5b09-4efc-bb8c-c80b1476c6ea
     jinja: 'English: {{translation["en"]}} = Chinese:
 
       ||| {{translation["zh"]}}'
@@ -85,23 +28,9 @@ templates:
     name: !!python/tuple
     - xglm-en-zh-source-target
     reference: Adapted from XGLM paper on few shot evaluation https://arxiv.org/abs/2112.10668
-  30b7a571-9cb1-458f-bdb7-90eb442d0f15: !Template
+  24c02b50-8aec-4645-91ba-e6b74b4659ce: !Template
     answer_choices: null
-    id: 30b7a571-9cb1-458f-bdb7-90eb442d0f15
-    jinja: 'Translate into English: {{translation["zh"]}}
-
-      |||  {{translation["en"]}}'
-    metadata: !TemplateMetadata
-      choices_in_prompt: false
-      metrics:
-      - BLEU
-      original_task: true
-    name: !!python/tuple
-    - translate-zh-en-target
-    reference: ''
-  486bb7ac-1d82-4f8c-8795-0fdcbefdc44c: !Template
-    answer_choices: null
-    id: 486bb7ac-1d82-4f8c-8795-0fdcbefdc44c
+    id: 24c02b50-8aec-4645-91ba-e6b74b4659ce
     jinja: 'If the English version says: {{translation["en"]}}; then the Chinese version
       should say:
 
@@ -114,51 +43,23 @@ templates:
     name: !!python/tuple
     - version-en-zh-source+target
     reference: ''
-  4b000b4b-64e0-4bc1-947d-3f7e967d8116: !Template
+  2ef8654a-9cce-4602-88f5-f56f1b8d5d88: !Template
     answer_choices: null
-    id: 4b000b4b-64e0-4bc1-947d-3f7e967d8116
-    jinja: 'How do you say {{translation["en"]}} in Chinese?
+    id: 2ef8654a-9cce-4602-88f5-f56f1b8d5d88
+    jinja: 'Translate this from English into Chinese: {{translation["en"]}}
 
-      ||| {{translation["zh"]}}'
+      |||  {{translation["zh"]}}'
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
       - BLEU
       original_task: true
     name: !!python/tuple
-    - how_to_say-en-zh-target
+    - translate-en-zh-source+starget
     reference: ''
-  5821cf3f-41f2-4144-adc5-e6322e47e018: !Template
+  38349a24-8617-4ce2-ac6b-6e399fa5f926: !Template
     answer_choices: null
-    id: 5821cf3f-41f2-4144-adc5-e6322e47e018
-    jinja: ' {{translation["en"]}}  translates into Chinese as:
-
-      ||| {{translation["zh"]}}'
-    metadata: !TemplateMetadata
-      choices_in_prompt: false
-      metrics:
-      - BLEU
-      original_task: true
-    name: !!python/tuple
-    - translate_as_en-zh-target
-    reference: ''
-  5cdb4bca-fa23-4637-9459-02880508ec89: !Template
-    answer_choices: null
-    id: 5cdb4bca-fa23-4637-9459-02880508ec89
-    jinja: '{{translation["zh"]}}  translates into English as:
-
-      ||| {{translation["en"]}}'
-    metadata: !TemplateMetadata
-      choices_in_prompt: false
-      metrics:
-      - BLEU
-      original_task: true
-    name: !!python/tuple
-    - translate_as_zh-en-target
-    reference: ''
-  7aff9be8-0ffd-47a1-aeb8-3c77daffcc33: !Template
-    answer_choices: null
-    id: 7aff9be8-0ffd-47a1-aeb8-3c77daffcc33
+    id: 38349a24-8617-4ce2-ac6b-6e399fa5f926
     jinja: 'If the Chinese version says: {{translation["zh"]}}; then the English version
       should say:
 
@@ -171,10 +72,10 @@ templates:
     name: !!python/tuple
     - version-zh-en-source+target
     reference: ''
-  82897041-28e7-43d6-a9cc-4adf2599dda4: !Template
+  3a8705c6-a21d-47e3-917c-1eb50961af15: !Template
     answer_choices: null
-    id: 82897041-28e7-43d6-a9cc-4adf2599dda4
-    jinja: 'Translate  Chinese into English: {{translation["zh"]}}
+    id: 3a8705c6-a21d-47e3-917c-1eb50961af15
+    jinja: 'Translate this from Chinese into English: {{translation["zh"]}}
 
       |||  {{translation["en"]}}'
     metadata: !TemplateMetadata
@@ -185,24 +86,24 @@ templates:
     name: !!python/tuple
     - translate-zh-en-source+target
     reference: https://arxiv.org/pdf/1910.10683.pdf
-  877c7d17-b3bc-4637-ac86-d0903d8bd4fe: !Template
+  3b3240ec-ddc6-4f46-84c3-da784888db1c: !Template
     answer_choices: null
-    id: 877c7d17-b3bc-4637-ac86-d0903d8bd4fe
-    jinja: 'What is the Chinese translation of: {{translation["en"]}}
+    id: 3b3240ec-ddc6-4f46-84c3-da784888db1c
+    jinja: ' {{translation["en"]}}  translates into Chinese as:
 
-      |||  {{translation["zh"]}}'
+      ||| {{translation["zh"]}}'
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
       - BLEU
       original_task: true
     name: !!python/tuple
-    - gpt-3-en-zh-target
-    reference: GPT-3 paper
-  8cdeef19-7f5d-477d-b4a7-6859f01fb581: !Template
+    - translate_as_en-zh-target
+    reference: ''
+  43f47446-52d2-41a3-9ca3-abbb3fc1a93f: !Template
     answer_choices: null
-    id: 8cdeef19-7f5d-477d-b4a7-6859f01fb581
-    jinja: '{{translation["zh"]}} = English:
+    id: 43f47446-52d2-41a3-9ca3-abbb3fc1a93f
+    jinja: 'Chinese: {{translation["zh"]}} = English:
 
       ||| {{translation["en"]}}'
     metadata: !TemplateMetadata
@@ -211,25 +112,25 @@ templates:
       - BLEU
       original_task: true
     name: !!python/tuple
-    - xglm-zh-en-target
+    - xglm-zh-en-source+target
     reference: XGLM paper https://arxiv.org/abs/2112.10668
-  a3d7aab6-d5a6-4a93-b516-bfe3a7147228: !Template
+  45a91ef1-00d9-474f-a945-c2acfaee245b: !Template
     answer_choices: null
-    id: a3d7aab6-d5a6-4a93-b516-bfe3a7147228
-    jinja: 'Translate English into Chinese: {{translation["en"]}}
+    id: 45a91ef1-00d9-474f-a945-c2acfaee245b
+    jinja: 'What is the English translation of : {{translation["zh"]}}
 
-      |||  {{translation["zh"]}}'
+      |||  {{translation["en"]}}'
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
       - BLEU
       original_task: true
     name: !!python/tuple
-    - translate-en-zh-source+starget
-    reference: ''
-  ac3f9e03-e3bb-438a-b4e8-89e369dcc998: !Template
+    - gpt-3-zh-en-target
+    reference: GPT-3 paper
+  55efd980-0439-4eee-9ec9-bb8baf07bf8a: !Template
     answer_choices: null
-    id: ac3f9e03-e3bb-438a-b4e8-89e369dcc998
+    id: 55efd980-0439-4eee-9ec9-bb8baf07bf8a
     jinja: 'Given the following source text in English: {{translation["en"]}} , a
       good Chinese translation is:
 
@@ -242,36 +143,37 @@ templates:
     name: !!python/tuple
     - a_good_translation-en-zh-source+target
     reference: ''
-  afb387ba-0dd6-4ba8-8b74-4fdeaeeaba46: !Template
+  6696796b-d19b-4cba-a840-18b234522e59: !Template
     answer_choices: null
-    id: afb387ba-0dd6-4ba8-8b74-4fdeaeeaba46
-    jinja: 'What is the English translation of the Chinese  sentence: {{translation["zh"]}}
+    id: 6696796b-d19b-4cba-a840-18b234522e59
+    jinja: 'What is the Chinese translation of the English sentence: {{translation["en"]}}
 
-      |||  {{translation["en"]}}'
+      |||  {{translation["zh"]}}'
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
       - BLEU
       original_task: true
     name: !!python/tuple
-    - gpt-3-zh-en-source+target
-    reference: GPT-3 paper
-  c2ae991d-4700-433c-bf62-4cc0f69e7d35: !Template
+    - gpt-3-en-zh-source+target
+    reference: GPT 3 paper
+  6b31d70d-c109-44a6-aae8-22918c41127d: !Template
     answer_choices: null
-    id: c2ae991d-4700-433c-bf62-4cc0f69e7d35
-    jinja: 'Given the following source text in Chinese: {{translation["zh"]}} , a
-      good English translation is: ||| {{translation["en"]}}'
+    id: 6b31d70d-c109-44a6-aae8-22918c41127d
+    jinja: '{{translation["en"]}} = Chinese:
+
+      ||| {{translation["zh"]}}'
     metadata: !TemplateMetadata
       choices_in_prompt: false
       metrics:
       - BLEU
       original_task: true
     name: !!python/tuple
-    - a_good_translation-zh-en-source+target
-    reference: ''
-  c4d02e4e-1887-4ba9-8adc-80f7fe693ae2: !Template
+    - xglm-en-zh-target
+    reference: XGLM paper https://arxiv.org/abs/2112.10668
+  7c49b8a1-82cb-4ad3-96d2-be71e7bf4401: !Template
     answer_choices: null
-    id: c4d02e4e-1887-4ba9-8adc-80f7fe693ae2
+    id: 7c49b8a1-82cb-4ad3-96d2-be71e7bf4401
     jinja: 'If the original version says: {{translation["zh"]}}; then the English
       version should say:
 
@@ -284,52 +186,9 @@ templates:
     name: !!python/tuple
     - version-zh-en-target
     reference: ''
-  c61d619c-6f9a-46be-bf7b-205f6f36ab00: !Template
+  8b8653bb-d13a-4ad6-8236-d851b2036861: !Template
     answer_choices: null
-    id: c61d619c-6f9a-46be-bf7b-205f6f36ab00
-    jinja: 'If the original version says: {{translation["en"]}}; then the Chinese
-      version should say:
-
-      |||   {{translation["zh"]}}'
-    metadata: !TemplateMetadata
-      choices_in_prompt: false
-      metrics:
-      - BLEU
-      original_task: true
-    name: !!python/tuple
-    - version-en-zh-target
-    reference: ''
-  c6c6cc52-2295-4782-8b34-c4d169cdc771: !Template
-    answer_choices: null
-    id: c6c6cc52-2295-4782-8b34-c4d169cdc771
-    jinja: 'What is the Chinese translation of the English sentence: {{translation["en"]}}
-
-      |||  {{translation["zh"]}}'
-    metadata: !TemplateMetadata
-      choices_in_prompt: false
-      metrics:
-      - BLEU
-      original_task: true
-    name: !!python/tuple
-    - gpt-3-en-zh-source+target
-    reference: GPT 3 paper
-  d8779d0f-5d92-4873-bb34-3782cf31d47d: !Template
-    answer_choices: null
-    id: d8779d0f-5d92-4873-bb34-3782cf31d47d
-    jinja: 'English:  {{translation["en"]}}  translates into Chinese as:
-
-      ||| {{translation["zh"]}}'
-    metadata: !TemplateMetadata
-      choices_in_prompt: false
-      metrics:
-      - BLEU
-      original_task: true
-    name: !!python/tuple
-    - translate_as_en-zh-source+target
-    reference: ''
-  ea8d50d2-ffdf-4f3b-9f0a-fdb4dd9834ba: !Template
-    answer_choices: null
-    id: ea8d50d2-ffdf-4f3b-9f0a-fdb4dd9834ba
+    id: 8b8653bb-d13a-4ad6-8236-d851b2036861
     jinja: 'Chinese:  {{translation["zh"]}}  translates into English as:
 
       ||| {{translation["en"]}}'
@@ -341,24 +200,10 @@ templates:
     name: !!python/tuple
     - translate_as_zh-en-source+target
     reference: ''
-  eed08d24-e22a-4a29-8336-fc58912dc806: !Template
+  909a8bb9-3c03-4a86-bd16-de054ce83f73: !Template
     answer_choices: null
-    id: eed08d24-e22a-4a29-8336-fc58912dc806
-    jinja: 'What is the English translation of : {{translation["zh"]}}
-
-      |||  {{translation["en"]}}'
-    metadata: !TemplateMetadata
-      choices_in_prompt: false
-      metrics:
-      - BLEU
-      original_task: true
-    name: !!python/tuple
-    - gpt-3-zh-en-target
-    reference: GPT-3 paper
-  fdbe9566-0482-4697-8d71-aae344ce4d5d: !Template
-    answer_choices: null
-    id: fdbe9566-0482-4697-8d71-aae344ce4d5d
-    jinja: 'Translate into Chinese: {{translation["en"]}}
+    id: 909a8bb9-3c03-4a86-bd16-de054ce83f73
+    jinja: 'Translate this into Chinese: {{translation["en"]}}
 
       |||  {{translation["zh"]}}'
     metadata: !TemplateMetadata
@@ -368,4 +213,159 @@ templates:
       original_task: true
     name: !!python/tuple
     - translate-en-zh-target
+    reference: ''
+  9798947f-7a8e-4e1b-aa3a-8c51df5c761b: !Template
+    answer_choices: null
+    id: 9798947f-7a8e-4e1b-aa3a-8c51df5c761b
+    jinja: '{{translation["zh"]}}  translates into English as:
+
+      ||| {{translation["en"]}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      original_task: true
+    name: !!python/tuple
+    - translate_as_zh-en-target
+    reference: ''
+  b4302b25-ec16-49e3-bbf5-f994b73c9108: !Template
+    answer_choices: null
+    id: b4302b25-ec16-49e3-bbf5-f994b73c9108
+    jinja: 'Given the following passage: {{translation["en"]}} , a good Chinese translation
+      is: ||| {{translation["zh"]}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      original_task: true
+    name: !!python/tuple
+    - a_good_translation-en-zh-target
+    reference: ''
+  b6b0428e-e988-4408-9cea-5de22a57006d: !Template
+    answer_choices: null
+    id: b6b0428e-e988-4408-9cea-5de22a57006d
+    jinja: 'What is the English translation of the Chinese  sentence: {{translation["zh"]}}
+
+      |||  {{translation["en"]}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      original_task: true
+    name: !!python/tuple
+    - gpt-3-zh-en-source+target
+    reference: GPT-3 paper
+  cca404b5-2af7-493a-a31d-97c0417d1b28: !Template
+    answer_choices: null
+    id: cca404b5-2af7-493a-a31d-97c0417d1b28
+    jinja: 'How do you say {{translation["zh"]}} in English?
+
+      ||| {{translation["en"]}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      original_task: true
+    name: !!python/tuple
+    - how_to_say-zh-en-target
+    reference: ''
+  d9987f06-c787-45d0-b05f-3b6857f2fcb7: !Template
+    answer_choices: null
+    id: d9987f06-c787-45d0-b05f-3b6857f2fcb7
+    jinja: '{{translation["zh"]}} = English:
+
+      ||| {{translation["en"]}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      original_task: true
+    name: !!python/tuple
+    - xglm-zh-en-target
+    reference: XGLM paper https://arxiv.org/abs/2112.10668
+  dd529993-6d65-497f-9cea-ba3104763099: !Template
+    answer_choices: null
+    id: dd529993-6d65-497f-9cea-ba3104763099
+    jinja: 'What is the Chinese translation of: {{translation["en"]}}
+
+      |||  {{translation["zh"]}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      original_task: true
+    name: !!python/tuple
+    - gpt-3-en-zh-target
+    reference: GPT-3 paper
+  e2d3e03b-ee52-4819-a8f9-c97807ab15ae: !Template
+    answer_choices: null
+    id: e2d3e03b-ee52-4819-a8f9-c97807ab15ae
+    jinja: 'How do you say {{translation["en"]}} in Chinese?
+
+      ||| {{translation["zh"]}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      original_task: true
+    name: !!python/tuple
+    - how_to_say-en-zh-target
+    reference: ''
+  e47899c3-8ec9-41a0-b78e-1379e8a04d61: !Template
+    answer_choices: null
+    id: e47899c3-8ec9-41a0-b78e-1379e8a04d61
+    jinja: 'Given the following passage:  {{translation["zh"]}} , a good English translation
+      is:
+
+      ||| {{translation["en"]}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      original_task: true
+    name: !!python/tuple
+    - a_good_translation-zh-en-target
+    reference: ''
+  f067f264-a065-466d-ba1a-90b88b6927bd: !Template
+    answer_choices: null
+    id: f067f264-a065-466d-ba1a-90b88b6927bd
+    jinja: 'Translate this into English: {{translation["zh"]}}
+
+      |||  {{translation["en"]}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      original_task: true
+    name: !!python/tuple
+    - translate-zh-en-target
+    reference: ''
+  f0788fdb-f012-40d4-b5ff-f1a1e17472e8: !Template
+    answer_choices: null
+    id: f0788fdb-f012-40d4-b5ff-f1a1e17472e8
+    jinja: 'English:  {{translation["en"]}}  translates into Chinese as:
+
+      ||| {{translation["zh"]}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      original_task: true
+    name: !!python/tuple
+    - translate_as_en-zh-source+target
+    reference: ''
+  f51d1d6f-0555-43fb-b00a-ae7800153d1a: !Template
+    answer_choices: null
+    id: f51d1d6f-0555-43fb-b00a-ae7800153d1a
+    jinja: 'If the original version says: {{translation["en"]}}; then the Chinese
+      version should say:
+
+      |||   {{translation["zh"]}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - BLEU
+      original_task: true
+    name: !!python/tuple
+    - version-en-zh-target
     reference: ''
