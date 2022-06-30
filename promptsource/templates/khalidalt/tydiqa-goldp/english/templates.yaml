@@ -1,0 +1,41 @@
+dataset: khalidalt/tydiqa-goldp
+subset: english
+templates:
+  83b75c57-d9e8-4a14-881b-e3c74304f0c4: !Template
+    answer_choices: null
+    id: 83b75c57-d9e8-4a14-881b-e3c74304f0c4
+    jinja: 'Snippet: {{passage_text}}
+
+      I know that the answer to "{{question_text}}" appears somewhere in the text
+      snippet about {{title}}. Can you answer the question?
+
+      |||
+
+      {{answers.text | choice}} '
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - Squad
+      original_task: true
+    name: can_you_answer_the_question
+    reference: Ask question with Context
+  cb1e7b9c-314e-4d96-ae3d-27abc6d64f09: !Template
+    answer_choices: null
+    id: cb1e7b9c-314e-4d96-ae3d-27abc6d64f09
+    jinja: 'I am trying to figure out the answer to the question "{{question_text}}"
+
+      I found this text about {{document_title}} on Wikipedia and I think it contains
+      the answer. Can you tell me the answer?
+
+      Text: {{passage_text}}
+
+      |||
+
+      {{answers.text | choice}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      metrics:
+      - Squad
+      original_task: true
+    name: can_you_tell_me_the_answer
+    reference: Ask question with Context
