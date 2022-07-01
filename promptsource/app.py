@@ -25,6 +25,7 @@ from promptsource.utils import (
     removeHyphen,
     renameDatasetColumn,
     render_features,
+    linearizeDataset
 )
 
 
@@ -317,6 +318,8 @@ def run_app():
             split = st.sidebar.selectbox("Split", splits, key="split_select", index=index)
             dataset = dataset[split]
             dataset = renameDatasetColumn(dataset)
+            if dataset_key in ("wikiann"):
+                dataset = linearizeDataset(dataset)
 
             #
             # Loads template data
