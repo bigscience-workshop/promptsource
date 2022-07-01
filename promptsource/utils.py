@@ -1,5 +1,6 @@
 # coding=utf-8
 import os
+import copy
 
 import datasets
 import requests
@@ -27,6 +28,17 @@ def renameDatasetColumn(dataset):
             dataset = dataset.rename_column(cols, cols.replace("-", "_"))
     return dataset
 
+def linearizeDataset(dataset):
+    def linearize(examples):
+        new_examples = copy.deepcopy(examples)
+        num_tokens = len(new_examples['tokens'][0])
+        new_examples["token_idx"] = [x for x in range(num_tokens)]
+        for k, v in new_examples.items():
+            if k == "token_idx":
+                continue
+            new_examples[k] = [v[0][:] for _ in range(num_tokens)]
+        return new_examples
+    return dataset.map(linearize, batched=True, batch_size=1)
 
 #
 # Helper functions for datasets library
