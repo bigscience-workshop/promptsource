@@ -432,7 +432,7 @@ def run_app():
                     st.text(template.metadata.choices_in_prompt)
                     st.markdown("##### Metrics")
                     st.text(", ".join(template.metadata.metrics) if template.metadata.metrics else None)
-                    st.markdown("##### Languages")
+                    st.markdown("##### Prompt Languages")
                     if template.metadata.languages:
                         st.text(", ".join([format_language(tag) for tag in template.metadata.languages]))
                     else:
@@ -582,7 +582,7 @@ def run_app():
                             )
 
                             state.metadata.languages = st.multiselect(
-                                "Languages",
+                                "Prompt Languages",
                                 sorted(LANGUAGES.keys()),
                                 default=template.metadata.languages,
                                 format_func=format_language,
