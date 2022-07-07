@@ -6,6 +6,8 @@ templates:
     jinja: '{% set docs = document.split("3ed2dface8203c4c9dfb1a5dc58e41e0||") | reject("equalto",
       "") | list %}
 
+      {% if document != "" %}
+
       What are the key points across these news articles:
 
       {% for doc in docs %}
@@ -17,7 +19,9 @@ templates:
 
       |||
 
-      {{summary[2:]}}'
+      {{summary[2:]}}
+
+      {% endif %}'
     metadata: !TemplateMetadata
       choices_in_prompt: false
       languages:
@@ -34,6 +38,8 @@ templates:
     jinja: '{% set docs = document.split("3ed2dface8203c4c9dfb1a5dc58e41e0||") | reject("equalto",
       "") | list %}
 
+      {% if document != "" %}
+
       Synthesize these documents into a single one:
 
       {% for doc in docs %}
@@ -45,7 +51,9 @@ templates:
 
       |||
 
-      {{summary[2:]}}'
+      {{summary[2:]}}
+
+      {% endif %}'
     metadata: !TemplateMetadata
       choices_in_prompt: false
       languages:
@@ -62,6 +70,8 @@ templates:
     jinja: '{% set docs = document.split("3ed2dface8203c4c9dfb1a5dc58e41e0||") | reject("equalto",
       "") | list %}
 
+      {% if document != "" %}
+
       I want to edit the following articles into a more concise summary:
 
       {% for doc in docs %}
@@ -73,7 +83,9 @@ templates:
 
       |||
 
-      {{summary[2:]}}'
+      {{summary[2:]}}
+
+      {% endif %}'
     metadata: !TemplateMetadata
       choices_in_prompt: false
       languages:
@@ -90,6 +102,8 @@ templates:
     jinja: '{% set docs = document.split("3ed2dface8203c4c9dfb1a5dc58e41e0||") | reject("equalto",
       "") | list %}
 
+      {% if document != "" %}
+
       Write a summary of the following articles:
 
       {% for doc in docs %}
@@ -101,7 +115,9 @@ templates:
 
       |||
 
-      {{summary[2:]}}'
+      {{summary[2:]}}
+
+      {% endif %}'
     metadata: !TemplateMetadata
       choices_in_prompt: false
       languages:
@@ -118,13 +134,17 @@ templates:
     jinja: '{% set docs = document.split("3ed2dface8203c4c9dfb1a5dc58e41e0||") | reject("equalto",
       "") | list%}
 
+      {% if document != "" %}
+
       Write an expanded news article with plausible details from the following summary:
 
       {{summary[2:]}}
 
       |||
 
-      {{docs | choice}}'
+      {{docs | choice}}
+
+      {% endif %}'
     metadata: !TemplateMetadata
       choices_in_prompt: false
       languages:
@@ -141,6 +161,8 @@ templates:
     jinja: '{% set docs = document.split("3ed2dface8203c4c9dfb1a5dc58e41e0||") | reject("equalto",
       "") | list %}
 
+      {% if document != "" %}
+
       I''m trying to distill these articles down into one:
 
       {% for doc in docs %}
@@ -152,7 +174,9 @@ templates:
 
       |||
 
-      {{summary[2:]}}'
+      {{summary[2:]}}
+
+      {% endif %}'
     metadata: !TemplateMetadata
       choices_in_prompt: false
       languages:

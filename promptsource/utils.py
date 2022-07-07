@@ -132,9 +132,9 @@ def filter_english_datasets():
             continue
         metadata = dataset["cardData"]
 
-        if "languages" not in metadata:
+        if "language" not in metadata:
             continue
-        languages = metadata["languages"]
+        languages = metadata["language"]
 
         if "en" in languages or "en-US" in languages:
             english_datasets.append(dataset_name)
