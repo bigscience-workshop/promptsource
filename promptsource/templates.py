@@ -27,7 +27,18 @@ env.globals.update(zip=zip)
 # These are users whose datasets should be included in the results returned by
 # filter_english_datasets (regardless of their metadata)
 
-INCLUDED_USERS = {"Zaid", "craffel", "GEM", "aps", "khalidalt", "shanya", "rbawden", "BigScienceBiasEval", "gsarti", "Muennighoff"}
+INCLUDED_USERS = {
+    "Zaid",
+    "craffel",
+    "GEM",
+    "aps",
+    "khalidalt",
+    "shanya",
+    "rbawden",
+    "BigScienceBiasEval",
+    "gsarti",
+    "Muennighoff",
+}
 
 # These are the metrics with which templates can be tagged
 METRICS = {
