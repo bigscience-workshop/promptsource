@@ -29,6 +29,7 @@ def test_uuids():
 
             uuid = template.get_id()
             print(dataset_name, subset_name, uuid)
+            assert uuid not in all_uuids
 
             if uuid in all_uuids:
                 raise ValueError(f"Template {template_name} for dataset {dataset_name}/{subset_name} "
