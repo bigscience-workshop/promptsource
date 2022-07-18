@@ -28,7 +28,6 @@ def test_uuids():
             template = dataset_templates[template_name]
 
             uuid = template.get_id()
-            raise ValueError(3)
             print(dataset_name, subset_name, uuid)
 
             if uuid in all_uuids:
