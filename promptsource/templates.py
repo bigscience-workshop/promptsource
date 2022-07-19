@@ -37,6 +37,7 @@ INCLUDED_USERS = {
     "rbawden",
     "BigScienceBiasEval",
     "gsarti",
+    "Helsinki-NLP",
     "Muennighoff",
 }
 
