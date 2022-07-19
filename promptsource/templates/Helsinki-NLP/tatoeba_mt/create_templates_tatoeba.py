@@ -884,7 +884,7 @@ for lang in BLOOM_LANGS.split("\n")[1:-1]:
     lang = lang.replace("- ", "")
     try:
         name = languages.get(alpha2=lang)
-    except KeyError as e:
+    except KeyError:
         print(f"Could not find code {lang}. Skipping...")
         continue
     bloom_lang_codes.append(name.part3)
@@ -919,7 +919,7 @@ for lang_pair in _LanguagePairs:
         try:
             lang1_name = languages.get(part3=lang1.split("_")[0]).name
             lang2_name = languages.get(part3=lang2.split("_")[0]).name
-        except KeyError as e:
+        except KeyError:
             print(f"Could not find code {lang1} or {lang2}. Skipping..")
             continue
 
