@@ -38,6 +38,7 @@ INCLUDED_USERS = {
     "BigScienceBiasEval",
     "gsarti",
     "Helsinki-NLP",
+    "Muennighoff",
 }
 
 # These are the metrics with which templates can be tagged
