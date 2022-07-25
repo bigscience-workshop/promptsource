@@ -1,0 +1,104 @@
+dataset: mlqa
+subset: mlqa.en.en
+templates:
+  320fffe0-b752-43f8-bf50-ecf009703ef0: !Template
+    answer_choices: null
+    id: 320fffe0-b752-43f8-bf50-ecf009703ef0
+    jinja: '{{context}}
+
+      Q: {{question}}
+
+      Referring to the passage above, the correct answer to the given question is
+      ||| {{answers["text"][0]}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages:
+      - en
+      metrics:
+      - Squad
+      original_task: true
+    name: answer_given_context_and_question
+    reference: ''
+  52a9896f-34d5-4bde-8843-6d01d4621016: !Template
+    answer_choices: null
+    id: 52a9896f-34d5-4bde-8843-6d01d4621016
+    jinja: "{{context}}\n\nWith reference to the above context, {{question}} ||| \n\
+      \n{{answers.text[0]}}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages:
+      - en
+      metrics:
+      - Squad
+      original_task: true
+    name: answer_the_question
+    reference: ''
+  20b53380-5c3b-4884-8cd1-9b4316da7993: !Template
+    answer_choices: null
+    id: 20b53380-5c3b-4884-8cd1-9b4316da7993
+    jinja: 'Refer to the passage below and then answer the question afterwards:
+
+
+      Passage: {{context}}
+
+
+      Question: {{question}}
+
+      |||
+
+      {{answers["text"][0]}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages:
+      - en
+      metrics:
+      - Squad
+      original_task: true
+    name: answer_question_given_context
+    reference: ''
+  2cff064e-97e0-4026-94bc-3f7987856ec7: !Template
+    answer_choices: null
+    id: 2cff064e-97e0-4026-94bc-3f7987856ec7
+    jinja: 'D: {{context}}
+
+
+      Q: {{question}}
+
+
+      A: ||| {{answers["text"][0]}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages:
+      - en
+      metrics:
+      - Squad
+      original_task: true
+    name: given_context_answer_question_variation
+    reference: ''
+  g3d9ac66-1188-40d4-9ac9-17e0af50b788: !Template
+    answer_choices: null
+    id: g3d9ac66-1188-40d4-9ac9-17e0af50b788
+    jinja: "Read the following passage and then answer the question that follows: \n{{context}}\
+      \ \n{{question}}\n||| {{answers.text[0]}}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages: []
+      metrics:
+      - Squad
+      original_task: true
+    name: read_passage
+    reference: ''
+  g4d9ac66-1188-40d4-9ac9-17e0af50b788: !Template
+    answer_choices: null
+    id: g4d9ac66-1188-40d4-9ac9-17e0af50b788
+    jinja: "Question: {{question}}\n
+    Context: {{context}}\n
+    Answer: ||| {{answers.text[0]}}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages: []
+      metrics:
+      - Squad
+      original_task: true
+    name: read_passage
+    reference: ''
