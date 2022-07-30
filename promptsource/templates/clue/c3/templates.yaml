@@ -20,9 +20,9 @@ templates:
   5e06f05f-d7dd-4329-b6d8-3a62dcdba838: !Template
     answer_choices: '{{ choice | join(" ||| ") }}'
     id: 5e06f05f-d7dd-4329-b6d8-3a62dcdba838
-    jinja: "Question: \"{{question}}\"\nAnswer choices: {{ answer_choices[:-1] | join(',\
-      \ ') }}, or  {{ answer_choices[-1] }}?\nPassage: {% for statement in context\
-      \ %} \n{{ statement }}\n{% endfor %}\n|||\n{{ answer }}"
+    jinja: "Passage: {% for statement in context %} \n{{ statement }}\n{% endfor %}\n\
+      Question: \"{{question}}\"\nAnswer choices: {{ answer_choices[:-1] | join(',\
+      \ ') }}, or  {{ answer_choices[-1] }}?\n|||\n{{ answer }}"
     metadata: !TemplateMetadata
       choices_in_prompt: true
       languages:
@@ -50,10 +50,10 @@ templates:
   a5820d05-a8df-4e31-a284-6969e478174b: !Template
     answer_choices: '{{ choice | join('' ||| '') }}'
     id: a5820d05-a8df-4e31-a284-6969e478174b
-    jinja: "Given the dialogue / passage below, what is the answer for the question\
-      \ \"{{question}}\"\nAnswer choices: {{ answer_choices[:-1] | join(', ') }},\
-      \ or  {{ answer_choices[-1] }}?\n{% for statement in context %} \n{{ statement\
-      \ }}\n{% endfor %}\n|||\n{{ answer }}"
+    jinja: "{% for statement in context %} \n{{ statement }}\n{% endfor %}\nGiven\
+      \ the dialogue / passage above, what is the answer for the question \"{{question}}\"\
+      \nAnswer choices: {{ answer_choices[:-1] | join(', ') }}, or  {{ answer_choices[-1]\
+      \ }}?\n|||\n{{ answer }}"
     metadata: !TemplateMetadata
       choices_in_prompt: true
       languages:
@@ -62,4 +62,21 @@ templates:
       - Accuracy
       original_task: true
     name: answer-question-interrogative
+    reference: ''
+  f15acc3f-e067-488f-b426-f65aa604da55: !Template
+    answer_choices: null
+    id: f15acc3f-e067-488f-b426-f65aa604da55
+    jinja: "{% for statement in context %} \n{{ statement }}\n{% endfor %}\nGiven\
+      \ the dialogue / passage above, what is the answer for the question \"{{question}}\"\
+      \n|||\n{{ answer }}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages:
+      - zh
+      metrics:
+      - ROUGE
+      - BLEU
+      - Other
+      original_task: false
+    name: answer-question-interrogative-no-choices
     reference: ''
