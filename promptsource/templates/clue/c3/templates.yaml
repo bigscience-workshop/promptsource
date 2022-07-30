@@ -1,0 +1,82 @@
+dataset: clue
+subset: c3
+templates:
+  51b3c3fe-2fa2-474a-81f9-5b421c884109: !Template
+    answer_choices: '{{ choice | join(" ||| ") }}'
+    id: 51b3c3fe-2fa2-474a-81f9-5b421c884109
+    jinja: "{% for statement in context %} \n{{ statement }}\n{% endfor %}\nGiven\
+      \ the dialogue / passage above, use the following options to answer the question\
+      \ \"{{question}}\".\nOptions: \n- {{ answer_choices | join('\\n- ') }}\n|||\n\
+      {{ answer }}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      languages:
+      - zh
+      metrics:
+      - Accuracy
+      original_task: true
+    name: answer-question-affirmative
+    reference: ''
+  5e06f05f-d7dd-4329-b6d8-3a62dcdba838: !Template
+    answer_choices: '{{ choice | join(" ||| ") }}'
+    id: 5e06f05f-d7dd-4329-b6d8-3a62dcdba838
+    jinja: "Passage: {% for statement in context %} \n{{ statement }}\n{% endfor %}\n\
+      Question: \"{{question}}\"\nAnswer choices: {{ answer_choices[:-1] | join(',\
+      \ ') }}, or  {{ answer_choices[-1] }}?\n|||\n{{ answer }}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      languages:
+      - zh
+      metrics:
+      - Accuracy
+      original_task: true
+    name: question_choices_context
+    reference: ''
+  63b5e5df-40d3-47ee-b77e-bf385c042fa9: !Template
+    answer_choices: null
+    id: 63b5e5df-40d3-47ee-b77e-bf385c042fa9
+    jinja: "Passage: {% for statement in context %} \n{{ statement }}\n{% endfor %}\n\
+      What kind of question would elicit an answer response of {{ answer }}?\n|||\n\
+      {{ question }}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages:
+      - zh
+      metrics:
+      - ROUGE
+      original_task: false
+    name: generate_question
+    reference: ''
+  a5820d05-a8df-4e31-a284-6969e478174b: !Template
+    answer_choices: '{{ choice | join('' ||| '') }}'
+    id: a5820d05-a8df-4e31-a284-6969e478174b
+    jinja: "{% for statement in context %} \n{{ statement }}\n{% endfor %}\nGiven\
+      \ the dialogue / passage above, what is the answer for the question \"{{question}}\"\
+      \nAnswer choices: {{ answer_choices[:-1] | join(', ') }}, or  {{ answer_choices[-1]\
+      \ }}?\n|||\n{{ answer }}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      languages:
+      - zh
+      metrics:
+      - Accuracy
+      original_task: true
+    name: answer-question-interrogative
+    reference: ''
+  f15acc3f-e067-488f-b426-f65aa604da55: !Template
+    answer_choices: null
+    id: f15acc3f-e067-488f-b426-f65aa604da55
+    jinja: "{% for statement in context %} \n{{ statement }}\n{% endfor %}\nGiven\
+      \ the dialogue / passage above, what is the answer for the question \"{{question}}\"\
+      \n|||\n{{ answer }}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages:
+      - zh
+      metrics:
+      - ROUGE
+      - BLEU
+      - Other
+      original_task: false
+    name: answer-question-interrogative-no-choices
+    reference: ''

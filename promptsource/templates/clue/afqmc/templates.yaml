@@ -1,0 +1,69 @@
+dataset: clue
+subset: afqmc
+templates:
+  997437fd-6888-482d-95e9-ffd867b497ee: !Template
+    answer_choices: no ||| yes
+    id: 997437fd-6888-482d-95e9-ffd867b497ee
+    jinja: 'Do "{{ sentence1 }}" and "{{ sentence2 }}" express the same thing?
+
+      |||
+
+      {{ answer_choices[label] }}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages:
+      - zh
+      metrics:
+      - Accuracy
+      original_task: true
+    name: express_same_yes_no
+    reference: ''
+  a28370c0-d43b-405c-a9b1-4d77b3a27244: !Template
+    answer_choices: no ||| yes
+    id: a28370c0-d43b-405c-a9b1-4d77b3a27244
+    jinja: "\"{{ sentence1 }}\" and \"{{ sentence2 }}\" have the same meaning. Would\
+      \ you agree? Answer yes or no. \n|||\n{{ answer_choices[label] }}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      languages:
+      - zh
+      metrics:
+      - Accuracy
+      original_task: true
+    name: same_meaning_agree
+    reference: ''
+  d8c303a6-61a4-47f9-8623-cc72cc3294eb: !Template
+    answer_choices: null
+    id: d8c303a6-61a4-47f9-8623-cc72cc3294eb
+    jinja: 'Generate another sentence that has the same meaning as "{{ sentence1 }}".
+
+      |||
+
+      {% if label == 1 %}
+
+      {{ sentence2}}
+
+      {% endif %}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages:
+      - zh
+      metrics:
+      - ROUGE
+      original_task: false
+    name: generate_similar_sentence
+    reference: ''
+  e3fcaefd-4e8e-4491-aab7-8efeb67a2909: !Template
+    answer_choices: no ||| yes
+    id: e3fcaefd-4e8e-4491-aab7-8efeb67a2909
+    jinja: "Sentence 1: {{ sentence1 }}\nSentence 2: {{ sentence2 }}\nAre the two\
+      \ sentences similar? Yes or no? \n|||\n{{ answer_choices[label] }}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      languages:
+      - zh
+      metrics:
+      - Accuracy
+      original_task: true
+    name: is_similar_yes_no
+    reference: ''

@@ -1,0 +1,62 @@
+dataset: clue
+subset: tnews
+templates:
+  0c965fcd-d5e9-4e6a-b8ec-13253ed7bf4a: !Template
+    answer_choices: story ||| culture ||| entertainment ||| sports ||| finance |||
+      real estate ||| car ||| education ||| tech ||| military ||| travel ||| world
+      news ||| stock ||| agriculture ||| game
+    id: 0c965fcd-d5e9-4e6a-b8ec-13253ed7bf4a
+    jinja: 'Classify the title "{{ sentence }}" into the following topics:
+
+      - {{ answer_choices | join(''\n- '') }}
+
+      Topic: |||
+
+      {{ answer_choices[label] }}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      languages:
+      - zh
+      metrics:
+      - Accuracy
+      original_task: true
+    name: classify_title
+    reference: ''
+  26e75138-7aa4-4b13-b2fa-7cd4ad5484b3: !Template
+    answer_choices: story ||| culture ||| entertainment ||| sports ||| finance |||
+      real estate ||| car ||| education ||| tech ||| military ||| travel ||| world
+      news ||| stock ||| agriculture ||| game
+    id: 26e75138-7aa4-4b13-b2fa-7cd4ad5484b3
+    jinja: "Given the topics of {{answer_choices[:-1] | join(', ') }}, and {{ answer_choices[-1]\
+      \ }}, specify which of them best represents the following sentence:\n{{ sentence\
+      \ }}\n\nBest: ||| \n{{ answer_choices[label] }}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      languages:
+      - zh
+      metrics:
+      - Accuracy
+      original_task: true
+    name: best_represent
+    reference: ''
+  c242254c-bf5d-4efb-9dc3-51717bab7f78: !Template
+    answer_choices: story ||| culture ||| entertainment ||| sports ||| finance |||
+      real estate ||| car ||| education ||| tech ||| military ||| travel ||| world
+      news ||| stock ||| agriculture ||| game
+    id: c242254c-bf5d-4efb-9dc3-51717bab7f78
+    jinja: 'What topic does the following news title "{{ sentence }}" belong to? {{
+      answer_choices[0] | capitalize }}, {{ answer_choices[1:-1] | join('', '') }},
+      or {{ answer_choices[-1] }}?
+
+      |||
+
+      {{ answer_choices[label] }}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      languages:
+      - zh
+      metrics:
+      - Accuracy
+      original_task: true
+    name: what_title
+    reference: ''
