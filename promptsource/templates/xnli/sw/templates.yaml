@@ -1,0 +1,76 @@
+dataset: xnli
+subset: sw
+templates:
+  37d2f061-06b0-4aa3-af53-871a2b06748f: !Template
+    answer_choices: Ukweli ||| Wala ||| Uongo
+    id: 37d2f061-06b0-4aa3-af53-871a2b06748f
+    jinja: '{{premise}}
+      Swali: {{hypothesis}} Ukweli, Uongo, au Wala ? ||| {{ answer_choices[label]
+      }}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      languages:
+      - en
+      metrics:
+      - Accuracy
+      original_task: true
+    name: GPT-3 styleswht
+    reference: 'Same as reported in Figure G7 of the GPT-3 paper, except that there
+      is no task identifying tokens like "anli R1: ".'
+  9b75ff67-bb66-413b-a33d-325707b035d7: !Template
+    answer_choices: Ndio ||| Labda ||| Hapana
+    id: 9b75ff67-bb66-413b-a33d-325707b035d7
+    jinja: 'Ijapo {{premise}} Tunaweza kisi kuwa "{{hypothesis}}"? Ndio, hapana, au labda?
+      ||| {{ answer_choices[label] }}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      languages:
+      - en
+      metrics:
+      - Accuracy
+      original_task: true
+    name: can we infer
+    reference: Webson & Pavlick 2021
+  9bda8e36-c881-4c9a-a3a9-eec68388a6f6: !Template
+    answer_choices: Ndio ||| Labda ||| Hapana
+    id: 9bda8e36-c881-4c9a-a3a9-eec68388a6f6
+    jinja: '{{premise}} Tunahaki ya kusema kuwa "{{hypothesis}}"? Ndio, hapana,
+      au labda? ||| {{ answer_choices[label] }} '
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      languages:
+      - en
+      metrics:
+      - Accuracy
+      original_task: true
+    name: justified in sayingswht
+    reference: Webson & Pavlick 2021
+  d44c2947-f8e0-49ea-9770-e59f0581a921: !Template
+    answer_choices: Imehakikishwa ||| Inawezekana ||| Haiwezekani
+    id: d44c2947-f8e0-49ea-9770-e59f0581a921
+    jinja: "Ukidhania ni kweli kuwa {{premise}} \n\nKwa hivyo, \"{{hypothesis}}\" ni\
+      \ {{\"Imehakikishwa\"}}, {{\"Inawezekana\"}}, au {{\"Haiwezekani\"}}? ||| {{ answer_choices[label]\
+      \ }}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      languages:
+      - en
+      metrics:
+      - Accuracy
+      original_task: true
+    name: guaranteed/possible/impossibleswht
+    reference: Sanh et al. 2021
+  da368462-3a66-4222-9de1-05d66037a708: !Template
+    answer_choices: Sahihi ||| Isiohitimishwa ||| Isio Sahihi
+    id: da368462-3a66-4222-9de1-05d66037a708
+    jinja: '{{premise}} Ukitumia maelezo yaliyo hapo juu pekee na unayojua kuhusu dunia, "{{hypothesis}}" ni hakika sahihi, isio sahihi, au isiohitimishwa? |||
+      {{ answer_choices[label] }}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      languages:
+      - en
+      metrics:
+      - Accuracy
+      original_task: true
+    name: MNLI crowdsourceswht
+    reference: Adapted from Williams et al. 2018's instructions to crowdsourcing workers.
