@@ -17,7 +17,7 @@ from pygments.lexers import DjangoLexer
 
 from promptsource import DEFAULT_PROMPTSOURCE_CACHE_HOME
 from promptsource.session import _get_state
-from promptsource.templates import INCLUDED_USERS, DatasetTemplates, Template, TemplateCollection
+from promptsource.templates import INCLUDED_USERS, LANGUAGES, METRICS, DatasetTemplates, Template, TemplateCollection
 from promptsource.utils import (
     get_dataset,
     get_dataset_confs,
@@ -55,6 +55,17 @@ def get_infos(all_infos, d_name):
         os.makedirs(foldername)
         infos_dict.write_to_directory(foldername)
     all_infos[d_name] = infos_dict
+
+
+def format_language(tag):
+    """
+    Formats a language tag for display in the UI.
+
+    For example, if the tag is "en", then the function returns "en (English)"
+    :param tag: language tag
+    :return: formatted language name
+    """
+    return tag + " (" + LANGUAGES[tag] + ")"
 
 
 # add an argument for read-only
@@ -421,6 +432,11 @@ def run_app():
                     st.text(template.metadata.choices_in_prompt)
                     st.markdown("##### Metrics")
                     st.text(", ".join(template.metadata.metrics) if template.metadata.metrics else None)
+                    st.markdown("##### Prompt Languages")
+                    if template.metadata.languages:
+                        st.text(", ".join([format_language(tag) for tag in template.metadata.languages]))
+                    else:
+                        st.text(None)
                     st.markdown("##### Answer Choices")
                     if template.get_answer_choices_expr() is not None:
                         show_jinja(template.get_answer_choices_expr())
@@ -559,33 +575,22 @@ def run_app():
                                 help="Prompt explicitly lists choices in the template for the output.",
                             )
 
-                            # Metrics from here:
-                            # https://github.com/google-research/text-to-text-transfer-transformer/blob/4b580f23968c2139be7fb1cd53b22c7a7f686cdf/t5/evaluation/metrics.py
-                            metrics_choices = [
-                                "BLEU",
-                                "ROUGE",
-                                "Squad",
-                                "Trivia QA",
-                                "Accuracy",
-                                "Pearson Correlation",
-                                "Spearman Correlation",
-                                "MultiRC",
-                                "AUC",
-                                "COQA F1",
-                                "Edit Distance",
-                            ]
-                            # Add mean reciprocal rank
-                            metrics_choices.append("Mean Reciprocal Rank")
-                            # Add generic other
-                            metrics_choices.append("Other")
-                            # Sort alphabetically
-                            metrics_choices = sorted(metrics_choices)
                             state.metadata.metrics = st.multiselect(
                                 "Metrics",
-                                metrics_choices,
+                                sorted(METRICS),
                                 default=template.metadata.metrics,
                                 help="Select all metrics that are commonly used (or should "
                                 "be used if a new task) to evaluate this prompt.",
+                            )
+
+                            state.metadata.languages = st.multiselect(
+                                "Prompt Languages",
+                                sorted(LANGUAGES.keys()),
+                                default=template.metadata.languages,
+                                format_func=format_language,
+                                help="Select all languages used in this prompt. "
+                                "This annotation is independent from the language(s) "
+                                "of the dataset.",
                             )
 
                             # Answer choices

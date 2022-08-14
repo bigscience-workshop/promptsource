@@ -29,7 +29,7 @@ You can always update the name later. If you want to cancel the prompt, select
 1. **Write the prompt**. In the box labeled "Template," enter a Jinja expression.
 See the [getting started guide](#getting-started-using-jinja-to-write-prompts)
 and [cookbook](#jinja-cookbook) for details on how to write templates.
-1. **Fill in metadata**. Fill in the metadata for the current prompt: reference, original task, choices in templates, and answer choices.
+1. **Fill in metadata**. Fill in the metadata for the current prompt: reference, original task, choices in templates, metrics, languages, and answer choices.
 See [Metadata](#metadata) for more details about these fields.
 1. **Save the prompt**. Hit the "Save" button. The output of the prompt
 applied to the current example will appear in the right sidebar.
@@ -124,6 +124,7 @@ to generate a question for a given answer would not.
 the options for the possible outputs (regardless of whether `answer_choices` is used).
 * **Metrics.** Use the multiselect widget to select all metrics commonly used to evaluate
 this task. Choose “Other” if there is one that is not included in the list.
+* **Languages.** Use the multiselect widget to select all languages used in the prompt. This is independent of what languages are used in the underlying dataset. For example, you could have an English prompt for a Spanish dataset.
 * **Answer Choices.**  If the prompt has a small set of possible outputs (e.g., Yes/No,
 class labels, entailment judgements, etc.), then the prompt should define and use answer
 choices as follows. This allows evaluation to consider just the possible targets for
