@@ -1,12 +1,14 @@
 dataset: xnli
 subset: ar
 templates:
-  37d2f061-06b0-4aa3-af53-871a2b06748f: !Template
-    answer_choices: True ||| Neither ||| False
-    id: 37d2f061-06b0-4aa3-af53-871a2b06748f
+  97d2f061-06b0-4aa3-af53-871a2b06748f: !Template
+    answer_choices: صح ||| غير ذلك ||| خطأ
+    id: 97d2f061-06b0-4aa3-af53-871a2b06748f
     jinja: '{{premise}}
-
-      Question: {{hypothesis}} True, False, or Neither? ||| {{ answer_choices[label]
+      سؤال:
+      {{hypothesis}}
+      صح ، خطأ إو غير ذلك 
+      ||| {{ answer_choices[label]
       }}'
     metadata: !TemplateMetadata
       choices_in_prompt: true
@@ -18,11 +20,16 @@ templates:
     name: GPT-3 style
     reference: 'Same as reported in Figure G7 of the GPT-3 paper, except that there
       is no task identifying tokens like "anli R1: ".'
-  9b75ff67-bb66-413b-a33d-325707b035d7: !Template
-    answer_choices: Yes ||| Maybe ||| No
-    id: 9b75ff67-bb66-413b-a33d-325707b035d7
-    jinja: 'Suppose {{premise}} Can we infer that "{{hypothesis}}"? Yes, no, or maybe?
-      ||| {{ answer_choices[label] }} '
+  8b75ff67-bb66-413b-a33d-325707b035d7: !Template
+    answer_choices: نعم ||| ربما ||| لا
+    id: 8b75ff67-bb66-413b-a33d-325707b035d7
+    jinja: "افترض 
+    {{premise}} 
+    هل نستطيح أن نستنتج أن 
+    "{{hypothesis}}" 
+    نعم ، لا أو ربما؟
+      ||| {{ answer_choices[label] }} "
+
     metadata: !TemplateMetadata
       choices_in_prompt: true
       languages:
@@ -32,11 +39,13 @@ templates:
       original_task: true
     name: can we infer
     reference: Webson & Pavlick 2021
-  9bda8e36-c881-4c9a-a3a9-eec68388a6f6: !Template
-    answer_choices: Yes ||| Maybe ||| No
-    id: 9bda8e36-c881-4c9a-a3a9-eec68388a6f6
-    jinja: '{{premise}} Are we justified in saying that "{{hypothesis}}"? Yes, no,
-      or maybe? ||| {{ answer_choices[label] }} '
+  8bda8e36-c881-4c9a-a3a9-eec68388a6f6: !Template
+    answer_choices: نعم ||| ربما ||| لا
+    id: 8bda8e36-c881-4c9a-a3a9-eec68388a6f6
+    jinja:"{{premise}}
+     هل يمكننا استنتاج 
+     "{{hypothesis}}"
+      نعم، لا أو ربما؟ ||| {{ answer_choices[label] }} "
     metadata: !TemplateMetadata
       choices_in_prompt: true
       languages:
@@ -46,12 +55,16 @@ templates:
       original_task: true
     name: justified in saying
     reference: Webson & Pavlick 2021
-  d44c2947-f8e0-49ea-9770-e59f0581a921: !Template
-    answer_choices: Guaranteed ||| Possible ||| Impossible
-    id: d44c2947-f8e0-49ea-9770-e59f0581a921
-    jinja: "Assume it is true that {{premise}} \n\nTherefore, \"{{hypothesis}}\" is\
-      \ {{\"guaranteed\"}}, {{\"possible\"}}, or {{\"impossible\"}}? ||| {{ answer_choices[label]\
-      \ }}"
+  e44c2947-f8e0-49ea-9770-e59f0581a921: !Template
+    answer_choices: أكيدة ||| ممكنة ||| مستحيلة
+    id: e44c2947-f8e0-49ea-9770-e59f0581a921
+    jinja: "افترض أن 
+    {{premise}} 
+    لذلك فإن  
+    \"{{hypothesis}}\" 
+    تعتبر
+      {{\"أكيدة\"}}, {{\"ممكنة\"}}, or {{\"مستحيلة\"}}? 
+      ||| {{ answer_choices[label] }}"
     metadata: !TemplateMetadata
       choices_in_prompt: true
       languages:
@@ -61,12 +74,13 @@ templates:
       original_task: true
     name: guaranteed/possible/impossible
     reference: Sanh et al. 2021
-  da368462-3a66-4222-9de1-05d66037a708: !Template
-    answer_choices: Correct ||| Inconclusive ||| Incorrect
-    id: da368462-3a66-4222-9de1-05d66037a708
-    jinja: '{{premise}} Using only the above description and what you know about the
-      world, "{{hypothesis}}" is definitely correct, incorrect, or inconclusive? |||
-      {{ answer_choices[label] }}'
+  ea368462-3a66-4222-9de1-05d66037a708: !Template
+    answer_choices: صحيحة ||| لا يمكن التقرير ||| غير صحيحة
+    id: ea368462-3a66-4222-9de1-05d66037a708
+    jinja: '{{premise}} 
+    باستخدام الوصف الذي في الأعلى وكذلك المعرفة العامة،
+       "{{hypothesis}}"
+        تعتبر صحيحة، غير صحيحة، لا يمكن التقرير؟ ||| {{ answer_choices[label] }}'
     metadata: !TemplateMetadata
       choices_in_prompt: true
       languages:
