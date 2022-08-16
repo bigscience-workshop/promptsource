@@ -1,13 +1,32 @@
 dataset: tydiqa
 subset: secondary_task
 templates:
+  03628137-0327-4b02-8c9e-bc6cd914ffde: !Template
+    answer_choices: null
+    id: 03628137-0327-4b02-8c9e-bc6cd914ffde
+    jinja: "{% set lang = id.split(\"-\")[0] %}\n{% set _blank2 = [\"題名\", \"本文\"\
+      , \"トピック\" ] %}\n{% set _blank1 = [\"推測\", \"生成\", \"決定\"] %}\n{% set _blank=\
+      \ [\"段落\", \"文章\", \"文章の一部\", \"情報\"]|random %}\n{% set _position = [\"上へ\"\
+      , \"下へ\"] |random %}\n{% if lang == \"japanese\" %}\n    {% if  _position ==\
+      \ \"上へ\" %}\n        {{context}}{{\"\\n\"}}\n    {% endif %}\n\n     {{_position}}パッセージの{{_blank1|random}}を{{_blank1|random}}できますか。\n\
+      \n      {% if  _position == \"下へ\" %}\n\n          {{\"\\n\"}}{{context}}\n\n\
+      \      {% endif %}\n\n      |||\n\n      {{title}}\n{% endif %}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages:
+      - ja
+      metrics:
+      - BLEU
+      - ROUGE
+      original_task: false
+    name: jp_title_generation
+    reference: Generate title from a passage
   047ed162-f58b-42d5-81aa-0a17a9750230: !Template
     answer_choices: null
     id: 047ed162-f58b-42d5-81aa-0a17a9750230
-    jinja: "{% set lang = id.split('-')[0] %}\n{% if lang == \"english\" %}\nSnippet:\
-      \ {{context}}\nI know that the answer to \"{{question}}\" appears somewhere\
-      \ in the text snippet about {{title}}. Can you answer the question?\n|||\n{{answers.text\
-      \ | choice}} \n{% endif %}"
+    jinja: "Snippet: {{context}}\nI know that the answer to \"{{question}}\" appears\
+      \ somewhere in the text snippet about {{title}}. Can you answer the question?\n\
+      |||\n{{answers.text | choice}} \n"
     metadata: !TemplateMetadata
       choices_in_prompt: false
       languages:
@@ -15,7 +34,7 @@ templates:
       metrics:
       - Squad
       original_task: true
-    name: can_you_answer_the_question
+    name: en_can_you_answer_the_question
     reference: Ask question with Context
   05c99237-0e03-4ec9-95f3-dfde8ae25605: !Template
     answer_choices: null
@@ -27,10 +46,6 @@ templates:
       {% set _blank=["passage", "text", "text snippet", "info"]|random %}
 
       {% set _position = ["above", "following"] |random %}
-
-      {% set lang = id.split(''-'')[0] %}
-
-      {% if lang == "english" %}
 
       {% if  _position == "above" %}
 
@@ -44,36 +59,9 @@ templates:
 
       {{"\n"}}{{context}}
 
-      {% endif %}
-
       |||
 
       {{title}}
-
-      {% endif %}'
-    metadata: !TemplateMetadata
-      choices_in_prompt: null
-      languages:
-      - en
-      metrics:
-      - BLEU
-      - ROUGE
-      original_task: false
-    name: title_generation
-    reference: Generate title from a passage
-  1f4728ba-b25e-450e-975f-6dc8c0cb4bb1: !Template
-    answer_choices: null
-    id: 1f4728ba-b25e-450e-975f-6dc8c0cb4bb1
-    jinja: '{% set lang = id.split(''-'')[0] %}
-
-      {% if lang == "english" %}
-
-      Could you generate a question whose answer is {{answers.text | choice}} based
-      on the following context: {{context}}
-
-      |||
-
-      {{question}}
 
       {% endif %}'
     metadata: !TemplateMetadata
@@ -84,16 +72,87 @@ templates:
       - BLEU
       - ROUGE
       original_task: false
-    name: end_to_end_question_generation
+    name: en_title_generation
+    reference: Generate title from a passage
+  199dd1a7-c3c1-4552-9f8b-4e41316f1f2d: !Template
+    answer_choices: null
+    id: 199dd1a7-c3c1-4552-9f8b-4e41316f1f2d
+    jinja: "{% set lang = id.split(\"-\")[0] %}\n{% if lang == \"japanese\" %}\n\n\
+      \      私はいつも疑問に思っていました： {{question}}\n\n      ウィキペディアを検索したところ、{{title}}に関する次の文章が見つかりました.\n\
+      \n      本文： {{context}}\n\n      答えは何ですか？\n\n      |||\n\n      {{answers.text\
+      \ | choice}}\n\n{% endif %}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages:
+      - ja
+      metrics:
+      - Squad
+      original_task: true
+    name: jp_whats_the_answer
+    reference: Ask question with Context
+  1e9fc87c-cbdf-45e0-882e-6e3aa28521f3: !Template
+    answer_choices: null
+    id: 1e9fc87c-cbdf-45e0-882e-6e3aa28521f3
+    jinja: "{% set lang = id.split(\"-\")[0] %}\n{% if lang == \"japanese\" %}\n\n\
+      \      {{question}}\n\n      上記の質問に答えてください。\n\n      |||\n\n      {{answers.text\
+      \ | choice}}\n\n{% endif %}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages:
+      - ja
+      metrics:
+      - Squad
+      original_task: false
+    name: jp_simple_question_odqa
+    reference: Ask question without Context
+  1f4728ba-b25e-450e-975f-6dc8c0cb4bb1: !Template
+    answer_choices: null
+    id: 1f4728ba-b25e-450e-975f-6dc8c0cb4bb1
+    jinja: 'Could you generate a question whose answer is {{answers.text | choice}}
+      based on the following context: {{context}}
+
+      |||
+
+      {{question}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages:
+      - en
+      metrics:
+      - BLEU
+      - ROUGE
+      original_task: false
+    name: en_end_to_end_question_generation
     reference: generate end-to-end question from a passage.
+  29e63c0c-ba49-4f42-a1a5-42edf6dd7074: !Template
+    answer_choices: null
+    id: 29e63c0c-ba49-4f42-a1a5-42edf6dd7074
+    jinja: '{% set lang = id.split(''-'')[0] %}
+
+      {% if lang == "indonesian" %}
+
+      Bisakah kamu buat pertanyaan tentang {{title}} yang jawabannya adalah {{answers.text
+      | choice}} berdasarkan konteks berikut: {{context}}
+
+      |||
+
+      {{question}}
+
+      {% endif %}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages:
+      - id
+      metrics:
+      - BLEU
+      - ROUGE
+      original_task: false
+    name: id_end_to_end_question_generation_with_title
+    reference: generate end-to-end question from a passage with a title
   3d7ee9fe-ac53-4cf3-9913-431425225a5c: !Template
     answer_choices: null
     id: 3d7ee9fe-ac53-4cf3-9913-431425225a5c
-    jinja: '{% set lang = id.split(''-'')[0] %}
-
-      {% if lang == "english" %}
-
-      I am trying to figure out the answer to the question "{{question}}"
+    jinja: 'I am trying to figure out the answer to the question "{{question}}"
 
       I found this text about {{title}} on Wikipedia and I think it contains the answer.
       Can you tell me the answer?
@@ -104,22 +163,251 @@ templates:
 
       {{answers.text | choice}}
 
+      '
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages:
+      - en
+      metrics:
+      - Squad
+      original_task: true
+    name: en_can_you_tell_me_the_answer
+    reference: Ask question with Context
+  4b957bb6-d250-4074-a310-3b27d469b51c: !Template
+    answer_choices: null
+    id: 4b957bb6-d250-4074-a310-3b27d469b51c
+    jinja: "{% set lang = id.split(\"-\")[0]%}     \n      {% if lang == \"arabic\"\
+      \ %}\nأنا أحاول الإجابة على السؤال التالي \"{{question}}\"\nوجدت نص عنوانه \
+      \ {{title}} في ويكيبيديا وأعتقد أنه يتضمن الإجابة. هل يمكنك العثور على الإجابة؟\
+      \  \nالنص: {{context}}\n|||\n{{answers.text | choice}}\n\n{%endif%}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages:
+      - ar
+      metrics:
+      - Squad
+      original_task: true
+    name: ar_can_you_tell_me_the_answer
+    reference: ''
+  696c888c-3419-4e4c-b559-1d9772fa60ab: !Template
+    answer_choices: null
+    id: 696c888c-3419-4e4c-b559-1d9772fa60ab
+    jinja: "Extract in the passage the answer to the question: {{question}}\nPassage\
+      \ about {{title}}: {{context}}\n|||\n{{answers.text | choice}} \n"
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages:
+      - en
+      metrics:
+      - Squad
+      original_task: true
+    name: en_extract_answer
+    reference: Ask question with Context
+  6b114b18-7975-49d1-bca3-52129742aa43: !Template
+    answer_choices: null
+    id: 6b114b18-7975-49d1-bca3-52129742aa43
+    jinja: "{% set lang = id.split(\"-\")[0] %}\n{% if lang == \"japanese\" %}\n \
+      \     次の文章にもとづいて作ってください： {{context}}\n      |||\n      {{question}}\n{% endif\
+      \ %}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages:
+      - ja
+      metrics:
+      - BLEU
+      - ROUGE
+      original_task: false
+    name: jp_end_to_end_question_generation_with_title
+    reference: generate end-to-end question from a passage with a title
+  6ee41c5b-36ed-45d1-a3f1-3293e8115bda: !Template
+    answer_choices: null
+    id: 6ee41c5b-36ed-45d1-a3f1-3293e8115bda
+    jinja: '{% set _blank2 = ["judul", "topik" ] %}
+
+      {% set _blank1 = ["tebak", "menebak", "menerka", "menentukan", "membuat"] %}
+
+      {% set _blank=["paragraf", "teks", "potongan teks", "konten"]|random %}
+
+      {% set _position = ["di atas", "berikut"] |random %}
+
+      {% set lang = id.split(''-'')[0] %}
+
+      {% if lang == "indonesian" %}
+
+      {% if  _position == "di atas" %}
+
+      {{context}}{{"\n"}}
+
+      {% endif %}
+
+      Bisakah kamu {{_blank1|random}} {{_blank2|random}} dari {{_blank}} {{_position}}?
+
+      {% if  _position == "berikut" %}
+
+      {{"\n"}}{{context}}
+
+      {% endif %}
+
+      |||
+
+      {{title}}
+
       {% endif %}'
     metadata: !TemplateMetadata
       choices_in_prompt: false
       languages:
-      - en
+      - id
+      metrics:
+      - BLEU
+      - ROUGE
+      original_task: false
+    name: id_title_generation
+    reference: Generate title from a passage
+  7d94a83b-f07c-44bd-a990-ef7aa3c5e3cc: !Template
+    answer_choices: null
+    id: 7d94a83b-f07c-44bd-a990-ef7aa3c5e3cc
+    jinja: "{% set lang = id.split(\"-\")[0] %}\n{% if lang == \"japanese\" %}\n \
+      \   質問「{{question}}」に対する答えを本文中から抜き出してください。\n    {{title}}に関する文章:{{context}}\n\
+      \    |||\n    {{answers.text | choice}}\n{% endif %}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages:
+      - ja
       metrics:
       - Squad
       original_task: true
-    name: can_you_tell_me_the_answer
+    name: jp_extract_answer
     reference: Ask question with Context
-  696c888c-3419-4e4c-b559-1d9772fa60ab: !Template
+  862cfa05-2c63-4535-9d1d-4d4716214e91: !Template
     answer_choices: null
-    id: 696c888c-3419-4e4c-b559-1d9772fa60ab
-    jinja: "{% set lang = id.split('-')[0] %}\n{% if lang == \"english\" %}\nExtract\
-      \ in the passage the answer to the question: {{question}}\nPassage about {{title}}:\
-      \ {{context}}\n|||\n{{answers.text | choice}} \n{% endif %}"
+    id: 862cfa05-2c63-4535-9d1d-4d4716214e91
+    jinja: "{% set lang = id.split('-')[0] %}\n{% if lang == \"indonesian\" %}\nBerdasarkan\
+      \ paragraf di bawah, ekstraksikan jawaban dari pertanyaan berikut: {{question}}\n\
+      Paragraf tentang {{title}}: {{context}}\n|||\n{{answers.text | choice}} \n{%\
+      \ endif %}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages:
+      - id
+      metrics:
+      - Squad
+      original_task: true
+    name: id_extract_answer
+    reference: Ask question with Context
+  8d928b6b-0191-4c41-ab63-abbbea56248c: !Template
+    answer_choices: null
+    id: 8d928b6b-0191-4c41-ab63-abbbea56248c
+    jinja: '{% set lang = id.split(''-'')[0] %}
+
+      {% if lang == "indonesian" %}
+
+      Dapatkah kamu membuat pertanyaan yang jawabannya "{{answers.text | choice}}"
+      berdasarkan konteks berikut: {{context}}
+
+      |||
+
+      {{question}}
+
+      {% endif %}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages:
+      - id
+      metrics:
+      - BLEU
+      - ROUGE
+      original_task: false
+    name: id_end_to_end_question_generation
+    reference: generate end-to-end question from a passage.
+  96d36d4a-d937-4f1f-b7ef-1e7f30491233: !Template
+    answer_choices: null
+    id: 96d36d4a-d937-4f1f-b7ef-1e7f30491233
+    jinja: "{% set lang = id.split(\"-\")[0] %}\n{% if lang == \"japanese\" %}\n \
+      \   本文:{{context}}\n    {{title}}の本文中のどこかに{{question}}の答えがあるようです。この質問に対する答えを見つけてください。\n\
+      \    |||\n    {{answers.text | choice}}\n{% endif %}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages:
+      - ja
+      metrics:
+      - Squad
+      original_task: true
+    name: jp_can_you_answer_the_question
+    reference: Ask question with Context
+  9f643d5c-de82-430e-9bf6-2bb3b92f6d97: !Template
+    answer_choices: null
+    id: 9f643d5c-de82-430e-9bf6-2bb3b92f6d97
+    jinja: "{% set lang = id.split(\"-\")[0] %}\n{% if lang == \"japanese\" %}\n\n\
+      \      次の質問に対する答えを探しています： 「{{question}}」\n\n      ウィキペディアで {{title}}に関する記事を見つけました。この文章中に答えが含まれているようです。\n\
+      \      答えを教えてください。\n\n      文章： {{context}}\n\n      |||\n\n      {{answers.text\
+      \ | choice}}\n\n{% endif %}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages:
+      - ja
+      metrics:
+      - Squad
+      original_task: true
+    name: jp_can_you_tell_me_the_answer
+    reference: Ask question with Context
+  b050640a-8629-47c4-8226-b190ff796604: !Template
+    answer_choices: null
+    id: b050640a-8629-47c4-8226-b190ff796604
+    jinja: "{% set lang = id.split(\"-\")[0] %}\n{% if lang == \"japanese\" %}\n\n\
+      \      生徒の{{title}}に関する知識を試しています。\n\n      文章にもとづいて ({{context}})、 この質問に答えてもらいます：{{question}}\n\
+      \      答えは本文中にあります。\n\n      |||\n\n      {{answers.text | choice}}\n\n{% endif\
+      \ %}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages:
+      - ja
+      metrics:
+      - Squad
+      original_task: true
+    name: jp_testing_students
+    reference: ''
+  b9eebfba-560b-4b57-8d5a-700e886fbd5f: !Template
+    answer_choices: null
+    id: b9eebfba-560b-4b57-8d5a-700e886fbd5f
+    jinja: "{% set lang = id.split(\"-\")[0] %}\n{% if lang == \"japanese\" %}\n\n\
+      \      答えが{{answers.text | choice}}となるような質問を次の文章にもとづいて作ってください。\n      {{context}}\n\
+      \n      |||\n\n      {{question}}\n\n{% endif %}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages:
+      - ja
+      metrics:
+      - BLEU
+      - ROUGE
+      original_task: false
+    name: jp_end_to_end_question_generation
+    reference: generate end-to-end question from a passage.
+  be8e455c-f3d2-434f-ab56-d1926252b691: !Template
+    answer_choices: null
+    id: be8e455c-f3d2-434f-ab56-d1926252b691
+    jinja: "{% set lang = id.split(\"-\")[0]%}     \n      {% if lang == \"arabic\"\
+      \ %}\nلطالما تسائلت حول: {{question}}\nبحث في ويكيبيديا ووجدت نص بعنوان {{title}}.\n\
+      النص: {{context}}\nما هي إجابة السؤال؟\n|||\n{{answers.text | choice}}\n{%endif%}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages:
+      - ar
+      metrics:
+      - Squad
+      original_task: true
+    name: ar_whats_the_answer
+    reference: ''
+  c2356ac6-7761-43b8-9fb9-38ed25c0db9b: !Template
+    answer_choices: null
+    id: c2356ac6-7761-43b8-9fb9-38ed25c0db9b
+    jinja: 'I am testing my students'' knowledge about {{title}}.
+
+      Based on the context ({{context}}), here''s the question to answer: {{question}}.
+      The answer is in the context.
+
+      |||
+
+      {{answers.text | choice}}'
     metadata: !TemplateMetadata
       choices_in_prompt: false
       languages:
@@ -127,19 +415,18 @@ templates:
       metrics:
       - Squad
       original_task: true
-    name: extract_answer
-    reference: Ask question with Context
-  c2356ac6-7761-43b8-9fb9-38ed25c0db9b: !Template
+    name: en_testing_students
+    reference: ''
+  c30a9c94-94b7-4ae3-a006-c74c586684e3: !Template
     answer_choices: null
-    id: c2356ac6-7761-43b8-9fb9-38ed25c0db9b
-    jinja: '{% set lang = id.split("-")[0] %}
+    id: c30a9c94-94b7-4ae3-a006-c74c586684e3
+    jinja: '{% set lang = id.split(''-'')[0] %}
 
-      {% if lang == "english" %}
+      {% if lang == "indonesian" %}
 
-      I am testing my students'' knowledge about {{title}}.
+      {{question}}
 
-      Based on the context ({{context}}), here''s the question to answer: {{question}}.
-      The answer is in the context.
+      Jawablah pertanyaan di atas.
 
       |||
 
@@ -149,27 +436,21 @@ templates:
     metadata: !TemplateMetadata
       choices_in_prompt: false
       languages:
-      - en
+      - id
       metrics:
       - Squad
       original_task: true
-    name: testing_students
-    reference: ''
+    name: id_simple_question_odqa
+    reference: Ask question without Context
   d0966d12-6d15-4138-b273-5fe2e1619ff9: !Template
     answer_choices: null
     id: d0966d12-6d15-4138-b273-5fe2e1619ff9
-    jinja: '{% set lang = id.split(''-'')[0] %}
-
-      {% if lang == "english" %}
-
-      Could you generate a question about {{title}} and whose answer is {{answers.text
+    jinja: 'Could you generate a question about {{title}} and whose answer is {{answers.text
       | choice}} based on the following context: {{context}}
 
       |||
 
-      {{question}}
-
-      {% endif %}'
+      {{question}}'
     metadata: !TemplateMetadata
       choices_in_prompt: false
       languages:
@@ -178,18 +459,47 @@ templates:
       - BLEU
       - ROUGE
       original_task: false
-    name: end_to_end_question_generation_with_title
+    name: en_end_to_end_question_generation_with_title
     reference: generate end-to-end question from a passage with a title
-  f276815f-f7c0-4dab-b12e-08e76da6d760: !Template
+  d4a0909a-3fcc-459f-9034-cd082b18407f: !Template
     answer_choices: null
-    id: f276815f-f7c0-4dab-b12e-08e76da6d760
+    id: d4a0909a-3fcc-459f-9034-cd082b18407f
+    jinja: '{% set lang = id.split("-")[0] %}
+
+      {% if lang == "indonesian" %}
+
+      Saya sedang menguji murid saya seputar {{title}}.
+
+      Berdasarkan paragraf konteks ({{context}}), berikut adalah pertanyaan untuk
+      dijawab: {{question}}. Jawabannya terdapat pada paragraf konteks.
+
+      |||
+
+      {{answers.text | choice}}
+
+      {% endif %}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages: []
+      metrics:
+      - Squad
+      original_task: true
+    name: id_testing_students
+    reference: ''
+  d76bdfee-c839-409c-830c-9a7644124552: !Template
+    answer_choices: null
+    id: d76bdfee-c839-409c-830c-9a7644124552
     jinja: '{% set lang = id.split(''-'')[0] %}
 
-      {% if lang == "english" %}
+      {% if lang == "indonesian" %}
 
-      {{question}}
+      Aku penasaran sama pertanyaan ini: {{question}}
 
-      Answer the question above.
+      Dari Wikipedia, aku ketemu paragraf tentang {{title}}.
+
+      Paragraf: {{context}}
+
+      Apa jawabannya?
 
       |||
 
@@ -199,20 +509,126 @@ templates:
     metadata: !TemplateMetadata
       choices_in_prompt: false
       languages:
+      - id
+      metrics:
+      - Squad
+      original_task: true
+    name: id_whats_the_answer
+    reference: Ask question with Context
+  d8ca2cc4-f4e0-4619-a633-5b4a1e91c021: !Template
+    answer_choices: null
+    id: d8ca2cc4-f4e0-4619-a633-5b4a1e91c021
+    jinja: '{% set lang = id.split(''-'')[0] %}
+
+      {% if lang == "indonesian" %}
+
+      Aku lagi cari tau jawaban dari pertanyaan "{{question}}"
+
+      Aku ketemu artikel tentang {{title}} di Wikipedia dan kayaknya jawabannya ada
+      di artikel itu. Kamu bisa kasih tau aku jawabannya?
+
+      Artikel: {{context}}
+
+      |||
+
+      {{answers.text | choice}}
+
+      {% endif %}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages:
+      - id
+      metrics:
+      - Squad
+      original_task: true
+    name: id_can_you_tell_me_the_answer
+    reference: Ask question with Context
+  e8157b4f-17bc-42fc-9655-05a555822337: !Template
+    answer_choices: null
+    id: e8157b4f-17bc-42fc-9655-05a555822337
+    jinja: "{% set lang = id.split(\"-\")[0]%}     \n      {% if lang == \"arabic\"\
+      \ %}\nالنص: {{context}}\nاجابة هذا السؤال  \"{{question}}\" موجودة في النص المقتطع\
+      \ بعنوان: {{title}}. هل يمكنك الإجابة عن السؤال؟\n|||\n{{answers.text | choice}}\n\
+      {%endif%}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages:
+      - ar
+      metrics:
+      - Squad
+      original_task: true
+    name: ar_can_you_answer_the_question
+    reference: ''
+  e95c4e6b-a642-4e16-89a6-5a614aacc2af: !Template
+    answer_choices: null
+    id: e95c4e6b-a642-4e16-89a6-5a614aacc2af
+    jinja: "{% set lang = id.split(\"-\")[0]%}     \n      {% if lang == \"arabic\"\
+      \ %}\nاستخرج اجابة السؤال التالي من النص: {{question}}\nالنص يتحدث عن {{title}}:\
+      \ {{context}}\n|||\n{{answers.text | choice}} \n\n{%endif%}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages:
+      - ar
+      metrics:
+      - Squad
+      original_task: true
+    name: ar_extract_answer
+    reference: ''
+  efba651e-d475-4878-a89c-64a1fa65442a: !Template
+    answer_choices: null
+    id: efba651e-d475-4878-a89c-64a1fa65442a
+    jinja: "{% set lang = id.split(\"-\")[0]%}     \n      {% if lang == \"arabic\"\
+      \ %}\nأحاول اختبار مستوى الطلاب المعرفي في موضوع: {{title}}.\nبناء على هذا النص\
+      \ ({{context}})، والسؤال التالي: {{question}}. الإجابة موجودة في سياق النص.\n\
+      |||\n{{answers.text | choice}}\n{%endif%}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages:
+      - ar
+      metrics:
+      - Squad
+      original_task: true
+    name: ar_testing_students
+    reference: ''
+  f276815f-f7c0-4dab-b12e-08e76da6d760: !Template
+    answer_choices: null
+    id: f276815f-f7c0-4dab-b12e-08e76da6d760
+    jinja: '{{question}}
+
+      Answer the question above.
+
+      |||
+
+      {{answers.text | choice}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages:
       - en
       metrics:
       - Squad
       original_task: false
-    name: simple_question_odqa
+    name: en_simple_question_odqa
     reference: Ask question without Context
+  fbb0d332-f7f2-451a-bd5d-b2e90b820df7: !Template
+    answer_choices: null
+    id: fbb0d332-f7f2-451a-bd5d-b2e90b820df7
+    jinja: "{% set lang = id.split('-')[0] %}\n{% if lang == \"indonesian\" %}\nPotongan\
+      \ teks: {{context}}\nSaya tahu bahwa jawaban dari pertanyaan \"{{question}}\"\
+      \ muncul di potongan teks berjudul {{title}} di atas. Bisakah kamu menjawab\
+      \ pertanyaan tadi?\n|||\n{{answers.text | choice}} \n{% endif %}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages:
+      - id
+      metrics:
+      - Squad
+      original_task: true
+    name: id_can_you_answer_the_question
+    reference: Ask question with Context
   fcf0920f-5599-44a6-bf2a-9ef6bbbe1e64: !Template
     answer_choices: null
     id: fcf0920f-5599-44a6-bf2a-9ef6bbbe1e64
-    jinja: '{% set lang = id.split(''-'')[0] %}
-
-      {% if lang == "english" %}
-
-      I''ve always wondered: {{question}}
+    jinja: 'I''ve always wondered: {{question}}
 
       I searched Wikipedia and I found the following text snippet about {{title}}.
 
@@ -224,7 +640,7 @@ templates:
 
       {{answers.text | choice}}
 
-      {% endif %}'
+      '
     metadata: !TemplateMetadata
       choices_in_prompt: false
       languages:
@@ -232,5 +648,5 @@ templates:
       metrics:
       - Squad
       original_task: true
-    name: whats_the_answer
+    name: en_whats_the_answer
     reference: Ask question with Context

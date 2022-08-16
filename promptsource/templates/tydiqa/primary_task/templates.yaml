@@ -1,12 +1,53 @@
 dataset: tydiqa
 subset: primary_task
 templates:
+  011c71dc-519a-49ff-829a-1e1501dc7bb2: !Template
+    answer_choices: نعم ||| لا ||| ليس مما سبق
+    id: 011c71dc-519a-49ff-829a-1e1501dc7bb2
+    jinja: '{% if language == "arabic" %}
+
+      سؤال: {{question_text}}
+
+      أجب عن السؤال ب{{answer_choices[0]}} أو {{answer_choices[1]}}. اذا لم يكن بالإمكان
+      ذلك أجب بـ  {{answer_choices[2]}} .
+
+      Hint: {{document_plaintext}}
+
+      |||
+
+      {{annotations.yes_no_answer[0] |replace("NONE","ليس مما سبق")| replace("NO","لا")|
+      replace("YES"," نعم") }}
+
+      {% endif %}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      languages:
+      - ar
+      metrics:
+      - Accuracy
+      original_task: true
+    name: ar_yes_no_none
+    reference: ''
+  11aa0d9b-0d3e-4df0-8d83-16477adbbc06: !Template
+    answer_choices: نعم ||| لا
+    id: 11aa0d9b-0d3e-4df0-8d83-16477adbbc06
+    jinja: "{% if language == \"arabic\" %}\n{% if annotations.yes_no_answer[0] ==\
+      \ \"YES\" or annotations.yes_no_answer[0] == \"NO\" %} \nبناء على النص المقتطع,\
+      \ {{question_text}} \n{{document_plaintext}}\n||| \n{{annotations.yes_no_answer[0]\
+      \ | replace(\"NO\",\"لا\")| replace(\"YES\",\" نعم\") }}\n{% endif %}\n{% endif%}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages:
+      - ar
+      metrics:
+      - Accuracy
+      original_task: true
+    name: ar_based_on_the_text
+    reference: ''
   16f11e56-a78d-4e33-bba1-586f9947baf7: !Template
     answer_choices: Yes ||| No ||| None
     id: 16f11e56-a78d-4e33-bba1-586f9947baf7
-    jinja: '{% if language == "english" %}
-
-      I wonder {{question_text}}.
+    jinja: 'I wonder {{question_text}}.
 
       Help me answer this question with "{{answer_choices[0]}}" or "{{answer_choices[1]}}"
       or "{{answer_choices[2]}}" if none of the first two answers apply.
@@ -21,7 +62,7 @@ templates:
 
       {{annotations.yes_no_answer[0] | capitalize}}
 
-      {% endif %}'
+      '
     metadata: !TemplateMetadata
       choices_in_prompt: true
       languages:
@@ -29,15 +70,39 @@ templates:
       metrics:
       - Accuracy
       original_task: true
-    name: heres_what_I_found
+    name: en_heres_what_I_found
+    reference: ''
+  1aa48c84-f64b-493c-bc9b-e5be15690109: !Template
+    answer_choices: はい ||| いいえ ||| どちらでもない
+    id: 1aa48c84-f64b-493c-bc9b-e5be15690109
+    jinja: "{% if language == \"japanese\" %} \n質問: {{question_text}}\n質問に {{\"はい\"\
+      }}か{{\"いいえ\"}}で答えてください。 どちらもあてはまらない場合は{{\"どちらでもない\"}}と答えてください。\nヒント: {{document_plaintext}}\n\
+      |||\n{{{\"YES\":\"はい\", \"NO\":\"いいえ\", \"NONE\": \"どちらでもない\"}[annotations.yes_no_answer[0]]}}\n\
+      {% endif %}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages:
+      - ja
+      metrics:
+      - Accuracy
+      original_task: true
+    name: jp_yes_no_none
     reference: ''
   297fc59f-bd92-493b-ae61-3c3adcb46eb3: !Template
     answer_choices: Yes ||| No ||| None
     id: 297fc59f-bd92-493b-ae61-3c3adcb46eb3
-    jinja: "{% if language == \"english\" %} \nQuestion: {{question_text}}\nAnswer\
-      \ the question with {{\"Yes\"}} or {{\"No\"}}. If it is not possible then answer\
-      \ {{\"None\"}}.\nHint: {{document_plaintext}}\n|||\n{{annotations.yes_no_answer[0]\
-      \ | capitalize}}\n{% endif %}"
+    jinja: 'Question: {{question_text}}
+
+      Answer the question with {{"Yes"}} or {{"No"}}. If it is not possible then answer
+      {{"None"}}.
+
+      Hint: {{document_plaintext}}
+
+      |||
+
+      {{annotations.yes_no_answer[0] | capitalize}}
+
+      '
     metadata: !TemplateMetadata
       choices_in_prompt: false
       languages:
@@ -45,15 +110,14 @@ templates:
       metrics:
       - Accuracy
       original_task: true
-    name: yes_no_none
+    name: en_yes_no_none
     reference: ''
   4b21e3be-fba4-49b7-beb1-a61de26eb0ac: !Template
     answer_choices: Yes ||| No
     id: 4b21e3be-fba4-49b7-beb1-a61de26eb0ac
-    jinja: "{% if language == \"english\" %} \n    {% if annotations.yes_no_answer[0]\
-      \ == \"YES\" or annotations.yes_no_answer[0] == \"NO\" %} \nAnswer the question\
-      \ about {{document_title}}. {{question_text}}\n||| \n{{annotations.yes_no_answer[0]\
-      \ | capitalize}} \n    {% endif %} \n{% endif %} "
+    jinja: " {% if annotations.yes_no_answer[0] == \"YES\" or annotations.yes_no_answer[0]\
+      \ == \"NO\" %} \nAnswer the question about {{document_title}}. {{question_text}}\n\
+      ||| \n{{annotations.yes_no_answer[0] | capitalize}} \n    {% endif %} "
     metadata: !TemplateMetadata
       choices_in_prompt: false
       languages:
@@ -61,14 +125,76 @@ templates:
       metrics:
       - Accuracy
       original_task: false
-    name: open_domain_qa_without_choices
+    name: en_open_domain_qa_without_choices
     reference: Answer Yes/No question
+  590c276c-d649-4296-816a-e759167f3556: !Template
+    answer_choices: はい ||| いいえ ||| どちらでもない
+    id: 590c276c-d649-4296-816a-e759167f3556
+    jinja: "{% if language == \"japanese\" %}\n      {{question_text}} のか気になります。\n\
+      \      この質問に「はい」または「いいえ」のどちらかで答えてください。\n      どちらもあてはまらない場合、「どちらでもない」と答えてください。\n\
+      \n      インターネットでこんな記事を見つけました：\n\n      タイトル： {{document_title}}\n\n      本文：\
+      \ {{document_plaintext}}\n\n      |||\n      \n      {{{\"YES\":\"はい\", \"NO\"\
+      :\"いいえ\", \"NONE\": \"どちらでもない\"}[annotations.yes_no_answer[0]]}}\n\n{% endif\
+      \ %}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      languages:
+      - ja
+      metrics:
+      - Accuracy
+      original_task: true
+    name: jp_heres_what_I_found
+    reference: ''
+  5c48e84c-10e4-44ee-b2b3-94a4d018e833: !Template
+    answer_choices: Ya ||| Tidak ||| Tidak ada
+    id: 5c48e84c-10e4-44ee-b2b3-94a4d018e833
+    jinja: "{% if language == \"indonesian\" %} \nPertanyaan: {{question_text}}\n\
+      Jawab pertanyaan tersebut dengan {{\"Ya\"}} atau {{\"Tidak\"}}. Jika tidak memungkinkan,\
+      \ jawab dengan {{\"Tidak ada\"}}.\nPetunjuk: {{document_plaintext}}\n|||\n{{{\"\
+      NO\":\"Tidak\",\"YES\": \"Ya\", \"NONE\": \"Tidak ada\"}[annotations.yes_no_answer[0]]}}\n\
+      {% endif %}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages:
+      - id
+      metrics:
+      - Accuracy
+      original_task: true
+    name: id_yes_no_none
+    reference: ''
+  60c9aadf-dcd9-4f06-bd0a-6a5a178dae6e: !Template
+    answer_choices: نعم ||| لا ||| لا شيء مما سبق
+    id: 60c9aadf-dcd9-4f06-bd0a-6a5a178dae6e
+    jinja: '{% if language =="arabic" %}
+
+      أجب ب{{answer_choices[0]}}  أو {{answer_choices[1]}} أو {{answer_choices[2]}}
+      اذا لم يكن بالإمكان الإجابة بنعم أو لا.
+
+      سؤال: {{question_text}}
+
+      الموضوع: {{document_title}}
+
+      المقالة: {{document_plaintext}}
+
+      |||
+
+      {{annotations.yes_no_answer[0] |replace("NONE","لا شيء مما سبق")| replace("NO","لا")|
+      replace("YES"," نعم") }}
+
+      {% endif %}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      languages:
+      - ar
+      metrics:
+      - Accuracy
+      original_task: true
+    name: ar_read_and_answer
+    reference: ''
   6835dd64-96bd-4bf8-9ba5-645d6a7b8472: !Template
     answer_choices: Yes ||| No
     id: 6835dd64-96bd-4bf8-9ba5-645d6a7b8472
-    jinja: '{% if language == "english" %}
-
-      {{question_text}}
+    jinja: '{{question_text}}
 
       Is this a "Yes/No" question?
 
@@ -82,8 +208,6 @@ templates:
 
       Yes
 
-      {% endif %}
-
       {% endif %}'
     metadata: !TemplateMetadata
       choices_in_prompt: false
@@ -92,14 +216,59 @@ templates:
       metrics:
       - Accuracy
       original_task: false
-    name: yes_no_question
+    name: en_yes_no_question
     reference: Ask if this is a yes no question
+  733a3ff3-6edd-4440-b038-bf9736ebaff7: !Template
+    answer_choices: はい ||| いいえ
+    id: 733a3ff3-6edd-4440-b038-bf9736ebaff7
+    jinja: "{% if language == \"japanese\" %}\n    {% if annotations.yes_no_answer[0]\
+      \ == \"YES\" or annotations.yes_no_answer[0] == \"NO\" %}\n        次の文章にもとづくと、\
+      \ , {{question_text}} \n        {{document_plaintext}}\n        ||| \n     \
+      \   {{{\"YES\":\"はい\", \"NO\":\"いいえ\", \"NONE\": \"どちらでもない\"}[annotations.yes_no_answer[0]]}}\n\
+      \    {% endif %}\n{% endif %}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages:
+      - ja
+      metrics:
+      - Accuracy
+      original_task: true
+    name: jp_based_on_the_text
+    reference: Binary question without mentioning KB
+  764fda4e-dc13-4766-b8ab-eafd79fe875e: !Template
+    answer_choices: Ya ||| Tidak ||| Tidak ada
+    id: 764fda4e-dc13-4766-b8ab-eafd79fe875e
+    jinja: '{% if language == "indonesian" %}
+
+      Saya penasaran {{question_text}}.
+
+      Tolong bantu saya menjawab pertanyaan ini dengan "{{answer_choices[0]}}", "{{answer_choices[1]}}"
+      atau "{{answer_choices[2]}}" jika dua opsi pertama tidak bisa diaplikasikan.
+
+      Ini yang saya temukan di internet:
+
+      Topik: {{document_title}}
+
+      Artikel: {{document_plaintext}}
+
+      |||
+
+      {{{"NO":"Tidak","YES": "Ya", "NONE": "Tidak ada"}[annotations.yes_no_answer[0]]}}
+
+      {% endif %}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      languages:
+      - id
+      metrics:
+      - Accuracy
+      original_task: true
+    name: id_heres_what_I_found
+    reference: ''
   7b8b7707-dbad-40d2-a5c2-430e6ace10bb: !Template
     answer_choices: Yes ||| No ||| None
     id: 7b8b7707-dbad-40d2-a5c2-430e6ace10bb
-    jinja: '{% if language == "english" %}
-
-      Answer the following question with "{{answer_choices[0]}}" or "{{answer_choices[1]}}"
+    jinja: 'Answer the following question with "{{answer_choices[0]}}" or "{{answer_choices[1]}}"
       or "{{answer_choices[2]}}" if none of the first two answers apply.
 
       Question: {{question_text}}
@@ -112,7 +281,7 @@ templates:
 
       {{annotations.yes_no_answer[0] | capitalize}}
 
-      {% endif %}'
+      '
     metadata: !TemplateMetadata
       choices_in_prompt: true
       languages:
@@ -120,16 +289,32 @@ templates:
       metrics:
       - Accuracy
       original_task: true
-    name: read_and_answer
+    name: en_read_and_answer
     reference: ''
+  976fb48f-7135-4344-91c8-cee2e535b8ab: !Template
+    answer_choices: Ya ||| Tidak
+    id: 976fb48f-7135-4344-91c8-cee2e535b8ab
+    jinja: "{% if language == \"indonesian\" %} \n    {% if annotations.yes_no_answer[0]\
+      \ == \"YES\" or annotations.yes_no_answer[0] == \"NO\" %} \nJawab pertanyaan\
+      \ terkait {{document_title}}.\nPertanyaan: {{question_text}}. Ya atau Tidak?\n\
+      ||| \n{{{\"NO\":\"Tidak\",\"YES\": \"Ya\", \"NONE\": \"Tidak ada\"}[annotations.yes_no_answer[0]]}}\n\
+      \    {% endif %}\n{% endif %}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      languages:
+      - id
+      metrics:
+      - Accuracy
+      original_task: false
+    name: id_open_domain_qa
+    reference: Ask Yes/No question
   9c42e3fd-d46e-4149-bb60-4b3118104d95: !Template
     answer_choices: Yes ||| No
     id: 9c42e3fd-d46e-4149-bb60-4b3118104d95
-    jinja: "{% if language == \"english\" %} \n    {% if annotations.yes_no_answer[0]\
-      \ == \"YES\" or annotations.yes_no_answer[0] == \"NO\" %} \nAfter reading the\
-      \ following text snippet from Wikipedia, please answer the question: {{question_text}}\
-      \ \n{{document_plaintext}}\n||| \n{{annotations.yes_no_answer[0] | capitalize}}\n\
-      \    {% endif %}\n{% endif %}"
+    jinja: "\n {% if annotations.yes_no_answer[0] == \"YES\" or annotations.yes_no_answer[0]\
+      \ == \"NO\" %} \nAfter reading the following text snippet from Wikipedia, please\
+      \ answer the question: {{question_text}} \n{{document_plaintext}}\n||| \n{{annotations.yes_no_answer[0]\
+      \ | capitalize}}\n{% endif %}\n"
     metadata: !TemplateMetadata
       choices_in_prompt: false
       languages:
@@ -137,15 +322,91 @@ templates:
       metrics:
       - Accuracy
       original_task: true
-    name: after_reading_the_text
+    name: en_after_reading_the_text
     reference: Reading Comprehension
+  a7260c3e-2c25-4c87-b9a2-5955fdff0c5e: !Template
+    answer_choices: はい ||| いいえ
+    id: a7260c3e-2c25-4c87-b9a2-5955fdff0c5e
+    jinja: "{% if language == \"japanese\" %} \n    {% if annotations.yes_no_answer[0]\
+      \ == \"YES\"  or annotations.yes_no_answer[0] == \"NO\" %}\n        {{document_title}}に関する質問に答えてください。{{question_text}}\n\
+      \        ||| \n        {{{\"YES\":\"はい\", \"NO\":\"いいえ\", \"NONE\": \"どちらでもない\"\
+      }[annotations.yes_no_answer[0]]}}\n    {% endif %}\n{% endif %}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages:
+      - ja
+      metrics:
+      - Accuracy
+      original_task: false
+    name: jp_open_domain_qa_without_choices
+    reference: Answer Yes/No question
+  a85a2b12-f360-4fcc-9a40-f150476bdfe8: !Template
+    answer_choices: نعم ||| لا ||| لا شيء مما سبق
+    id: a85a2b12-f360-4fcc-9a40-f150476bdfe8
+    jinja: '{% if language == "arabic" %}
+
+      أتسائل {{question_text}}.
+
+      ساعدني بإجابة هذا السؤال بـ "{{answer_choices[0]}}" أو "{{answer_choices[1]}}"
+      أو "{{answer_choices[2]}}" في حال لم يكن بالإمكان الإجابة بنعم أو ﻻ.
+
+      هذا ما وجدته من معلومات في الإنترنت:
+
+      الموضوع: {{document_title}}
+
+      المقالة: {{document_plaintext}}
+
+      |||
+
+      {{annotations.yes_no_answer[0] |replace("NONE","لا شيء مما سبق")| replace("NO","لا")|
+      replace("YES"," نعم") }}
+
+      {% endif %}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      languages:
+      - ar
+      metrics:
+      - Accuracy
+      original_task: true
+    name: ar_heres_what_I_found
+    reference: ''
+  b368b4af-b8b1-4b0f-ab72-a4db0649ca65: !Template
+    answer_choices: Ya ||| Tidak ||| Tidak ada
+    id: b368b4af-b8b1-4b0f-ab72-a4db0649ca65
+    jinja: '{% if language == "indonesian" %}
+
+      Jawab pertanyaan berikut dengan "{{answer_choices[0]}}" atau "{{answer_choices[1]}}"
+      atau "{{answer_choices[2]}}" jika dua
+
+      opsi pertama tidak dapat diaplikasikan.
+
+      Pertanyaan: {{question_text}}
+
+      Topik: {{document_title}}
+
+      Artikel: {{document_plaintext}}
+
+      |||
+
+      {{{"NO":"Tidak","YES": "Ya", "NONE": "Tidak ada"}[annotations.yes_no_answer[0]]}}
+
+      {% endif %}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      languages: []
+      metrics:
+      - Accuracy
+      original_task: true
+    name: id_read_and_answer
+    reference: ''
   b4f7c441-41b1-4665-93f9-f2e875aed92a: !Template
     answer_choices: Yes ||| No
     id: b4f7c441-41b1-4665-93f9-f2e875aed92a
-    jinja: "{% if language == \"english\" %} \n    {% if annotations.yes_no_answer[0]\
-      \ == \"YES\" or annotations.yes_no_answer[0] == \"NO\" %} \nAnswer the question\
-      \ about {{document_title}}.\nQuestion: {{question_text}}. Yes or No?\n||| \n\
-      {{annotations.yes_no_answer[0] | capitalize}}\n    {% endif %}\n{% endif %}"
+    jinja: " {% if annotations.yes_no_answer[0] == \"YES\" or annotations.yes_no_answer[0]\
+      \ == \"NO\" %} \nAnswer the question about {{document_title}}.\nQuestion: {{question_text}}.\
+      \ Yes or No?\n||| \n{{annotations.yes_no_answer[0] | capitalize}}\n    {% endif\
+      \ %}"
     metadata: !TemplateMetadata
       choices_in_prompt: true
       languages:
@@ -153,15 +414,98 @@ templates:
       metrics:
       - Accuracy
       original_task: false
-    name: open_domain_qa
+    name: en_open_domain_qa
     reference: Ask Yes/No question
+  d160228e-9169-456d-a16a-0f5288452c9a: !Template
+    answer_choices: はい ||| いいえ
+    id: d160228e-9169-456d-a16a-0f5288452c9a
+    jinja: "{% if language == \"japanese\" %}\n    {% if annotations.yes_no_answer[0]\
+      \ == \"YES\" or annotations.yes_no_answer[0] == \"NO\" %} \n        ウィキペディアの記事を読んだあと、次の質問に答えてください:\
+      \ {{question_text}}\n        {{document_plaintext}}\n        |||\n        {{{\"\
+      YES\":\"はい\", \"NO\":\"いいえ\", \"NONE\": \"どちらでもない\"}[annotations.yes_no_answer[0]]}}\n\
+      \    {% endif %}\n{% endif %}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages:
+      - ja
+      metrics:
+      - Accuracy
+      original_task: true
+    name: jp_after_reading_the_text
+    reference: Reading Comprehension
+  d6139cbc-7b25-4539-80c7-2b0832183951: !Template
+    answer_choices: Ya ||| Tidak
+    id: d6139cbc-7b25-4539-80c7-2b0832183951
+    jinja: "{% if language == \"indonesian\" %} \n    {% if annotations.yes_no_answer[0]\
+      \ == \"YES\" or annotations.yes_no_answer[0] == \"NO\" %} \nJawab pertanyaan\
+      \ terkait {{document_title}}. {{question_text}}\n||| \n{{{\"NO\":\"Tidak\",\"\
+      YES\": \"Ya\", \"NONE\": \"Tidak ada\"}[annotations.yes_no_answer[0]]}}\n  \
+      \  {% endif %} \n{% endif %} "
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages:
+      - id
+      metrics:
+      - Accuracy
+      original_task: false
+    name: id_open_domain_qa_without_choices
+    reference: Answer Yes/No question
+  d942b06e-65d1-497f-8e69-0608c775f020: !Template
+    answer_choices: はい ||| いいえ
+    id: d942b06e-65d1-497f-8e69-0608c775f020
+    jinja: "{% if language == \"japanese\" %}\n    {% if annotations.yes_no_answer[0]\
+      \ == \"YES \" or annotations.yes_no_answer[0] == \"NO\" %}\n        {{document_title}}に関する質問に答えてください。\n\
+      \        質問: {{question_text}}「はい」「いいえ」のどちらですか？\n        ||| \n        {{{\"\
+      YES\":\"はい\", \"NO\":\"いいえ\", \"NONE\": \"どちらでもない\"}[annotations.yes_no_answer[0]]}}\n\
+      \  {% endif %}\n{% endif %}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      languages:
+      - ja
+      metrics:
+      - Accuracy
+      original_task: false
+    name: jp_open_domain_qa
+    reference: Ask Yes/No question
+  d9888ddb-c3e3-47a5-94ab-845057c98dac: !Template
+    answer_choices: نعم ||| ﻻ
+    id: d9888ddb-c3e3-47a5-94ab-845057c98dac
+    jinja: "{% if language == \"arabic\" %}\n {% if annotations.yes_no_answer[0] ==\
+      \ \"YES\" or annotations.yes_no_answer[0] == \"NO\" %} \nبعد قراءة النص المقتطع\
+      \ من ويكبيديا أجب عن السؤال التالي:\n{{question_text}} \n{{document_plaintext}}\n\
+      ||| \n{{annotations.yes_no_answer[0] | replace(\"NO\",\"لا\")| replace(\"YES\"\
+      ,\" نعم\") }}\n{% endif %}\n\n{% endif %}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages:
+      - ar
+      metrics: []
+      original_task: true
+    name: ar_after_reading_the_text
+    reference: ''
+  dd737fa3-3364-49b1-8a7e-9b7fb25f495d: !Template
+    answer_choices: はい ||| いいえ ||| どちらでもない
+    id: dd737fa3-3364-49b1-8a7e-9b7fb25f495d
+    jinja: "{% if language == \"japanese\" %}\n      この質問に「はい」または「いいえ」のどちらかで答えてください。\n\
+      \      どちらもあてはまらない場合、「どちらでもない」と答えてください。\n\n      質問: {{question_text}}\n\n \
+      \     タイトル： {{document_title}}\n\n      本文： {{document_plaintext}}\n\n     \
+      \ |||\n\n      {{{\"YES\":\"はい\", \"NO\":\"いいえ\", \"NONE\": \"どちらでもない\"}[annotations.yes_no_answer[0]]}}\n\
+      \n{% endif %}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages:
+      - ja
+      metrics:
+      - Accuracy
+      original_task: true
+    name: jp_read_and_answer
+    reference: ''
   e593017f-9bcf-4442-944d-fcdf2edcb4f7: !Template
     answer_choices: Yes ||| No
     id: e593017f-9bcf-4442-944d-fcdf2edcb4f7
-    jinja: "{% if language == \"english\" %} \n    {% if annotations.yes_no_answer[0]\
-      \ == \"YES\" or annotations.yes_no_answer[0] == \"NO\" %} \nBased on the following\
-      \ text snippet, {{question_text}} \n{{document_plaintext}}\n||| \n{{annotations.yes_no_answer[0]\
-      \ | capitalize}}\n    {% endif %}\n{% endif %}"
+    jinja: "{% if annotations.yes_no_answer[0] == \"YES\" or annotations.yes_no_answer[0]\
+      \ == \"NO\" %} \nBased on the following text snippet, {{question_text}} \n{{document_plaintext}}\n\
+      ||| \n{{annotations.yes_no_answer[0] | capitalize}}\n{% endif %}"
     metadata: !TemplateMetadata
       choices_in_prompt: false
       languages:
@@ -169,5 +513,87 @@ templates:
       metrics:
       - Accuracy
       original_task: true
-    name: based_on_the_text
+    name: en_based_on_the_text
+    reference: Binary question without mentioning KB
+  eba7a853-bd37-45d7-af7d-cf3bd4bc0328: !Template
+    answer_choices: はい ||| いいえ
+    id: eba7a853-bd37-45d7-af7d-cf3bd4bc0328
+    jinja: "{% if language == \"japanese\" %}\n\n      {{question_text}}\n\n     \
+      \ これは「はい」「いいえ」で答えられる質問ですか？\n\n      |||\n\n      {% if annotations. yes_no_answer[0]\
+      \ == \"NONE\" %}\n\n      いいえ\n\n      {% else %}\n\n      はい\n\n      {% endif\
+      \ %}\n{% endif %}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages:
+      - ja
+      metrics:
+      - Accuracy
+      original_task: false
+    name: jp_yes_no_question
+    reference: Ask if this is a yes no question
+  ebba1db1-daf2-4e40-9dca-4cbe4298cd3e: !Template
+    answer_choices: Ya ||| Tidak
+    id: ebba1db1-daf2-4e40-9dca-4cbe4298cd3e
+    jinja: '{% if language == "indonesian" %}
+
+      {{question_text}}
+
+      Apakah ini termasuk kalimat tanya "Ya/Tidak"?
+
+      |||
+
+      {% if annotations. yes_no_answer[0] == "NONE" %}
+
+      Tidak
+
+      {% else %}
+
+      Ya
+
+      {% endif %}
+
+      {% endif %}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages:
+      - id
+      metrics:
+      - Accuracy
+      original_task: false
+    name: id_yes_no_question
+    reference: Ask if this is a yes no question
+  f93c6cde-cd5e-4d25-8549-f186546cea26: !Template
+    answer_choices: Ya ||| Tidak
+    id: f93c6cde-cd5e-4d25-8549-f186546cea26
+    jinja: "{% if language == \"indonesian\" %} \n    {% if annotations.yes_no_answer[0]\
+      \ == \"YES\" or annotations.yes_no_answer[0] == \"NO\" %} \nSetelah membaca\
+      \ potongan teks Wikipedia di bawah ini, mohon jawab pertanyaan: \n{{question_text}}\
+      \ \n{{document_plaintext}}\n||| \n{{{\"NO\":\"Tidak\", \"YES\":\"Ya\", \"NONE\"\
+      : \"Tidak ada\"}[annotations.yes_no_answer[0]]}}\n    {% endif %}\n{% endif\
+      \ %}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages:
+      - id
+      metrics:
+      - Accuracy
+      original_task: true
+    name: id_after_reading_the_text
+    reference: Reading Comprehension
+  fe910acd-a156-4f46-a757-4382821fcfd2: !Template
+    answer_choices: Ya ||| Tidak
+    id: fe910acd-a156-4f46-a757-4382821fcfd2
+    jinja: "{% if language == \"indonesian\" %} \n    {% if annotations.yes_no_answer[0]\
+      \ == \"YES\" or annotations.yes_no_answer[0] == \"NO\" %} \nMenurut potongan\
+      \ teks berikut, {{question_text}}\n{{document_plaintext}}\n||| \n{{{\"NO\":\"\
+      Tidak\", \"YES\":\"Ya\", \"NONE\": \"Tidak ada\"}[annotations.yes_no_answer[0]]}}\n\
+      \    {% endif %}\n{% endif %}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages:
+      - id
+      metrics:
+      - Accuracy
+      original_task: true
+    name: id_based_on_the_text
     reference: Binary question without mentioning KB

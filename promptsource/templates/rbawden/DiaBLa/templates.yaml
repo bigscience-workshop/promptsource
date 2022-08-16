@@ -1,0 +1,256 @@
+dataset: rbawden/DiaBLa
+templates:
+  2731216a-b994-48f9-aaf6-00c7038bbed5: !Template
+    answer_choices: null
+    id: 2731216a-b994-48f9-aaf6-00c7038bbed5
+    jinja: "{% set first_lang=\"\" %}\n{% if dialogue_history|length > 0 %}\nGiven\
+      \ the following dialogue between person A and person B:\n\n{% set first_lang=dialogue_history[-5:][0].utterance_meta.lang\
+      \ %}{% for previous in dialogue_history[-5:] %}{% if previous.utterance_meta.lang\
+      \ == first_lang %}A{% else %}B{% endif %}: {% if previous.utterance_meta.lang\
+      \ == utterance_meta.lang %}{{ previous.orig }}{% else %}{{ previous.ref }}{%\
+      \ endif %}\n{% endfor %}{% endif %} \nTranslate {% if utterance_meta.lang ==\
+      \ first_lang %}A{% else %}B{% endif %}'s next utterance into {% if utterance_meta.lang\
+      \ == \"english\" %}French{% else %}English{% endif %}: {{ orig }}\n\n||| {{\
+      \ ref }}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages: []
+      metrics:
+      - BLEU
+      original_task: true
+    name: MT with dialogue context (5 same context ref)
+    reference: MT with dialogue context (up to 5 previous sentences, same language
+      ref)
+  28ea04f4-338e-40cf-8730-4a794b5b64b2: !Template
+    answer_choices: yes ||| no
+    id: 28ea04f4-338e-40cf-8730-4a794b5b64b2
+    jinja: "{% set options = [\"word choice\", \"grammar\", \"style\", \"coherence\"\
+      , \"meaning\"] %}\n{% set label = range(0,5)|choice %}\n{% set reply=0 %}\n\
+      {% set first_lang=\"\" %}\n{% if options[label] in utterance_meta.eval_problems\
+      \ %}{% set reply=0 %}{% else %}{% set reply=1 %}{% endif %}\n{% if dialogue_history|length\
+      \ > 0 %}\nGiven the following dialogue between person A and person B:\n\n{%\
+      \ set first_lang=dialogue_history[-5:][0].utterance_meta.lang %}{% for previous\
+      \ in dialogue_history[-5:] %}\n{% if previous.utterance_meta.lang == first_lang\
+      \ %}A{% else %}B{% endif %}: {% if previous.utterance_meta.lang != utterance_meta.lang\
+      \ %}{{ previous.orig }}{% else %}{{ previous.mt }}{% endif %}{% endfor %}{%\
+      \ endif %} \n{% if utterance_meta.lang == first_lang %}A{% else %}B{% endif\
+      \ %}: {{ mt }}\n\nDoes the last utterance contain a {{ options[label] }} problem,\
+      \ {{ \"yes\" }} or {{ \"no\" }}?\n\n||| {{ [\"yes\", \"no\" ][reply] }}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      languages: []
+      metrics:
+      - Accuracy
+      original_task: false
+    name: Is the error present? (same lang)
+    reference: Identify presence of notable errors given 5 context sentences (same
+      lang mt)
+  6a01fbe6-d5ec-4ad9-a2ee-3c48ed095885: !Template
+    answer_choices: null
+    id: 6a01fbe6-d5ec-4ad9-a2ee-3c48ed095885
+    jinja: '{% set previous_ref = "" %}{% set other_lang = "" %}
+
+      {% if utterance_meta.lang == "french" %}{% set other_lang = "English" %}{% else
+      %}{% set other_lang = "French" %}{% endif %}
+
+      {% if dialogue_history|length > 0 %}
+
+      "{% if utterance_meta.lang == dialogue_history[-1].utterance_meta.lang %}{{
+      dialogue_history[-1].orig }}{% set previous_ref = dialogue_history[-1].ref %}{%
+      else %}{{ dialogue_history[-1].ref }}{% set previous_ref = dialogue_history[-1].orig
+      %}{% endif %}" translates into {{ other_lang }} as: {{ previous_ref }}{% endif
+      %}
+
+
+      "{{ orig }}" translates into {{ other_lang }} as: ||| {{ ref }}
+
+      '
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages: []
+      metrics:
+      - BLEU
+      original_task: true
+    name: MT analogy, lang given (1 same context)
+    reference: MT task, translation by analogy (same language), target language provided
+  842dc41a-8af0-4dca-8b55-a87026bfac31: !Template
+    answer_choices: null
+    id: 842dc41a-8af0-4dca-8b55-a87026bfac31
+    jinja: 'Translate this into {% if utterance_meta.lang == "english"  %}French{%
+      else %}English{% endif %}: {{ orig }} ||| {{ ref }}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages: []
+      metrics:
+      - BLEU
+      original_task: true
+    name: MT sentence-level
+    reference: Sentence-level
+  93f5256d-bd93-4056-b466-152b55860d02: !Template
+    answer_choices: null
+    id: 93f5256d-bd93-4056-b466-152b55860d02
+    jinja: '{% set first_lang="" %}
+
+      {% if dialogue_history|length > 0 %}
+
+      Given the following dialogue between person A and person B:
+
+
+      {% set first_lang=dialogue_history[-5:][0].utterance_meta.lang %}{% for previous
+      in dialogue_history[-5:] %}{% if previous.utterance_meta.lang == first_lang
+      %}A{% else %}B{% endif %}: {{ previous.orig }}
+
+      {% endfor %}{% endif %}
+
+      Translate {% if utterance_meta.lang == first_lang %}A{% else %}B{% endif %}''s
+      next utterance into {% if utterance_meta.lang == "english" %}French{% else %}English{%
+      endif %}: {{ orig }}
+
+
+      ||| {{ ref }}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages: []
+      metrics:
+      - BLEU
+      original_task: true
+    name: MT with dialogue context (5 orig context)
+    reference: MT with dialogue context (up to 5 previous sentences, original language)
+  a7511f73-dd28-449f-bc6c-9609b736bb40: !Template
+    answer_choices: null
+    id: a7511f73-dd28-449f-bc6c-9609b736bb40
+    jinja: '{% set target_lang = "english" %}{% if utterance_meta.lang == "english"
+      %}{% set target_lang = "french" %}{% endif %}
+
+      {% for previous in dialogue_history[-2:] %}
+
+      {{ previous.orig }}{% endfor %}
+
+      {{ orig }}
+
+
+      The {% if utterance_meta.lang == "english" %}French{% else %}English{% endif
+      %} translation is:
+
+      {% for previous in dialogue_history[-2:] %}{% if previous.utterance_meta.lang
+      == target_lang %}{{ previous.orig }}{% else %}{{ previous.mt }}{% endif %}
+
+      {% endfor %} ||| {{ ref }}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages: []
+      metrics:
+      - BLEU
+      original_task: true
+    name: MT complete translation (2 orig context)
+    reference: MT task, complete the translation, 2 sentences of previous context
+      (orig language)
+  ac4c63da-32d2-40ac-aa7a-632e8ba42b4a: !Template
+    answer_choices: A ||| B
+    id: ac4c63da-32d2-40ac-aa7a-632e8ba42b4a
+    jinja: '{% set label = [''A'',''B'']|choice %}
+
+      Which of the following translations of "{{ orig }}" is produced automatically?
+
+      {{ "A" }}) {% if label==''A'' %}{{ mt }}{% else %}{{ ref }}{% endif %}
+
+      {{ "B" }}) {% if label==''A'' %}{{ ref }}{% else %}{{ mt }}{% endif %}
+
+      |||{{ label }}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      languages: []
+      metrics:
+      - Accuracy
+      original_task: false
+    name: Which is automatic?
+    reference: Identify MT output between MT and ref
+  b61c81ec-29eb-47f8-a1c6-561264ac04f3: !Template
+    answer_choices: null
+    id: b61c81ec-29eb-47f8-a1c6-561264ac04f3
+    jinja: '{% set first_lang="" %}
+
+      {% if dialogue_history|length > 0 %}
+
+      Given the following dialogue between person A and person B:
+
+
+      {% set first_lang=dialogue_history[-5:][0].utterance_meta.lang %}{% for previous
+      in dialogue_history[-5:] %}{% if previous.utterance_meta.lang == first_lang
+      %}A{% else %}B{% endif %}: {% if previous.utterance_meta.lang == utterance_meta.lang
+      %}{{ previous.orig }}{% else %}{{ previous.mt }}{% endif %}
+
+      {% endfor %}{% endif %}
+
+      Translate {% if utterance_meta.lang == first_lang %}A{% else %}B{% endif %}''s
+      next utterance into {% if utterance_meta.lang == "english" %}French{% else %}English{%
+      endif %}: {{ orig }}
+
+
+      ||| {{ ref }}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages: []
+      metrics:
+      - BLEU
+      original_task: true
+    name: MT with dialogue context (5 same context mt)
+    reference: MT with dialogue context (up to 5 previous sentences, same language
+      MT)
+  e9f5dfda-42b5-4698-8e8d-9fc9924e2e29: !Template
+    answer_choices: null
+    id: e9f5dfda-42b5-4698-8e8d-9fc9924e2e29
+    jinja: '{% set target_lang = "english" %}{% if utterance_meta.lang == "english"
+      %}{% set target_lang = "french" %}{% endif %}
+
+      {% for previous in dialogue_history[-1:] %}
+
+      {{ previous.orig }}{% endfor %}
+
+      {{ orig }}
+
+
+      The {% if utterance_meta.lang == "english" %}French{% else %}English{% endif
+      %} translation is:
+
+      {% for previous in dialogue_history[-1:] %}{% if previous.utterance_meta.lang
+      == target_lang %}{{ previous.orig }}{% else %}{{ previous.mt }}{% endif %}
+
+      {% endfor %} ||| {{ ref }}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages: []
+      metrics:
+      - BLEU
+      original_task: true
+    name: MT complete translation (1 orig context)
+    reference: MT task, complete the translation, 1 sentence of previous context (orig
+      language)
+  eea8f47e-9bf5-4423-980b-58a9635c1f49: !Template
+    answer_choices: null
+    id: eea8f47e-9bf5-4423-980b-58a9635c1f49
+    jinja: '{% set previous_ref = "" %}{% set other_lang = "" %}
+
+      {% if dialogue_history|length > 0 %}
+
+      {% if utterance_meta.lang == "french" %}{% set other_lang = "English" %}{% else
+      %}{% set other_lang = "French" %}{% endif %}
+
+      "{% if utterance_meta.lang == dialogue_history[-1].utterance_meta.lang %}{{
+      dialogue_history[-1].orig }}{% set previous_ref = dialogue_history[-1].ref %}{%
+      else %}{{ dialogue_history[-1].ref }}{% set previous_ref = dialogue_history[-1].orig
+      %}{% endif %}" translates as: {{ previous_ref }}{% endif %}
+
+
+      "{{ orig }}" translates as: ||| {% if dialogue_history|length > 0 %}{{ ref }}{%
+      endif %}
+
+      '
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages: []
+      metrics:
+      - BLEU
+      original_task: true
+    name: MT analogy, infer lang (1 same context)
+    reference: MT task, translation by analogy (same language), infer target language

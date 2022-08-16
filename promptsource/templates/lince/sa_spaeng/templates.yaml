@@ -1,0 +1,109 @@
+dataset: lince
+subset: sa_spaeng
+templates:
+  24eba864-8859-4a15-a7a9-0fdf42d9f6cf: !Template
+    answer_choices: positive ||| negative ||| neutral
+    id: 24eba864-8859-4a15-a7a9-0fdf42d9f6cf
+    jinja: '{{words | join(" ") }}. What is the sentiment expressed by the original
+      poster? ||| {{ sa }}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages: []
+      metrics:
+      - Accuracy
+      original_task: true
+    name: original poster expressed sentiment
+    reference: imdb
+  29756194-c221-48b8-8d25-db1e681d9eeb: !Template
+    answer_choices: positive ||| negative ||| neutral
+    id: 29756194-c221-48b8-8d25-db1e681d9eeb
+    jinja: '{{words | join(" ") }}. What sentiment is this post trying to express?
+      ||| {{ sa }}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages: []
+      metrics:
+      - Accuracy
+      original_task: true
+    name: sentiment trying to express
+    reference: ''
+  52708ad1-0029-4d97-a5e9-e179da16e452: !Template
+    answer_choices: not a negative post ||| not a positive post ||| a neutral post
+    id: 52708ad1-0029-4d97-a5e9-e179da16e452
+    jinja: '"{{ words | join(" ") }}". This is definitely {{answer_choices[0]}}, {{answer_choices[1]}},
+      or {{answer_choices[2]}}? ||| {% if sa == "positive" %} {{answer_choices[0]}}
+      {% elif sa == "negative" %} {{answer_choices[1]}} {% else %} {{answer_choices[2]}}
+      {% endif %}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages: []
+      metrics:
+      - Accuracy
+      original_task: false
+    name: negation template
+    reference: imdb
+  5dd871bc-140e-43a1-bf8d-6139863d85cd: !Template
+    answer_choices: positive ||| negative ||| neutral
+    id: 5dd871bc-140e-43a1-bf8d-6139863d85cd
+    jinja: What sentiment does following post express? Positive, negative, or neutral?
+      {{words | join(" ") }}. ||| {{ sa }}
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      languages: []
+      metrics:
+      - Accuracy
+      original_task: true
+    name: express sentiment
+    reference: imdb
+  6186210a-a902-4f9b-b34a-25b01f193842: !Template
+    answer_choices: positive ||| negative ||| neutral
+    id: 6186210a-a902-4f9b-b34a-25b01f193842
+    jinja: From this post, "{{words | join(" ") }}". Does the author seem positive,
+      negative or neutral? ||| {{ sa }}
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      languages: []
+      metrics:
+      - Accuracy
+      original_task: true
+    name: the author seem
+    reference: ''
+  684d3d19-3100-432a-beb7-5fc0f8de72b5: !Template
+    answer_choices: positive ||| negative ||| neutral
+    id: 684d3d19-3100-432a-beb7-5fc0f8de72b5
+    jinja: What sentiment is the following post trying to express?  {{words | join("
+      ") }}. ||| {{ sa }}
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages: []
+      metrics:
+      - Accuracy
+      original_task: true
+    name: sentiment trying to express 2
+    reference: ''
+  a036a20f-8192-4af8-83cd-e56f60fd6a0f: !Template
+    answer_choices: positive ||| negative ||| neutral
+    id: a036a20f-8192-4af8-83cd-e56f60fd6a0f
+    jinja: '{{ words | join(" ") }}. The sentiment expressed in this post is ||| {{
+      sa }}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages: []
+      metrics:
+      - Accuracy
+      original_task: true
+    name: express sentiment 2
+    reference: imdb
+  e26e9b00-f33a-43d2-98f7-5164d102fe7b: !Template
+    answer_choices: positive ||| negative ||| neutral
+    id: e26e9b00-f33a-43d2-98f7-5164d102fe7b
+    jinja: '{{words | join(" ") }}. Does this post sound positive, negative or neutral?
+      ||| {{ sa }}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      languages: []
+      metrics:
+      - Accuracy
+      original_task: true
+    name: sentence sounds
+    reference: ''

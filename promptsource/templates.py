@@ -26,7 +26,214 @@ env.globals.update(zip=zip)
 
 # These are users whose datasets should be included in the results returned by
 # filter_english_datasets (regardless of their metadata)
-INCLUDED_USERS = {"Zaid", "craffel"}
+
+INCLUDED_USERS = {"Zaid", "craffel", "GEM", "aps", "khalidalt", "shanya", "rbawden", "BigScienceBiasEval", "gsarti"}
+
+# These are the metrics with which templates can be tagged
+METRICS = {
+    "BLEU",
+    "ROUGE",
+    "Squad",
+    "Trivia QA",
+    "Accuracy",
+    "Pearson Correlation",
+    "Spearman Correlation",
+    "MultiRC",
+    "AUC",
+    "COQA F1",
+    "Edit Distance",
+    "Mean Reciprocal Rank",
+    "Other",
+}
+
+# These are the languages with which templates can be tagged. Keys are ISO 639-1
+# tags, which are the actual tags we use. Values are English names shown in the
+# UI for convenience.
+LANGUAGES = {
+    "ab": "Abkhazian",
+    "aa": "Afar",
+    "af": "Afrikaans",
+    "ak": "Akan",
+    "sq": "Albanian",
+    "am": "Amharic",
+    "ar": "Arabic",
+    "an": "Aragonese",
+    "hy": "Armenian",
+    "as": "Assamese",
+    "av": "Avaric",
+    "ae": "Avestan",
+    "ay": "Aymara",
+    "az": "Azerbaijani",
+    "bm": "Bambara",
+    "ba": "Bashkir",
+    "eu": "Basque",
+    "be": "Belarusian",
+    "bn": "Bengali",
+    "bi": "Bislama",
+    "bs": "Bosnian",
+    "br": "Breton",
+    "bg": "Bulgarian",
+    "my": "Burmese",
+    "ca": "Catalan, Valencian",
+    "ch": "Chamorro",
+    "ce": "Chechen",
+    "ny": "Chichewa, Chewa, Nyanja",
+    "zh": "Chinese",
+    "cu": "Church Slavic, Old Slavonic, Church Slavonic, Old Bulgarian, Old Church Slavonic",
+    "cv": "Chuvash",
+    "kw": "Cornish",
+    "co": "Corsican",
+    "cr": "Cree",
+    "hr": "Croatian",
+    "cs": "Czech",
+    "da": "Danish",
+    "dv": "Divehi, Dhivehi, Maldivian",
+    "nl": "Dutch, Flemish",
+    "dz": "Dzongkha",
+    "en": "English",
+    "eo": "Esperanto",
+    "et": "Estonian",
+    "ee": "Ewe",
+    "fo": "Faroese",
+    "fj": "Fijian",
+    "fi": "Finnish",
+    "fr": "French",
+    "fy": "Western Frisian",
+    "ff": "Fulah",
+    "gd": "Gaelic, Scottish Gaelic",
+    "gl": "Galician",
+    "lg": "Ganda",
+    "ka": "Georgian",
+    "de": "German",
+    "el": "Greek, Modern (1453–)",
+    "kl": "Kalaallisut, Greenlandic",
+    "gn": "Guarani",
+    "gu": "Gujarati",
+    "ht": "Haitian, Haitian Creole",
+    "ha": "Hausa",
+    "he": "Hebrew",
+    "hz": "Herero",
+    "hi": "Hindi",
+    "ho": "Hiri Motu",
+    "hu": "Hungarian",
+    "is": "Icelandic",
+    "io": "Ido",
+    "ig": "Igbo",
+    "id": "Indonesian",
+    "ia": "Interlingua (International Auxiliary Language Association)",
+    "ie": "Interlingue, Occidental",
+    "iu": "Inuktitut",
+    "ik": "Inupiaq",
+    "ga": "Irish",
+    "it": "Italian",
+    "ja": "Japanese",
+    "jv": "Javanese",
+    "kn": "Kannada",
+    "kr": "Kanuri",
+    "ks": "Kashmiri",
+    "kk": "Kazakh",
+    "km": "Central Khmer",
+    "ki": "Kikuyu, Gikuyu",
+    "rw": "Kinyarwanda",
+    "ky": "Kirghiz, Kyrgyz",
+    "kv": "Komi",
+    "kg": "Kongo",
+    "ko": "Korean",
+    "kj": "Kuanyama, Kwanyama",
+    "ku": "Kurdish",
+    "lo": "Lao",
+    "la": "Latin",
+    "lv": "Latvian",
+    "li": "Limburgan, Limburger, Limburgish",
+    "ln": "Lingala",
+    "lt": "Lithuanian",
+    "lu": "Luba-Katanga",
+    "lb": "Luxembourgish, Letzeburgesch",
+    "mk": "Macedonian",
+    "mg": "Malagasy",
+    "ms": "Malay",
+    "ml": "Malayalam",
+    "mt": "Maltese",
+    "gv": "Manx",
+    "mi": "Maori",
+    "mr": "Marathi",
+    "mh": "Marshallese",
+    "mn": "Mongolian",
+    "na": "Nauru",
+    "nv": "Navajo, Navaho",
+    "nd": "North Ndebele",
+    "nr": "South Ndebele",
+    "ng": "Ndonga",
+    "ne": "Nepali",
+    "no": "Norwegian",
+    "nb": "Norwegian Bokmål",
+    "nn": "Norwegian Nynorsk",
+    "ii": "Sichuan Yi, Nuosu",
+    "oc": "Occitan",
+    "oj": "Ojibwa",
+    "or": "Oriya",
+    "om": "Oromo",
+    "os": "Ossetian, Ossetic",
+    "pi": "Pali",
+    "ps": "Pashto, Pushto",
+    "fa": "Persian",
+    "pl": "Polish",
+    "pt": "Portuguese",
+    "pa": "Punjabi, Panjabi",
+    "qu": "Quechua",
+    "ro": "Romanian, Moldavian, Moldovan",
+    "rm": "Romansh",
+    "rn": "Rundi",
+    "ru": "Russian",
+    "se": "Northern Sami",
+    "sm": "Samoan",
+    "sg": "Sango",
+    "sa": "Sanskrit",
+    "sc": "Sardinian",
+    "sr": "Serbian",
+    "sn": "Shona",
+    "sd": "Sindhi",
+    "si": "Sinhala, Sinhalese",
+    "sk": "Slovak",
+    "sl": "Slovenian",
+    "so": "Somali",
+    "st": "Southern Sotho",
+    "es": "Spanish, Castilian",
+    "su": "Sundanese",
+    "sw": "Swahili",
+    "ss": "Swati",
+    "sv": "Swedish",
+    "tl": "Tagalog",
+    "ty": "Tahitian",
+    "tg": "Tajik",
+    "ta": "Tamil",
+    "tt": "Tatar",
+    "te": "Telugu",
+    "th": "Thai",
+    "bo": "Tibetan",
+    "ti": "Tigrinya",
+    "to": "Tonga (Tonga Islands)",
+    "ts": "Tsonga",
+    "tn": "Tswana",
+    "tr": "Turkish",
+    "tk": "Turkmen",
+    "tw": "Twi",
+    "ug": "Uighur, Uyghur",
+    "uk": "Ukrainian",
+    "ur": "Urdu",
+    "uz": "Uzbek",
+    "ve": "Venda",
+    "vi": "Vietnamese",
+    "vo": "Volapük",
+    "wa": "Walloon",
+    "cy": "Welsh",
+    "wo": "Wolof",
+    "xh": "Xhosa",
+    "yi": "Yiddish",
+    "yo": "Yoruba",
+    "za": "Zhuang, Chuang",
+    "zu": "Zulu",
+}
 
 # These are the metrics with which templates can be tagged
 METRICS = {
@@ -359,14 +566,14 @@ class Template(yaml.YAMLObject):
         else:
             return None
 
-    def apply(self, example, truncate=True, highlight_variables=False):
+    def apply(self, example, truncate=True, highlight_variables=False) -> Tuple[str, List[str]]:
         """
         Creates a prompt by applying this template to an example
 
         :param example: the dataset example to create a prompt for
         :param truncate: if True, example fields will be truncated to TEXT_VAR_LENGTH chars
         :param highlight_variables: highlight the added variables
-        :return: tuple of 2 strings, for prompt and output
+        :return: tuple of a string and a list of strings, for input and targets
         """
         jinja = self.jinja
 
@@ -395,7 +602,15 @@ class Template(yaml.YAMLObject):
 
         # Splits on the separator, and then replaces back any occurrences of the
         # separator in the original example
-        return [self._unescape_pipe(part).strip() for part in rendered_example.split("|||")]
+        parts = [self._unescape_pipe(part).strip() for part in rendered_example.split("|||")]
+        if parts == [""]:
+            # Handles the case of blank results
+            # Example: `tydiqa` where prompts are conditionned on the language and thus most of the time will return a blank result
+            return parts
+        if len(parts) < 2:
+            raise ValueError("Prompt did not produce an input and at least one target.")
+
+        return parts[0], parts[1:]
 
     pipe_protector = "3ed2dface8203c4c9dfb1a5dc58e41e0"
 
@@ -608,7 +823,7 @@ class DatasetTemplates:
         # We only create the folder if a template is written
         if not os.path.exists(self.folder_path):
             os.makedirs(self.folder_path)
-        yaml.dump(self.format_for_dump(), open(self.yaml_path, "w"))
+        yaml.dump(self.format_for_dump(), open(self.yaml_path, "w"),allow_unicode=True)
 
     def add_template(self, template: "Template") -> None:
         """
