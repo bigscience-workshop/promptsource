@@ -2,33 +2,25 @@ dataset: xnli
 subset: ar
 templates:
   16836edd-898d-4508-92c0-e683f34aa41e: !Template
-    answer_choices: "\u0646\u0639\u0645 ||| \u0631\u0628\u0645\u0627 ||| \u0644\u0627"
+    answer_choices: نعم ||| ربما ||| لا
     id: 16836edd-898d-4508-92c0-e683f34aa41e
-    jinja: "{{premise}} \u0628\u0646\u0627\u0621 \u0639\u0644\u0649 \u0627\u0644\u0646\
-      \u0635 \u0627\u0644\u0633\u0627\u0628\u0642 \u0647\u0644 \u064A\u0635\u062D\
-      \ \u0627\u0644\u0642\u0648\u0644 \u0628\u0623\u0646 \"{{hypothesis}}\"? \u0623\
-      \u062C\u0628 \u0628\u0646\u0639\u0645 \u0623\u0648 \u0644\u0627 \u0623\u0648\
-      \ \u0631\u0628\u0645\u0627. ||| {{ answer_choices[label] }}"
+    jinja: '{{premise}} بناء على النص السابق هل يصح القول بأن "{{hypothesis}}"? أجب
+      بنعم أو لا أو ربما. ||| {{ answer_choices[label] }}'
     metadata: !TemplateMetadata
-      choices_in_prompt: false
+      choices_in_prompt: true
       languages:
       - ar
       metrics:
       - Accuracy
-      original_task: false
+      original_task: true
     name: based on the previous passage
     reference: ''
   45e348b8-1dc4-485c-a182-6277069fe5a7: !Template
-    answer_choices: "\u0635\u062D\u064A\u062D\u0629 ||| \u0644\u0627 \u064A\u0645\u0643\
-      \u0646 \u0627\u0644\u062C\u0632\u0645 ||| \u062E\u0627\u0637\u0626\u0629"
+    answer_choices: صحيحة ||| لا يمكن الجزم ||| خاطئة
     id: 45e348b8-1dc4-485c-a182-6277069fe5a7
-    jinja: "{{premise}} \u0628\u0646\u0627\u0621 \u0639\u0644\u0649 \u0627\u0644\u0645\
-      \u0639\u0644\u0648\u0645\u0627\u062A \u0627\u0644\u0633\u0627\u0628\u0642\u0629\
-      , \u0647\u0644 \u0627\u0644\u062F\u0639\u0648\u0649 \u0627\u0644\u062A\u0627\
-      \u0644\u064A\u0629: \"{{hypothesis}}\" {{\"\u0635\u062D\u064A\u062D\u0629\"\
-      }} \u0623\u0648 {{\"\u062E\u0627\u0637\u0626\u0629\"}} \u0623\u0648  {{\"\u0644\
-      \u0627 \u064A\u0645\u0643\u0646 \u0627\u0644\u062C\u0632\u0645\"}}\u061F |||\
-      \ {{ answer_choices[label] }}"
+    jinja: '{{premise}} بناء على المعلومات السابقة, هل الدعوى التالية: "{{hypothesis}}"
+      {{"صحيحة"}} أو {{"خاطئة"}} أو  {{"لا يمكن الجزم"}}؟ ||| {{ answer_choices[label]
+      }}'
     metadata: !TemplateMetadata
       choices_in_prompt: true
       languages:
@@ -38,16 +30,12 @@ templates:
       original_task: true
     name: claim true/false/inconclusive
     reference: Sanh et al. 2021
-  5b708312-27c1-4bff-a4d0-d1f79fbee5b6: !Template
-    answer_choices: "\u0646\u0639\u0645 ||| \u0631\u0628\u0645\u0627 ||| \u0644\u0627"
-    id: 5b708312-27c1-4bff-a4d0-d1f79fbee5b6
-    jinja: "\u0627\u0630\u0627 \u0623\u0639\u0637\u064A\u0643 \u0627\u0644\u0641\u0631\
-      \u0636\u064A\u0629 \u0627\u0644\u062A\u0627\u0644\u064A\u0629 {{premise}} \u0647\
-      \u0644 \u064A\u0645\u0643\u0646 \u0623\u0646 \u0646\u0633\u062A\u0646\u062A\u062C\
-      \ \u0627\u0644\u0646\u062A\u064A\u062C\u0629 \u0627\u0644\u062A\u0627\u0644\u064A\
-      \u0629 \"{{hypothesis}}\"? \u0623\u062C\u0628 \u0628\u0646\u0639\u0645 \u0623\
-      \u0648 \uFEFB \u0623\u0648 \u0631\u0628\u0645\u0627? ||| {{ answer_choices[label]\
-      \ }} "
+  8b75ff67-bb66-413b-a33d-325707b035d7: !Template
+    answer_choices: نعم ||| ربما ||| لا
+    id: 8b75ff67-bb66-413b-a33d-325707b035d7
+    jinja: 'اذا كان لدينا المقدمة التالية {{premise}} هل يمكن أن نتوصل إلى الفرضية
+      التالية "{{hypothesis}}"؟ أجب بـ نعم أو لا أو ربما؟ ||| {{ answer_choices[label]
+      }} '
     metadata: !TemplateMetadata
       choices_in_prompt: true
       languages:
@@ -55,18 +43,42 @@ templates:
       metrics:
       - Accuracy
       original_task: true
-    name: can_we_infer
-    reference: ''
+    name: can we infer
+    reference: Webson & Pavlick 2021
+  8bda8e36-c881-4c9a-a3a9-eec68388a6f6: !Template
+    answer_choices: نعم ||| ربما ||| لا
+    id: 8bda8e36-c881-4c9a-a3a9-eec68388a6f6
+    jinja: '{{premise}} هل يمكن القول بالفرضية التالية  "{{hypothesis}}" بناء على
+      ما سبق؟ أجب بنعم أو ﻻ أو ربما ؟ ||| {{ answer_choices[label] }} '
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      languages:
+      - ar
+      metrics:
+      - Accuracy
+      original_task: true
+    name: justified in saying
+    reference: Webson & Pavlick 2021
+  97d2f061-06b0-4aa3-af53-871a2b06748f: !Template
+    answer_choices: صح ||| غير ذلك ||| خطأ
+    id: 97d2f061-06b0-4aa3-af53-871a2b06748f
+    jinja: '{{premise}} سؤال: {{hypothesis}} صح ، خطأ إو غير ذلك ||| {{ answer_choices[label]
+      }}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      languages:
+      - ar
+      metrics:
+      - Accuracy
+      original_task: true
+    name: GPT-3 style
+    reference: 'Same as reported in Figure G7 of the GPT-3 paper, except that there
+      is no task identifying tokens like "anli R1: ".'
   ba194be7-4818-4e24-b5f9-bbcccaa4e166: !Template
-    answer_choices: "\u0646\u0639\u0645 ||| \u0631\u0628\u0645\u0627 ||| \u0644\u0627"
+    answer_choices: نعم ||| ربما ||| لا
     id: ba194be7-4818-4e24-b5f9-bbcccaa4e166
-    jinja: "\u0628\u0646\u0627\u0621 \u0639\u0644\u0649 \u0627\u0644\u0645\u0642\u062F\
-      \u0645\u0629 \u0627\u0644\u062A\u0627\u0644\u064A\u0629 {{premise}} \u0647\u0644\
-      \ \u064A\u0645\u0643\u0646 \u0623\u0646 \u062A\u0644\u064A\u0647\u0627 \u0627\
-      \u0644\u0641\u0631\u0636\u0629 \u0627\u0644\u062A\u0627\u0644\u064A\u0629: {{hypothesis}}\
-      \ \u0623\u062C\u0628 \u0628\u0640 \u0646\u0639\u0645 \u0623\u0648 \u0631\u0628\
-      \u0645\u0627 \u0623\u0648 \u0644\u0627 \u061F  ||| {{ answer_choices[label]\
-      \ }}"
+    jinja: 'بناء على المقدمة التالية {{premise}} هل يمكن أن تليها الفرضة التالية:
+      {{hypothesis}} أجب بـ نعم أو ربما أو لا ؟  ||| {{ answer_choices[label] }}'
     metadata: !TemplateMetadata
       choices_in_prompt: true
       languages:
@@ -76,16 +88,41 @@ templates:
       original_task: true
     name: does it follow that
     reference: Sanh et al. 2021
+  e44c2947-f8e0-49ea-9770-e59f0581a921: !Template
+    answer_choices: أكيدة ||| ممكنة ||| مستحيلة
+    id: e44c2947-f8e0-49ea-9770-e59f0581a921
+    jinja: "اذا كانت لدينا المقدمة الصحيحة التالية {{premise}} \nفإن, \"{{hypothesis}}\"\
+      \ هي دعوى {{\"مؤكدة\"}} أو {{\"ممكنة\"}} أو {{\"مستحيلة\"}}؟ ||| {{ answer_choices[label]\
+      \ }}\n"
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      languages:
+      - ar
+      metrics:
+      - Accuracy
+      original_task: true
+    name: guaranteed/possible/impossible
+    reference: Sanh et al. 2021
+  ea368462-3a66-4222-9de1-05d66037a708: !Template
+    answer_choices: صحيحة ||| لا يمكن التقرير ||| غير صحيحة
+    id: ea368462-3a66-4222-9de1-05d66037a708
+    jinja: " {{premise}}\n بإستخدام الوصف بالأعلى وحسب ما تعرفه من المعرفة العامة\
+      \ فقط هل يمكن القول بأن الفرضية التالية: \"{{hypothesis}}\" بلا شك صحيحة أو\
+      \ خاطئة أو لا يمكن التقرير؟ ||| {{ answer_choices[label] }}\n"
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      languages:
+      - ar
+      metrics:
+      - Accuracy
+      original_task: true
+    name: MNLI crowdsource
+    reference: Adapted from Williams et al. 2018's instructions to crowdsourcing workers.
   ef61016d-6451-4462-b69c-cb2ac7856b32: !Template
-    answer_choices: null
+    answer_choices: صحيحة ||| لا يمكن الجزم ||| خاطئة
     id: ef61016d-6451-4462-b69c-cb2ac7856b32
-    jinja: "\u0627\u0630\u0627 \u0643\u0627\u0646\u062A \u0627\u0644\u0645\u0642\u062F\
-      \u0645\u0629 \u0627\u0644\u062A\u0627\u0644\u064A\u0629 \u0635\u062D\u064A\u062D\
-      \u0629: {{premise}} \u0641\u0625\u0646 \u0627\u0644\u0641\u0631\u0636\u064A\u0629\
-      \ \u0627\u0644\u062A\u0627\u0644\u064A\u0629: \"{{hypothesis}}\"  {{\"\u0635\
-      \u062D\u064A\u062D\u0629\"}} \u0623\u0648 {{\"\u062E\u0627\u0637\u0626\u0629\
-      \"}}  \u0623\u0648 {{\"\u0644\u0627\u064A\u0645\u0643\u0646 \u0627\u0644\u062C\
-      \u0632\u0645\"}}\u061F ||| {{ answer_choices[label] }} "
+    jinja: 'اذا كانت المقدمة التالية صحيحة: {{premise}} فإن الفرضية التالية: "{{hypothesis}}"  {{"صحيحة"}}
+      أو {{"خاطئة"}}  أو {{"لايمكن الجزم"}}؟ ||| {{ answer_choices[label] }} '
     metadata: !TemplateMetadata
       choices_in_prompt: true
       languages:
