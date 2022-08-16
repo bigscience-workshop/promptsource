@@ -823,7 +823,7 @@ class DatasetTemplates:
         # We only create the folder if a template is written
         if not os.path.exists(self.folder_path):
             os.makedirs(self.folder_path)
-        yaml.dump(self.format_for_dump(), open(self.yaml_path, "w"),allow_unicode=True)
+        yaml.dump(self.format_for_dump(), open(self.yaml_path, "w"), allow_unicode=True)
 
     def add_template(self, template: "Template") -> None:
         """
