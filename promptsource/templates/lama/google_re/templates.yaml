@@ -1,0 +1,86 @@
+dataset: lama
+subset: google_re
+templates:
+  89ba7edc-d980-4431-8f82-9c07d28d1089: !Template
+    answer_choices: null
+    id: 89ba7edc-d980-4431-8f82-9c07d28d1089
+    jinja: 'Given the following sentence: {{masked_sentence | replace(''[MASK]'',
+      obj_label) }} Rewrite the following template with replacing X and Y with the
+      correct words. {{template}} |||  {{template | replace(''[X]'', sub_label) |
+      replace(''[Y]'', obj_label)}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages: []
+      metrics:
+      - Accuracy
+      - BLEU
+      original_task: false
+    name: X_and_Y
+    reference: ''
+  9f787820-5443-4778-ba23-5fd9f894233c: !Template
+    answer_choices: null
+    id: 9f787820-5443-4778-ba23-5fd9f894233c
+    jinja: '{{masked_sentence | replace("[MASK]", "_") }} Fill in the blank with a
+      correct word ||| {{obj_label}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages: []
+      metrics:
+      - Accuracy
+      original_task: true
+    name: after_fill_blank
+    reference: ''
+  b7cf6ce2-0036-41eb-8658-9afa89a0a497: !Template
+    answer_choices: null
+    id: b7cf6ce2-0036-41eb-8658-9afa89a0a497
+    jinja: 'Fill in the blank in the following sentence with suitable word: {{ template
+      | replace("[X]", sub_label) | replace("[Y]" ,"_" ) }} ||| {{obj_label}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages: []
+      metrics:
+      - Accuracy
+      original_task: true
+    name: fill_blank
+    reference: ''
+  dc08c925-a9fa-4cad-938f-a6e3ec83871a: !Template
+    answer_choices: null
+    id: dc08c925-a9fa-4cad-938f-a6e3ec83871a
+    jinja: 'Given the following sentence: {{masked_sentence}}
+
+      What is {{sub_label}} {{ pred | replace("/people/person/","") | replace("/people/deceased_person/","")
+      | replace("_"," ")|replace("date","year")}} ? ||| {{obj_label}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages: []
+      metrics:
+      - Accuracy
+      original_task: true
+    name: what_is
+    reference: ''
+  e9e7b8e6-2ad8-4f62-a11d-6fa7f2cad8d3: !Template
+    answer_choices: null
+    id: e9e7b8e6-2ad8-4f62-a11d-6fa7f2cad8d3
+    jinja: 'Given the following sentence: {{template | replace(''[X]'',sub_label)
+      | replace(''[Y]'',''[MASK]'') }} find the correct word to fill at [MASK]. |||
+      {{obj_label}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages: []
+      metrics:
+      - Accuracy
+      original_task: true
+    name: find_word
+    reference: ''
+  f813bf03-135c-44dc-b974-5a942201e8dc: !Template
+    answer_choices: null
+    id: f813bf03-135c-44dc-b974-5a942201e8dc
+    jinja: '{{masked_sentence}} Fill the mask with a correct word. ||| {{obj_label}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages: []
+      metrics:
+      - Accuracy
+      original_task: true
+    name: fill_the_mask
+    reference: ''

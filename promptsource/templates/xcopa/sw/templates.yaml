@@ -1,0 +1,211 @@
+dataset: xcopa
+subset: sw
+templates:
+  18089f74-c42c-4d6d-8eb0-9dad49b9f704: !Template
+    answer_choices: '{{choice1}} ||| {{choice2}}'
+    id: 18089f74-c42c-4d6d-8eb0-9dad49b9f704
+    jinja: 'Exercise: choose the most plausible alternative.
+
+
+      {{ premise }} {% if question == "cause" %} because... {% else %} so... {% endif
+      %}
+
+      - {{choice1}}
+
+      - {{choice2}} ||| {% if label != -1 %}{{ answer_choices[label] }}{%endif%}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      languages:
+      - en
+      metrics:
+      - Accuracy
+      original_task: true
+    name: exercise
+    reference: ''
+  2464779b-7773-4d4f-99b9-03229740de4a: !Template
+    answer_choices: '{{choice1}} ||| {{choice2}}'
+    id: 2464779b-7773-4d4f-99b9-03229740de4a
+    jinja: "{% if question == \"effect\" %} \n{{ premise }} What could happen next,\
+      \ \"{{ answer_choices[0] }}\" or \"{{ answer_choices[1] }}\"? ||| {% if label\
+      \ != -1 %}{{ answer_choices[label] }}{%endif%}\n{% endif %}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      languages:
+      - en
+      metrics:
+      - Accuracy
+      original_task: true
+    name: "\u2026What could happen next, C1 or C2?"
+    reference: ''
+  38729cda-f248-4788-82e5-71331256ca73: !Template
+    answer_choices: '{{choice1}} ||| {{choice2}}'
+    id: 38729cda-f248-4788-82e5-71331256ca73
+    jinja: "{{ premise }} \n\nI am hesitating between two options. Help me choose\
+      \ the more likely {% if question == \"cause\" %} cause: {% else %} effect: {%\
+      \ endif %}\n- {{choice1}}\n- {{choice2}} ||| {% if label != -1 %}{{ answer_choices[label]\
+      \ }}{%endif%}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      languages:
+      - en
+      metrics:
+      - Accuracy
+      original_task: true
+    name: i_am_hesitating
+    reference: ''
+  4c4fdeff-45c7-4baa-a889-f56a5430c638: !Template
+    answer_choices: '{{choice1}} ||| {{choice2}}'
+    id: 4c4fdeff-45c7-4baa-a889-f56a5430c638
+    jinja: '{{ premise }} {% if question == "cause" %} This happened because... {%
+      else %} As a consequence... {% endif %}
+
+      Help me pick the more plausible option:
+
+      - {{choice1}}
+
+      - {{choice2}} ||| {% if label != -1 %}{{ answer_choices[label] }}{%endif%}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      languages:
+      - en
+      metrics:
+      - Accuracy
+      original_task: true
+    name: plausible_alternatives
+    reference: ''
+  52344c8c-2aaf-4593-8b85-30b6bac14318: !Template
+    answer_choices: '{{choice1}} ||| {{choice2}}'
+    id: 52344c8c-2aaf-4593-8b85-30b6bac14318
+    jinja: '"{{ answer_choices[0] }}" or "{{ answer_choices[1] }}"? {{ premise }}
+      {% if question == "cause" %} because {% else %} so {% endif %} ||| {% if label
+      != -1 %}{{ answer_choices[label] }}{% endif %}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      languages:
+      - en
+      metrics:
+      - Accuracy
+      original_task: true
+    name: "C1 or C2? premise, so/because\u2026"
+    reference: "Adapted from Perez et al. 2021 and Schick & Sch\xFCtz 2021."
+  5a14b4e9-7b61-41f4-b05c-b823752ea693: !Template
+    answer_choices: '{{choice1}} ||| {{choice2}}'
+    id: 5a14b4e9-7b61-41f4-b05c-b823752ea693
+    jinja: "{% if question == \"effect\" %} \n{{ premise }} As a result, \"{{ answer_choices[0]\
+      \ }}\" or \"{{ answer_choices[1] }}\"? ||| {% if label != -1 %}{{ answer_choices[label]\
+      \ }}{%endif%}\n{% endif %}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      languages:
+      - en
+      metrics:
+      - Accuracy
+      original_task: true
+    name: "\u2026As a result, C1 or C2?"
+    reference: ''
+  6cf55f8c-bc20-47ba-97b4-d958dcb99e53: !Template
+    answer_choices: '{{choice1}} ||| {{choice2}}'
+    id: 6cf55f8c-bc20-47ba-97b4-d958dcb99e53
+    jinja: "{{ premise }} \n\nWhat's the best option?\n- {{choice1}}\n- {{choice2}}\n\
+      \nWe are looking for {% if question == \"cause\" %} a cause {% else %} an effect\
+      \ {% endif %}\n||| {% if label != -1 %}{{answer_choices[label]}}{%endif%}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      languages:
+      - en
+      metrics:
+      - Accuracy
+      original_task: true
+    name: best_option
+    reference: ''
+  b5388b41-363a-4a33-b82e-175497f884f4: !Template
+    answer_choices: '{{choice1}} ||| {{choice2}}'
+    id: b5388b41-363a-4a33-b82e-175497f884f4
+    jinja: "{% if question == \"cause\" %} \n{{ premise }} Which may be caused by\
+      \ \"{{ answer_choices[0] }}\" or \"{{ answer_choices[1] }}\"? ||| {% if label\
+      \ != -1 %}{{ answer_choices[label] }}{%endif%}\n{% endif %}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      languages:
+      - en
+      metrics:
+      - Accuracy
+      original_task: true
+    name: "\u2026which may be caused by"
+    reference: ''
+  c28c7dbc-615a-400e-9099-8df5a0ab1ef5: !Template
+    answer_choices: '{{choice1}} ||| {{choice2}}'
+    id: c28c7dbc-615a-400e-9099-8df5a0ab1ef5
+    jinja: 'Pick the more likely continuation to the following sentence:
+
+      {{ premise }} {% if question == "cause" %} as a result of: {% else %} as a consequence:
+      {% endif %}
+
+      - {{choice1}}
+
+      - {{choice2}} ||| {% if label != -1 %}{{ answer_choices[label] }}{%endif%}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      languages:
+      - en
+      metrics:
+      - Accuracy
+      original_task: true
+    name: more likely
+    reference: ''
+  c717cdaa-0b19-4288-9635-2a783bc87acf: !Template
+    answer_choices: '{{choice1}} ||| {{choice2}}'
+    id: c717cdaa-0b19-4288-9635-2a783bc87acf
+    jinja: '{{ premise }}
+
+
+      Select the most plausible {% if question == "cause" %} cause: {% else %} effect:
+      {% endif %}
+
+      - {{choice1}}
+
+      - {{choice2}} ||| {% if label != -1 %}{{ answer_choices[label] }}{%endif%}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      languages:
+      - en
+      metrics:
+      - Accuracy
+      original_task: true
+    name: cause_effect
+    reference: ''
+  cac78748-4b44-45e9-ad52-32bccaf286c6: !Template
+    answer_choices: '{{choice1}} ||| {{choice2}}'
+    id: cac78748-4b44-45e9-ad52-32bccaf286c6
+    jinja: "{% if question == \"cause\" %} \n{{ premise }} Why? \"{{ answer_choices[0]\
+      \ }}\" or \"{{ answer_choices[1] }}\"? ||| {% if label != -1 %}{{ answer_choices[label]\
+      \ }}{%endif%}\n{% endif %}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      languages:
+      - en
+      metrics:
+      - Accuracy
+      original_task: true
+    name: "\u2026why? C1 or C2"
+    reference: ''
+  fcc668f5-15f5-41ee-8f1e-d62476b18939: !Template
+    answer_choices: '{{choice1}} ||| {{choice2}}'
+    id: fcc668f5-15f5-41ee-8f1e-d62476b18939
+    jinja: '{{ premise }} {% if question == "cause" %} because... {% else %} so...
+      {% endif %}
+
+      Choose between:
+
+      - {{choice1}}
+
+      - {{choice2}} ||| {% if label != -1 %}{{ answer_choices[label] }}{%endif%}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      languages:
+      - en
+      metrics:
+      - Accuracy
+      original_task: true
+    name: choose
+    reference: ''

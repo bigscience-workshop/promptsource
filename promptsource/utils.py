@@ -107,13 +107,13 @@ def render_features(features):
 #
 
 
-def filter_english_datasets():
+def filter_datasets():
     """
-    Filter English datasets based on language tags in metadata.
+    Filter datasets from HuggingFace API.
 
     Also includes the datasets of any users listed in INCLUDED_USERS
     """
-    english_datasets = []
+    filtered_datasets = []
 
     response = requests.get("https://huggingface.co/api/datasets?full=true")
     tags = response.json()
@@ -125,25 +125,16 @@ def filter_english_datasets():
         if is_community_dataset:
             user = dataset_name.split("/")[0]
             if user in INCLUDED_USERS:
-                english_datasets.append(dataset_name)
+                filtered_datasets.append(dataset_name)
             continue
 
-        if "cardData" not in dataset:
-            continue
-        metadata = dataset["cardData"]
+        filtered_datasets.append(dataset_name)
 
-        if "language" not in metadata:
-            continue
-        languages = metadata["language"]
-
-        if "en" in languages or "en-US" in languages:
-            english_datasets.append(dataset_name)
-
-    return sorted(english_datasets)
+    return sorted(filtered_datasets)
 
 
 def list_datasets():
     """Get all the datasets to work with."""
-    dataset_list = filter_english_datasets()
+    dataset_list = filter_datasets()
     dataset_list.sort(key=lambda x: x.lower())
     return dataset_list
