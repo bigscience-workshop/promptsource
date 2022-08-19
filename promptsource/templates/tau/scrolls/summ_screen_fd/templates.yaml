@@ -1,0 +1,75 @@
+dataset: tau/scrolls
+subset: summ_screen_fd
+templates:
+  2edf0197-e3d4-4870-bd95-178411e52e09: !Template
+    answer_choices: null
+    id: 2edf0197-e3d4-4870-bd95-178411e52e09
+    jinja: 'Given the following television episode recap, please write a transcript of the episode.
+    
+    Recap: {{ output }}
+    
+    Transcript: ||| {{ input }}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages:
+      - en
+      metrics:
+      - ROUGE
+      - BLEU
+      original_task: false
+    name: write_transcript
+    reference: ''
+  3bd082cb-4e28-4eb7-9fa2-dd03f1f86219: !Template
+    answer_choices: null
+    id: 3bd082cb-4e28-4eb7-9fa2-dd03f1f86219
+    jinja: 'Here is a summary of a TV episode:
+
+    {{ output }}
+
+    The following is the full screenplay of that TV episode: ||| {{ input }}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages:
+      - en
+      metrics:
+      - BLEU
+      - ROUGE
+      original_task: false
+    name: provide screenplay
+    reference: ''
+  52ffecee-4298-4611-a3dd-cc0ee3856259: !Template
+    answer_choices: null
+    id: 52ffecee-4298-4611-a3dd-cc0ee3856259
+    jinja: 'I will provide a TV episode synopsis below.
+
+    Synopsis: {{ output }}
+
+    I will now start writing that TV episode from scratch: ||| {{ input }}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages:
+      - en
+      metrics:
+      - BLEU
+      - ROUGE
+      original_task: false
+    name: write_from_synopsis
+    reference: ''
+  af4d550e-54b8-471e-97af-2b2c50a1382e: !Template
+    answer_choices: null
+    id: af4d550e-54b8-471e-97af-2b2c50a1382e
+    jinja: 'The following is a television episode transcript:
+    
+    {{ input }} 
+    
+    How would you best summarize the above episode? ||| {{ output }}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages:
+      - en
+      metrics:
+      - BLEU
+      - ROUGE
+      original_task: true
+    name: summarize episode
+    reference: ''
