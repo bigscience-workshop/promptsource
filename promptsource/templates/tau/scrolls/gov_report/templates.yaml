@@ -1,0 +1,87 @@
+dataset: tau/scrolls
+subset: gov_report
+templates:
+  2edf0297-e3d4-4870-bd95-178411e52e09: !Template
+    answer_choices: null
+    id: 2edf0297-e3d4-4870-bd95-178411e52e09
+    jinja: 'Summary: {{ output }}
+    
+    Full Document: ||| {{ input }}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages:
+      - en
+      metrics:
+      - ROUGE
+      - BLEU
+      original_task: false
+    name: summary_doc
+    reference: ''
+  3bd082cb-4e28-4eb7-1ea2-dd03f1f86219: !Template
+    answer_choices: null
+    id: 3bd082cb-4e28-4eb7-1ea2-dd03f1f86219
+    jinja: 'Read the following document:
+
+    {{ output }}
+
+    The following is a concise summary of the document: ||| {{ input }}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages:
+      - en
+      metrics:
+      - BLEU
+      - ROUGE
+      original_task: false
+    name: read_following
+    reference: ''
+  52ffecee-4298-4611-a3dd-cc0ee3856259: !Template
+    answer_choices: null
+    id: 52ffecee-4298-4611-a3dd-cc0ee3856259
+    jinja: 'The following is a summary taken from a government report.
+
+    Summary: {{ output }}
+
+    The contents of that report were likely as follows: ||| {{ input }}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages:
+      - en
+      metrics:
+      - BLEU
+      - ROUGE
+      original_task: false
+    name: reconstruct_report
+    reference: ''
+  af4d550e-54b8-471e-97af-2b2c50a1382e: !Template
+    answer_choices: null
+    id: af4d550e-54b8-471e-97af-2b2c50a1382e
+    jinja: 'Document: {{ input }}
+    
+    Summary: ||| {{ output }}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages:
+      - en
+      metrics:
+      - BLEU
+      - ROUGE
+      original_task: true
+    name: doc_summary
+    reference: ''
+  af4d550e-54b8-471e-97af-2b2c50a1382e: !Template
+    answer_choices: null
+    id: af4d550e-54b8-471e-97af-2b2c50a1382e
+    jinja: 'Here is a government report: {{ input }}
+    
+    I will now summarize it: ||| {{ output }}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages:
+      - en
+      metrics:
+      - BLEU
+      - ROUGE
+      original_task: true
+    name: summarize_report
+    reference: ''
