@@ -1,17 +1,17 @@
 dataset: xnli
-subset: ar
+subset: ur
 templates:
   37d2f061-06b0-4aa3-af53-871a2b06748f: !Template
-    answer_choices: Vrai ||| Ni l'un ni l'autre ||| Faux
+    answer_choices: صحیح ||| کچھ نہیں ||| غلط
     id: 37d2f061-06b0-4aa3-af53-871a2b06748f
     jinja: '{{premise}}
 
-      Question: {{hypothesis}} Vrai, faux, ou ni l''un ni l''autre? ||| {{ answer_choices[label]
+      سوال: {{hypothesis}} صحیح، غلط, یا کچھ نہیں؟ ||| {{ answer_choices[label]
       }}'
     metadata: !TemplateMetadata
       choices_in_prompt: true
       languages:
-      - fr
+      - en
       metrics:
       - Accuracy
       original_task: true
@@ -19,58 +19,56 @@ templates:
     reference: 'Same as reported in Figure G7 of the GPT-3 paper, except that there
       is no task identifying tokens like "anli R1: ".'
   9b75ff67-bb66-413b-a33d-325707b035d7: !Template
-    answer_choices: "Oui ||| Peut-\xEAtre ||| Non"
+    answer_choices: ہاں ||| ممکن ہے ||| نہیں
     id: 9b75ff67-bb66-413b-a33d-325707b035d7
-    jinja: "Supposons \xAB {{premise}} \xBB, peut-on inf\xE9rer \xAB {{hypothesis}}\
-      \ \xBB ? Oui, non, ou peut-\xEAtre ? ||| {{ answer_choices[label] }} "
+    jinja: 'فرض کرو {{premise}} ہم یہ نتیجہ اخذ کر سکتے ہیں "{{hypothesis}}"? ہاں ، نہیں ، یا ممکن ہے ؟
+      ||| {{ answer_choices[label] }} '
     metadata: !TemplateMetadata
       choices_in_prompt: true
       languages:
-      - fr
+      - en
       metrics:
       - Accuracy
       original_task: true
     name: can we infer
     reference: Webson & Pavlick 2021
   9bda8e36-c881-4c9a-a3a9-eec68388a6f6: !Template
-    answer_choices: "Oui ||| Peut-\xEAtre ||| Non"
+    answer_choices: ہاں ||| ممکن ہے ||| نہیں
     id: 9bda8e36-c881-4c9a-a3a9-eec68388a6f6
-    jinja: "{{premise}} \n\nPeut-on dire que \xAB {{hypothesis}} \xBB ? Oui, non,\
-      \ ou peut-\xEAtre ? ||| {{ answer_choices[label] }} "
+    jinja: '{{premise}} کیا ہمارا یہ کہنا درست ہے "{{hypothesis}}"? ہاں ، نہیں ، یا ممکن ہے ؟ ||| {{ answer_choices[label] }} '
     metadata: !TemplateMetadata
       choices_in_prompt: true
       languages:
-      - fr
+      - en
       metrics:
       - Accuracy
       original_task: true
     name: justified in saying
     reference: Webson & Pavlick 2021
   d44c2947-f8e0-49ea-9770-e59f0581a921: !Template
-    answer_choices: Garanti ||| Possible ||| Impossible
+    answer_choices: یقینی ||| ممکن ||| نا ممکن
     id: d44c2947-f8e0-49ea-9770-e59f0581a921
-    jinja: "Pr\xE9sumons que ce soit vrai que \xAB {{premise}} \xBB\n\nAlors, \xAB\
-      \ {{hypothesis}} \xBB est garanti, possible, ou impossible? ||| {{ answer_choices[label]\
+    jinja: "فرض کرو یہ صحیح ہے كہ {{premise}} \n\nاِس لیے, \"{{hypothesis}}\" \
+      \ {{\"یقینی\"}}, {{\"ممکن\"}}, یا {{\"نا ممکن\"}} ہے ؟ ||| {{ answer_choices[label]\
       \ }}"
     metadata: !TemplateMetadata
       choices_in_prompt: true
       languages:
-      - fr
+      - en
       metrics:
       - Accuracy
       original_task: true
     name: guaranteed/possible/impossible
     reference: Sanh et al. 2021
   da368462-3a66-4222-9de1-05d66037a708: !Template
-    answer_choices: Correct ||| Inconcluant ||| Incorrect
+    answer_choices: بالکل صحیح ||| غیر یقینی ||| غلط
     id: da368462-3a66-4222-9de1-05d66037a708
-    jinja: "{{premise}} \n\nEn utilisant la description ci-dessus et ce que vous savez\
-      \ du monde, \xAB {{hypothesis}} \xBB est d\xE9finitivement correct, incorrect,\
-      \ inconcluant ? ||| {{ answer_choices[label] }}"
+    jinja: '{{premise}} صرف مندرجہ بالا تشریح اور دنیا كے بارے میں اپنی معلومات كے مطابق, "{{hypothesis}}" بالکل صحیح ہے ، غلط ہے ، یا غیر یقینی ہے ؟ |||
+      {{ answer_choices[label] }}'
     metadata: !TemplateMetadata
       choices_in_prompt: true
       languages:
-      - fr
+      - en
       metrics:
       - Accuracy
       original_task: true
