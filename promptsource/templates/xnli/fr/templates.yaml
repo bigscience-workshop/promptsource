@@ -1,6 +1,31 @@
 dataset: xnli
-subset: ar
+subset: fr
 templates:
+  0fd68cdf-0488-4a70-a075-74df1883b784: !Template
+    answer_choices: Oui ||| Peut-être ||| Non
+    id: 0fd68cdf-0488-4a70-a075-74df1883b784
+    jinja: Supposons que {{premise}} Pouvons-nous déduire que &quot;{{hypothesis}}&quot; ?
+      Oui, non, ou peut-être ? ||| {{ answer_choices[label] }}
+    metadata: !TemplateMetadata
+      choices_in_prompt: null
+      languages: null
+      metrics: null
+      original_task: null
+    name: can we infer_frmt
+    reference: ''
+  28cc3c2d-a9d1-4bb8-b9a0-52e9df17751d: !Template
+    answer_choices: Garanti ||| Possible ||| Impossible
+    id: 28cc3c2d-a9d1-4bb8-b9a0-52e9df17751d
+    jinja: Supposons qu&#39;il est vrai que {{premise}} Par conséquent, &quot;{{hypothesis}}&quot;
+      est {{"guaranteed"}}, {{"possible"}} ou {{"impossible"}} ? ||| {{ answer_choices[label]
+      }}
+    metadata: !TemplateMetadata
+      choices_in_prompt: null
+      languages: null
+      metrics: null
+      original_task: null
+    name: guaranteed/possible/impossible_frmt
+    reference: ''
   37d2f061-06b0-4aa3-af53-871a2b06748f: !Template
     answer_choices: Vrai ||| Ni l'un ni l'autre ||| Faux
     id: 37d2f061-06b0-4aa3-af53-871a2b06748f
@@ -18,11 +43,36 @@ templates:
     name: GPT-3 style
     reference: 'Same as reported in Figure G7 of the GPT-3 paper, except that there
       is no task identifying tokens like "anli R1: ".'
+  40fdc487-3935-47e2-a43f-413a1d86d7e1: !Template
+    answer_choices: Corriger ||| Non concluant ||| Incorrect
+    id: 40fdc487-3935-47e2-a43f-413a1d86d7e1
+    jinja: '{{premise}} En utilisant uniquement la description ci-dessus et ce que
+      vous savez sur le monde, &quot;{{hypothesis}}&quot; est définitivement correcte,
+      incorrecte ou non concluante ? ||| {{ answer_choices[label] }}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: null
+      languages: null
+      metrics: null
+      original_task: null
+    name: MNLI crowdsource_frmt
+    reference: ''
+  96a70043-d49a-4cd3-b235-a3c8a3a985fd: !Template
+    answer_choices: Oui ||| Peut-être ||| Non
+    id: 96a70043-d49a-4cd3-b235-a3c8a3a985fd
+    jinja: '{{premise}} Sommes-nous justifiés de dire que &quot;{{hypothesis}}&quot; ?
+      Oui, non, ou peut-être ? ||| {{ answer_choices[label] }}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: null
+      languages: null
+      metrics: null
+      original_task: null
+    name: justified in saying_frmt
+    reference: ''
   9b75ff67-bb66-413b-a33d-325707b035d7: !Template
-    answer_choices: "Oui ||| Peut-\xEAtre ||| Non"
+    answer_choices: Oui ||| Peut-être ||| Non
     id: 9b75ff67-bb66-413b-a33d-325707b035d7
-    jinja: "Supposons \xAB {{premise}} \xBB, peut-on inf\xE9rer \xAB {{hypothesis}}\
-      \ \xBB ? Oui, non, ou peut-\xEAtre ? ||| {{ answer_choices[label] }} "
+    jinja: 'Supposons « {{premise}} », peut-on inférer « {{hypothesis}} » ? Oui, non,
+      ou peut-être ? ||| {{ answer_choices[label] }} '
     metadata: !TemplateMetadata
       choices_in_prompt: true
       languages:
@@ -33,10 +83,10 @@ templates:
     name: can we infer
     reference: Webson & Pavlick 2021
   9bda8e36-c881-4c9a-a3a9-eec68388a6f6: !Template
-    answer_choices: "Oui ||| Peut-\xEAtre ||| Non"
+    answer_choices: Oui ||| Peut-être ||| Non
     id: 9bda8e36-c881-4c9a-a3a9-eec68388a6f6
-    jinja: "{{premise}} \n\nPeut-on dire que \xAB {{hypothesis}} \xBB ? Oui, non,\
-      \ ou peut-\xEAtre ? ||| {{ answer_choices[label] }} "
+    jinja: "{{premise}} \n\nPeut-on dire que « {{hypothesis}} » ? Oui, non, ou peut-être\
+      \ ? ||| {{ answer_choices[label] }} "
     metadata: !TemplateMetadata
       choices_in_prompt: true
       languages:
@@ -49,9 +99,11 @@ templates:
   d44c2947-f8e0-49ea-9770-e59f0581a921: !Template
     answer_choices: Garanti ||| Possible ||| Impossible
     id: d44c2947-f8e0-49ea-9770-e59f0581a921
-    jinja: "Pr\xE9sumons que ce soit vrai que \xAB {{premise}} \xBB\n\nAlors, \xAB\
-      \ {{hypothesis}} \xBB est garanti, possible, ou impossible? ||| {{ answer_choices[label]\
-      \ }}"
+    jinja: 'Présumons que ce soit vrai que « {{premise}} »
+
+
+      Alors, « {{hypothesis}} » est garanti, possible, ou impossible? ||| {{ answer_choices[label]
+      }}'
     metadata: !TemplateMetadata
       choices_in_prompt: true
       languages:
@@ -65,8 +117,8 @@ templates:
     answer_choices: Correct ||| Inconcluant ||| Incorrect
     id: da368462-3a66-4222-9de1-05d66037a708
     jinja: "{{premise}} \n\nEn utilisant la description ci-dessus et ce que vous savez\
-      \ du monde, \xAB {{hypothesis}} \xBB est d\xE9finitivement correct, incorrect,\
-      \ inconcluant ? ||| {{ answer_choices[label] }}"
+      \ du monde, « {{hypothesis}} » est définitivement correct, incorrect, inconcluant\
+      \ ? ||| {{ answer_choices[label] }}"
     metadata: !TemplateMetadata
       choices_in_prompt: true
       languages:
@@ -76,3 +128,15 @@ templates:
       original_task: true
     name: MNLI crowdsource
     reference: Adapted from Williams et al. 2018's instructions to crowdsourcing workers.
+  df398791-bfd5-4774-897c-c1a9acb3801c: !Template
+    answer_choices: Vrai ||| Ni ||| Faux
+    id: df398791-bfd5-4774-897c-c1a9acb3801c
+    jinja: '{{premise}} Question : {{hypothesis}} Vrai, faux ou ni l&#39;un ni l&#39;autre ?
+      ||| {{ answer_choices[label] }}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: null
+      languages: null
+      metrics: null
+      original_task: null
+    name: GPT-3 style_frmt
+    reference: ''

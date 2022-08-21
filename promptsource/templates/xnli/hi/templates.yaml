@@ -1,6 +1,31 @@
 dataset: xnli
 subset: hi
 templates:
+  25a32b2a-f5e2-4e74-a5c9-828b99261b43: !Template
+    answer_choices: सही ||| दुविधा में पड़ा हुआ ||| ग़लत
+    id: 25a32b2a-f5e2-4e74-a5c9-828b99261b43
+    jinja: '{{premise}} केवल उपरोक्त विवरण और दुनिया के बारे में आप जो जानते हैं उसका
+      उपयोग करते हुए, &quot;{{hypothesis}}&quot; निश्चित रूप से सही, गलत या अनिर्णायक
+      है? ||| {{ answer_choices[label] }}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: null
+      languages: null
+      metrics: null
+      original_task: null
+    name: MNLI crowdsource_himt
+    reference: ''
+  31ed3aca-e0c1-4ebb-a2a2-4d3063e72144: !Template
+    answer_choices: हाँ ||| शायद ||| नहीं
+    id: 31ed3aca-e0c1-4ebb-a2a2-4d3063e72144
+    jinja: '{{premise}} क्या यह कहना उचित है कि &quot;{{hypothesis}}&quot;? हाँ, नहीं,
+      या शायद? ||| {{ answer_choices[label] }}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: null
+      languages: null
+      metrics: null
+      original_task: null
+    name: justified in saying_himt
+    reference: ''
   37d2f061-06b0-4aa3-af53-871a2b06748f: !Template
     answer_choices: सत्य ||| इनमें से कोई भी नहीं ||| असत्य
     id: 37d2f061-06b0-4aa3-af53-871a2b06748f
@@ -18,11 +43,35 @@ templates:
     name: GPT-3 stylehiht
     reference: 'Same as reported in Figure G7 of the GPT-3 paper, except that there
       is no task identifying tokens like "anli R1: ".'
+  629827a5-5057-4dea-b382-4f3c8ca2b15b: !Template
+    answer_choices: हाँ ||| शायद ||| नहीं
+    id: 629827a5-5057-4dea-b382-4f3c8ca2b15b
+    jinja: मान लीजिए {{premise}} क्या हम उस &quot;{{hypothesis}}&quot; का अनुमान लगा
+      सकते हैं? हाँ, नहीं, या शायद? ||| {{ answer_choices[label] }}
+    metadata: !TemplateMetadata
+      choices_in_prompt: null
+      languages: null
+      metrics: null
+      original_task: null
+    name: can we infer_himt
+    reference: ''
+  83bdae91-8a37-4575-a63f-b5f998e861df: !Template
+    answer_choices: गारंटी ||| संभव ||| असंभव
+    id: 83bdae91-8a37-4575-a63f-b5f998e861df
+    jinja: मान लें कि यह सच है कि {{premise}} इसलिए, &quot;{{hypothesis}}&quot; {{"guaranteed"}},
+      {{"possible"}}, या {{"impossible"}} है? ||| {{ answer_choices[label] }}
+    metadata: !TemplateMetadata
+      choices_in_prompt: null
+      languages: null
+      metrics: null
+      original_task: null
+    name: guaranteed/possible/impossible_himt
+    reference: ''
   9b75ff67-bb66-413b-a33d-325707b035d7: !Template
     answer_choices: हाँ ||| शायद ||| नहीं
     id: 9b75ff67-bb66-413b-a33d-325707b035d7
-    jinja: 'मान लीजिए "{{premise}}" क्या हम यह अनुमान लगा सकते हैं कि "{{hypothesis}}"? हाँ, नहीं, या शायद?
-      ||| {{ answer_choices[label] }} '
+    jinja: 'मान लीजिए "{{premise}}" क्या हम यह अनुमान लगा सकते हैं कि "{{hypothesis}}"?
+      हाँ, नहीं, या शायद? ||| {{ answer_choices[label] }} '
     metadata: !TemplateMetadata
       choices_in_prompt: true
       languages:
@@ -35,8 +84,8 @@ templates:
   9bda8e36-c881-4c9a-a3a9-eec68388a6f6: !Template
     answer_choices: हाँ ||| शायद ||| नहीं
     id: 9bda8e36-c881-4c9a-a3a9-eec68388a6f6
-    jinja: '"{{premise}}" क्या यह कहना उचित है कि "{{hypothesis}}"? हाँ, नहीं,
-      या शायद? ||| {{ answer_choices[label] }} '
+    jinja: '"{{premise}}" क्या यह कहना उचित है कि "{{hypothesis}}"? हाँ, नहीं, या
+      शायद? ||| {{ answer_choices[label] }} '
     metadata: !TemplateMetadata
       choices_in_prompt: true
       languages:
@@ -46,11 +95,23 @@ templates:
       original_task: true
     name: justified in sayinghiht
     reference: Webson & Pavlick 2021
+  a3bcd909-2598-4d7a-a2b5-dc369556b663: !Template
+    answer_choices: सत्य ||| न ||| असत्य
+    id: a3bcd909-2598-4d7a-a2b5-dc369556b663
+    jinja: '{{premise}} प्रश्न: {{hypothesis}} सत्य, असत्य, या नहीं? ||| {{ answer_choices[label]
+      }}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: null
+      languages: null
+      metrics: null
+      original_task: null
+    name: GPT-3 style_himt
+    reference: ''
   d44c2947-f8e0-49ea-9770-e59f0581a921: !Template
     answer_choices: निश्चित ||| संभव ||| असंभव
     id: d44c2947-f8e0-49ea-9770-e59f0581a921
-    jinja: "मान लें कि यह सच है कि \"{{premise}}\" \n\nइसलिए, क्या \"{{hypothesis}}\"
-      \ {{\"निश्चित\"}}, {{\"संभव\"}}, या {{\"असंभव\"}} है? ||| {{ answer_choices[label]\
+    jinja: "मान लें कि यह सच है कि \"{{premise}}\" \n\nइसलिए, क्या \"{{hypothesis}}\"\
+      \  {{\"निश्चित\"}}, {{\"संभव\"}}, या {{\"असंभव\"}} है? ||| {{ answer_choices[label]\
       \ }}"
     metadata: !TemplateMetadata
       choices_in_prompt: true
@@ -64,8 +125,9 @@ templates:
   da368462-3a66-4222-9de1-05d66037a708: !Template
     answer_choices: सही ||| अनिर्णीत ||| गलत
     id: da368462-3a66-4222-9de1-05d66037a708
-    jinja: '"{{premise}}" केवल उपरोक्त विवरण और दुनिया के बारे में आप जो जानते हैं उसका उपयोग करते हुए, "{{hypothesis}}" सही, गलत या अनिर्णीत है? |||
-      {{ answer_choices[label] }}'
+    jinja: '"{{premise}}" केवल उपरोक्त विवरण और दुनिया के बारे में आप जो जानते हैं
+      उसका उपयोग करते हुए, "{{hypothesis}}" सही, गलत या अनिर्णीत है? ||| {{ answer_choices[label]
+      }}'
     metadata: !TemplateMetadata
       choices_in_prompt: true
       languages:

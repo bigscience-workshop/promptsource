@@ -1,6 +1,30 @@
 dataset: xnli
 subset: es
 templates:
+  0c39a992-f60b-45a9-bfd6-4ff81b491d28: !Template
+    answer_choices: Sí ||| Quizás ||| No
+    id: 0c39a992-f60b-45a9-bfd6-4ff81b491d28
+    jinja: '{{premise}} ¿Estamos justificados al decir que &quot;{{hypothesis}}&quot;?
+      ¿Sí, no o tal vez? ||| {{ answer_choices[label] }}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: null
+      languages: null
+      metrics: null
+      original_task: null
+    name: justified in saying_esmt
+    reference: ''
+  2c30be6c-52f9-4754-9848-bcb4ee7a4d88: !Template
+    answer_choices: Verdadero ||| Ninguno de los dos ||| Falso
+    id: 2c30be6c-52f9-4754-9848-bcb4ee7a4d88
+    jinja: '{{premise}} Pregunta: {{hypothesis}} ¿Verdadero, falso o ninguno? |||
+      {{ answer_choices[label] }}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: null
+      languages: null
+      metrics: null
+      original_task: null
+    name: GPT-3 style_esmt
+    reference: ''
   37d2f061-06b0-4aa3-af53-871a2b06748f: !Template
     answer_choices: Verdadero ||| Ninguno ||| Falso
     id: 37d2f061-06b0-4aa3-af53-871a2b06748f
@@ -18,11 +42,24 @@ templates:
     name: GPT-3 style
     reference: 'Same as reported in Figure G7 of the GPT-3 paper, except that there
       is no task identifying tokens like "anli R1: ".'
+  8426ac76-cfe2-4d3a-b57b-b7904b01cd6f: !Template
+    answer_choices: Correcto ||| Poco concluyente ||| Incorrecto
+    id: 8426ac76-cfe2-4d3a-b57b-b7904b01cd6f
+    jinja: '{{premise}} Usando solo la descripción anterior y lo que sabe sobre el
+      mundo, &quot;{{hypothesis}}&quot; es definitivamente correcta, incorrecta o
+      no concluyente. ||| {{ answer_choices[label] }}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: null
+      languages: null
+      metrics: null
+      original_task: null
+    name: MNLI crowdsource_esmt
+    reference: ''
   9b75ff67-bb66-413b-a33d-325707b035d7: !Template
     answer_choices: Sí ||| Tal vez ||| No
     id: 9b75ff67-bb66-413b-a33d-325707b035d7
-    jinja: 'Supongamos {{premise}} Podemos inferir que "{{hypothesis}}"? Si, no, o tal vez?
-      ||| {{ answer_choices[label] }} '
+    jinja: 'Supongamos {{premise}} Podemos inferir que "{{hypothesis}}"? Si, no, o
+      tal vez? ||| {{ answer_choices[label] }} '
     metadata: !TemplateMetadata
       choices_in_prompt: true
       languages:
@@ -49,8 +86,8 @@ templates:
   d44c2947-f8e0-49ea-9770-e59f0581a921: !Template
     answer_choices: Garantizado ||| Posible ||| Imposible
     id: d44c2947-f8e0-49ea-9770-e59f0581a921
-    jinja: "Supongamos que es cierto que {{premise}} \n\npor lo tanto, \"{{hypothesis}}\" es\
-      \ {{\"garantizado\"}}, {{\"posible\"}}, o {{\"imposible\"}}? ||| {{ answer_choices[label]\
+    jinja: "Supongamos que es cierto que {{premise}} \n\npor lo tanto, \"{{hypothesis}}\"\
+      \ es {{\"garantizado\"}}, {{\"posible\"}}, o {{\"imposible\"}}? ||| {{ answer_choices[label]\
       \ }}"
     metadata: !TemplateMetadata
       choices_in_prompt: true
@@ -65,8 +102,8 @@ templates:
     answer_choices: Correcto ||| No concluyente ||| Incorrecto
     id: da368462-3a66-4222-9de1-05d66037a708
     jinja: '{{premise}} Usando solo la descripción anterior y lo que sabe sobre el
-      mundo, "{{hypothesis}}" es definitivamente correcto, incorrecto o no concluyente? |||
-      {{ answer_choices[label] }}'
+      mundo, "{{hypothesis}}" es definitivamente correcto, incorrecto o no concluyente?
+      ||| {{ answer_choices[label] }}'
     metadata: !TemplateMetadata
       choices_in_prompt: true
       languages:
@@ -76,3 +113,28 @@ templates:
       original_task: true
     name: MNLI crowdsource
     reference: Adapted from Williams et al. 2018's instructions to crowdsourcing workers.
+  df379cab-fa2a-44c9-8008-2fe610efe467: !Template
+    answer_choices: Sí ||| Quizás ||| No
+    id: df379cab-fa2a-44c9-8008-2fe610efe467
+    jinja: Supongamos {{premise}} ¿Podemos inferir que &quot;{{hypothesis}}&quot;?
+      ¿Sí, no o tal vez? ||| {{ answer_choices[label] }}
+    metadata: !TemplateMetadata
+      choices_in_prompt: null
+      languages: null
+      metrics: null
+      original_task: null
+    name: can we infer_esmt
+    reference: ''
+  f31ba22f-e7e1-44e5-9d92-6b3bbe8ad97e: !Template
+    answer_choices: garantizado ||| Posible ||| Imposible
+    id: f31ba22f-e7e1-44e5-9d92-6b3bbe8ad97e
+    jinja: Supongamos que es cierto que {{premise}} Por lo tanto, &quot;{{hypothesis}}&quot;
+      es {{"guaranteed"}}, {{"possible"}} o {{"impossible"}}. ||| {{ answer_choices[label]
+      }}
+    metadata: !TemplateMetadata
+      choices_in_prompt: null
+      languages: null
+      metrics: null
+      original_task: null
+    name: guaranteed/possible/impossible_esmt
+    reference: ''

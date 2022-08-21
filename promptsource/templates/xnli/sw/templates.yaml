@@ -1,11 +1,22 @@
 dataset: xnli
 subset: sw
 templates:
+  336286e7-cd66-4318-b3e5-31e1ef304b34: !Template
+    answer_choices: Kweli ||| Wala ||| Uongo
+    id: 336286e7-cd66-4318-b3e5-31e1ef304b34
+    jinja: '{{premise}} Swali: {{hypothesis}} Kweli, Si kweli au Sivyo? ||| {{ answer_choices[label]
+      }}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: null
+      languages: null
+      metrics: null
+      original_task: null
+    name: GPT-3 style_swmt
+    reference: ''
   37d2f061-06b0-4aa3-af53-871a2b06748f: !Template
     answer_choices: Ukweli ||| Wala ||| Uongo
     id: 37d2f061-06b0-4aa3-af53-871a2b06748f
-    jinja: '{{premise}}
-      Swali: {{hypothesis}} Ukweli, Uongo, au Wala ? ||| {{ answer_choices[label]
+    jinja: '{{premise}} Swali: {{hypothesis}} Ukweli, Uongo, au Wala ? ||| {{ answer_choices[label]
       }}'
     metadata: !TemplateMetadata
       choices_in_prompt: true
@@ -17,11 +28,24 @@ templates:
     name: GPT-3 styleswht
     reference: 'Same as reported in Figure G7 of the GPT-3 paper, except that there
       is no task identifying tokens like "anli R1: ".'
+  95062749-0cf2-4211-a6e8-496bd809764e: !Template
+    answer_choices: Sahihi ||| Haijumuishi ||| Si sahihi
+    id: 95062749-0cf2-4211-a6e8-496bd809764e
+    jinja: '{{premise}} Kwa kutumia tu maelezo yaliyo hapo juu na kile unachojua kuhusu
+      ulimwengu, &quot;{{hypothesis}}&quot; ni sahihi, si sahihi, au si sahihi? |||
+      {{ answer_choices[label] }}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: null
+      languages: null
+      metrics: null
+      original_task: null
+    name: MNLI crowdsource_swmt
+    reference: ''
   9b75ff67-bb66-413b-a33d-325707b035d7: !Template
     answer_choices: Ndio ||| Labda ||| Hapana
     id: 9b75ff67-bb66-413b-a33d-325707b035d7
-    jinja: 'Ijapo {{premise}} Tunaweza kisi kuwa "{{hypothesis}}"? Ndio, hapana, au labda?
-      ||| {{ answer_choices[label] }}'
+    jinja: Ijapo {{premise}} Tunaweza kisi kuwa "{{hypothesis}}"? Ndio, hapana, au
+      labda? ||| {{ answer_choices[label] }}
     metadata: !TemplateMetadata
       choices_in_prompt: true
       languages:
@@ -34,8 +58,8 @@ templates:
   9bda8e36-c881-4c9a-a3a9-eec68388a6f6: !Template
     answer_choices: Ndio ||| Labda ||| Hapana
     id: 9bda8e36-c881-4c9a-a3a9-eec68388a6f6
-    jinja: '{{premise}} Tunahaki ya kusema kuwa "{{hypothesis}}"? Ndio, hapana,
-      au labda? ||| {{ answer_choices[label] }} '
+    jinja: '{{premise}} Tunahaki ya kusema kuwa "{{hypothesis}}"? Ndio, hapana, au
+      labda? ||| {{ answer_choices[label] }} '
     metadata: !TemplateMetadata
       choices_in_prompt: true
       languages:
@@ -45,12 +69,37 @@ templates:
       original_task: true
     name: justified in sayingswht
     reference: Webson & Pavlick 2021
+  9c0ceeeb-a2c3-4a00-a4b1-7604469a53df: !Template
+    answer_choices: Imehakikishwa ||| Inawezekana ||| Haiwezekani
+    id: 9c0ceeeb-a2c3-4a00-a4b1-7604469a53df
+    jinja: Chukulia kuwa ni kweli kwamba {{premise}} Kwa hivyo, &quot;{{hypothesis}}&quot;
+      ni {{"guaranteed"}}, {{"possible"}}, au {{"impossible"}}? ||| {{ answer_choices[label]
+      }}
+    metadata: !TemplateMetadata
+      choices_in_prompt: null
+      languages: null
+      metrics: null
+      original_task: null
+    name: guaranteed/possible/impossible_swmt
+    reference: ''
+  b0170084-2a14-4e52-a459-d509b8465611: !Template
+    answer_choices: Ndiyo ||| Labda ||| Hapana
+    id: b0170084-2a14-4e52-a459-d509b8465611
+    jinja: '{{premise}} Je, tuna haki ya kusema kwamba &quot;{{hypothesis}}&quot;?
+      Ndio, hapana, au labda? ||| {{ answer_choices[label] }}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: null
+      languages: null
+      metrics: null
+      original_task: null
+    name: justified in saying_swmt
+    reference: ''
   d44c2947-f8e0-49ea-9770-e59f0581a921: !Template
     answer_choices: Imehakikishwa ||| Inawezekana ||| Haiwezekani
     id: d44c2947-f8e0-49ea-9770-e59f0581a921
-    jinja: "Ukidhania ni kweli kuwa {{premise}} \n\nKwa hivyo, \"{{hypothesis}}\" ni\
-      \ {{\"Imehakikishwa\"}}, {{\"Inawezekana\"}}, au {{\"Haiwezekani\"}}? ||| {{ answer_choices[label]\
-      \ }}"
+    jinja: "Ukidhania ni kweli kuwa {{premise}} \n\nKwa hivyo, \"{{hypothesis}}\"\
+      \ ni {{\"Imehakikishwa\"}}, {{\"Inawezekana\"}}, au {{\"Haiwezekani\"}}? |||\
+      \ {{ answer_choices[label] }}"
     metadata: !TemplateMetadata
       choices_in_prompt: true
       languages:
@@ -63,7 +112,8 @@ templates:
   da368462-3a66-4222-9de1-05d66037a708: !Template
     answer_choices: Sahihi ||| Isiohitimishwa ||| Isio Sahihi
     id: da368462-3a66-4222-9de1-05d66037a708
-    jinja: '{{premise}} Ukitumia maelezo yaliyo hapo juu pekee na unayojua kuhusu dunia, "{{hypothesis}}" ni hakika sahihi, isio sahihi, au isiohitimishwa? |||
+    jinja: '{{premise}} Ukitumia maelezo yaliyo hapo juu pekee na unayojua kuhusu
+      dunia, "{{hypothesis}}" ni hakika sahihi, isio sahihi, au isiohitimishwa? |||
       {{ answer_choices[label] }}'
     metadata: !TemplateMetadata
       choices_in_prompt: true
@@ -74,3 +124,15 @@ templates:
       original_task: true
     name: MNLI crowdsourceswht
     reference: Adapted from Williams et al. 2018's instructions to crowdsourcing workers.
+  f988a0fe-9980-47ea-be07-8d1c51c37854: !Template
+    answer_choices: Ndiyo ||| Labda ||| Hapana
+    id: f988a0fe-9980-47ea-be07-8d1c51c37854
+    jinja: Tuseme {{premise}} Je, tunaweza kukisia kuwa &quot;{{hypothesis}}&quot;?
+      Ndio, hapana, au labda? ||| {{ answer_choices[label] }}
+    metadata: !TemplateMetadata
+      choices_in_prompt: null
+      languages: null
+      metrics: null
+      original_task: null
+    name: can we infer_swmt
+    reference: ''

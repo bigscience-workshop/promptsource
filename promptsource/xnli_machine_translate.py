@@ -13,6 +13,13 @@ PROMPTS = [
 ]
 
 LANGS = [
+    "ar",
+    "es",
+    "fr",
+    "hi",
+    "sw",
+    "ur",
+    "vi",
     "zh",
 ]
 # Path to key
@@ -85,5 +92,3 @@ for lang in LANGS:
             template_name, jinja=jinja, reference="", answer_choices=" ||| ".join(answer_choices)
         )
         target_templates.add_template(target_template)
-        break
-    break
