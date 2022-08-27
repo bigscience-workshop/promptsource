@@ -378,12 +378,13 @@ class Template(yaml.YAMLObject):
         else:
             return None
 
-    def apply(self, example, truncate=True, highlight_variables=False) -> Tuple[str, List[str]]:
+    def apply(self, example, truncate=True, strip_connection=True, highlight_variables=False) -> Tuple[str, List[str]]:
         """
         Creates a prompt by applying this template to an example
 
         :param example: the dataset example to create a prompt for
         :param truncate: if True, example fields will be truncated to TEXT_VAR_LENGTH chars
+        :param strip_connection: if True, strips the connection between input & target
         :param highlight_variables: highlight the added variables
         :return: tuple of a string and a list of strings, for input and targets
         """
@@ -414,7 +415,10 @@ class Template(yaml.YAMLObject):
 
         # Splits on the separator, and then replaces back any occurrences of the
         # separator in the original example
-        parts = [self._unescape_pipe(part).strip() for part in rendered_example.split("|||")]
+        if strip_connection:
+            parts = [self._unescape_pipe(part).strip() for part in rendered_example.split("|||")]
+        else:
+            parts = [self._unescape_pipe(part) for part in rendered_example.split("|||")]
         if parts == [""]:
             # Handles the case of blank results
             # Example: `tydiqa` where prompts are conditionned on the language and thus most of the time will return a blank result
@@ -422,7 +426,16 @@ class Template(yaml.YAMLObject):
         if len(parts) < 2:
             raise ValueError("Prompt did not produce an input and at least one target.")
 
-        return parts[0], parts[1:]
+        if strip_connection:
+            return parts[0], parts[1:]
+        else:
+            # Remove double whitespace
+            if parts[0][-1] == " " and all(p[0] == " " for p in parts[1:]):
+                parts[0] = parts[0][:-1]
+            # Leave the connection between input & target unstripped
+            return parts[0].lstrip(), [p.rstrip() for p in parts[1:]]
+
+        
 
     pipe_protector = "3ed2dface8203c4c9dfb1a5dc58e41e0"
 
