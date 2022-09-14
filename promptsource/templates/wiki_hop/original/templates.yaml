@@ -289,3 +289,19 @@ templates:
     name: choose_best_object_interrogative_2
     reference: Given information and subject and relation, choose the best object
       entity (interrogative instruction).
+  f55936e1-cbde-4d41-b462-6150cce8c1c8: !Template
+    answer_choices: '{{candidates | join("|||")}}'
+    id: f55936e1-cbde-4d41-b462-6150cce8c1c8
+    jinja: '{% set question_split = question.split('' '') %}Generate some paragraphs, 
+    such that the entity of ''{{answer}}'' relates to ''{{ question_split[1:] | join(" ")}}'' 
+    with the relationship of ''{{ question_split[0] | replace("_", " ")}}''. 
+    ||| {% for support in supports %} - {{ support }}  {% endfor %}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      languages:
+      - en
+      metrics:
+      - Accuracy
+      original_task: true
+    name: xp3longgenrelation
+    reference: ''

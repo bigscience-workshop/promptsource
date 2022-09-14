@@ -118,3 +118,35 @@ templates:
       original_task: true
     name: answer_the_following_q
     reference: 'Input: QC, Output: Answer'
+  b64d5a15-68e2-4d1c-b30a-ca8250c860fa: !Template
+    answer_choices: null
+    id: b64d5a15-68e2-4d1c-b30a-ca8250c860fa
+    jinja: '{{question}} Given the previous question, write a context that contains the answer. It can be 1 - 20 sentences. Context:
+      |||
+      {{context}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages:
+      - en
+      metrics:
+      - Squad
+      original_task: true
+    name: xp3longwritecontext
+    reference: ''
+  c64d5a15-68e2-4d1c-b30a-ca8250c860fa: !Template
+    answer_choices: null
+    id: c64d5a15-68e2-4d1c-b30a-ca8250c860fa
+    jinja: '{% if metadata.split != "test" %}
+      Generate a few sentences of context that can be used to answer the question {{question}}.
+      The answer is "{{answers.text | choice}}" and should appear in the context.
+      Generate after this sentence. ||| {{context}}
+      {% endif %}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages:
+      - en
+      metrics:
+      - Squad
+      original_task: true
+    name: xp3longgeneratecontext
+    reference: ''
