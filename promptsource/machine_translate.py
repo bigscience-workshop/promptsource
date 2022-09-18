@@ -71,6 +71,7 @@ def translate(target, text):
         text = text.decode("utf-8")
     # Text can also be a sequence of strings, in which case this method
     # will return a sequence of results for each text.
+    # By default format_ is html, which would return &quot; instead of "
     result = translate_client.translate(text, source_language="en", target_language=target, format_="text")
     print("Text: {}".format(result["input"]))
     print("Translation: {}".format(result["translatedText"]))
