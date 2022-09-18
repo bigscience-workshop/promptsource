@@ -40,7 +40,7 @@ PROMPTS = [
 ]
 
 LANGS = [
-#    "id",
+    "id",
     "sw",
     "ta",
     "vi",
@@ -50,6 +50,48 @@ LANGS = [
 SOURCE_DATASET = "super_glue/copa"
 SOURCE_LANG = None
 TARGET_DATASET = "xcopa"
+
+### XSTORY_CLOZE
+
+PROMPTS = [
+    "Answer Given options",
+    'Choose Story Ending',
+    "Story Continuation and Options",
+    "Generate Ending",
+    "Novel Correct Ending",
+]
+
+LANGS = [
+    "ar",
+    "es",
+    "eu",
+    "hi",
+    "id",
+    "zh",
+]
+
+SOURCE_DATASET = TARGET_DATASET = "Muennighoff/xstory_cloze"
+SOURCE_LANG = "en"
+
+### XWINOGRAD
+
+PROMPTS = [
+    "Replace",
+    "stand for",
+    "True or False",
+    "does underscore refer to",
+    "underscore refer to",
+]
+
+LANGS = [
+    "fr",
+    "pt",
+    "zh",
+]
+
+SOURCE_DATASET = TARGET_DATASET = "Muennighoff/xwinograd"
+SOURCE_LANG = "en"
+
 
 
 # Path to key

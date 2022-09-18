@@ -1,0 +1,80 @@
+dataset: Muennighoff/xwinograd
+subset: zh
+templates:
+  5f150442-fb72-4bb0-becb-1aaef0ddc772: !Template
+    answer_choices: '{{option1}} ||| {{option2}}'
+    id: 5f150442-fb72-4bb0-becb-1aaef0ddc772
+    jinja: '{{sentence}}
+
+      上句中的_指的是什么？ {{ option1 }} 还是 {{ option2 }}？ ||| {% if answer == ''1'' %} {{option1}}
+      {% else %} {{ option2 }} {% endif %}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: null
+      languages: null
+      metrics: null
+      original_task: null
+    name: underscore refer to_zhmt
+    reference: ''
+  649ef42c-5983-43d2-9a38-094fb7c4840d: !Template
+    answer_choices: '{{option1}} ||| {{option2}}'
+    id: 649ef42c-5983-43d2-9a38-094fb7c4840d
+    jinja: '{{sentence}}
+
+      将上面句子中的 _ 替换为正确的选项：
+
+      - {{option1}}
+
+      - {{option2}}
+
+      |||
+
+      {% if answer == ''1'' %} {{option1}} {% else %} {{ option2 }} {% endif %}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: null
+      languages: null
+      metrics: null
+      original_task: null
+    name: Replace_zhmt
+    reference: ''
+  8cc27f3a-ac9d-4da2-aea8-c4cdeb7bf7cf: !Template
+    answer_choices: '{{option1}} ||| {{option2}}'
+    id: 8cc27f3a-ac9d-4da2-aea8-c4cdeb7bf7cf
+    jinja: '在下面的句子中，_ 代表 {{answer_choices[0]}} 还是 {{answer_choices[1]}}？
+
+      {{sentence}}|||
+
+      {{answer_choices[answer | int - 1]}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: null
+      languages: null
+      metrics: null
+      original_task: null
+    name: stand for_zhmt
+    reference: ''
+  cf78fee5-d02c-4497-a146-9e9b99d1c772: !Template
+    answer_choices: 真的 ||| 错误的
+    id: cf78fee5-d02c-4497-a146-9e9b99d1c772
+    jinja: '下面句子中的 _ 指的是 {{option1}}。对或错？
+
+      {{sentence}}|||
+
+      {{answer_choices[answer|int - 1]}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: null
+      languages: null
+      metrics: null
+      original_task: null
+    name: True or False_zhmt
+    reference: ''
+  e55cd4f1-9960-4694-aecd-16e24bc8dc27: !Template
+    answer_choices: '{{ option1 }} ||| {{ option2 }}'
+    id: e55cd4f1-9960-4694-aecd-16e24bc8dc27
+    jinja: '{{ sentence }} 在上一句中，_ 是指 {{ option1 }} 还是 {{ option2 }}？ ||| {% if answer
+      == ''1'' %} {{option1}} {% else %} {{ option2 }} {% endif %}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: null
+      languages: null
+      metrics: null
+      original_task: null
+    name: does underscore refer to_zhmt
+    reference: ''
