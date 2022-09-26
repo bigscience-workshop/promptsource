@@ -78,3 +78,77 @@ templates:
       original_task: null
     name: does underscore refer to_zhmt
     reference: ''
+  33d31908-4aee-4545-aff2-7528cbf39197: !Template
+    answer_choices: '{{option1}} ||| {{option2}}'
+    id: 33d31908-4aee-4545-aff2-7528cbf39197
+    jinja: "{{sentence}}\n把上个句子中的_替换成正确的选项:\
+      \ \n- {{option1}}\n- {{option2}}\n|||\n{% if answer == '1' %} {{option1}} {%\
+      \ else %} {{ option2 }} {% endif %}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      languages:
+      - zh
+      metrics:
+      - Accuracy
+      original_task: true
+    name: Replace_zhht
+    reference: ''
+  7f5f6d33-25e2-4394-b1f0-49a2a54767aa: !Template
+    answer_choices: True ||| False
+    id: 7f5f6d33-25e2-4394-b1f0-49a2a54767aa
+    jinja: '在以下的句子中，_ 指的是{{option1}}。 对否?
+      {{sentence}}|||
+      {{answer_choices[answer|int - 1]}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      languages:
+      - zh
+      metrics:
+      - Accuracy
+      original_task: false
+    name: True or False_zhht
+    reference: ''
+  22f9679e-7b6c-4ee7-a348-e905ed9aaf9e: !Template
+    answer_choices: '{{ option1 }} ||| {{ option2 }}'
+    id: 22f9679e-7b6c-4ee7-a348-e905ed9aaf9e
+    jinja: '{{ sentence }} 在上个句子里, _ 指的是{{ option1 }}抑或{{ option2 }}? ||| {% if answer == ''1'' %} {{option1}} {% else %} {{ option2
+      }} {% endif %}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      languages:
+      - zh
+      metrics:
+      - Accuracy
+      original_task: true
+    name: does underscore refer to_zhht
+    reference: ''
+  bd11cf1f-bda2-4757-b1b5-f1a20a3f7202: !Template
+    answer_choices: '{{option1}} ||| {{option2}}'
+    id: bd11cf1f-bda2-4757-b1b5-f1a20a3f7202
+    jinja: '{{sentence}}
+      _ 在上面的句子中指的是什么？{{ option1 }}还是{{ option2 }}? ||| {% if answer == ''1'' %} {{option1}} {% else %} {{ option2 }} {% endif
+      %}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      languages:
+      - zh
+      metrics:
+      - Accuracy
+      original_task: true
+    name: underscore refer to_zhht
+    reference: ''
+  ec355d5d-bb5c-488c-93a0-4f90e6011c5d: !Template
+    answer_choices: '{{option1}} ||| {{option2}}'
+    id: ec355d5d-bb5c-488c-93a0-4f90e6011c5d
+    jinja: '在下面的句子里, _ 代表{{answer_choices[0]}}还是{{answer_choices[1]}}?
+      {{sentence}}|||
+      {{answer_choices[answer | int - 1]}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      languages:
+      - zh
+      metrics:
+      - Accuracy
+      original_task: true
+    name: stand for_zhht
+    reference: ''

@@ -92,3 +92,89 @@ templates:
       original_task: null
     name: i_am_hesitating_zhmt
     reference: ''
+  4822dc0c-b91c-44a9-8436-6e227e545859: !Template
+    answer_choices: '{{choice1}} ||| {{choice2}}'
+    id: 4822dc0c-b91c-44a9-8436-6e227e545859
+    jinja: "{{ premise }} \n\n我正在考虑两个选项。请帮我最有可能的{% if question == \"cause\" %}导因：{% else %}后果：{%\
+      \ endif %}\n- {{choice1}}\n- {{choice2}} ||| {% if label != -1 %}{{ answer_choices[label]\
+      \ }}{%endif%}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      languages:
+      - zh
+      metrics:
+      - Accuracy
+      original_task: true
+    name: i_am_hesitating_zhht
+    reference: ''
+  49e8644c-4e5a-48e5-a52a-12aa5b5d8d27: !Template
+    answer_choices: '{{choice1}} ||| {{choice2}}'
+    id: 49e8644c-4e5a-48e5-a52a-12aa5b5d8d27
+    jinja: '{{ premise }} {% if question == "cause" %}这个会发生是因为... {%
+      else %}结果是... {% endif %}
+
+      帮我挑选合适的选项：
+
+      - {{choice1}}
+
+      - {{choice2}} ||| {% if label != -1 %}{{ answer_choices[label] }}{%endif%}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      languages:
+      - zh
+      metrics:
+      - Accuracy
+      original_task: true
+    name: plausible_alternatives_zhht
+    reference: ''
+  5781b211-6eb9-49aa-880c-9669cbdb4017: !Template
+    answer_choices: '{{choice1}} ||| {{choice2}}'
+    id: 5781b211-6eb9-49aa-880c-9669cbdb4017
+    jinja: '"{{ answer_choices[0] }}"还是"{{ answer_choices[1] }}"? {{ premise }}
+      {% if question == "cause" %}因为{% else %}所以{% endif %} ||| {% if label
+      != -1 %}{{ answer_choices[label] }}{% endif %}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      languages:
+      - zh
+      metrics:
+      - Accuracy
+      original_task: true
+    name: C1 or C2? premise_zhht
+    reference: "Adapted from Perez et al. 2021 and Schick & Sch\xFCtz 2021."
+  9b9cc9a2-2ca9-43f5-9a1f-b5831ed5d77d: !Template
+    answer_choices: '{{choice1}} ||| {{choice2}}'
+    id: 9b9cc9a2-2ca9-43f5-9a1f-b5831ed5d77d
+    jinja: "{{ premise }} \n\n哪个是最好的答案?\n- {{choice1}}\n- {{choice2}}\n\
+      \n我们正在考虑{% if question == \"cause\" %}起因{% else %}后果\
+      \ {% endif %}\n||| {% if label != -1 %}{{answer_choices[label]}}{%endif%}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      languages:
+      - zh
+      metrics:
+      - Accuracy
+      original_task: true
+    name: best_option_zhht
+    reference: ''
+  bd78db22-6b60-40e4-840b-b2495153c738: !Template
+    answer_choices: '{{choice1}} ||| {{choice2}}'
+    id: bd78db22-6b60-40e4-840b-b2495153c738
+    jinja: '{{ premise }}
+
+
+      请选择最贴切的答案： {% if question == "cause" %}导因:{% else %}结果:
+      {% endif %}
+
+      - {{choice1}}
+
+      - {{choice2}} ||| {% if label != -1 %}{{ answer_choices[label] }}{%endif%}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      languages:
+      - zh
+      metrics:
+      - Accuracy
+      original_task: true
+    name: cause_effect_zhht
+    reference: ''
