@@ -1,16 +1,47 @@
 dataset: lama
 subset: trex
 templates:
+  26661371-8a11-46a9-bd70-b781bf749c24: !Template
+    answer_choices: null
+    id: 26661371-8a11-46a9-bd70-b781bf749c24
+    jinja: "The following sentence is given with blank to be filled with an appropriate\
+      \ word. Choose the correct word. \n{{template | replace('[X]',sub_label) | replace('[Y]','_')\
+      \ }} ||| {{obj_label}}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages: []
+      metrics:
+      - Accuracy
+      original_task: true
+    name: sentance_blank
+    reference: ''
   27c2da31-bd1a-48d4-9e34-c530e42c9f00: !Template
     answer_choices: null
     id: 27c2da31-bd1a-48d4-9e34-c530e42c9f00
-    jinja: '{{masked_sentence}} Fill the mask with the missing word. ||| {{obj_label}}'
+    jinja: '{{template | replace(''[X]'',sub_label) | replace(''[Y]'',''[MASK]'')
+      }} Fill the mask with the missing word. ||| {{obj_label}}'
     metadata: !TemplateMetadata
       choices_in_prompt: false
+      languages:
+      - en
       metrics:
       - Accuracy
-      original_task: false
+      original_task: true
     name: fill_mask
+    reference: ''
+  33dbf202-0144-4f6e-a298-a2c99475fbbc: !Template
+    answer_choices: null
+    id: 33dbf202-0144-4f6e-a298-a2c99475fbbc
+    jinja: 'Choose an appropriate word to fill the blank in the following sentence:
+
+      {{template | replace("[X]",sub_label) | replace("[Y]","_")}} ||| {{obj_label}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages: []
+      metrics:
+      - Accuracy
+      original_task: true
+    name: choose_word
     reference: ''
   52469d4c-6c46-4686-a36b-7af1801e1eec: !Template
     answer_choices: null
@@ -21,6 +52,8 @@ templates:
       |||  {{ template | replace("[X]",sub_label) | replace("[Y]", obj_surface)}} '
     metadata: !TemplateMetadata
       choices_in_prompt: false
+      languages:
+      - en
       metrics:
       - Accuracy
       - BLEU
@@ -28,15 +61,31 @@ templates:
       original_task: false
     name: find_relation
     reference: ''
+  8709d0a0-eb30-4cad-9ab9-f01daba2fddd: !Template
+    answer_choices: null
+    id: 8709d0a0-eb30-4cad-9ab9-f01daba2fddd
+    jinja: '{{template | replace(''[X]'',sub_label)| replace(''[Y]'',''_'')}} Please
+      fill in the blank. ||| {{obj_label}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages: []
+      metrics:
+      - Accuracy
+      original_task: true
+    name: fill_blank
+    reference: ''
   8cb6ee9d-bcf7-4d82-9acf-b93072c7384b: !Template
     answer_choices: null
     id: 8cb6ee9d-bcf7-4d82-9acf-b93072c7384b
-    jinja: 'Replace the mask with the correct word: {{masked_sentence}} ||| {{obj_label}}'
+    jinja: 'Replace the mask with the correct word: {{template | replace(''[X]'',sub_label)
+      | replace(''[Y]'',''[MASK]'') }} ||| {{obj_label}}'
     metadata: !TemplateMetadata
       choices_in_prompt: false
+      languages:
+      - en
       metrics:
       - Accuracy
-      original_task: false
+      original_task: true
     name: replace_mask
     reference: ''
   cc07e0dc-b970-4f9d-b76a-05e72a86490e: !Template
@@ -47,6 +96,8 @@ templates:
       \ | replace(\"[X]\",sub_surface) | replace(\"[Y]\", obj_surface)}} "
     metadata: !TemplateMetadata
       choices_in_prompt: false
+      languages:
+      - en
       metrics:
       - Accuracy
       - BLEU
@@ -62,6 +113,8 @@ templates:
       [X]\",sub_surface) | replace(\"[Y]\", obj_surface)}} "
     metadata: !TemplateMetadata
       choices_in_prompt: false
+      languages:
+      - en
       metrics:
       - Accuracy
       - BLEU

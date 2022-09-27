@@ -56,7 +56,7 @@ You can apply prompts to examples from datasets of the [Hugging Face Datasets li
 INPUT:  What label best describes this news article?
 Carlyle Looks Toward Commercial Aerospace (Reuters) Reuters - Private investment firm Carlyle Group,\which has a reputation for making well-timed and occasionally\controversial plays in the defense industry, has quietly placed\its bets on another part of the market.
 >>> print("TARGET: ", result[1])
-TARGET:  Business
+TARGET: ['Business']
 ```
 
 In the case that you are looking for the prompts available for a particular subset of a dataset, you should use the following syntax:
