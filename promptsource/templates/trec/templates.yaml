@@ -5,7 +5,7 @@ templates:
       ||| Location
     id: 21d04668-c5b3-4418-bbb6-663f1ffdb97c
     jinja: "Categories: {{', '.join(answer_choices)}}\n\nWhat category best describes:\
-      \ {{text}} \nAnswer: ||| {{ answer_choices [label_coarse] }}"
+      \ {{text}} \nAnswer: ||| {{ answer_choices [coarse_label] }}"
     metadata: !TemplateMetadata
       choices_in_prompt: true
       languages:
@@ -20,7 +20,7 @@ templates:
     id: 2d4e0add-cfca-4f54-80a2-ddd8e91f9fd6
     jinja: '{% set label_mapping = {21:0, 18:1, 24:2, 11:3, 14:4} %}
 
-      {% if label_coarse == 5 %}
+      {% if coarse_label == 5 %}
 
       Is this question asking for {{'', ''.join(answer_choices)}}?
 
@@ -28,7 +28,7 @@ templates:
 
       |||
 
-      {{ answer_choices [label_mapping[label_fine]] }}
+      {{ answer_choices [label_mapping[fine_label]] }}
 
       {% endif %}'
     metadata: !TemplateMetadata
@@ -48,7 +48,7 @@ templates:
     jinja: '{% set label_mapping = {39:0, 13:1, 8:2, 40:3, 25:4, 43:5, 27:6, 38:7,
       35:8, 41:9, 32:10, 45:11, 14:12} %}
 
-      {% if label_coarse == 4 %}
+      {% if coarse_label == 4 %}
 
       {{text}}
 
@@ -57,7 +57,7 @@ templates:
 
       |||
 
-      {{ answer_choices [label_mapping[label_fine]] }}
+      {{ answer_choices [label_mapping[fine_label]] }}
 
       {% endif %}'
     metadata: !TemplateMetadata
@@ -79,7 +79,7 @@ templates:
       33:7, 37:8, 15:9, 30:10, 26:11, 16:12, 28:13, 42:14, 31:15, 20:16, 44:17, 36:18,
       14:19} %}
 
-      {% if label_coarse == 1 %}
+      {% if coarse_label == 1 %}
 
       Is this question asking for {{'', ''.join(answer_choices)}}?
 
@@ -87,7 +87,7 @@ templates:
 
       |||
 
-      {{ answer_choices [label_mapping[label_fine]] }}
+      {{ answer_choices [label_mapping[fine_label]] }}
 
       {% endif %}'
     metadata: !TemplateMetadata
@@ -107,7 +107,7 @@ templates:
     jinja: '{% set label_mapping = {39:0, 13:1, 8:2, 40:3, 25:4, 43:5, 27:6, 38:7,
       35:8, 41:9, 32:10, 45:11, 14:12} %}
 
-      {% if label_coarse == 4 %}
+      {% if coarse_label == 4 %}
 
       Is this question asking for {{'', ''.join(answer_choices)}}?
 
@@ -115,7 +115,7 @@ templates:
 
       |||
 
-      {{ answer_choices [label_mapping[label_fine]] }}
+      {{ answer_choices [label_mapping[fine_label]] }}
 
       {% endif %}'
     metadata: !TemplateMetadata
@@ -141,7 +141,7 @@ templates:
 
       |||
 
-      {{answer_choices[label_coarse]}}'
+      {{answer_choices[coarse_label]}}'
     metadata: !TemplateMetadata
       choices_in_prompt: true
       languages:
@@ -168,7 +168,7 @@ templates:
 
       |||
 
-      {{answer_choices[label_fine] }}'
+      {{answer_choices[fine_label] }}'
     metadata: !TemplateMetadata
       choices_in_prompt: false
       languages:
@@ -183,7 +183,7 @@ templates:
     id: 736b2629-ed57-48ce-a458-4cbc435c499b
     jinja: '{% set label_mapping = {21:0, 18:1, 24:2, 11:3, 14:4} %}
 
-      {% if label_coarse == 5 %}
+      {% if coarse_label == 5 %}
 
       {{text}}
 
@@ -192,7 +192,7 @@ templates:
 
       |||
 
-      {{ answer_choices [label_mapping[label_fine]] }}
+      {{ answer_choices [label_mapping[fine_label]] }}
 
       {% endif %}'
     metadata: !TemplateMetadata
@@ -210,7 +210,7 @@ templates:
     id: 7a3ed4dd-af89-493c-8efb-c67622f63034
     jinja: "Which category best describes the following question: {{text}} \n\nChoose\
       \ from the following list: \n{{', '.join(answer_choices)}}\n ||| {{ answer_choices\
-      \ [label_coarse] }}"
+      \ [coarse_label] }}"
     metadata: !TemplateMetadata
       choices_in_prompt: true
       languages:
@@ -225,7 +225,7 @@ templates:
     id: 7a9e6f3c-1dee-45b0-a315-1badaf59a7b8
     jinja: '{% set label_mapping={0:2, 7:1,  12:0, 9:3} %}
 
-      {% if label_coarse == 0 %}
+      {% if coarse_label == 0 %}
 
       Is this question asking for {{'', ''.join(answer_choices)}}?
 
@@ -233,7 +233,7 @@ templates:
 
       |||
 
-      {{ answer_choices[label_mapping[label_fine]] }}
+      {{ answer_choices[label_mapping[fine_label]] }}
 
       {% endif %}'
     metadata: !TemplateMetadata
@@ -256,7 +256,7 @@ templates:
 
       |||
 
-      {{ answer_choices [label_coarse] }}'
+      {{ answer_choices [coarse_label] }}'
     metadata: !TemplateMetadata
       choices_in_prompt: true
       languages:
@@ -269,8 +269,8 @@ templates:
   93a06e72-2c15-4f8a-a46c-6a10919c4ea4: !Template
     answer_choices: abbreviation ||| expression abbreviated
     id: 93a06e72-2c15-4f8a-a46c-6a10919c4ea4
-    jinja: "{% set label_mapping={34:0, 3:1} %} \n{% if label_coarse == 2 %}\nIs this\
-      \ question asking for an {{', '.join(answer_choices)}}?\n{{text}}\n|||\n{{answer_choices[label_mapping[label_fine]]\
+    jinja: "{% set label_mapping={34:0, 3:1} %} \n{% if coarse_label == 2 %}\nIs this\
+      \ question asking for an {{', '.join(answer_choices)}}?\n{{text}}\n|||\n{{answer_choices[label_mapping[fine_label]]\
       \ }}\n{% endif %}"
     metadata: !TemplateMetadata
       choices_in_prompt: true
@@ -284,9 +284,9 @@ templates:
   a0096044-3b4c-4c80-b139-25eac8fe692a: !Template
     answer_choices: abbreviation ||| expression abbreviated
     id: a0096044-3b4c-4c80-b139-25eac8fe692a
-    jinja: "{% set label_mapping = {34:0, 3:1} %} \n{% if label_coarse == 2 %}\n{{text}}\n\
+    jinja: "{% set label_mapping = {34:0, 3:1} %} \n{% if coarse_label == 2 %}\n{{text}}\n\
       \nIs this question asking for an {{', '.join(answer_choices)}}?\n|||\n{{ answer_choices\
-      \ [label_mapping[label_fine]] }}\n{% endif %}"
+      \ [label_mapping[fine_label]] }}\n{% endif %}"
     metadata: !TemplateMetadata
       choices_in_prompt: true
       languages:
@@ -307,7 +307,7 @@ templates:
 
       |||
 
-      {{ answer_choices [label_coarse] }}'
+      {{ answer_choices [coarse_label] }}'
     metadata: !TemplateMetadata
       choices_in_prompt: true
       languages:
@@ -322,7 +322,7 @@ templates:
     id: bc58ba18-24a5-4553-be0a-2dba60efdad6
     jinja: '{% set label_mapping = {5:0, 4:1, 6:2, 12:3} %}
 
-      {% if label_coarse == 3 %}
+      {% if coarse_label == 3 %}
 
       Is this question asking for {{'', ''.join(answer_choices)}}?
 
@@ -330,7 +330,7 @@ templates:
 
       |||
 
-      {{ answer_choices[label_mapping[label_fine]] }}
+      {{ answer_choices[label_mapping[fine_label]] }}
 
       {% endif %}'
     metadata: !TemplateMetadata
@@ -359,7 +359,7 @@ templates:
 
       |||
 
-      {{ answer_choices[label_fine] }}'
+      {{ answer_choices[fine_label] }}'
     metadata: !TemplateMetadata
       choices_in_prompt: false
       languages:
@@ -374,7 +374,7 @@ templates:
     id: e98b9294-76b4-4172-a78c-9c6e5fdfe73b
     jinja: '{% set label_mapping = {5:0, 4:1, 6:2, 12:3} %}
 
-      {% if label_coarse == 3 %}
+      {% if coarse_label == 3 %}
 
       {{text}}
 
@@ -383,7 +383,7 @@ templates:
 
       |||
 
-      {{ answer_choices [label_mapping[label_fine]] }}{% endif %}'
+      {{ answer_choices [label_mapping[fine_label]] }}{% endif %}'
     metadata: !TemplateMetadata
       choices_in_prompt: true
       languages:
@@ -398,7 +398,7 @@ templates:
     id: fa588c55-5c69-4fd0-a0b1-edbfa092f710
     jinja: '{% set label_mapping={0:2, 7:1,  12:0, 9:3} %}
 
-      {% if label_coarse == 0 %}
+      {% if coarse_label == 0 %}
 
       {{text}}
 
@@ -407,7 +407,7 @@ templates:
 
       |||
 
-      {{ answer_choices [label_mapping[label_fine]] }}
+      {{ answer_choices [label_mapping[fine_label]] }}
 
       {% endif %}'
     metadata: !TemplateMetadata
