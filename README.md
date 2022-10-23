@@ -16,7 +16,7 @@ PromptSource provides the tools to create, and share natural language prompts (s
 Question: Does this imply that "{{hypothesis}}"? Yes, no, or maybe? ||| {{answer_choices[label]}}
 ```
 
-**You can browse through existing prompts on the [hosted version of PromptSource](https://bigscience.huggingface.co/promptsource).**
+**You can browse through existing prompts on the [hosted version of PromptSource](https://huggingface.co/spaces/bigscience/promptsource).**
 
 ## Setup
 If you do not intend to modify prompts, you can simply run:
