@@ -40,11 +40,17 @@ PROMPTS = [
 ]
 
 LANGS = [
-#    "id",
-    "sw",
-    "ta",
-    "vi",
-    "zh",
+    #"id",
+    #"sw",
+    #"ta",
+    #"vi",
+    #"zh",
+    "tr",
+    "et",
+    "ht",
+    "th",
+    "it",
+    "qu",
 ]
 
 SOURCE_DATASET = "super_glue/copa"

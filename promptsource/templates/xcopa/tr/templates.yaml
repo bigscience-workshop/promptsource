@@ -1,0 +1,95 @@
+dataset: xcopa
+subset: tr
+templates:
+  05261295-343c-4621-9aa3-9b25453e4946: !Template
+    answer_choices: '{{choice1}} ||| {{choice2}}'
+    id: 05261295-343c-4621-9aa3-9b25453e4946
+    jinja: '{{ premise }}
+
+
+      En makul olanı seçin {% if question == "cause" %} neden: {% else %} etki: {%
+      endif %}
+
+      - {{choice1}}
+
+      - {{choice2}} ||| {% if label != -1 %}{{ answer_choices[label] }}{%endif%}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: null
+      languages: null
+      metrics: null
+      original_task: null
+    name: cause_effect_trmt
+    reference: ''
+  275fee6a-032b-471a-acdf-019df457e4cb: !Template
+    answer_choices: '{{choice1}} ||| {{choice2}}'
+    id: 275fee6a-032b-471a-acdf-019df457e4cb
+    jinja: '{{ premise }}
+
+
+      En iyi seçenek nedir?
+
+      - {{choice1}}
+
+      - {{choice2}}
+
+
+      {% if question == "cause" %} bir neden {% else %} bir etki {% endif %} arıyoruz
+
+      ||| {% if label != -1 %}{{answer_choices[label]}}{%endif%}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: null
+      languages: null
+      metrics: null
+      original_task: null
+    name: best_option_trmt
+    reference: ''
+  3671301e-77b3-4911-99b8-889d2130749b: !Template
+    answer_choices: '{{choice1 }} ||| {{choice2}}'
+    id: 3671301e-77b3-4911-99b8-889d2130749b
+    jinja: '"{{ answer_choices[0] }}" veya "{{ answer_choices[1] }}"? {{ premise }}
+      {% if question == "cause" %} çünkü {% else %} yani {% endif %} ||| {% if label
+      != -1 %}{{ answer_choices[label] }}{% endif %}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: null
+      languages: null
+      metrics: null
+      original_task: null
+    name: C1 or C2? premise, so/because…_trmt
+    reference: ''
+  8b6f30be-6e9c-41a9-a649-bd44557ec939: !Template
+    answer_choices: '{{choice1}} ||| {{choice2}}'
+    id: 8b6f30be-6e9c-41a9-a649-bd44557ec939
+    jinja: '{{ premise }}
+
+
+      İki seçenek arasında tereddüt ediyorum. Daha olası {% if question == "cause"
+      %} nedeni seçmeme yardım et: {% else %} etki: {% endif %}
+
+      - {{choice1}}
+
+      - {{choice2}} ||| {% if label != -1 %}{{ answer_choices[label] }}{%endif%}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: null
+      languages: null
+      metrics: null
+      original_task: null
+    name: i_am_hesitating_trmt
+    reference: ''
+  d0927b88-b70c-453c-9109-058c39f24459: !Template
+    answer_choices: '{{choice1}} ||| {{choice2}}'
+    id: d0927b88-b70c-453c-9109-058c39f24459
+    jinja: '{{ premise }} {% if question == "cause" %} Bunun nedeni... {% else %}
+      Sonuç olarak... {% endif %}
+
+      Daha makul seçeneği seçmeme yardım et:
+
+      - {{choice1}}
+
+      - {{choice2}} ||| {% if label != -1 %}{{ answer_choices[label] }}{%endif%}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: null
+      languages: null
+      metrics: null
+      original_task: null
+    name: plausible_alternatives_trmt
+    reference: ''
