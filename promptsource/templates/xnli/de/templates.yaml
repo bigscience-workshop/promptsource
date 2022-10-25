@@ -1,0 +1,69 @@
+dataset: xnli
+subset: de
+templates:
+  3e41cd49-8acf-4325-96e4-8f155a243cb1: !Template
+    answer_choices: Richtig ||| Nicht schlüssig ||| Falsch
+    id: 3e41cd49-8acf-4325-96e4-8f155a243cb1
+    jinja: '{{premise}} Wenn Sie nur die obige Beschreibung und das, was Sie über
+      die Welt wissen, verwenden, ist "{{hypothesis}}" definitiv richtig, falsch oder
+      nicht schlüssig? ||| {{ answer_choices[label] }}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: null
+      languages: null
+      metrics: null
+      original_task: null
+    name: MNLI crowdsource_demt
+    reference: ''
+  45a92641-0ab4-4225-9d8e-160606ee6e3d: !Template
+    answer_choices: Ja ||| Vielleicht ||| Nein
+    id: 45a92641-0ab4-4225-9d8e-160606ee6e3d
+    jinja: '{{premise}} Sind wir berechtigt zu sagen, dass "{{hypothesis}}"? Ja, nein,
+      oder vielleicht? ||| {{ answer_choices[label] }}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: null
+      languages: null
+      metrics: null
+      original_task: null
+    name: justified in saying_demt
+    reference: ''
+  8338e809-b10a-4a38-bfa3-549948e7d5fb: !Template
+    answer_choices: WAHR ||| Weder ||| FALSCH
+    id: 8338e809-b10a-4a38-bfa3-549948e7d5fb
+    jinja: '{{premise}}
+
+      Frage: {{hypothesis}} Wahr, falsch oder keines von beiden? ||| {{ answer_choices[label]
+      }}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: null
+      languages: null
+      metrics: null
+      original_task: null
+    name: GPT-3 style_demt
+    reference: ''
+  c6db6225-f091-434e-acbf-90f0ded80883: !Template
+    answer_choices: Garantiert ||| Möglich ||| Unmöglich
+    id: c6db6225-f091-434e-acbf-90f0ded80883
+    jinja: 'Angenommen, es ist wahr, dass {{premise}}
+
+
+      Daher ist "{{hypothesis}}" {{"guaranteed"}}, {{"possible"}} oder {{"impossible"}}?
+      ||| {{ answer_choices[label] }}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: null
+      languages: null
+      metrics: null
+      original_task: null
+    name: guaranteed/possible/impossible_demt
+    reference: ''
+  f9937a08-1b2e-428b-a5b4-4108e28cc0c9: !Template
+    answer_choices: Ja ||| Vielleicht ||| Nein
+    id: f9937a08-1b2e-428b-a5b4-4108e28cc0c9
+    jinja: Angenommen {{premise}} Können wir daraus schließen, dass "{{hypothesis}}"?
+      Ja, nein, oder vielleicht? ||| {{ answer_choices[label] }}
+    metadata: !TemplateMetadata
+      choices_in_prompt: null
+      languages: null
+      metrics: null
+      original_task: null
+    name: can we infer_demt
+    reference: ''
