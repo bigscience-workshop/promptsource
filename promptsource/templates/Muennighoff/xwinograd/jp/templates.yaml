@@ -1,0 +1,72 @@
+dataset: Muennighoff/xwinograd
+subset: jp
+templates:
+  14605aed-ab64-4edd-a93a-2d74c364d66a: !Template
+    answer_choices: '{{ option1 }} ||| {{ option2 }}'
+    id: 14605aed-ab64-4edd-a93a-2d74c364d66a
+    jinja: '{{ sentence }} 前の文で、_ は {{ option1 }} または {{ option2 }} を指しますか? ||| {%
+      if answer == ''1'' %} {{option1}} {% else %} {{ option2 }} {% endif %}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: null
+      languages: null
+      metrics: null
+      original_task: null
+    name: does underscore refer to_jpmt
+    reference: ''
+  1aeb9dab-352b-4f53-ba1d-7a7dbd92139e: !Template
+    answer_choices: '{{option1}} ||| {{option2}}'
+    id: 1aeb9dab-352b-4f53-ba1d-7a7dbd92139e
+    jinja: '{{sentence}} 上記の文の _ は何を指していますか? {{ option1 }} または {{ option2 }}? |||
+      {% if answer == ''1'' %} {{option1}} {% else %} {{ option2 }} {% endif %}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: null
+      languages: null
+      metrics: null
+      original_task: null
+    name: underscore refer to_jpmt
+    reference: ''
+  2674be16-d2c6-4100-bf36-d46e9050f38c: !Template
+    answer_choices: 真実 ||| 間違い
+    id: 2674be16-d2c6-4100-bf36-d46e9050f38c
+    jinja: 以下の文の _ は {{option1}} を指します。正しいか間違っているか？ {{sentence}}||| {{answer_choices[answer|int
+      - 1]}}
+    metadata: !TemplateMetadata
+      choices_in_prompt: null
+      languages: null
+      metrics: null
+      original_task: null
+    name: True or False_jpmt
+    reference: ''
+  3acef249-7cfe-43ac-9428-8282722288fa: !Template
+    answer_choices: '{{option1}} ||| {{option2}}'
+    id: 3acef249-7cfe-43ac-9428-8282722288fa
+    jinja: 次の文の _ は {{answer_choices[0]}} または {{answer_choices[1]}} を表していますか? {{sentence}}|||
+      {{answer_choices[answer | int - 1]}}
+    metadata: !TemplateMetadata
+      choices_in_prompt: null
+      languages: null
+      metrics: null
+      original_task: null
+    name: stand for_jpmt
+    reference: ''
+  b32ff48c-3875-4f99-8bff-148190fd8e36: !Template
+    answer_choices: '{{option1}} ||| {{option2}}'
+    id: b32ff48c-3875-4f99-8bff-148190fd8e36
+    jinja: '{{sentence}}
+
+      上記の文の _ を正しいオプションに置き換えます。
+
+      - {{option1}}
+
+      - {{option2}}
+
+      |||
+
+      {% if answer == ''1'' %} {{option1}} {% else %} {{ option2 }} {% endif %}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: null
+      languages: null
+      metrics: null
+      original_task: null
+    name: Replace_jpmt
+    reference: ''

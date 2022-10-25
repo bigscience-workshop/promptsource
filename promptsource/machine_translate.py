@@ -45,6 +45,9 @@ LANGS = [
     "ta",
     "vi",
     "zh",
+    "th",
+    "it",
+    "qu",
 ]
 
 SOURCE_DATASET = "super_glue/copa"
@@ -68,13 +71,16 @@ LANGS = [
     "hi",
     "id",
     "zh",
+    "my",
+    "ru",
+    "sw",
+    "te",
 ]
 
 SOURCE_DATASET = TARGET_DATASET = "Muennighoff/xstory_cloze"
 SOURCE_LANG = "en"
 
 ### XWINOGRAD
-
 PROMPTS = [
     "Replace",
     "stand for",
@@ -87,11 +93,12 @@ LANGS = [
     "fr",
     "pt",
     "zh",
+    "ja",
+    "ru",
 ]
 
 SOURCE_DATASET = TARGET_DATASET = "Muennighoff/xwinograd"
 SOURCE_LANG = "en"
-
 
 
 # Path to key
