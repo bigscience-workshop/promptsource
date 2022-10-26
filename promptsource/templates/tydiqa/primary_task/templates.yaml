@@ -2,23 +2,18 @@ dataset: tydiqa
 subset: primary_task
 templates:
   011c71dc-519a-49ff-829a-1e1501dc7bb2: !Template
-    answer_choices: نعم ||| لا ||| ليس مما سبق
+    answer_choices: "\u0646\u0639\u0645 ||| \u0644\u0627 ||| \u0644\u064A\u0633 \u0645\
+      \u0645\u0627 \u0633\u0628\u0642"
     id: 011c71dc-519a-49ff-829a-1e1501dc7bb2
-    jinja: '{% if language == "arabic" %}
-
-      سؤال: {{question_text}}
-
-      أجب عن السؤال ب{{answer_choices[0]}} أو {{answer_choices[1]}}. اذا لم يكن بالإمكان
-      ذلك أجب بـ  {{answer_choices[2]}} .
-
-      Hint: {{document_plaintext}}
-
-      |||
-
-      {{annotations.yes_no_answer[0] |replace("NONE","ليس مما سبق")| replace("NO","لا")|
-      replace("YES"," نعم") }}
-
-      {% endif %}'
+    jinja: "{% if language == \"arabic\" %}\n\u0633\u0624\u0627\u0644: {{question_text}}\n\
+      \u0623\u062C\u0628 \u0639\u0646 \u0627\u0644\u0633\u0624\u0627\u0644 \u0628\
+      {{answer_choices[0]}} \u0623\u0648 {{answer_choices[1]}}. \u0627\u0630\u0627\
+      \ \u0644\u0645 \u064A\u0643\u0646 \u0628\u0627\u0644\u0625\u0645\u0643\u0627\
+      \u0646 \u0630\u0644\u0643 \u0623\u062C\u0628 \u0628\u0640  {{answer_choices[2]}}\
+      \ .\nHint: {{document_plaintext}}\n|||\n{{annotations.yes_no_answer[0] |replace(\"\
+      NONE\",\"\u0644\u064A\u0633 \u0645\u0645\u0627 \u0633\u0628\u0642\")| replace(\"\
+      NO\",\"\u0644\u0627\")| replace(\"YES\",\" \u0646\u0639\u0645\") }}\n{% endif\
+      \ %}"
     metadata: !TemplateMetadata
       choices_in_prompt: true
       languages:
@@ -29,12 +24,14 @@ templates:
     name: ar_yes_no_none
     reference: ''
   11aa0d9b-0d3e-4df0-8d83-16477adbbc06: !Template
-    answer_choices: نعم ||| لا
+    answer_choices: "\u0646\u0639\u0645 ||| \u0644\u0627"
     id: 11aa0d9b-0d3e-4df0-8d83-16477adbbc06
     jinja: "{% if language == \"arabic\" %}\n{% if annotations.yes_no_answer[0] ==\
-      \ \"YES\" or annotations.yes_no_answer[0] == \"NO\" %} \nبناء على النص المقتطع,\
-      \ {{question_text}} \n{{document_plaintext}}\n||| \n{{annotations.yes_no_answer[0]\
-      \ | replace(\"NO\",\"لا\")| replace(\"YES\",\" نعم\") }}\n{% endif %}\n{% endif%}"
+      \ \"YES\" or annotations.yes_no_answer[0] == \"NO\" %} \n\u0628\u0646\u0627\u0621\
+      \ \u0639\u0644\u0649 \u0627\u0644\u0646\u0635 \u0627\u0644\u0645\u0642\u062A\
+      \u0637\u0639, {{question_text}} \n{{document_plaintext}}\n||| \n{{annotations.yes_no_answer[0]\
+      \ | replace(\"NO\",\"\u0644\u0627\")| replace(\"YES\",\" \u0646\u0639\u0645\"\
+      ) }}\n{% endif %}\n{% endif%}"
     metadata: !TemplateMetadata
       choices_in_prompt: false
       languages:
@@ -73,12 +70,17 @@ templates:
     name: en_heres_what_I_found
     reference: ''
   1aa48c84-f64b-493c-bc9b-e5be15690109: !Template
-    answer_choices: はい ||| いいえ ||| どちらでもない
+    answer_choices: "\u306F\u3044 ||| \u3044\u3044\u3048 ||| \u3069\u3061\u3089\u3067\
+      \u3082\u306A\u3044"
     id: 1aa48c84-f64b-493c-bc9b-e5be15690109
-    jinja: "{% if language == \"japanese\" %} \n質問: {{question_text}}\n質問に {{\"はい\"\
-      }}か{{\"いいえ\"}}で答えてください。 どちらもあてはまらない場合は{{\"どちらでもない\"}}と答えてください。\nヒント: {{document_plaintext}}\n\
-      |||\n{{{\"YES\":\"はい\", \"NO\":\"いいえ\", \"NONE\": \"どちらでもない\"}[annotations.yes_no_answer[0]]}}\n\
-      {% endif %}"
+    jinja: "{% if language == \"japanese\" %} \n\u8CEA\u554F: {{question_text}}\n\u8CEA\
+      \u554F\u306B {{\"\u306F\u3044\"}}\u304B{{\"\u3044\u3044\u3048\"}}\u3067\u7B54\
+      \u3048\u3066\u304F\u3060\u3055\u3044\u3002 \u3069\u3061\u3089\u3082\u3042\u3066\
+      \u306F\u307E\u3089\u306A\u3044\u5834\u5408\u306F{{\"\u3069\u3061\u3089\u3067\
+      \u3082\u306A\u3044\"}}\u3068\u7B54\u3048\u3066\u304F\u3060\u3055\u3044\u3002\
+      \n\u30D2\u30F3\u30C8: {{document_plaintext}}\n|||\n{{{\"YES\":\"\u306F\u3044\
+      \", \"NO\":\"\u3044\u3044\u3048\", \"NONE\": \"\u3069\u3061\u3089\u3067\u3082\
+      \u306A\u3044\"}[annotations.yes_no_answer[0]]}}\n{% endif %}"
     metadata: !TemplateMetadata
       choices_in_prompt: false
       languages:
@@ -128,14 +130,22 @@ templates:
     name: en_open_domain_qa_without_choices
     reference: Answer Yes/No question
   590c276c-d649-4296-816a-e759167f3556: !Template
-    answer_choices: はい ||| いいえ ||| どちらでもない
+    answer_choices: "\u306F\u3044 ||| \u3044\u3044\u3048 ||| \u3069\u3061\u3089\u3067\
+      \u3082\u306A\u3044"
     id: 590c276c-d649-4296-816a-e759167f3556
-    jinja: "{% if language == \"japanese\" %}\n      {{question_text}} のか気になります。\n\
-      \      この質問に「はい」または「いいえ」のどちらかで答えてください。\n      どちらもあてはまらない場合、「どちらでもない」と答えてください。\n\
-      \n      インターネットでこんな記事を見つけました：\n\n      タイトル： {{document_title}}\n\n      本文：\
-      \ {{document_plaintext}}\n\n      |||\n      \n      {{{\"YES\":\"はい\", \"NO\"\
-      :\"いいえ\", \"NONE\": \"どちらでもない\"}[annotations.yes_no_answer[0]]}}\n\n{% endif\
-      \ %}"
+    jinja: "{% if language == \"japanese\" %}\n      {{question_text}} \u306E\u304B\
+      \u6C17\u306B\u306A\u308A\u307E\u3059\u3002\n      \u3053\u306E\u8CEA\u554F\u306B\
+      \u300C\u306F\u3044\u300D\u307E\u305F\u306F\u300C\u3044\u3044\u3048\u300D\u306E\
+      \u3069\u3061\u3089\u304B\u3067\u7B54\u3048\u3066\u304F\u3060\u3055\u3044\u3002\
+      \n      \u3069\u3061\u3089\u3082\u3042\u3066\u306F\u307E\u3089\u306A\u3044\u5834\
+      \u5408\u3001\u300C\u3069\u3061\u3089\u3067\u3082\u306A\u3044\u300D\u3068\u7B54\
+      \u3048\u3066\u304F\u3060\u3055\u3044\u3002\n\n      \u30A4\u30F3\u30BF\u30FC\
+      \u30CD\u30C3\u30C8\u3067\u3053\u3093\u306A\u8A18\u4E8B\u3092\u898B\u3064\u3051\
+      \u307E\u3057\u305F\uFF1A\n\n      \u30BF\u30A4\u30C8\u30EB\uFF1A {{document_title}}\n\
+      \n      \u672C\u6587\uFF1A {{document_plaintext}}\n\n      |||\n      \n   \
+      \   {{{\"YES\":\"\u306F\u3044\", \"NO\":\"\u3044\u3044\u3048\", \"NONE\": \"\
+      \u3069\u3061\u3089\u3067\u3082\u306A\u3044\"}[annotations.yes_no_answer[0]]}}\n\
+      \n{% endif %}"
     metadata: !TemplateMetadata
       choices_in_prompt: true
       languages:
@@ -163,25 +173,19 @@ templates:
     name: id_yes_no_none
     reference: ''
   60c9aadf-dcd9-4f06-bd0a-6a5a178dae6e: !Template
-    answer_choices: نعم ||| لا ||| لا شيء مما سبق
+    answer_choices: "\u0646\u0639\u0645 ||| \u0644\u0627 ||| \u0644\u0627 \u0634\u064A\
+      \u0621 \u0645\u0645\u0627 \u0633\u0628\u0642"
     id: 60c9aadf-dcd9-4f06-bd0a-6a5a178dae6e
-    jinja: '{% if language =="arabic" %}
-
-      أجب ب{{answer_choices[0]}}  أو {{answer_choices[1]}} أو {{answer_choices[2]}}
-      اذا لم يكن بالإمكان الإجابة بنعم أو لا.
-
-      سؤال: {{question_text}}
-
-      الموضوع: {{document_title}}
-
-      المقالة: {{document_plaintext}}
-
-      |||
-
-      {{annotations.yes_no_answer[0] |replace("NONE","لا شيء مما سبق")| replace("NO","لا")|
-      replace("YES"," نعم") }}
-
-      {% endif %}'
+    jinja: "{% if language ==\"arabic\" %}\n\u0623\u062C\u0628 \u0628{{answer_choices[0]}}\
+      \  \u0623\u0648 {{answer_choices[1]}} \u0623\u0648 {{answer_choices[2]}} \u0627\
+      \u0630\u0627 \u0644\u0645 \u064A\u0643\u0646 \u0628\u0627\u0644\u0625\u0645\u0643\
+      \u0627\u0646 \u0627\u0644\u0625\u062C\u0627\u0628\u0629 \u0628\u0646\u0639\u0645\
+      \ \u0623\u0648 \u0644\u0627.\n\u0633\u0624\u0627\u0644: {{question_text}}\n\u0627\
+      \u0644\u0645\u0648\u0636\u0648\u0639: {{document_title}}\n\u0627\u0644\u0645\
+      \u0642\u0627\u0644\u0629: {{document_plaintext}}\n|||\n{{annotations.yes_no_answer[0]\
+      \ |replace(\"NONE\",\"\u0644\u0627 \u0634\u064A\u0621 \u0645\u0645\u0627 \u0633\
+      \u0628\u0642\")| replace(\"NO\",\"\u0644\u0627\")| replace(\"YES\",\" \u0646\
+      \u0639\u0645\") }}\n{% endif %}"
     metadata: !TemplateMetadata
       choices_in_prompt: true
       languages:
@@ -219,13 +223,14 @@ templates:
     name: en_yes_no_question
     reference: Ask if this is a yes no question
   733a3ff3-6edd-4440-b038-bf9736ebaff7: !Template
-    answer_choices: はい ||| いいえ
+    answer_choices: "\u306F\u3044 ||| \u3044\u3044\u3048"
     id: 733a3ff3-6edd-4440-b038-bf9736ebaff7
     jinja: "{% if language == \"japanese\" %}\n    {% if annotations.yes_no_answer[0]\
-      \ == \"YES\" or annotations.yes_no_answer[0] == \"NO\" %}\n        次の文章にもとづくと、\
-      \ , {{question_text}} \n        {{document_plaintext}}\n        ||| \n     \
-      \   {{{\"YES\":\"はい\", \"NO\":\"いいえ\", \"NONE\": \"どちらでもない\"}[annotations.yes_no_answer[0]]}}\n\
-      \    {% endif %}\n{% endif %}"
+      \ == \"YES\" or annotations.yes_no_answer[0] == \"NO\" %}\n        \u6B21\u306E\
+      \u6587\u7AE0\u306B\u3082\u3068\u3065\u304F\u3068\u3001 , {{question_text}} \n\
+      \        {{document_plaintext}}\n        ||| \n        {{{\"YES\":\"\u306F\u3044\
+      \", \"NO\":\"\u3044\u3044\u3048\", \"NONE\": \"\u3069\u3061\u3089\u3067\u3082\
+      \u306A\u3044\"}[annotations.yes_no_answer[0]]}}\n    {% endif %}\n{% endif %}"
     metadata: !TemplateMetadata
       choices_in_prompt: false
       languages:
@@ -325,12 +330,14 @@ templates:
     name: en_after_reading_the_text
     reference: Reading Comprehension
   a7260c3e-2c25-4c87-b9a2-5955fdff0c5e: !Template
-    answer_choices: はい ||| いいえ
+    answer_choices: "\u306F\u3044 ||| \u3044\u3044\u3048"
     id: a7260c3e-2c25-4c87-b9a2-5955fdff0c5e
     jinja: "{% if language == \"japanese\" %} \n    {% if annotations.yes_no_answer[0]\
-      \ == \"YES\"  or annotations.yes_no_answer[0] == \"NO\" %}\n        {{document_title}}に関する質問に答えてください。{{question_text}}\n\
-      \        ||| \n        {{{\"YES\":\"はい\", \"NO\":\"いいえ\", \"NONE\": \"どちらでもない\"\
-      }[annotations.yes_no_answer[0]]}}\n    {% endif %}\n{% endif %}"
+      \ == \"YES\"  or annotations.yes_no_answer[0] == \"NO\" %}\n        {{document_title}}\u306B\
+      \u95A2\u3059\u308B\u8CEA\u554F\u306B\u7B54\u3048\u3066\u304F\u3060\u3055\u3044\
+      \u3002{{question_text}}\n        ||| \n        {{{\"YES\":\"\u306F\u3044\",\
+      \ \"NO\":\"\u3044\u3044\u3048\", \"NONE\": \"\u3069\u3061\u3089\u3067\u3082\u306A\
+      \u3044\"}[annotations.yes_no_answer[0]]}}\n    {% endif %}\n{% endif %}"
     metadata: !TemplateMetadata
       choices_in_prompt: false
       languages:
@@ -341,27 +348,23 @@ templates:
     name: jp_open_domain_qa_without_choices
     reference: Answer Yes/No question
   a85a2b12-f360-4fcc-9a40-f150476bdfe8: !Template
-    answer_choices: نعم ||| لا ||| لا شيء مما سبق
+    answer_choices: "\u0646\u0639\u0645 ||| \u0644\u0627 ||| \u0644\u0627 \u0634\u064A\
+      \u0621 \u0645\u0645\u0627 \u0633\u0628\u0642"
     id: a85a2b12-f360-4fcc-9a40-f150476bdfe8
-    jinja: '{% if language == "arabic" %}
-
-      أتسائل {{question_text}}.
-
-      ساعدني بإجابة هذا السؤال بـ "{{answer_choices[0]}}" أو "{{answer_choices[1]}}"
-      أو "{{answer_choices[2]}}" في حال لم يكن بالإمكان الإجابة بنعم أو ﻻ.
-
-      هذا ما وجدته من معلومات في الإنترنت:
-
-      الموضوع: {{document_title}}
-
-      المقالة: {{document_plaintext}}
-
-      |||
-
-      {{annotations.yes_no_answer[0] |replace("NONE","لا شيء مما سبق")| replace("NO","لا")|
-      replace("YES"," نعم") }}
-
-      {% endif %}'
+    jinja: "{% if language == \"arabic\" %}\n\u0623\u062A\u0633\u0627\u0626\u0644\
+      \ {{question_text}}.\n\u0633\u0627\u0639\u062F\u0646\u064A \u0628\u0625\u062C\
+      \u0627\u0628\u0629 \u0647\u0630\u0627 \u0627\u0644\u0633\u0624\u0627\u0644 \u0628\
+      \u0640 \"{{answer_choices[0]}}\" \u0623\u0648 \"{{answer_choices[1]}}\" \u0623\
+      \u0648 \"{{answer_choices[2]}}\" \u0641\u064A \u062D\u0627\u0644 \u0644\u0645\
+      \ \u064A\u0643\u0646 \u0628\u0627\u0644\u0625\u0645\u0643\u0627\u0646 \u0627\
+      \u0644\u0625\u062C\u0627\u0628\u0629 \u0628\u0646\u0639\u0645 \u0623\u0648 \uFEFB\
+      .\n\u0647\u0630\u0627 \u0645\u0627 \u0648\u062C\u062F\u062A\u0647 \u0645\u0646\
+      \ \u0645\u0639\u0644\u0648\u0645\u0627\u062A \u0641\u064A \u0627\u0644\u0625\
+      \u0646\u062A\u0631\u0646\u062A:\n\u0627\u0644\u0645\u0648\u0636\u0648\u0639\
+      : {{document_title}}\n\u0627\u0644\u0645\u0642\u0627\u0644\u0629: {{document_plaintext}}\n\
+      |||\n{{annotations.yes_no_answer[0] |replace(\"NONE\",\"\u0644\u0627 \u0634\u064A\
+      \u0621 \u0645\u0645\u0627 \u0633\u0628\u0642\")| replace(\"NO\",\"\u0644\u0627\
+      \")| replace(\"YES\",\" \u0646\u0639\u0645\") }}\n{% endif %}"
     metadata: !TemplateMetadata
       choices_in_prompt: true
       languages:
@@ -417,12 +420,15 @@ templates:
     name: en_open_domain_qa
     reference: Ask Yes/No question
   d160228e-9169-456d-a16a-0f5288452c9a: !Template
-    answer_choices: はい ||| いいえ
+    answer_choices: "\u306F\u3044 ||| \u3044\u3044\u3048"
     id: d160228e-9169-456d-a16a-0f5288452c9a
     jinja: "{% if language == \"japanese\" %}\n    {% if annotations.yes_no_answer[0]\
-      \ == \"YES\" or annotations.yes_no_answer[0] == \"NO\" %} \n        ウィキペディアの記事を読んだあと、次の質問に答えてください:\
-      \ {{question_text}}\n        {{document_plaintext}}\n        |||\n        {{{\"\
-      YES\":\"はい\", \"NO\":\"いいえ\", \"NONE\": \"どちらでもない\"}[annotations.yes_no_answer[0]]}}\n\
+      \ == \"YES\" or annotations.yes_no_answer[0] == \"NO\" %} \n        \u30A6\u30A3\
+      \u30AD\u30DA\u30C7\u30A3\u30A2\u306E\u8A18\u4E8B\u3092\u8AAD\u3093\u3060\u3042\
+      \u3068\u3001\u6B21\u306E\u8CEA\u554F\u306B\u7B54\u3048\u3066\u304F\u3060\u3055\
+      \u3044: {{question_text}}\n        {{document_plaintext}}\n        |||\n   \
+      \     {{{\"YES\":\"\u306F\u3044\", \"NO\":\"\u3044\u3044\u3048\", \"NONE\":\
+      \ \"\u3069\u3061\u3089\u3067\u3082\u306A\u3044\"}[annotations.yes_no_answer[0]]}}\n\
       \    {% endif %}\n{% endif %}"
     metadata: !TemplateMetadata
       choices_in_prompt: false
@@ -451,12 +457,15 @@ templates:
     name: id_open_domain_qa_without_choices
     reference: Answer Yes/No question
   d942b06e-65d1-497f-8e69-0608c775f020: !Template
-    answer_choices: はい ||| いいえ
+    answer_choices: "\u306F\u3044 ||| \u3044\u3044\u3048"
     id: d942b06e-65d1-497f-8e69-0608c775f020
     jinja: "{% if language == \"japanese\" %}\n    {% if annotations.yes_no_answer[0]\
-      \ == \"YES \" or annotations.yes_no_answer[0] == \"NO\" %}\n        {{document_title}}に関する質問に答えてください。\n\
-      \        質問: {{question_text}}「はい」「いいえ」のどちらですか？\n        ||| \n        {{{\"\
-      YES\":\"はい\", \"NO\":\"いいえ\", \"NONE\": \"どちらでもない\"}[annotations.yes_no_answer[0]]}}\n\
+      \ == \"YES \" or annotations.yes_no_answer[0] == \"NO\" %}\n        {{document_title}}\u306B\
+      \u95A2\u3059\u308B\u8CEA\u554F\u306B\u7B54\u3048\u3066\u304F\u3060\u3055\u3044\
+      \u3002\n        \u8CEA\u554F: {{question_text}}\u300C\u306F\u3044\u300D\u300C\
+      \u3044\u3044\u3048\u300D\u306E\u3069\u3061\u3089\u3067\u3059\u304B\uFF1F\n \
+      \       ||| \n        {{{\"YES\":\"\u306F\u3044\", \"NO\":\"\u3044\u3044\u3048\
+      \", \"NONE\": \"\u3069\u3061\u3089\u3067\u3082\u306A\u3044\"}[annotations.yes_no_answer[0]]}}\n\
       \  {% endif %}\n{% endif %}"
     metadata: !TemplateMetadata
       choices_in_prompt: true
@@ -468,13 +477,16 @@ templates:
     name: jp_open_domain_qa
     reference: Ask Yes/No question
   d9888ddb-c3e3-47a5-94ab-845057c98dac: !Template
-    answer_choices: نعم ||| ﻻ
+    answer_choices: "\u0646\u0639\u0645 ||| \uFEFB"
     id: d9888ddb-c3e3-47a5-94ab-845057c98dac
     jinja: "{% if language == \"arabic\" %}\n {% if annotations.yes_no_answer[0] ==\
-      \ \"YES\" or annotations.yes_no_answer[0] == \"NO\" %} \nبعد قراءة النص المقتبس\
-      \ من ويكيبيديا أجب عن السؤال التالي:\n{{question_text}} \n{{document_plaintext}}\n\
-      ||| \n{{annotations.yes_no_answer[0] | replace(\"NO\",\"لا\")| replace(\"YES\"\
-      ,\" نعم\") }}\n{% endif %}\n\n{% endif %}"
+      \ \"YES\" or annotations.yes_no_answer[0] == \"NO\" %} \n\u0628\u0639\u062F\
+      \ \u0642\u0631\u0627\u0621\u0629 \u0627\u0644\u0646\u0635 \u0627\u0644\u0645\
+      \u0642\u062A\u0628\u0633 \u0645\u0646 \u0648\u064A\u0643\u064A\u0628\u064A\u062F\
+      \u064A\u0627 \u0623\u062C\u0628 \u0639\u0646 \u0627\u0644\u0633\u0624\u0627\u0644\
+      \ \u0627\u0644\u062A\u0627\u0644\u064A:\n{{question_text}} \n{{document_plaintext}}\n\
+      ||| \n{{annotations.yes_no_answer[0] | replace(\"NO\",\"\u0644\u0627\")| replace(\"\
+      YES\",\" \u0646\u0639\u0645\") }}\n{% endif %}\n\n{% endif %}"
     metadata: !TemplateMetadata
       choices_in_prompt: false
       languages:
@@ -484,13 +496,19 @@ templates:
     name: ar_after_reading_the_text
     reference: ''
   dd737fa3-3364-49b1-8a7e-9b7fb25f495d: !Template
-    answer_choices: はい ||| いいえ ||| どちらでもない
+    answer_choices: "\u306F\u3044 ||| \u3044\u3044\u3048 ||| \u3069\u3061\u3089\u3067\
+      \u3082\u306A\u3044"
     id: dd737fa3-3364-49b1-8a7e-9b7fb25f495d
-    jinja: "{% if language == \"japanese\" %}\n      この質問に「はい」または「いいえ」のどちらかで答えてください。\n\
-      \      どちらもあてはまらない場合、「どちらでもない」と答えてください。\n\n      質問: {{question_text}}\n\n \
-      \     タイトル： {{document_title}}\n\n      本文： {{document_plaintext}}\n\n     \
-      \ |||\n\n      {{{\"YES\":\"はい\", \"NO\":\"いいえ\", \"NONE\": \"どちらでもない\"}[annotations.yes_no_answer[0]]}}\n\
-      \n{% endif %}"
+    jinja: "{% if language == \"japanese\" %}\n      \u3053\u306E\u8CEA\u554F\u306B\
+      \u300C\u306F\u3044\u300D\u307E\u305F\u306F\u300C\u3044\u3044\u3048\u300D\u306E\
+      \u3069\u3061\u3089\u304B\u3067\u7B54\u3048\u3066\u304F\u3060\u3055\u3044\u3002\
+      \n      \u3069\u3061\u3089\u3082\u3042\u3066\u306F\u307E\u3089\u306A\u3044\u5834\
+      \u5408\u3001\u300C\u3069\u3061\u3089\u3067\u3082\u306A\u3044\u300D\u3068\u7B54\
+      \u3048\u3066\u304F\u3060\u3055\u3044\u3002\n\n      \u8CEA\u554F: {{question_text}}\n\
+      \n      \u30BF\u30A4\u30C8\u30EB\uFF1A {{document_title}}\n\n      \u672C\u6587\
+      \uFF1A {{document_plaintext}}\n\n      |||\n\n      {{{\"YES\":\"\u306F\u3044\
+      \", \"NO\":\"\u3044\u3044\u3048\", \"NONE\": \"\u3069\u3061\u3089\u3067\u3082\
+      \u306A\u3044\"}[annotations.yes_no_answer[0]]}}\n\n{% endif %}"
     metadata: !TemplateMetadata
       choices_in_prompt: false
       languages:
@@ -516,12 +534,14 @@ templates:
     name: en_based_on_the_text
     reference: Binary question without mentioning KB
   eba7a853-bd37-45d7-af7d-cf3bd4bc0328: !Template
-    answer_choices: はい ||| いいえ
+    answer_choices: "\u306F\u3044 ||| \u3044\u3044\u3048"
     id: eba7a853-bd37-45d7-af7d-cf3bd4bc0328
     jinja: "{% if language == \"japanese\" %}\n\n      {{question_text}}\n\n     \
-      \ これは「はい」「いいえ」で答えられる質問ですか？\n\n      |||\n\n      {% if annotations. yes_no_answer[0]\
-      \ == \"NONE\" %}\n\n      いいえ\n\n      {% else %}\n\n      はい\n\n      {% endif\
-      \ %}\n{% endif %}"
+      \ \u3053\u308C\u306F\u300C\u306F\u3044\u300D\u300C\u3044\u3044\u3048\u300D\u3067\
+      \u7B54\u3048\u3089\u308C\u308B\u8CEA\u554F\u3067\u3059\u304B\uFF1F\n\n     \
+      \ |||\n\n      {% if annotations. yes_no_answer[0] == \"NONE\" %}\n\n      \u3044\
+      \u3044\u3048\n\n      {% else %}\n\n      \u306F\u3044\n\n      {% endif %}\n\
+      {% endif %}"
     metadata: !TemplateMetadata
       choices_in_prompt: false
       languages:

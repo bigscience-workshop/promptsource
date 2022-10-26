@@ -4,13 +4,17 @@ templates:
   03628137-0327-4b02-8c9e-bc6cd914ffde: !Template
     answer_choices: null
     id: 03628137-0327-4b02-8c9e-bc6cd914ffde
-    jinja: "{% set lang = id.split(\"-\")[0] %}\n{% set _blank2 = [\"題名\", \"本文\"\
-      , \"トピック\" ] %}\n{% set _blank1 = [\"推測\", \"生成\", \"決定\"] %}\n{% set _blank=\
-      \ [\"段落\", \"文章\", \"文章の一部\", \"情報\"]|random %}\n{% set _position = [\"上へ\"\
-      , \"下へ\"] |random %}\n{% if lang == \"japanese\" %}\n    {% if  _position ==\
-      \ \"上へ\" %}\n        {{context}}{{\"\\n\"}}\n    {% endif %}\n\n     {{_position}}パッセージの{{_blank1|random}}を{{_blank1|random}}できますか。\n\
-      \n      {% if  _position == \"下へ\" %}\n\n          {{\"\\n\"}}{{context}}\n\n\
-      \      {% endif %}\n\n      |||\n\n      {{title}}\n{% endif %}"
+    jinja: "{% set lang = id.split(\"-\")[0] %}\n{% set _blank2 = [\"\u984C\u540D\"\
+      , \"\u672C\u6587\", \"\u30C8\u30D4\u30C3\u30AF\" ] %}\n{% set _blank1 = [\"\u63A8\
+      \u6E2C\", \"\u751F\u6210\", \"\u6C7A\u5B9A\"] %}\n{% set _blank= [\"\u6BB5\u843D\
+      \", \"\u6587\u7AE0\", \"\u6587\u7AE0\u306E\u4E00\u90E8\", \"\u60C5\u5831\"]|random\
+      \ %}\n{% set _position = [\"\u4E0A\u3078\", \"\u4E0B\u3078\"] |random %}\n{%\
+      \ if lang == \"japanese\" %}\n    {% if  _position == \"\u4E0A\u3078\" %}\n\
+      \        {{context}}{{\"\\n\"}}\n    {% endif %}\n\n     {{_position}}\u30D1\
+      \u30C3\u30BB\u30FC\u30B8\u306E{{_blank1|random}}\u3092{{_blank1|random}}\u3067\
+      \u304D\u307E\u3059\u304B\u3002\n\n      {% if  _position == \"\u4E0B\u3078\"\
+      \ %}\n\n          {{\"\\n\"}}{{context}}\n\n      {% endif %}\n\n      |||\n\
+      \n      {{title}}\n{% endif %}"
     metadata: !TemplateMetadata
       choices_in_prompt: false
       languages:
@@ -78,9 +82,13 @@ templates:
     answer_choices: null
     id: 199dd1a7-c3c1-4552-9f8b-4e41316f1f2d
     jinja: "{% set lang = id.split(\"-\")[0] %}\n{% if lang == \"japanese\" %}\n\n\
-      \      私はいつも疑問に思っていました： {{question}}\n\n      ウィキペディアを検索したところ、{{title}}に関する次の文章が見つかりました.\n\
-      \n      本文： {{context}}\n\n      答えは何ですか？\n\n      |||\n\n      {{answers.text\
-      \ | choice}}\n\n{% endif %}"
+      \      \u79C1\u306F\u3044\u3064\u3082\u7591\u554F\u306B\u601D\u3063\u3066\u3044\
+      \u307E\u3057\u305F\uFF1A {{question}}\n\n      \u30A6\u30A3\u30AD\u30DA\u30C7\
+      \u30A3\u30A2\u3092\u691C\u7D22\u3057\u305F\u3068\u3053\u308D\u3001{{title}}\u306B\
+      \u95A2\u3059\u308B\u6B21\u306E\u6587\u7AE0\u304C\u898B\u3064\u304B\u308A\u307E\
+      \u3057\u305F.\n\n      \u672C\u6587\uFF1A {{context}}\n\n      \u7B54\u3048\u306F\
+      \u4F55\u3067\u3059\u304B\uFF1F\n\n      |||\n\n      {{answers.text | choice}}\n\
+      \n{% endif %}"
     metadata: !TemplateMetadata
       choices_in_prompt: false
       languages:
@@ -94,8 +102,9 @@ templates:
     answer_choices: null
     id: 1e9fc87c-cbdf-45e0-882e-6e3aa28521f3
     jinja: "{% set lang = id.split(\"-\")[0] %}\n{% if lang == \"japanese\" %}\n\n\
-      \      {{question}}\n\n      上記の質問に答えてください。\n\n      |||\n\n      {{answers.text\
-      \ | choice}}\n\n{% endif %}"
+      \      {{question}}\n\n      \u4E0A\u8A18\u306E\u8CEA\u554F\u306B\u7B54\u3048\
+      \u3066\u304F\u3060\u3055\u3044\u3002\n\n      |||\n\n      {{answers.text |\
+      \ choice}}\n\n{% endif %}"
     metadata: !TemplateMetadata
       choices_in_prompt: false
       languages:
@@ -177,9 +186,16 @@ templates:
     answer_choices: null
     id: 4b957bb6-d250-4074-a310-3b27d469b51c
     jinja: "{% set lang = id.split(\"-\")[0]%}     \n      {% if lang == \"arabic\"\
-      \ %}\nأنا أحاول الإجابة على السؤال التالي \"{{question}}\"\nوجدت نص عنوانه \
-      \ {{title}} في ويكيبيديا وأعتقد أنه يتضمن الإجابة. هل يمكنك العثور على الإجابة؟\
-      \  \nالنص: {{context}}\n|||\n{{answers.text | choice}}\n\n{%endif%}"
+      \ %}\n\u0623\u0646\u0627 \u0623\u062D\u0627\u0648\u0644 \u0627\u0644\u0625\u062C\
+      \u0627\u0628\u0629 \u0639\u0644\u0649 \u0627\u0644\u0633\u0624\u0627\u0644 \u0627\
+      \u0644\u062A\u0627\u0644\u064A \"{{question}}\"\n\u0648\u062C\u062F\u062A \u0646\
+      \u0635 \u0639\u0646\u0648\u0627\u0646\u0647  {{title}} \u0641\u064A \u0648\u064A\
+      \u0643\u064A\u0628\u064A\u062F\u064A\u0627 \u0648\u0623\u0639\u062A\u0642\u062F\
+      \ \u0623\u0646\u0647 \u064A\u062A\u0636\u0645\u0646 \u0627\u0644\u0625\u062C\
+      \u0627\u0628\u0629. \u0647\u0644 \u064A\u0645\u0643\u0646\u0643 \u0627\u0644\
+      \u0639\u062B\u0648\u0631 \u0639\u0644\u0649 \u0627\u0644\u0625\u062C\u0627\u0628\
+      \u0629\u061F  \n\u0627\u0644\u0646\u0635: {{context}}\n|||\n{{answers.text |\
+      \ choice}}\n\n{%endif%}"
     metadata: !TemplateMetadata
       choices_in_prompt: false
       languages:
@@ -207,8 +223,9 @@ templates:
     answer_choices: null
     id: 6b114b18-7975-49d1-bca3-52129742aa43
     jinja: "{% set lang = id.split(\"-\")[0] %}\n{% if lang == \"japanese\" %}\n \
-      \     次の文章にもとづいて作ってください： {{context}}\n      |||\n      {{question}}\n{% endif\
-      \ %}"
+      \     \u6B21\u306E\u6587\u7AE0\u306B\u3082\u3068\u3065\u3044\u3066\u4F5C\u3063\
+      \u3066\u304F\u3060\u3055\u3044\uFF1A {{context}}\n      |||\n      {{question}}\n\
+      {% endif %}"
     metadata: !TemplateMetadata
       choices_in_prompt: false
       languages:
@@ -267,7 +284,9 @@ templates:
     answer_choices: null
     id: 7d94a83b-f07c-44bd-a990-ef7aa3c5e3cc
     jinja: "{% set lang = id.split(\"-\")[0] %}\n{% if lang == \"japanese\" %}\n \
-      \   質問「{{question}}」に対する答えを本文中から抜き出してください。\n    {{title}}に関する文章:{{context}}\n\
+      \   \u8CEA\u554F\u300C{{question}}\u300D\u306B\u5BFE\u3059\u308B\u7B54\u3048\
+      \u3092\u672C\u6587\u4E2D\u304B\u3089\u629C\u304D\u51FA\u3057\u3066\u304F\u3060\
+      \u3055\u3044\u3002\n    {{title}}\u306B\u95A2\u3059\u308B\u6587\u7AE0:{{context}}\n\
       \    |||\n    {{answers.text | choice}}\n{% endif %}"
     metadata: !TemplateMetadata
       choices_in_prompt: false
@@ -323,8 +342,11 @@ templates:
     answer_choices: null
     id: 96d36d4a-d937-4f1f-b7ef-1e7f30491233
     jinja: "{% set lang = id.split(\"-\")[0] %}\n{% if lang == \"japanese\" %}\n \
-      \   本文:{{context}}\n    {{title}}の本文中のどこかに{{question}}の答えがあるようです。この質問に対する答えを見つけてください。\n\
-      \    |||\n    {{answers.text | choice}}\n{% endif %}"
+      \   \u672C\u6587:{{context}}\n    {{title}}\u306E\u672C\u6587\u4E2D\u306E\u3069\
+      \u3053\u304B\u306B{{question}}\u306E\u7B54\u3048\u304C\u3042\u308B\u3088\u3046\
+      \u3067\u3059\u3002\u3053\u306E\u8CEA\u554F\u306B\u5BFE\u3059\u308B\u7B54\u3048\
+      \u3092\u898B\u3064\u3051\u3066\u304F\u3060\u3055\u3044\u3002\n    |||\n    {{answers.text\
+      \ | choice}}\n{% endif %}"
     metadata: !TemplateMetadata
       choices_in_prompt: false
       languages:
@@ -338,9 +360,14 @@ templates:
     answer_choices: null
     id: 9f643d5c-de82-430e-9bf6-2bb3b92f6d97
     jinja: "{% set lang = id.split(\"-\")[0] %}\n{% if lang == \"japanese\" %}\n\n\
-      \      次の質問に対する答えを探しています： 「{{question}}」\n\n      ウィキペディアで {{title}}に関する記事を見つけました。この文章中に答えが含まれているようです。\n\
-      \      答えを教えてください。\n\n      文章： {{context}}\n\n      |||\n\n      {{answers.text\
-      \ | choice}}\n\n{% endif %}"
+      \      \u6B21\u306E\u8CEA\u554F\u306B\u5BFE\u3059\u308B\u7B54\u3048\u3092\u63A2\
+      \u3057\u3066\u3044\u307E\u3059\uFF1A \u300C{{question}}\u300D\n\n      \u30A6\
+      \u30A3\u30AD\u30DA\u30C7\u30A3\u30A2\u3067 {{title}}\u306B\u95A2\u3059\u308B\
+      \u8A18\u4E8B\u3092\u898B\u3064\u3051\u307E\u3057\u305F\u3002\u3053\u306E\u6587\
+      \u7AE0\u4E2D\u306B\u7B54\u3048\u304C\u542B\u307E\u308C\u3066\u3044\u308B\u3088\
+      \u3046\u3067\u3059\u3002\n      \u7B54\u3048\u3092\u6559\u3048\u3066\u304F\u3060\
+      \u3055\u3044\u3002\n\n      \u6587\u7AE0\uFF1A {{context}}\n\n      |||\n\n\
+      \      {{answers.text | choice}}\n\n{% endif %}"
     metadata: !TemplateMetadata
       choices_in_prompt: false
       languages:
@@ -354,9 +381,12 @@ templates:
     answer_choices: null
     id: b050640a-8629-47c4-8226-b190ff796604
     jinja: "{% set lang = id.split(\"-\")[0] %}\n{% if lang == \"japanese\" %}\n\n\
-      \      生徒の{{title}}に関する知識を試しています。\n\n      文章にもとづいて ({{context}})、 この質問に答えてもらいます：{{question}}\n\
-      \      答えは本文中にあります。\n\n      |||\n\n      {{answers.text | choice}}\n\n{% endif\
-      \ %}"
+      \      \u751F\u5F92\u306E{{title}}\u306B\u95A2\u3059\u308B\u77E5\u8B58\u3092\
+      \u8A66\u3057\u3066\u3044\u307E\u3059\u3002\n\n      \u6587\u7AE0\u306B\u3082\
+      \u3068\u3065\u3044\u3066 ({{context}})\u3001 \u3053\u306E\u8CEA\u554F\u306B\u7B54\
+      \u3048\u3066\u3082\u3089\u3044\u307E\u3059\uFF1A{{question}}\n      \u7B54\u3048\
+      \u306F\u672C\u6587\u4E2D\u306B\u3042\u308A\u307E\u3059\u3002\n\n      |||\n\n\
+      \      {{answers.text | choice}}\n\n{% endif %}"
     metadata: !TemplateMetadata
       choices_in_prompt: false
       languages:
@@ -370,8 +400,10 @@ templates:
     answer_choices: null
     id: b9eebfba-560b-4b57-8d5a-700e886fbd5f
     jinja: "{% set lang = id.split(\"-\")[0] %}\n{% if lang == \"japanese\" %}\n\n\
-      \      答えが{{answers.text | choice}}となるような質問を次の文章にもとづいて作ってください。\n      {{context}}\n\
-      \n      |||\n\n      {{question}}\n\n{% endif %}"
+      \      \u7B54\u3048\u304C{{answers.text | choice}}\u3068\u306A\u308B\u3088\u3046\
+      \u306A\u8CEA\u554F\u3092\u6B21\u306E\u6587\u7AE0\u306B\u3082\u3068\u3065\u3044\
+      \u3066\u4F5C\u3063\u3066\u304F\u3060\u3055\u3044\u3002\n      {{context}}\n\n\
+      \      |||\n\n      {{question}}\n\n{% endif %}"
     metadata: !TemplateMetadata
       choices_in_prompt: false
       languages:
@@ -386,8 +418,13 @@ templates:
     answer_choices: null
     id: be8e455c-f3d2-434f-ab56-d1926252b691
     jinja: "{% set lang = id.split(\"-\")[0]%}     \n      {% if lang == \"arabic\"\
-      \ %}\nلطالما تسائلت حول: {{question}}\nبحثت في ويكيبيديا ووجدت نص بعنوان {{title}}.\n\
-      النص: {{context}}\nما هي إجابة السؤال؟\n|||\n{{answers.text | choice}}\n{%endif%}"
+      \ %}\n\u0644\u0637\u0627\u0644\u0645\u0627 \u062A\u0633\u0627\u0626\u0644\u062A\
+      \ \u062D\u0648\u0644: {{question}}\n\u0628\u062D\u062B\u062A \u0641\u064A \u0648\
+      \u064A\u0643\u064A\u0628\u064A\u062F\u064A\u0627 \u0648\u0648\u062C\u062F\u062A\
+      \ \u0646\u0635 \u0628\u0639\u0646\u0648\u0627\u0646 {{title}}.\n\u0627\u0644\
+      \u0646\u0635: {{context}}\n\u0645\u0627 \u0647\u064A \u0625\u062C\u0627\u0628\
+      \u0629 \u0627\u0644\u0633\u0624\u0627\u0644\u061F\n|||\n{{answers.text | choice}}\n\
+      {%endif%}"
     metadata: !TemplateMetadata
       choices_in_prompt: false
       languages:
@@ -547,9 +584,13 @@ templates:
     answer_choices: null
     id: e8157b4f-17bc-42fc-9655-05a555822337
     jinja: "{% set lang = id.split(\"-\")[0]%}     \n      {% if lang == \"arabic\"\
-      \ %}\nالنص: {{context}}\nاجابة هذا السؤال  \"{{question}}\" موجودة في النص بالأعلى\
-      \ بعنوان: {{title}}. أجب عن السؤال بعد اطلاعك على النص.\n|||\n{{answers.text\
-      \ | choice}}\n{%endif%}"
+      \ %}\n\u0627\u0644\u0646\u0635: {{context}}\n\u0627\u062C\u0627\u0628\u0629\
+      \ \u0647\u0630\u0627 \u0627\u0644\u0633\u0624\u0627\u0644  \"{{question}}\"\
+      \ \u0645\u0648\u062C\u0648\u062F\u0629 \u0641\u064A \u0627\u0644\u0646\u0635\
+      \ \u0628\u0627\u0644\u0623\u0639\u0644\u0649 \u0628\u0639\u0646\u0648\u0627\u0646\
+      : {{title}}. \u0623\u062C\u0628 \u0639\u0646 \u0627\u0644\u0633\u0624\u0627\u0644\
+      \ \u0628\u0639\u062F \u0627\u0637\u0644\u0627\u0639\u0643 \u0639\u0644\u0649\
+      \ \u0627\u0644\u0646\u0635.\n|||\n{{answers.text | choice}}\n{%endif%}"
     metadata: !TemplateMetadata
       choices_in_prompt: false
       languages:
@@ -563,8 +604,11 @@ templates:
     answer_choices: null
     id: e95c4e6b-a642-4e16-89a6-5a614aacc2af
     jinja: "{% set lang = id.split(\"-\")[0]%}     \n      {% if lang == \"arabic\"\
-      \ %}\nاستخرج اجابة السؤال التالي من النص: {{question}}\nالنص يتحدث عن {{title}}:\
-      \ {{context}}\n|||\n{{answers.text | choice}} \n\n{%endif%}"
+      \ %}\n\u0627\u0633\u062A\u062E\u0631\u062C \u0627\u062C\u0627\u0628\u0629 \u0627\
+      \u0644\u0633\u0624\u0627\u0644 \u0627\u0644\u062A\u0627\u0644\u064A \u0645\u0646\
+      \ \u0627\u0644\u0646\u0635: {{question}}\n\u0627\u0644\u0646\u0635 \u064A\u062A\
+      \u062D\u062F\u062B \u0639\u0646 {{title}}: {{context}}\n|||\n{{answers.text\
+      \ | choice}} \n\n{%endif%}"
     metadata: !TemplateMetadata
       choices_in_prompt: false
       languages:
@@ -578,9 +622,14 @@ templates:
     answer_choices: null
     id: efba651e-d475-4878-a89c-64a1fa65442a
     jinja: "{% set lang = id.split(\"-\")[0]%}     \n      {% if lang == \"arabic\"\
-      \ %}\nأحاول اختبار مستوى الطلاب المعرفي في موضوع: {{title}}.\nبناء على هذا النص\
-      \ ({{context}})، والسؤال التالي: {{question}}. الإجابة موجودة في سياق النص.\n\
-      |||\n{{answers.text | choice}}\n{%endif%}"
+      \ %}\n\u0623\u062D\u0627\u0648\u0644 \u0627\u062E\u062A\u0628\u0627\u0631 \u0645\
+      \u0633\u062A\u0648\u0649 \u0627\u0644\u0637\u0644\u0627\u0628 \u0627\u0644\u0645\
+      \u0639\u0631\u0641\u064A \u0641\u064A \u0645\u0648\u0636\u0648\u0639: {{title}}.\n\
+      \u0628\u0646\u0627\u0621 \u0639\u0644\u0649 \u0647\u0630\u0627 \u0627\u0644\u0646\
+      \u0635 ({{context}})\u060C \u0648\u0627\u0644\u0633\u0624\u0627\u0644 \u0627\
+      \u0644\u062A\u0627\u0644\u064A: {{question}}. \u0627\u0644\u0625\u062C\u0627\
+      \u0628\u0629 \u0645\u0648\u062C\u0648\u062F\u0629 \u0641\u064A \u0633\u064A\u0627\
+      \u0642 \u0627\u0644\u0646\u0635.\n|||\n{{answers.text | choice}}\n{%endif%}"
     metadata: !TemplateMetadata
       choices_in_prompt: false
       languages:
