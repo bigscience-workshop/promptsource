@@ -54,11 +54,7 @@ def get_dataset(path, conf=None):
             if "PROMPTSOURCE_MANUAL_DATASET_DIR" in os.environ
             else DEFAULT_PROMPTSOURCE_CACHE_HOME
         )
-        data_dir = (
-            f"{cache_root_dir}/{path}"
-            if conf is None
-            else f"{cache_root_dir}/{path}/{conf}"
-        )
+        data_dir = f"{cache_root_dir}/{path}" if conf is None else f"{cache_root_dir}/{path}/{conf}"
         try:
             return datasets.load_dataset(
                 path,
