@@ -313,13 +313,18 @@ def run_app():
             except OSError as e:
                 st.error(
                     f"Some datasets are not handled automatically by `datasets` and require users to download the "
-                    f"dataset manually. This applies to {dataset_key}{f'/{subset_name}' if subset_name is not None else ''}. "
-                    f"\n\nPlease download the raw dataset to `~/.cache/promptsource/{dataset_key}{f'/{subset_name}' if subset_name is not None else ''}`. "
+                    f"dataset manually. It is possibly the case for {dataset_key}{f'/{subset_name}' if subset_name is not None else ''}. "
+                    f"\n\nIf so, please download the raw dataset to `~/.cache/promptsource/{dataset_key}{f'/{subset_name}' if subset_name is not None else ''}`. "
                     f"\n\nYou can choose another cache directory by overriding `PROMPTSOURCE_MANUAL_DATASET_DIR` environment "
                     f"variable and downloading raw dataset to `$PROMPTSOURCE_MANUAL_DATASET_DIR/{dataset_key}{f'/{subset_name}' if subset_name is not None else ''}`"
                     f"\n\nOriginal error:\n{str(e)}"
                 )
                 st.stop()
+            except Exception as e:
+                st.error(
+                    f"An error occured while loading the dataset {dataset_key}{f'/{subset_name}' if subset_name is not None else ''}. "
+                    f"\\n\nOriginal error:\n{str(e)}"
+                )
 
             splits = list(dataset.keys())
             index = 0

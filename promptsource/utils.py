@@ -46,33 +46,25 @@ def get_dataset_builder(path, conf=None):
 
 def get_dataset(path, conf=None):
     "Get a dataset from name and conf."
-    builder_instance = get_dataset_builder(path, conf)
-    if builder_instance.manual_download_instructions is None and builder_instance.info.size_in_bytes is not None:
-        builder_instance.download_and_prepare()
-        return builder_instance.as_dataset()
-    else:
-        return load_dataset(path, conf)
-
-
-def load_dataset(dataset_name, subset_name):
     try:
-        return datasets.load_dataset(dataset_name, subset_name)
+        return datasets.load_dataset(path, conf)
     except datasets.builder.ManualDownloadError:
         cache_root_dir = (
             os.environ["PROMPTSOURCE_MANUAL_DATASET_DIR"]
             if "PROMPTSOURCE_MANUAL_DATASET_DIR" in os.environ
             else DEFAULT_PROMPTSOURCE_CACHE_HOME
         )
-        data_dir = (
-            f"{cache_root_dir}/{dataset_name}"
-            if subset_name is None
-            else f"{cache_root_dir}/{dataset_name}/{subset_name}"
-        )
-        return datasets.load_dataset(
-            dataset_name,
-            subset_name,
-            data_dir=data_dir,
-        )
+        data_dir = f"{cache_root_dir}/{path}" if conf is None else f"{cache_root_dir}/{path}/{conf}"
+        try:
+            return datasets.load_dataset(
+                path,
+                conf,
+                data_dir=data_dir,
+            )
+        except Exception as err:
+            raise err
+    except Exception as err:
+        raise err
 
 
 def get_dataset_confs(path):
