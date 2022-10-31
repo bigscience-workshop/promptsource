@@ -23,7 +23,8 @@ templates:
 
       {% if "Alice" == eval["userId"] %}
 
-      {% if 3 < eval["engagement"] %}{{ answer_choices[0] }}{% else %}{{ answer_choices[1] }}{% endif %}
+      {% if 3 < eval["engagement"] %}{{ answer_choices[0] }}{% else %}{{ answer_choices[1]
+      }}{% endif %}
 
       {% endif %}
 
@@ -32,6 +33,8 @@ templates:
       {% endif %}'
     metadata: !TemplateMetadata
       choices_in_prompt: true
+      languages:
+      - en
       metrics:
       - Accuracy
       original_task: false
@@ -44,7 +47,8 @@ templates:
       %} "{{context}}"
 
 
-      Given the previous context, would you say Bob''s engagement is real in this conversation:
+      Given the previous context, would you say Bob''s engagement is real in this
+      conversation:
 
       {% for utterance in thread %}
 
@@ -58,7 +62,8 @@ templates:
 
       {% if "Bob" == eval["userId"] %}
 
-      {% if 3 < eval["engagement"] %}{{ answer_choices[0] }}{% else %}{{ answer_choices[1] }}{% endif %}
+      {% if 3 < eval["engagement"] %}{{ answer_choices[0] }}{% else %}{{ answer_choices[1]
+      }}{% endif %}
 
       {% endif %}
 
@@ -67,6 +72,8 @@ templates:
       {% endif %}'
     metadata: !TemplateMetadata
       choices_in_prompt: false
+      languages:
+      - en
       metrics:
       - Accuracy
       original_task: false
@@ -93,11 +100,14 @@ templates:
 
       |||
 
-      {% if alice == bob %}{{ answer_choices[2] }}{% elif alice < bob %}{{ answer_choices[1] }}{% else %}{{ answer_choices[0] }}{% endif %}
+      {% if alice == bob %}{{ answer_choices[2] }}{% elif alice < bob %}{{ answer_choices[1]
+      }}{% else %}{{ answer_choices[0] }}{% endif %}
 
       {% endif %}'
     metadata: !TemplateMetadata
       choices_in_prompt: true
+      languages:
+      - en
       metrics:
       - Accuracy
       original_task: false
@@ -110,8 +120,8 @@ templates:
       %}{{context}}
 
 
-      Given the preceding context, do Bob''s following utterances show that he was interested
-      in the context?
+      Given the preceding context, do Bob''s following utterances show that he was
+      interested in the context?
 
       {% for utterance in thread %}
 
@@ -127,7 +137,8 @@ templates:
 
       {% if "Bob" == eval["userId"] %}
 
-      {% if 3 < eval["engagement"] %}{{ answer_choices[0] }}{% else %}{{ answer_choices[1] }}{% endif %}
+      {% if 3 < eval["engagement"] %}{{ answer_choices[0] }}{% else %}{{ answer_choices[1]
+      }}{% endif %}
 
       {% endif %}
 
@@ -136,6 +147,8 @@ templates:
       {% endif %}'
     metadata: !TemplateMetadata
       choices_in_prompt: false
+      languages:
+      - en
       metrics:
       - Accuracy
       original_task: false
@@ -165,7 +178,8 @@ templates:
 
       {% if "Alice" == eval["userId"] %}
 
-      {% if 3 < eval["engagement"] %}{{ answer_choices[0] }}{% else %}{{ answer_choices[1] }}{% endif %}
+      {% if 3 < eval["engagement"] %}{{ answer_choices[0] }}{% else %}{{ answer_choices[1]
+      }}{% endif %}
 
       {% endif %}
 
@@ -174,6 +188,8 @@ templates:
       {% endif %}'
     metadata: !TemplateMetadata
       choices_in_prompt: false
+      languages:
+      - en
       metrics:
       - Accuracy
       original_task: false
@@ -186,25 +202,28 @@ templates:
       %} {% set bob = (evaluation|selectattr("userId", "equalto", "Bob")|first)["engagement"]
       %} {% if (0 < (thread | selectattr("userId", "equalto", "Bob") | list | length))
       and (0 < (thread | selectattr("userId", "equalto", "Alice") | list | length))
-      %}  
-      Context: {{context}}
+      %} Context: {{context}}
 
       Conversation: {% for utterance in thread %}
 
       {{ utterance["userId"] }}: {{ utterance["text"] }}
 
       {% endfor %}
-      
-      Given the previous context and conversation, who do you think is more engaged in this conversation
-      ({{ answer_choices[0] }}, {{ answer_choices[1] }}, or {{ answer_choices[2] }}):
+
+      Given the previous context and conversation, who do you think is more engaged
+      in this conversation ({{ answer_choices[0] }}, {{ answer_choices[1] }}, or {{
+      answer_choices[2] }}):
 
       |||
 
-      {% if alice == bob %}{{ answer_choices[2] }}{% elif alice < bob %}{{ answer_choices[1] }}{% else %}{{ answer_choices[0] }}{% endif %}
+      {% if alice == bob %}{{ answer_choices[2] }}{% elif alice < bob %}{{ answer_choices[1]
+      }}{% else %}{{ answer_choices[0] }}{% endif %}
 
       {% endif %}'
     metadata: !TemplateMetadata
       choices_in_prompt: true
+      languages:
+      - en
       metrics:
       - Accuracy
       original_task: false

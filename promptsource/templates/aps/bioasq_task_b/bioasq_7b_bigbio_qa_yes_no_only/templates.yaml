@@ -1,0 +1,176 @@
+dataset: aps/bioasq_task_b
+subset: bioasq_7b_bigbio_qa_yes_no_only
+templates:
+  100af072-bb29-416e-b9e6-d391501540fc: !Template
+    answer_choices: False ||| True
+    id: 100af072-bb29-416e-b9e6-d391501540fc
+    jinja: 'Passage: {{context}}
+
+
+      After reading this passage, I have a question: {{question}} True or False? |||
+
+      {% if answer[0] == "yes" %}
+
+      True
+
+      {% else %}
+
+      False
+
+      {% endif %}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      languages: []
+      metrics:
+      - Accuracy
+      original_task: true
+    name: after reading
+    reference: ''
+  31cae98e-1ade-463d-858e-88d4cfea19fb: !Template
+    answer_choices: no ||| yes
+    id: 31cae98e-1ade-463d-858e-88d4cfea19fb
+    jinja: "Text: {{ context }}\n\nAnswer the following yes/no question: {{ question\
+      \ }} Yes or no? ||| \n{{answer[0]}}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      languages: []
+      metrics:
+      - Accuracy
+      original_task: true
+    name: yes_no_question
+    reference: ''
+  43ed649b-0b76-4af6-8806-098faaff899f: !Template
+    answer_choices: no ||| yes
+    id: 43ed649b-0b76-4af6-8806-098faaff899f
+    jinja: 'EXAM
+
+      1. Answer by yes or no
+
+
+      Document: {{ context }}
+
+      Question: {{ question }} |||
+
+      {{answer[0]}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      languages: []
+      metrics:
+      - Accuracy
+      original_task: true
+    name: exam
+    reference: ''
+  6d2615cc-baf5-4cb0-9768-b6fa791442e5: !Template
+    answer_choices: no ||| yes
+    id: 6d2615cc-baf5-4cb0-9768-b6fa791442e5
+    jinja: '{{ context }}
+
+
+      Having read that, could you tell {{question}} ||| {{answer[0]}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages: []
+      metrics:
+      - Accuracy
+      original_task: true
+    name: could you tell me
+    reference: ''
+  8407f111-56d2-4d3d-8f92-bb5a3a258646: !Template
+    answer_choices: False ||| True
+    id: 8407f111-56d2-4d3d-8f92-bb5a3a258646
+    jinja: '{{context}}
+
+
+      Q: {{question}} True or False? |||
+
+      {% if answer[0] == "yes" %}
+
+      True
+
+      {% else %}
+
+      False
+
+      {% endif %}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      languages: []
+      metrics:
+      - Accuracy
+      original_task: true
+    name: valid binary
+    reference: ''
+  8e4e3a5a-a168-4ae6-adf4-f6dd09582c34: !Template
+    answer_choices: no ||| yes
+    id: 8e4e3a5a-a168-4ae6-adf4-f6dd09582c34
+    jinja: 'Based on the following passage, {{question}} {{context}}
+
+
+      |||
+
+      {{answer[0]}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages: []
+      metrics:
+      - Accuracy
+      original_task: false
+    name: based on the following passage
+    reference: "Adapted from Perez et al. 2021 and Schick & Sch\xFCtz 2021."
+  93878445-2cd0-4666-8356-169913a979f1: !Template
+    answer_choices: no ||| yes
+    id: 93878445-2cd0-4666-8356-169913a979f1
+    jinja: "{{ context }} \n\nQuestion: {{ question }}\nAnswer: ||| {{ answer[0] }}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages: []
+      metrics:
+      - Accuracy
+      original_task: true
+    name: GPT-3 style
+    reference: Same as Figure G29, p. 58 of the GPT-3 paper
+  d34570a4-2509-48d3-b35e-b32591c564d0: !Template
+    answer_choices: no ||| yes
+    id: d34570a4-2509-48d3-b35e-b32591c564d0
+    jinja: '{{ context }}
+
+      Based on the previous passage, {{ question }} ||| {{answer[0]}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages: []
+      metrics:
+      - Accuracy
+      original_task: true
+    name: based on the previous passage
+    reference: "Adapted from Perez et al. 2021 and Schick & Sch\xFCtz 2021."
+  e33bdf31-3a7e-491c-8fb2-521e46f2b454: !Template
+    answer_choices: False ||| True
+    id: e33bdf31-3a7e-491c-8fb2-521e46f2b454
+    jinja: "Exercise: read the text and answer the question by True or False\n\nText:\
+      \ {{ context }}\nQuestion: {{ question }} ||| \n{% if answer[0] == \"yes\" %}\n\
+      True\n{% else %}\nFalse\n{% endif %}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      languages: []
+      metrics:
+      - Accuracy
+      original_task: true
+    name: exercise
+    reference: ''
+  ee72d733-f3db-4e39-af3e-11d1cca050df: !Template
+    answer_choices: no ||| yes
+    id: ee72d733-f3db-4e39-af3e-11d1cca050df
+    jinja: '{{ context }}
+
+
+      Having read that, I wonder {{question}} |||
+
+      {{ answer[0] }}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages: []
+      metrics:
+      - Accuracy
+      original_task: true
+    name: I wonder
+    reference: ''

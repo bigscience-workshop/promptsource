@@ -1,0 +1,119 @@
+dataset: schema_guided_dstc8
+subset: dialogues
+templates:
+  23666a79-c235-4c63-a3c1-b5712c7086b0: !Template
+    answer_choices: null
+    id: 23666a79-c235-4c63-a3c1-b5712c7086b0
+    jinja: '{% set stop = range(2, turns["utterance"]|length, 2) | random() - 1 %}
+
+      {% for utterance in turns["utterance"][:stop] %}
+
+      {{"Chatbot" if turns["speaker"][loop.index] == 0 else "Human"}}: {{utterance}}
+
+      {% endfor %}
+
+      Chatbot:
+
+      |||
+
+      {{turns["utterance"][stop]}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages: []
+      metrics:
+      - BLEU
+      - ROUGE
+      original_task: false
+    name: predict_response_random_human_chatbot
+    reference: ''
+  2abe77de-9b9e-49d5-b17f-b9e28352baf3: !Template
+    answer_choices: null
+    id: 2abe77de-9b9e-49d5-b17f-b9e28352baf3
+    jinja: '{% set stop = range(2, turns["utterance"]|length, 2) | random() - 1 %}
+
+      {% for utterance in turns["utterance"][:stop] %}
+
+      {{"System" if turns["speaker"][loop.index] == 0 else "User"}}: {{utterance}}
+
+      {% endfor %}
+
+      System:
+
+      |||
+
+      {{turns["utterance"][stop]}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages: []
+      metrics:
+      - BLEU
+      - ROUGE
+      original_task: false
+    name: predict_response_random_user_system
+    reference: ''
+  8a31e809-9bc7-4d95-898d-d5dad73b4d6e: !Template
+    answer_choices: null
+    id: 8a31e809-9bc7-4d95-898d-d5dad73b4d6e
+    jinja: 'How would you continue the following dialogue?
+
+      {% set stop = range(2, turns["utterance"]|length, 2) | random() - 1 %}
+
+      {% for utterance in turns["utterance"][:stop] %}
+
+      "{{utterance}}"
+
+      {% endfor %}
+
+
+      |||
+
+      "{{turns["utterance"][stop]}}"'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages: []
+      metrics:
+      - BLEU
+      - ROUGE
+      original_task: false
+    name: predict_response_random_continue_dialogue
+    reference: ''
+  9af4e56b-ee5f-47e7-9681-16bbdf11ef5a: !Template
+    answer_choices: null
+    id: 9af4e56b-ee5f-47e7-9681-16bbdf11ef5a
+    jinja: "{% set stop = range(2, turns[\"utterance\"]|length, 2) | random() - 1\
+      \ %}\n{% for utterance in turns[\"utterance\"][:stop] %}\n- {{utterance}}\n\
+      {% endfor %}\n- \n|||\n{{turns[\"utterance\"][stop]}}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages: []
+      metrics:
+      - ROUGE
+      - BLEU
+      original_task: false
+    name: predict_response_random_simple
+    reference: ''
+  e828a273-00eb-4fa1-9b2a-4331682980ca: !Template
+    answer_choices: null
+    id: e828a273-00eb-4fa1-9b2a-4331682980ca
+    jinja: '{% set stop = range(2, turns["utterance"]|length, 2) | random() - 1 %}
+
+      {% for utterance in turns["utterance"][:stop] %}
+
+      {{"B" if turns["speaker"][loop.index] == 0 else "A"}}: {{utterance}}
+
+      {% endfor %}
+
+      B:
+
+      |||
+
+      {{turns["utterance"][stop]}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages: []
+      metrics:
+      - BLEU
+      - ROUGE
+      original_task: false
+    name: predict_response_random_a_b
+    reference: ''

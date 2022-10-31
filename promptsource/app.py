@@ -1,20 +1,23 @@
 import argparse
 import functools
 import multiprocessing
+import os
 import textwrap
+from hashlib import sha256
 from multiprocessing import Manager, Pool
 
 import pandas as pd
 import plotly.express as px
 import streamlit as st
 from datasets import get_dataset_infos
+from datasets.info import DatasetInfosDict
 from pygments import highlight
 from pygments.formatters import HtmlFormatter
 from pygments.lexers import DjangoLexer
-from templates import INCLUDED_USERS
 
+from promptsource import DEFAULT_PROMPTSOURCE_CACHE_HOME
 from promptsource.session import _get_state
-from promptsource.templates import DatasetTemplates, Template, TemplateCollection
+from promptsource.templates import INCLUDED_USERS, LANGUAGES, METRICS, DatasetTemplates, Template, TemplateCollection
 from promptsource.utils import (
     get_dataset,
     get_dataset_confs,
@@ -24,6 +27,9 @@ from promptsource.utils import (
     render_features,
 )
 
+
+DATASET_INFOS_CACHE_DIR = os.path.join(DEFAULT_PROMPTSOURCE_CACHE_HOME, "DATASET_INFOS")
+os.makedirs(DATASET_INFOS_CACHE_DIR, exist_ok=True)
 
 # Python 3.8 switched the default start method from fork to spawn. OS X also has
 # some issues related to fork, eee, e.g., https://github.com/bigscience-workshop/promptsource/issues/572
@@ -38,7 +44,28 @@ def get_infos(all_infos, d_name):
     :param all_infos: multiprocess-safe dictionary
     :param d_name: dataset name
     """
-    all_infos[d_name] = get_dataset_infos(d_name)
+    d_name_bytes = d_name.encode("utf-8")
+    d_name_hash = sha256(d_name_bytes)
+    foldername = os.path.join(DATASET_INFOS_CACHE_DIR, d_name_hash.hexdigest())
+    if os.path.isdir(foldername):
+        infos_dict = DatasetInfosDict.from_directory(foldername)
+    else:
+        infos = get_dataset_infos(d_name)
+        infos_dict = DatasetInfosDict(infos)
+        os.makedirs(foldername)
+        infos_dict.write_to_directory(foldername)
+    all_infos[d_name] = infos_dict
+
+
+def format_language(tag):
+    """
+    Formats a language tag for display in the UI.
+
+    For example, if the tag is "en", then the function returns "en (English)"
+    :param tag: language tag
+    :return: formatted language name
+    """
+    return tag + " (" + LANGUAGES[tag] + ")"
 
 
 # add an argument for read-only
@@ -181,11 +208,13 @@ def run_app():
                 else:
                     subset_infos = infos[subset_name]
 
-                split_sizes = {k: v.num_examples for k, v in subset_infos.splits.items()}
+                try:
+                    split_sizes = {k: v.num_examples for k, v in subset_infos.splits.items()}
+                except Exception:
+                    # Fixing bug in some community datasets.
+                    # For simplicity, just filling `split_sizes` with nothing, so the displayed split sizes will be 0.
+                    split_sizes = {}
             else:
-                # Zaid/coqa_expanded and Zaid/quac_expanded don't have dataset_infos.json
-                # so infos is an empty dic, and `infos[list(infos.keys())[0]]` raises an error
-                # For simplicity, just filling `split_sizes` with nothing, so the displayed split sizes will be 0.
                 split_sizes = {}
 
             # Collect template counts, original task counts and names
@@ -403,6 +432,11 @@ def run_app():
                     st.text(template.metadata.choices_in_prompt)
                     st.markdown("##### Metrics")
                     st.text(", ".join(template.metadata.metrics) if template.metadata.metrics else None)
+                    st.markdown("##### Prompt Languages")
+                    if template.metadata.languages:
+                        st.text(", ".join([format_language(tag) for tag in template.metadata.languages]))
+                    else:
+                        st.text(None)
                     st.markdown("##### Answer Choices")
                     if template.get_answer_choices_expr() is not None:
                         show_jinja(template.get_answer_choices_expr())
@@ -541,33 +575,22 @@ def run_app():
                                 help="Prompt explicitly lists choices in the template for the output.",
                             )
 
-                            # Metrics from here:
-                            # https://github.com/google-research/text-to-text-transfer-transformer/blob/4b580f23968c2139be7fb1cd53b22c7a7f686cdf/t5/evaluation/metrics.py
-                            metrics_choices = [
-                                "BLEU",
-                                "ROUGE",
-                                "Squad",
-                                "Trivia QA",
-                                "Accuracy",
-                                "Pearson Correlation",
-                                "Spearman Correlation",
-                                "MultiRC",
-                                "AUC",
-                                "COQA F1",
-                                "Edit Distance",
-                            ]
-                            # Add mean reciprocal rank
-                            metrics_choices.append("Mean Reciprocal Rank")
-                            # Add generic other
-                            metrics_choices.append("Other")
-                            # Sort alphabetically
-                            metrics_choices = sorted(metrics_choices)
                             state.metadata.metrics = st.multiselect(
                                 "Metrics",
-                                metrics_choices,
+                                sorted(METRICS),
                                 default=template.metadata.metrics,
                                 help="Select all metrics that are commonly used (or should "
                                 "be used if a new task) to evaluate this prompt.",
+                            )
+
+                            state.metadata.languages = st.multiselect(
+                                "Prompt Languages",
+                                sorted(LANGUAGES.keys()),
+                                default=template.metadata.languages,
+                                format_func=format_language,
+                                help="Select all languages used in this prompt. "
+                                "This annotation is independent from the language(s) "
+                                "of the dataset.",
                             )
 
                             # Answer choices
