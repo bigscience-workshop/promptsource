@@ -1,0 +1,29 @@
+  9fc15385-814e-419a-b862-2d4e06a58ef6: !Template
+    answer_choices: null
+    id: 9fc15385-814e-419a-b862-2d4e06a58ef6
+    jinja: 'Q: {{ question }}
+      Can you write some context to answer the question? ||| {{ context }}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages:
+      - zh
+      metrics:
+      - Squad
+      original_task: true
+    name: xp3longctxt
+    reference: ''
+  9fc25385-814e-419a-b862-2d4e06a58ef6: !Template
+    answer_choices: null
+    id: 9fc25385-814e-419a-b862-2d4e06a58ef6
+    jinja: '{{ context[:answers["answer_start"][0]-5] }}... How would you 
+    continue the prior text to answer "{{ question }}"?
+    ||| {{ context[answers["answer_start"][0]-5:] }}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages:
+      - zh
+      metrics:
+      - Squad
+      original_task: true
+    name: xp3longcontinue
+    reference: ''

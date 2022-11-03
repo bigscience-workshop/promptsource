@@ -333,3 +333,34 @@ templates:
       original_task: true
     name: description_context_question_answer_text
     reference: ''
+  f474c2ca-952a-47ab-8420-cb5fb2c693d9: !Template
+    answer_choices: '{{answers | join("|||")}}'
+    id: f474c2ca-952a-47ab-8420-cb5fb2c693d9
+    jinja: 'Given the title <<{{metadata["title"]}}>>, write a 300-350 token long passage.
+      |||
+
+      {{ answer_choices[correct_answer_id] }}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      languages:
+      - en
+      metrics:
+      - Accuracy
+      original_task: true
+    name: xp3longtokenpassage
+    reference: ''
+  f444c2ca-952a-47ab-8420-cb5fb2c693d9: !Template
+    answer_choices: '{{answers | join("|||")}}'
+    id: f444c2ca-952a-47ab-8420-cb5fb2c693d9
+    jinja: 'Write a story with reference to the question "{{question}}". 
+    The name of the story should be {{metadata["title"]}}.
+    Story: ||| {{ answer_choices[correct_answer_id] }}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      languages:
+      - en
+      metrics:
+      - Accuracy
+      original_task: true
+    name: xp3longstory
+    reference: ''

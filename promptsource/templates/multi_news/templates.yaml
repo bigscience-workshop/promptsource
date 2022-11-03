@@ -187,3 +187,49 @@ templates:
       original_task: true
     name: distill
     reference: ''
+  bc921e51-c0a9-473c-aa85-adcab21b9ba9: !Template
+    answer_choices: null
+    id: bc921e51-c0a9-473c-aa85-adcab21b9ba9
+    jinja: '{% set docs = document.split("3ed2dface8203c4c9dfb1a5dc58e41e0||") | reject("equalto",
+      "") | list%}
+
+      {% if document != "" %}
+
+      "{{summary[2:]}}" <- This could be a summary of what article?
+
+      |||
+
+      {{docs | choice}}
+
+      {% endif %}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages:
+      - en
+      metrics:
+      - BLEU
+      - ROUGE
+      original_task: false
+    name: xp3longwhatarticle
+    reference: ''
+  bc922e52-c0a9-473c-aa85-adcab21b9ba9: !Template
+    answer_choices: null
+    id: bc922e52-c0a9-473c-aa85-adcab21b9ba9
+    jinja: '{% set docs = document.split("3ed2dface8203c4c9dfb1a5dc58e41e0||") | reject("equalto",
+      "") | list%}
+      {% if document != "" %}
+      After reading the summary "{{summary[2:]}}", I became interested. 
+      Can you give me the full article?
+      |||
+      {{docs | choice}}
+      {% endif %}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages:
+      - en
+      metrics:
+      - BLEU
+      - ROUGE
+      original_task: false
+    name: xp3longfullarticle
+    reference: ''

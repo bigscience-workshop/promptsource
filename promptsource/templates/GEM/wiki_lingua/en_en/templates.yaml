@@ -1,5 +1,5 @@
 dataset: GEM/wiki_lingua
-subset: en
+subset: en_en
 templates:
   088288f3-7516-4cf7-9406-0e082053bf54: !Template
     answer_choices: null
@@ -9,8 +9,7 @@ templates:
 
       ===
 
-
-      Write a summary of the text above in English : ||| {{target}}'
+      Write a summary of the previous text in {{target_language_name}}: ||| {{target}}'
     metadata: !TemplateMetadata
       choices_in_prompt: false
       languages: []
@@ -23,10 +22,10 @@ templates:
   2038df7b-5420-4a33-87ec-09715419deef: !Template
     answer_choices: null
     id: 2038df7b-5420-4a33-87ec-09715419deef
-    jinja: 'Article in English: {{source}}
+    jinja: 'Source in {{source_language_name}}: {{source}}
 
 
-      Summary in English: ||| {{target}}'
+      Summary in {{target_language_name}}: ||| {{target}}'
     metadata: !TemplateMetadata
       choices_in_prompt: false
       languages: []
@@ -42,7 +41,7 @@ templates:
     jinja: '{{source}}
 
 
-      How would you rephrase that briefly in English? ||| {{target}}'
+      How would you rephrase that briefly using {{target_language_name}}? ||| {{target}}'
     metadata: !TemplateMetadata
       choices_in_prompt: false
       languages: []
@@ -58,7 +57,7 @@ templates:
     jinja: '{{source}}
 
 
-      TL;DR in English: ||| {{target}}'
+      TL;DR in {{target_language_name}}: ||| {{target}}'
     metadata: !TemplateMetadata
       choices_in_prompt: false
       languages: []
@@ -71,8 +70,8 @@ templates:
   dff7b314-7385-4855-bb90-253073a34fde: !Template
     answer_choices: null
     id: dff7b314-7385-4855-bb90-253073a34fde
-    jinja: "First, read the English article below.\n\n{{source}} \n\nNow, please write\
-      \ a short abstract for it in English. ||| {{target}}"
+    jinja: "First, read the {{source_language_name}} text below.\n\n{{source}} \n\nNow, please write\
+      \ a short abstract for it in {{target_language_name}}. Abstract: ||| {{target}}"
     metadata: !TemplateMetadata
       choices_in_prompt: false
       languages: []
@@ -82,10 +81,10 @@ templates:
       original_task: true
     name: write_abstract_en
     reference: xsum 'read_below_DOC_write_abstract' template
-  dff7b414-7385-4855-bb90-253073a34fde: !Template
+  dfa7b514-7385-4855-bb90-253073a34fde: !Template
     answer_choices: null
-    id: dff7b414-7385-4855-bb90-253073a34fde
-    jinja: "{{target}}\n\nGiven the above abstract, write an English article for it. ||| {{source}}"
+    id: dfa7b514-7385-4855-bb90-253073a34fde
+    jinja: "{{target}}\n\nGiven the above summary, write a detailed text in {{source_language_name}} for it. ||| {{source}}"
     metadata: !TemplateMetadata
       choices_in_prompt: false
       languages: []
@@ -95,11 +94,12 @@ templates:
       original_task: true
     name: xp3longwritearticle
     reference: ''
-  dff7b415-7385-4855-bb90-253073a34fde: !Template
+  dff8b414-7485-4855-bb90-253073a34fde: !Template
     answer_choices: null
-    id: dff7b415-7385-4855-bb90-253073a34fde
+    id: dff8b414-7485-4855-bb90-253073a34fde
     jinja: "{{target}}\n\nI'm interested in that, but I only have a few mins.
-    Can you give me the first 500 characters of an article about that? ||| {{source[:500]}}"
+    Can you give me at most the first 500 characters of a detailed explanation
+    in {{source_language_name}} about that? ||| {{source[:500]}}"
     metadata: !TemplateMetadata
       choices_in_prompt: false
       languages: []
