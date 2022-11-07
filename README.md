@@ -9,7 +9,7 @@ Prompts are functions that map an example from a dataset to a natural language i
   <img src="assets/PromptSource ACL Demo Figure.png" width="800"/>
 </p>
 
-PromptSource provides the tools to create, and share natural language prompts (see [How to create prompts](#how-to-create-prompts), and then use the thousands of existing and newly created prompts through a simple API (see [How to use prompts](#how-to-use-prompts)). Prompts are saved in standalone structured files and are written in a simple templating language called Jinja. An example of prompt availabe in PromptSource for [SNLI](https://huggingface.co/datasets/snli) is:
+PromptSource provides the tools to create, and share natural language prompts (see [How to create prompts](#how-to-create-prompts), and then use the thousands of existing and newly created prompts through a simple API (see [How to use prompts](#how-to-use-prompts)). Prompts are saved in standalone structured files and are written in a simple templating language called Jinja. An example of prompt available in PromptSource for [SNLI](https://huggingface.co/datasets/snli) is:
 ```jinja2
 {{premise}}
 
