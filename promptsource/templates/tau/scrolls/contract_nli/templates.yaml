@@ -1,0 +1,63 @@
+dataset: tau/scrolls
+subset: contract_nli
+templates:
+  243c496c-4cae-46d7-b94d-91c946fbd98c: !Template
+    answer_choices: Not mentioned ||| Entailment ||| Contradiction
+    id: 243c496c-4cae-46d7-b94d-91c946fbd98c
+    jinja: 'The following is an NDA:
+
+      {{input.split("\n\n", 1)[1]}}
+
+      Here is a statement about that NDA: {{input.split("\n\n", 1)[0]}}
+
+      Based on this NDA, is the statement "Not mentioned", an "Entailment", or a "Contradiction"?
+      ||| {{output}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      languages:
+      - en
+      metrics:
+      - Accuracy
+      - Other
+      original_task: true
+    name: statement after
+    reference: ''
+  8082ee08-d6ae-4d5d-9fbf-3dae04e9b7ec: !Template
+    answer_choices: null
+    id: 8082ee08-d6ae-4d5d-9fbf-3dae04e9b7ec
+    jinja: '{{input.split("\n\n", 1)[0]}}
+
+      Please write a non-disclosure agreement with the relation of "{{output}}" to
+      the previous statement: ||| {{input.split("\n\n", 1)[1]}}
+
+      '
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages:
+      - en
+      metrics:
+      - BLEU
+      - ROUGE
+      original_task: false
+    name: write_nda
+    reference: ''
+  b1ba1f3b-7eba-4bf2-aa21-a2d899d05e40: !Template
+    answer_choices: Not mentioned ||| Entailment ||| Contradiction
+    id: b1ba1f3b-7eba-4bf2-aa21-a2d899d05e40
+    jinja: 'The following is a statement followed by a non-disclosure agreement:
+
+      {{input}}
+
+      Based on this NDA, is the statement "Not mentioned", an "Entailment", or a "Contradiction"?
+      ||| {{output}}
+
+      '
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      languages:
+      - en
+      metrics:
+      - Other
+      original_task: true
+    name: nli_labelsgiven
+    reference: ''

@@ -1,0 +1,74 @@
+dataset: tau/scrolls
+subset: qmsum
+templates:
+  2edf0197-e3d4-4870-bd95-178411e52e09: !Template
+    answer_choices: null
+    id: 2edf0197-e3d4-4870-bd95-178411e52e09
+    jinja: 'This is a summary of a meeting based on a query.
+
+      Summary: {{ output }}
+
+      The query given and the original meeting transcript\ are as follows: ||| {{
+      input }}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages:
+      - en
+      metrics:
+      - ROUGE
+      - BLEU
+      original_task: false
+    name: write_meeting
+    reference: ''
+  8c3d956e-320b-4800-8dd1-552330b7f3dc: !Template
+    answer_choices: null
+    id: 8c3d956e-320b-4800-8dd1-552330b7f3dc
+    jinja: 'Given the following meeting transcript: {{ input.split("?", 1)[1][1:]
+      }}
+
+      What is a question you could ask about the meeting? ||| {{ input.split("?",
+      1)[0] }}?'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages:
+      - en
+      metrics:
+      - BLEU
+      - ROUGE
+      original_task: false
+    name: Generate question
+    reference: ''
+  af4d550e-54b8-471e-97af-2b2c50a1382e: !Template
+    answer_choices: null
+    id: af4d550e-54b8-471e-97af-2b2c50a1382e
+    jinja: 'The following is a question followed by a meeting transcript:
+
+      {{ input }}
+
+      How would you best summarize the meeting based on the question? ||| {{ output
+      }}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages:
+      - en
+      metrics:
+      - BLEU
+      - ROUGE
+      original_task: true
+    name: summarize_by_query
+    reference: ''
+  cd5f9c35-1074-41bd-b362-d152b8d51894: !Template
+    answer_choices: null
+    id: cd5f9c35-1074-41bd-b362-d152b8d51894
+    jinja: '{{ input.split("?", 1)[1][1:] }}
+
+      {{ input.split("?", 1)[0] }}?
+
+      Answer: ||| {{ output }}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages: []
+      metrics: []
+      original_task: false
+    name: question_last
+    reference: ''
