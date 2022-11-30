@@ -1,0 +1,69 @@
+dataset: xnli
+subset: el
+templates:
+  3085e6b0-81f2-4d50-b7dc-63b023bb6792: !Template
+    answer_choices: Ναί ||| Μπορεί ||| Οχι
+    id: 3085e6b0-81f2-4d50-b7dc-63b023bb6792
+    jinja: Ας υποθέσουμε ότι {{premise}} Μπορούμε να συμπεράνουμε ότι "{{hypothesis}}";
+      Ναι, όχι, ή μήπως; ||| {{ answer_choices[label] }}
+    metadata: !TemplateMetadata
+      choices_in_prompt: null
+      languages: null
+      metrics: null
+      original_task: null
+    name: can we infer_elmt
+    reference: ''
+  3789dc3c-d422-4d7e-8826-9947c5af7d21: !Template
+    answer_choices: Ναί ||| Μπορεί ||| Οχι
+    id: 3789dc3c-d422-4d7e-8826-9947c5af7d21
+    jinja: '{{premise}} Είμαστε δικαιολογημένοι που λέμε ότι "{{hypothesis}}"; Ναι,
+      όχι, ή μήπως; ||| {{ answer_choices[label] }}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: null
+      languages: null
+      metrics: null
+      original_task: null
+    name: justified in saying_elmt
+    reference: ''
+  8f474851-54d1-4f0e-98f2-1f4b83bb25ec: !Template
+    answer_choices: Σωστός ||| Μη τελεσίδικος ||| Ανακριβής
+    id: 8f474851-54d1-4f0e-98f2-1f4b83bb25ec
+    jinja: '{{premise}} Χρησιμοποιώντας μόνο την παραπάνω περιγραφή και όσα γνωρίζετε
+      για τον κόσμο, το "{{hypothesis}}" είναι σίγουρα σωστό, λανθασμένο ή ασαφές;
+      ||| {{ answer_choices[label] }}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: null
+      languages: null
+      metrics: null
+      original_task: null
+    name: MNLI crowdsource_elmt
+    reference: ''
+  de3451f3-96de-4807-b73a-b840670f3a4d: !Template
+    answer_choices: Εγγυημένα ||| Δυνατόν ||| Αδύνατο
+    id: de3451f3-96de-4807-b73a-b840670f3a4d
+    jinja: 'Ας υποθέσουμε ότι είναι αλήθεια ότι {{premise}}
+
+
+      Επομένως, η "{{hypothesis}}" είναι {{"guaranteed"}}, {{"possible"}} ή {{"impossible"}};
+      ||| {{ answer_choices[label] }}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: null
+      languages: null
+      metrics: null
+      original_task: null
+    name: guaranteed/possible/impossible_elmt
+    reference: ''
+  e52a2994-df8f-49ab-b850-03276c36b1f6: !Template
+    answer_choices: Αληθής ||| κανενα απο τα δυο ||| Ψευδής
+    id: e52a2994-df8f-49ab-b850-03276c36b1f6
+    jinja: '{{premise}}
+
+      Ερώτηση: {{hypothesis}} Σωστό, Λάθος ή κανένα από τα δύο; ||| {{ answer_choices[label]
+      }}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: null
+      languages: null
+      metrics: null
+      original_task: null
+    name: GPT-3 style_elmt
+    reference: ''

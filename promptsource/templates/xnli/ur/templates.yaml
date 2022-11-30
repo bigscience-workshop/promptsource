@@ -1,0 +1,139 @@
+dataset: xnli
+subset: ur
+templates:
+  37d2f261-06b0-4aa3-af53-871a2b06748f: !Template
+    answer_choices: صحیح ||| کچھ نہیں ||| غلط
+    id: 37d2f261-06b0-4aa3-af53-871a2b06748f
+    jinja: '{{premise}}
+
+      سوال: {{hypothesis}} صحیح، غلط, یا کچھ نہیں؟ ||| {{ answer_choices[label] }}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      languages:
+      - en
+      metrics:
+      - Accuracy
+      original_task: true
+    name: GPT-3 style_urht
+    reference: 'Same as reported in Figure G7 of the GPT-3 paper, except that there
+      is no task identifying tokens like "anli R1: ".'
+  443b5ab1-614e-4d3f-a782-6ccff4af2380: !Template
+    answer_choices: سچ ہے۔ ||| نہ ہی ||| جھوٹا۔
+    id: 443b5ab1-614e-4d3f-a782-6ccff4af2380
+    jinja: '{{premise}} سوال: {{hypothesis}} صحیح، غلط، یا نہ؟ ||| {{ answer_choices[label]
+      }}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: null
+      languages: null
+      metrics: null
+      original_task: null
+    name: GPT-3 style_urmt
+    reference: ''
+  5d0b8303-80b2-41a8-b355-23928b181c20: !Template
+    answer_choices: جی ہاں ||| شاید ||| نہیں
+    id: 5d0b8303-80b2-41a8-b355-23928b181c20
+    jinja: '{{premise}} کیا ہم یہ کہنا جائز ہیں کہ &quot;{{hypothesis}}&quot;؟ ہاں،
+      نہیں، یا شاید؟ ||| {{ answer_choices[label] }}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: null
+      languages: null
+      metrics: null
+      original_task: null
+    name: justified in saying_urmt
+    reference: ''
+  9b75ff77-bb66-413b-a33d-325707b035d7: !Template
+    answer_choices: ہاں ||| ممکن ہے ||| نہیں
+    id: 9b75ff77-bb66-413b-a33d-325707b035d7
+    jinja: 'فرض کرو {{premise}} ہم یہ نتیجہ اخذ کر سکتے ہیں "{{hypothesis}}"? ہاں
+      ، نہیں ، یا ممکن ہے ؟ ||| {{ answer_choices[label] }} '
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      languages:
+      - en
+      metrics:
+      - Accuracy
+      original_task: true
+    name: can we infer_urht
+    reference: Webson & Pavlick 2021
+  9bda8e44-c881-4c9a-a3a9-eec68388a6f6: !Template
+    answer_choices: ہاں ||| ممکن ہے ||| نہیں
+    id: 9bda8e44-c881-4c9a-a3a9-eec68388a6f6
+    jinja: '{{premise}} کیا ہمارا یہ کہنا درست ہے "{{hypothesis}}"? ہاں ، نہیں ، یا
+      ممکن ہے ؟ ||| {{ answer_choices[label] }} '
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      languages:
+      - en
+      metrics:
+      - Accuracy
+      original_task: true
+    name: justified in saying_urht
+    reference: Webson & Pavlick 2021
+  ccce5ce7-a6bd-48c0-9cc9-f6b77309133f: !Template
+    answer_choices: جی ہاں ||| شاید ||| نہیں
+    id: ccce5ce7-a6bd-48c0-9cc9-f6b77309133f
+    jinja: فرض کریں {{premise}} کیا ہم اندازہ لگا سکتے ہیں کہ &quot;{{hypothesis}}&quot;؟
+      ہاں، نہیں، یا شاید؟ ||| {{ answer_choices[label] }}
+    metadata: !TemplateMetadata
+      choices_in_prompt: null
+      languages: null
+      metrics: null
+      original_task: null
+    name: can we infer_urmt
+    reference: ''
+  d374295a-c1d4-4742-82d5-290d42726ec4: !Template
+    answer_choices: گارنٹی شدہ ||| ممکن ||| ناممکن
+    id: d374295a-c1d4-4742-82d5-290d42726ec4
+    jinja: فرض کریں کہ یہ درست ہے کہ {{premise}} لہذا، &quot;{{hypothesis}}&quot;
+      {{"guaranteed"}}، {{"possible"}}، یا {{"impossible"}} ہے؟ ||| {{ answer_choices[label]
+      }}
+    metadata: !TemplateMetadata
+      choices_in_prompt: null
+      languages: null
+      metrics: null
+      original_task: null
+    name: guaranteed/possible/impossible_urmt
+    reference: ''
+  d44c2947-f8e0-49ea-9880-e59f0581a921: !Template
+    answer_choices: یقینی ||| ممکن ||| نا ممکن
+    id: d44c2947-f8e0-49ea-9880-e59f0581a921
+    jinja: "فرض کرو یہ صحیح ہے كہ {{premise}} \n\nاِس لیے, \"{{hypothesis}}\"  {{\"\
+      یقینی\"}}, {{\"ممکن\"}}, یا {{\"نا ممکن\"}} ہے ؟ ||| {{ answer_choices[label]\
+      \ }}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      languages:
+      - en
+      metrics:
+      - Accuracy
+      original_task: true
+    name: guaranteed/possible/impossible_urht
+    reference: Sanh et al. 2021
+  da368462-3a66-4222-9de1-05d66037a718: !Template
+    answer_choices: بالکل صحیح ||| غیر یقینی ||| غلط
+    id: da368462-3a66-4222-9de1-05d66037a718
+    jinja: '{{premise}} صرف مندرجہ بالا تشریح اور دنیا كے بارے میں اپنی معلومات كے
+      مطابق, "{{hypothesis}}" بالکل صحیح ہے ، غلط ہے ، یا غیر یقینی ہے ؟ ||| {{ answer_choices[label]
+      }}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      languages:
+      - en
+      metrics:
+      - Accuracy
+      original_task: true
+    name: MNLI crowdsource_urht
+    reference: Adapted from Williams et al. 2018's instructions to crowdsourcing workers.
+  db00c977-f972-4fd8-b841-c924d443d242: !Template
+    answer_choices: درست ||| بے نتیجہ ||| غلط
+    id: db00c977-f972-4fd8-b841-c924d443d242
+    jinja: '{{premise}} صرف اوپر دی گئی تفصیل کا استعمال کرتے ہوئے اور جو آپ دنیا
+      کے بارے میں جانتے ہیں، &quot;{{hypothesis}}&quot; یقینی طور پر درست، غلط، یا
+      غیر نتیجہ خیز ہے؟ ||| {{ answer_choices[label] }}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: null
+      languages: null
+      metrics: null
+      original_task: null
+    name: MNLI crowdsource_urmt
+    reference: ''

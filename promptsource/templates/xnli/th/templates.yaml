@@ -1,0 +1,68 @@
+dataset: xnli
+subset: th
+templates:
+  3aedf6e8-57e7-4ae9-aab7-3ca6972bef1e: !Template
+    answer_choices: ใช่ ||| อาจจะ ||| ไม่
+    id: 3aedf6e8-57e7-4ae9-aab7-3ca6972bef1e
+    jinja: '{{premise}} เรามีเหตุผลในการพูดว่า "{{hypothesis}}" หรือไม่ ใช่ ไม่ หรืออาจจะ?
+      ||| {{ answer_choices[label] }}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: null
+      languages: null
+      metrics: null
+      original_task: null
+    name: justified in saying_thmt
+    reference: ''
+  549bf8a4-c0a9-413d-9f19-0688a89f8099: !Template
+    answer_choices: ใช่ ||| อาจจะ ||| ไม่
+    id: 549bf8a4-c0a9-413d-9f19-0688a89f8099
+    jinja: สมมติว่า {{premise}} เราสามารถอนุมานว่า "{{hypothesis}}" ได้หรือไม่ ใช่
+      ไม่ หรืออาจจะ? ||| {{ answer_choices[label] }}
+    metadata: !TemplateMetadata
+      choices_in_prompt: null
+      languages: null
+      metrics: null
+      original_task: null
+    name: can we infer_thmt
+    reference: ''
+  c50d6c82-c8c8-46df-beef-a7e4fc6fd6fd: !Template
+    answer_choices: รับประกัน ||| เป็นไปได้ ||| เป็นไปไม่ได้
+    id: c50d6c82-c8c8-46df-beef-a7e4fc6fd6fd
+    jinja: 'สมมติว่าเป็นความจริงที่ {{premise}}
+
+
+      ดังนั้น "{{hypothesis}}" คือ {{"guaranteed"}}, {{"possible"}} หรือ {{"impossible"}}?
+      ||| {{ answer_choices[label] }}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: null
+      languages: null
+      metrics: null
+      original_task: null
+    name: guaranteed/possible/impossible_thmt
+    reference: ''
+  db82374c-c0f4-48f2-8d8d-f9c682a732f4: !Template
+    answer_choices: จริง ||| ไม่ใช่ทั้งสองอย่าง ||| เท็จ
+    id: db82374c-c0f4-48f2-8d8d-f9c682a732f4
+    jinja: '{{premise}}
+
+      คำถาม: {{hypothesis}} จริง เท็จ หรือเปล่า? ||| {{ answer_choices[label] }}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: null
+      languages: null
+      metrics: null
+      original_task: null
+    name: GPT-3 style_thmt
+    reference: ''
+  dc028dd3-14d3-4e24-b2f4-ebd3930a01e5: !Template
+    answer_choices: ถูกต้อง ||| สรุปไม่ได้ ||| ไม่ถูกต้อง
+    id: dc028dd3-14d3-4e24-b2f4-ebd3930a01e5
+    jinja: '{{premise}} ใช้เฉพาะคำอธิบายข้างต้นและสิ่งที่คุณรู้เกี่ยวกับโลก "{{hypothesis}}"
+      นั้นถูกต้อง ไม่ถูกต้อง หรือไม่สามารถสรุปได้อย่างแน่นอน ||| {{ answer_choices[label]
+      }}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: null
+      languages: null
+      metrics: null
+      original_task: null
+    name: MNLI crowdsource_thmt
+    reference: ''
