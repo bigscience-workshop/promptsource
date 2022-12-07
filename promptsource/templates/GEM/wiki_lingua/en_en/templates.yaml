@@ -1,0 +1,83 @@
+dataset: GEM/wiki_lingua
+subset: en_en
+templates:
+  088288f3-7516-4cf7-9406-0e082053bf54: !Template
+    answer_choices: null
+    id: 088288f3-7516-4cf7-9406-0e082053bf54
+    jinja: '{{source}}
+
+
+      ===
+
+      Write a summary of the previous text in {{target_language_name}}: ||| {{target}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages: []
+      metrics:
+      - ROUGE
+      - BLEU
+      original_task: true
+    name: summarize_above_en
+    reference: xsum DOC_write_summary_of_above template
+  2038df7b-5420-4a33-87ec-09715419deef: !Template
+    answer_choices: null
+    id: 2038df7b-5420-4a33-87ec-09715419deef
+    jinja: 'Article in {{source_language_name}}: {{source}}
+
+
+      Summary in {{target_language_name}}: ||| {{target}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages: []
+      metrics:
+      - ROUGE
+      - BLEU
+      original_task: true
+    name: article_summary_en
+    reference: xsum 'article_DOC_summary' template
+  753f0a46-aeff-4cd2-932c-8548897cebe5: !Template
+    answer_choices: null
+    id: 753f0a46-aeff-4cd2-932c-8548897cebe5
+    jinja: '{{source}}
+
+
+      How would you rephrase that briefly using {{target_language_name}}? ||| {{target}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages: []
+      metrics:
+      - ROUGE
+      - BLEU
+      original_task: true
+    name: rephrase_en
+    reference: xsum 'DOC_how_would_you_rephrase_few_words' template
+  d3c5baa3-5e37-46f8-b1b2-5b834181c9da: !Template
+    answer_choices: null
+    id: d3c5baa3-5e37-46f8-b1b2-5b834181c9da
+    jinja: '{{source}}
+
+
+      TL;DR in {{target_language_name}}: ||| {{target}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages: []
+      metrics:
+      - ROUGE
+      - BLEU
+      original_task: true
+    name: tldr_en
+    reference: xsum 'DOC_tldr' template
+  dff7b314-7385-4855-bb90-253073a34fde: !Template
+    answer_choices: null
+    id: dff7b314-7385-4855-bb90-253073a34fde
+    jinja: "First, read the {{source_language_name}} article below.\n\n{{source}} \n\nNow, please write\
+      \ a short abstract for it in {{target_language_name}}. Abstract: ||| {{target}}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages: []
+      metrics:
+      - ROUGE
+      - BLEU
+      original_task: true
+    name: write_abstract_en
+    reference: xsum 'read_below_DOC_write_abstract' template
