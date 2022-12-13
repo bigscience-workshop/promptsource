@@ -27,7 +27,17 @@ env.globals.update(zip=zip)
 # These are users whose datasets should be included in the results returned by
 # filter_english_datasets (regardless of their metadata)
 
-INCLUDED_USERS = {"Zaid", "craffel", "GEM", "aps", "khalidalt", "shanya", "rbawden", "BigScienceBiasEval", "gsarti"}
+INCLUDED_USERS = {
+    "Zaid",
+    "craffel",
+    "GEM",
+    "aps",
+    "khalidalt",
+    "shanya",
+    "rbawden",
+    "BigScienceBiasEval",
+    "gsarti",
+}
 
 # These are the metrics with which templates can be tagged
 METRICS = {
@@ -79,7 +89,7 @@ LANGUAGES = {
     "ce": "Chechen",
     "ny": "Chichewa, Chewa, Nyanja",
     "zh": "Chinese",
-    "cu": "Church Slavic, Old Slavonic, Church Slavonic, Old Bulgarian, Old Church Slavonic",
+    "cu": "Church Slavic, Old Slavonic, Church Slavonic, Old Bulgarian, Old Church Slavonic",
     "cv": "Chuvash",
     "kw": "Cornish",
     "co": "Corsican",
@@ -120,7 +130,7 @@ LANGUAGES = {
     "io": "Ido",
     "ig": "Igbo",
     "id": "Indonesian",
-    "ia": "Interlingua (International Auxiliary Language Association)",
+    "ia": "Interlingua (International Auxiliary Language Association)",
     "ie": "Interlingue, Occidental",
     "iu": "Inuktitut",
     "ik": "Inupiaq",
@@ -181,7 +191,7 @@ LANGUAGES = {
     "pt": "Portuguese",
     "pa": "Punjabi, Panjabi",
     "qu": "Quechua",
-    "ro": "Romanian, Moldavian, Moldovan",
+    "ro": "Romanian, Moldavian, Moldovan",
     "rm": "Romansh",
     "rn": "Rundi",
     "ru": "Russian",
@@ -212,7 +222,7 @@ LANGUAGES = {
     "th": "Thai",
     "bo": "Tibetan",
     "ti": "Tigrinya",
-    "to": "Tonga (Tonga Islands)",
+    "to": "Tonga (Tonga Islands)",
     "ts": "Tsonga",
     "tn": "Tswana",
     "tr": "Turkish",
@@ -493,7 +503,10 @@ class TemplateCollection:
         for dataset in dataset_folders:
             if dataset in INCLUDED_USERS:
                 for filename in os.listdir(os.path.join(TEMPLATES_FOLDER_PATH, dataset)):
-                    output = {**output, **self._collect_dataset(dataset + "/" + filename)}
+                    output = {
+                        **output,
+                        **self._collect_dataset(dataset + "/" + filename),
+                    }
             else:
                 output = {**output, **self._collect_dataset(dataset)}
         return output
@@ -587,7 +600,10 @@ class DatasetTemplates:
         """
         Create a formatted dictionary for the class attributes
         """
-        formatted_dict = {self.DATASET_KEY: self.dataset_name, self.TEMPLATES_KEY: self.templates}
+        formatted_dict = {
+            self.DATASET_KEY: self.dataset_name,
+            self.TEMPLATES_KEY: self.templates,
+        }
         if self.subset_name:
             formatted_dict[self.SUBSET_KEY] = self.subset_name
         return formatted_dict
