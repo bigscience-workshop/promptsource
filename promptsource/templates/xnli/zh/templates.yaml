@@ -1,0 +1,138 @@
+dataset: xnli
+subset: zh
+templates:
+  39a53af0-df1e-4489-b5b9-c734338a840f: !Template
+    answer_choices: 是的 ||| 也许 ||| 不
+    id: 39a53af0-df1e-4489-b5b9-c734338a840f
+    jinja: '{{premise}}我们有理由说“{{hypothesis}}”吗？是的，不是的，或者也许？ ||| {{ answer_choices[label]
+      }}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: null
+      languages: null
+      metrics: null
+      original_task: null
+    name: justified in saying_zhmt
+    reference: ''
+  3d2950c2-93da-499b-9e84-7708027e8666: !Template
+    answer_choices: 正确的 ||| 无定论 ||| 不正确
+    id: 3d2950c2-93da-499b-9e84-7708027e8666
+    jinja: '{{premise}} 仅使用上述描述和您对世界的了解，“{{hypothesis}}”肯定是正确的、不正确的还是不确定的？ ||| {{
+      answer_choices[label] }}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: null
+      languages: null
+      metrics: null
+      original_task: null
+    name: MNLI crowdsource_zhmt
+    reference: ''
+  47d2f061-06b0-4aa3-af53-871a2b06748f: !Template
+    answer_choices: 对 ||| 无关 ||| 不对
+    id: 47d2f061-06b0-4aa3-af53-871a2b06748f
+    jinja: '{{premise}}
+
+      问题: {{hypothesis}} 对，不对还是无关？ ||| {{ answer_choices[label] }}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      languages:
+      - en
+      metrics:
+      - Accuracy
+      original_task: true
+    name: GPT-3 style_zhht
+    reference: 'Same as reported in Figure G7 of the GPT-3 paper, except that there
+      is no task identifying tokens like "anli R1: ".'
+  504b04ed-9d85-47ef-bf5d-b28d5552aae7: !Template
+    answer_choices: 真的 ||| 两者都不 ||| 错误的
+    id: 504b04ed-9d85-47ef-bf5d-b28d5552aae7
+    jinja: '{{premise}} 问题：{{hypothesis}} 对、错或两者都不是？ ||| {{ answer_choices[label]
+      }}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: null
+      languages: null
+      metrics: null
+      original_task: null
+    name: GPT-3 style_zhmt
+    reference: ''
+  9c75ff67-bb66-413b-a33d-325707b035d7: !Template
+    answer_choices: 能 ||| 有可能 ||| 不能
+    id: 9c75ff67-bb66-413b-a33d-325707b035d7
+    jinja: '如果{{premise}}能不能推断“{{hypothesis}}”？能，不能，还是有可能？ ||| {{ answer_choices[label]
+      }} '
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      languages:
+      - en
+      metrics:
+      - Accuracy
+      original_task: true
+    name: can we infer_zhht
+    reference: Webson & Pavlick 2021
+  9cda8e36-c881-4c9a-a3a9-eec68388a6f6: !Template
+    answer_choices: 可以 ||| 有可能 ||| 不可以
+    id: 9cda8e36-c881-4c9a-a3a9-eec68388a6f6
+    jinja: '{{premise}}我们就可不可以说“{{hypothesis}}”？可以，不可以，还是有可能？||| {{ answer_choices[label]
+      }} '
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      languages:
+      - en
+      metrics:
+      - Accuracy
+      original_task: true
+    name: justified in saying_zhht
+    reference: Webson & Pavlick 2021
+  9dc1e5f4-75f4-44ed-b564-888b08b3d27a: !Template
+    answer_choices: 是的 ||| 也许 ||| 不
+    id: 9dc1e5f4-75f4-44ed-b564-888b08b3d27a
+    jinja: 假设{{premise}}我们可以推断出“{{hypothesis}}”吗？是的，不是的，或者也许？ ||| {{ answer_choices[label]
+      }}
+    metadata: !TemplateMetadata
+      choices_in_prompt: null
+      languages: null
+      metrics: null
+      original_task: null
+    name: can we infer_zhmt
+    reference: ''
+  e27bbe1f-7f86-4cb6-a2c1-955e020e3d72: !Template
+    answer_choices: 保证 ||| 可能的 ||| 不可能的
+    id: e27bbe1f-7f86-4cb6-a2c1-955e020e3d72
+    jinja: 假设 {{premise}} 为真，因此，“{{hypothesis}}”是 {{"guaranteed"}}、{{"possible"}}
+      还是 {{"impossible"}}？ ||| {{ answer_choices[label] }}
+    metadata: !TemplateMetadata
+      choices_in_prompt: null
+      languages: null
+      metrics: null
+      original_task: null
+    name: guaranteed/possible/impossible_zhmt
+    reference: ''
+  e44c2947-f8e0-49ea-9770-e59f0581a931: !Template
+    answer_choices: 肯定的 ||| 有可能的 ||| 不可能的
+    id: e44c2947-f8e0-49ea-9770-e59f0581a931
+    jinja: '假如{{premise}}是对的。
+
+
+      那么，”{{hypothesis}}“是 {{"肯定的"}}，{{"有可能的"}}还是{{"不可能的"}}？||| {{ answer_choices[label]
+      }}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      languages:
+      - en
+      metrics:
+      - Accuracy
+      original_task: true
+    name: guaranteed/possible/impossible_zhht
+    reference: Sanh et al. 2021
+  ea368462-3a66-4222-9de1-05d66037a718: !Template
+    answer_choices: 正确 ||| 不确定 ||| 不正确
+    id: ea368462-3a66-4222-9de1-05d66037a718
+    jinja: '{{premise}} 仅仅利用上述描述和你对世界的了解，”{{hypothesis}}“肯定是正确，不正确，还是不确定？||| {{ answer_choices[label]
+      }}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      languages:
+      - en
+      metrics:
+      - Accuracy
+      original_task: true
+    name: MNLI crowdsource_zhht
+    reference: Adapted from Williams et al. 2018's instructions to crowdsourcing workers.
