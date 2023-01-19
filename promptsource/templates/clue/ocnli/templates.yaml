@@ -1,0 +1,17 @@
+dataset: clue
+subset: ocnli
+templates:
+  2b52a83c-0021-41fe-b44c-5789076d71a2: !Template
+    answer_choices: 中立 ||| 蕴含 ||| 矛盾
+    id: 2b52a83c-0021-41fe-b44c-5789076d71a2
+    jinja: '判断下面两个句子的语义关系，其中句子一是：{{sentence1}} ，句子二是："{{sentence2}}"，那么它们的关系是？中立，蕴含，还是矛盾？||| {% if label !=
+      -1 %}{{ answer_choices[label] }}{% endif %}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      languages:
+      - zh
+      metrics:
+      - Accuracy
+      original_task: true
+    name: OCNLI crowdsource
+    reference: Created by Yao Cheng for ocnli testing
