@@ -109,6 +109,10 @@ def filter_english_datasets():
 
     response = requests.get("https://huggingface.co/api/datasets?full=true")
     tags = response.json()
+    while "next" in response.links:
+        # Handle pagination of `/api/datasets` endpoint
+        response = requests.get(response.links["next"]["url"])
+        tags += response.json()
 
     for dataset in tags:
         dataset_name = dataset["id"]
