@@ -1,0 +1,82 @@
+dataset: GEM/xlsum
+subset: english
+templates:
+  419726f2-7140-4ab6-a18d-a5f9cc709a47: !Template
+    answer_choices: null
+    id: 419726f2-7140-4ab6-a18d-a5f9cc709a47
+    jinja: 'Doc to summarize: {{text[:8500]}}\nSummary in the same language as the doc: ||| {{target}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages: []
+      metrics:
+      - ROUGE
+      - BLEU
+      original_task: true
+    name: docsummary
+    reference: ''
+  6b9c75ca-2848-4a63-b3ce-b86ea2e2d7e8: !Template
+    answer_choices: null
+    id: 6b9c75ca-2848-4a63-b3ce-b86ea2e2d7e8
+    jinja: 'Content: {{text[:7000]}}\nThe previous content can be summarized as follows: ||| {{target}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages: []
+      metrics:
+      - ROUGE
+      - BLEU
+      original_task: true
+    name: prevcontent
+    reference: ''
+  8d3584c5-8864-4d11-bce9-65499cdef4cb: !Template
+    answer_choices: null
+    id: 8d3584c5-8864-4d11-bce9-65499cdef4cb
+    jinja: '{{title}}\n{{text[:5000]}}\n\ntl;dr: ||| {{target}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages: []
+      metrics:
+      - ROUGE
+      - BLEU
+      original_task: true
+    name: tldr
+    reference: ''
+  ec0096ea-e9db-4e96-85b4-0740085fee55: !Template
+    answer_choices: null
+    id: ec0096ea-e9db-4e96-85b4-0740085fee55
+    jinja: '{{text}} \n\nGive me a good title for the article above. ||| {{title}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages: []
+      metrics:
+      - ROUGE
+      - BLEU
+      original_task: true
+    name: goodtitle
+    reference: ''
+  dc0096ea-e9db-4e96-85b4-0740085fee55: !Template
+    answer_choices: null
+    id: dc0096ea-e9db-4e96-85b4-0740085fee55
+    jinja: 'Given the below title and summary of an article, generate a short article or the beginning of a long article to go along with them.
+    Title: {{title}}\nSummary: {{target}}\nArticle (Max 500 characters): ||| {{text[:500]}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages: []
+      metrics:
+      - ROUGE
+      - BLEU
+      original_task: true
+    name: genarticle
+    reference: ''
+  hc0096ea-e9db-4e96-85b4-0740085fee55: !Template
+    answer_choices: null
+    id: hc0096ea-e9db-4e96-85b4-0740085fee55
+    jinja: 'Title: {{title}}\nGiven the above title of an imaginary article, imagine the article.\n ||| {{text[:7000]}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages: []
+      metrics:
+      - ROUGE
+      - BLEU
+      original_task: true
+    name: imaginearticle
+    reference: ''
