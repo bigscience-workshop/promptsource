@@ -1,12 +1,50 @@
 dataset: tydiqa
 subset: primary_task
 templates:
+  011c71dc-519a-49ff-829a-1e1501dc7bb2: !Template
+    answer_choices: "\u0646\u0639\u0645 ||| \u0644\u0627 ||| \u0644\u064A\u0633 \u0645\
+      \u0645\u0627 \u0633\u0628\u0642"
+    id: 011c71dc-519a-49ff-829a-1e1501dc7bb2
+    jinja: "{% if language == \"arabic\" %}\n\u0633\u0624\u0627\u0644: {{question_text}}\n\
+      \u0623\u062C\u0628 \u0639\u0646 \u0627\u0644\u0633\u0624\u0627\u0644 \u0628\
+      {{answer_choices[0]}} \u0623\u0648 {{answer_choices[1]}}. \u0627\u0630\u0627\
+      \ \u0644\u0645 \u064A\u0643\u0646 \u0628\u0627\u0644\u0625\u0645\u0643\u0627\
+      \u0646 \u0630\u0644\u0643 \u0623\u062C\u0628 \u0628\u0640  {{answer_choices[2]}}\
+      \ .\nHint: {{document_plaintext}}\n|||\n{{annotations.yes_no_answer[0] |replace(\"\
+      NONE\",\"\u0644\u064A\u0633 \u0645\u0645\u0627 \u0633\u0628\u0642\")| replace(\"\
+      NO\",\"\u0644\u0627\")| replace(\"YES\",\" \u0646\u0639\u0645\") }}\n{% endif\
+      \ %}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      languages:
+      - ar
+      metrics:
+      - Accuracy
+      original_task: true
+    name: ar_yes_no_none
+    reference: ''
+  11aa0d9b-0d3e-4df0-8d83-16477adbbc06: !Template
+    answer_choices: "\u0646\u0639\u0645 ||| \u0644\u0627"
+    id: 11aa0d9b-0d3e-4df0-8d83-16477adbbc06
+    jinja: "{% if language == \"arabic\" %}\n{% if annotations.yes_no_answer[0] ==\
+      \ \"YES\" or annotations.yes_no_answer[0] == \"NO\" %} \n\u0628\u0646\u0627\u0621\
+      \ \u0639\u0644\u0649 \u0627\u0644\u0646\u0635 \u0627\u0644\u0645\u0642\u062A\
+      \u0637\u0639, {{question_text}} \n{{document_plaintext}}\n||| \n{{annotations.yes_no_answer[0]\
+      \ | replace(\"NO\",\"\u0644\u0627\")| replace(\"YES\",\" \u0646\u0639\u0645\"\
+      ) }}\n{% endif %}\n{% endif%}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages:
+      - ar
+      metrics:
+      - Accuracy
+      original_task: true
+    name: ar_based_on_the_text
+    reference: ''
   16f11e56-a78d-4e33-bba1-586f9947baf7: !Template
     answer_choices: Yes ||| No ||| None
     id: 16f11e56-a78d-4e33-bba1-586f9947baf7
-    jinja: '{% if language == "english" %}
-
-      I wonder {{question_text}}.
+    jinja: 'I wonder {{question_text}}.
 
       Help me answer this question with "{{answer_choices[0]}}" or "{{answer_choices[1]}}"
       or "{{answer_choices[2]}}" if none of the first two answers apply.
@@ -21,7 +59,7 @@ templates:
 
       {{annotations.yes_no_answer[0] | capitalize}}
 
-      {% endif %}'
+      '
     metadata: !TemplateMetadata
       choices_in_prompt: true
       languages:
@@ -45,7 +83,8 @@ templates:
       \u306A\u3044\"}[annotations.yes_no_answer[0]]}}\n{% endif %}"
     metadata: !TemplateMetadata
       choices_in_prompt: false
-      languages: []
+      languages:
+      - ja
       metrics:
       - Accuracy
       original_task: true
@@ -54,10 +93,18 @@ templates:
   297fc59f-bd92-493b-ae61-3c3adcb46eb3: !Template
     answer_choices: Yes ||| No ||| None
     id: 297fc59f-bd92-493b-ae61-3c3adcb46eb3
-    jinja: "{% if language == \"english\" %} \nQuestion: {{question_text}}\nAnswer\
-      \ the question with {{\"Yes\"}} or {{\"No\"}}. If it is not possible then answer\
-      \ {{\"None\"}}.\nHint: {{document_plaintext}}\n|||\n{{annotations.yes_no_answer[0]\
-      \ | capitalize}}\n{% endif %}"
+    jinja: 'Question: {{question_text}}
+
+      Answer the question with {{"Yes"}} or {{"No"}}. If it is not possible then answer
+      {{"None"}}.
+
+      Hint: {{document_plaintext}}
+
+      |||
+
+      {{annotations.yes_no_answer[0] | capitalize}}
+
+      '
     metadata: !TemplateMetadata
       choices_in_prompt: false
       languages:
@@ -70,10 +117,9 @@ templates:
   4b21e3be-fba4-49b7-beb1-a61de26eb0ac: !Template
     answer_choices: Yes ||| No
     id: 4b21e3be-fba4-49b7-beb1-a61de26eb0ac
-    jinja: "{% if language == \"english\" %} \n    {% if annotations.yes_no_answer[0]\
-      \ == \"YES\" or annotations.yes_no_answer[0] == \"NO\" %} \nAnswer the question\
-      \ about {{document_title}}. {{question_text}}\n||| \n{{annotations.yes_no_answer[0]\
-      \ | capitalize}} \n    {% endif %} \n{% endif %} "
+    jinja: " {% if annotations.yes_no_answer[0] == \"YES\" or annotations.yes_no_answer[0]\
+      \ == \"NO\" %} \nAnswer the question about {{document_title}}. {{question_text}}\n\
+      ||| \n{{annotations.yes_no_answer[0] | capitalize}} \n    {% endif %} "
     metadata: !TemplateMetadata
       choices_in_prompt: false
       languages:
@@ -102,7 +148,8 @@ templates:
       \n{% endif %}"
     metadata: !TemplateMetadata
       choices_in_prompt: true
-      languages: []
+      languages:
+      - ja
       metrics:
       - Accuracy
       original_task: true
@@ -118,18 +165,40 @@ templates:
       {% endif %}"
     metadata: !TemplateMetadata
       choices_in_prompt: false
-      languages: []
+      languages:
+      - id
       metrics:
       - Accuracy
       original_task: true
     name: id_yes_no_none
     reference: ''
+  60c9aadf-dcd9-4f06-bd0a-6a5a178dae6e: !Template
+    answer_choices: "\u0646\u0639\u0645 ||| \u0644\u0627 ||| \u0644\u0627 \u0634\u064A\
+      \u0621 \u0645\u0645\u0627 \u0633\u0628\u0642"
+    id: 60c9aadf-dcd9-4f06-bd0a-6a5a178dae6e
+    jinja: "{% if language ==\"arabic\" %}\n\u0623\u062C\u0628 \u0628{{answer_choices[0]}}\
+      \  \u0623\u0648 {{answer_choices[1]}} \u0623\u0648 {{answer_choices[2]}} \u0627\
+      \u0630\u0627 \u0644\u0645 \u064A\u0643\u0646 \u0628\u0627\u0644\u0625\u0645\u0643\
+      \u0627\u0646 \u0627\u0644\u0625\u062C\u0627\u0628\u0629 \u0628\u0646\u0639\u0645\
+      \ \u0623\u0648 \u0644\u0627.\n\u0633\u0624\u0627\u0644: {{question_text}}\n\u0627\
+      \u0644\u0645\u0648\u0636\u0648\u0639: {{document_title}}\n\u0627\u0644\u0645\
+      \u0642\u0627\u0644\u0629: {{document_plaintext}}\n|||\n{{annotations.yes_no_answer[0]\
+      \ |replace(\"NONE\",\"\u0644\u0627 \u0634\u064A\u0621 \u0645\u0645\u0627 \u0633\
+      \u0628\u0642\")| replace(\"NO\",\"\u0644\u0627\")| replace(\"YES\",\" \u0646\
+      \u0639\u0645\") }}\n{% endif %}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      languages:
+      - ar
+      metrics:
+      - Accuracy
+      original_task: true
+    name: ar_read_and_answer
+    reference: ''
   6835dd64-96bd-4bf8-9ba5-645d6a7b8472: !Template
     answer_choices: Yes ||| No
     id: 6835dd64-96bd-4bf8-9ba5-645d6a7b8472
-    jinja: '{% if language == "english" %}
-
-      {{question_text}}
+    jinja: '{{question_text}}
 
       Is this a "Yes/No" question?
 
@@ -142,8 +211,6 @@ templates:
       {% else %}
 
       Yes
-
-      {% endif %}
 
       {% endif %}'
     metadata: !TemplateMetadata
@@ -166,7 +233,8 @@ templates:
       \u306A\u3044\"}[annotations.yes_no_answer[0]]}}\n    {% endif %}\n{% endif %}"
     metadata: !TemplateMetadata
       choices_in_prompt: false
-      languages: []
+      languages:
+      - ja
       metrics:
       - Accuracy
       original_task: true
@@ -195,7 +263,8 @@ templates:
       {% endif %}'
     metadata: !TemplateMetadata
       choices_in_prompt: true
-      languages: []
+      languages:
+      - id
       metrics:
       - Accuracy
       original_task: true
@@ -204,9 +273,7 @@ templates:
   7b8b7707-dbad-40d2-a5c2-430e6ace10bb: !Template
     answer_choices: Yes ||| No ||| None
     id: 7b8b7707-dbad-40d2-a5c2-430e6ace10bb
-    jinja: '{% if language == "english" %}
-
-      Answer the following question with "{{answer_choices[0]}}" or "{{answer_choices[1]}}"
+    jinja: 'Answer the following question with "{{answer_choices[0]}}" or "{{answer_choices[1]}}"
       or "{{answer_choices[2]}}" if none of the first two answers apply.
 
       Question: {{question_text}}
@@ -219,7 +286,7 @@ templates:
 
       {{annotations.yes_no_answer[0] | capitalize}}
 
-      {% endif %}'
+      '
     metadata: !TemplateMetadata
       choices_in_prompt: true
       languages:
@@ -239,7 +306,8 @@ templates:
       \    {% endif %}\n{% endif %}"
     metadata: !TemplateMetadata
       choices_in_prompt: true
-      languages: []
+      languages:
+      - id
       metrics:
       - Accuracy
       original_task: false
@@ -248,11 +316,10 @@ templates:
   9c42e3fd-d46e-4149-bb60-4b3118104d95: !Template
     answer_choices: Yes ||| No
     id: 9c42e3fd-d46e-4149-bb60-4b3118104d95
-    jinja: "{% if language == \"english\" %} \n    {% if annotations.yes_no_answer[0]\
-      \ == \"YES\" or annotations.yes_no_answer[0] == \"NO\" %} \nAfter reading the\
-      \ following text snippet from Wikipedia, please answer the question: {{question_text}}\
-      \ \n{{document_plaintext}}\n||| \n{{annotations.yes_no_answer[0] | capitalize}}\n\
-      \    {% endif %}\n{% endif %}"
+    jinja: "\n {% if annotations.yes_no_answer[0] == \"YES\" or annotations.yes_no_answer[0]\
+      \ == \"NO\" %} \nAfter reading the following text snippet from Wikipedia, please\
+      \ answer the question: {{question_text}} \n{{document_plaintext}}\n||| \n{{annotations.yes_no_answer[0]\
+      \ | capitalize}}\n{% endif %}\n"
     metadata: !TemplateMetadata
       choices_in_prompt: false
       languages:
@@ -273,12 +340,40 @@ templates:
       \u3044\"}[annotations.yes_no_answer[0]]}}\n    {% endif %}\n{% endif %}"
     metadata: !TemplateMetadata
       choices_in_prompt: false
-      languages: []
+      languages:
+      - ja
       metrics:
       - Accuracy
       original_task: false
     name: jp_open_domain_qa_without_choices
     reference: Answer Yes/No question
+  a85a2b12-f360-4fcc-9a40-f150476bdfe8: !Template
+    answer_choices: "\u0646\u0639\u0645 ||| \u0644\u0627 ||| \u0644\u0627 \u0634\u064A\
+      \u0621 \u0645\u0645\u0627 \u0633\u0628\u0642"
+    id: a85a2b12-f360-4fcc-9a40-f150476bdfe8
+    jinja: "{% if language == \"arabic\" %}\n\u0623\u062A\u0633\u0627\u0626\u0644\
+      \ {{question_text}}.\n\u0633\u0627\u0639\u062F\u0646\u064A \u0628\u0625\u062C\
+      \u0627\u0628\u0629 \u0647\u0630\u0627 \u0627\u0644\u0633\u0624\u0627\u0644 \u0628\
+      \u0640 \"{{answer_choices[0]}}\" \u0623\u0648 \"{{answer_choices[1]}}\" \u0623\
+      \u0648 \"{{answer_choices[2]}}\" \u0641\u064A \u062D\u0627\u0644 \u0644\u0645\
+      \ \u064A\u0643\u0646 \u0628\u0627\u0644\u0625\u0645\u0643\u0627\u0646 \u0627\
+      \u0644\u0625\u062C\u0627\u0628\u0629 \u0628\u0646\u0639\u0645 \u0623\u0648 \uFEFB\
+      .\n\u0647\u0630\u0627 \u0645\u0627 \u0648\u062C\u062F\u062A\u0647 \u0645\u0646\
+      \ \u0645\u0639\u0644\u0648\u0645\u0627\u062A \u0641\u064A \u0627\u0644\u0625\
+      \u0646\u062A\u0631\u0646\u062A:\n\u0627\u0644\u0645\u0648\u0636\u0648\u0639\
+      : {{document_title}}\n\u0627\u0644\u0645\u0642\u0627\u0644\u0629: {{document_plaintext}}\n\
+      |||\n{{annotations.yes_no_answer[0] |replace(\"NONE\",\"\u0644\u0627 \u0634\u064A\
+      \u0621 \u0645\u0645\u0627 \u0633\u0628\u0642\")| replace(\"NO\",\"\u0644\u0627\
+      \")| replace(\"YES\",\" \u0646\u0639\u0645\") }}\n{% endif %}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      languages:
+      - ar
+      metrics:
+      - Accuracy
+      original_task: true
+    name: ar_heres_what_I_found
+    reference: ''
   b368b4af-b8b1-4b0f-ab72-a4db0649ca65: !Template
     answer_choices: Ya ||| Tidak ||| Tidak ada
     id: b368b4af-b8b1-4b0f-ab72-a4db0649ca65
@@ -302,7 +397,8 @@ templates:
       {% endif %}'
     metadata: !TemplateMetadata
       choices_in_prompt: true
-      languages: []
+      languages:
+      - id
       metrics:
       - Accuracy
       original_task: true
@@ -311,10 +407,10 @@ templates:
   b4f7c441-41b1-4665-93f9-f2e875aed92a: !Template
     answer_choices: Yes ||| No
     id: b4f7c441-41b1-4665-93f9-f2e875aed92a
-    jinja: "{% if language == \"english\" %} \n    {% if annotations.yes_no_answer[0]\
-      \ == \"YES\" or annotations.yes_no_answer[0] == \"NO\" %} \nAnswer the question\
-      \ about {{document_title}}.\nQuestion: {{question_text}}. Yes or No?\n||| \n\
-      {{annotations.yes_no_answer[0] | capitalize}}\n    {% endif %}\n{% endif %}"
+    jinja: " {% if annotations.yes_no_answer[0] == \"YES\" or annotations.yes_no_answer[0]\
+      \ == \"NO\" %} \nAnswer the question about {{document_title}}.\nQuestion: {{question_text}}.\
+      \ Yes or No?\n||| \n{{annotations.yes_no_answer[0] | capitalize}}\n    {% endif\
+      \ %}"
     metadata: !TemplateMetadata
       choices_in_prompt: true
       languages:
@@ -337,7 +433,8 @@ templates:
       \    {% endif %}\n{% endif %}"
     metadata: !TemplateMetadata
       choices_in_prompt: false
-      languages: []
+      languages:
+      - ja
       metrics:
       - Accuracy
       original_task: true
@@ -353,7 +450,8 @@ templates:
       \  {% endif %} \n{% endif %} "
     metadata: !TemplateMetadata
       choices_in_prompt: false
-      languages: []
+      languages:
+      - id
       metrics:
       - Accuracy
       original_task: false
@@ -372,12 +470,32 @@ templates:
       \  {% endif %}\n{% endif %}"
     metadata: !TemplateMetadata
       choices_in_prompt: true
-      languages: []
+      languages:
+      - ja
       metrics:
       - Accuracy
       original_task: false
     name: jp_open_domain_qa
     reference: Ask Yes/No question
+  d9888ddb-c3e3-47a5-94ab-845057c98dac: !Template
+    answer_choices: "\u0646\u0639\u0645 ||| \uFEFB"
+    id: d9888ddb-c3e3-47a5-94ab-845057c98dac
+    jinja: "{% if language == \"arabic\" %}\n {% if annotations.yes_no_answer[0] ==\
+      \ \"YES\" or annotations.yes_no_answer[0] == \"NO\" %} \n\u0628\u0639\u062F\
+      \ \u0642\u0631\u0627\u0621\u0629 \u0627\u0644\u0646\u0635 \u0627\u0644\u0645\
+      \u0642\u062A\u0628\u0633 \u0645\u0646 \u0648\u064A\u0643\u064A\u0628\u064A\u062F\
+      \u064A\u0627 \u0623\u062C\u0628 \u0639\u0646 \u0627\u0644\u0633\u0624\u0627\u0644\
+      \ \u0627\u0644\u062A\u0627\u0644\u064A:\n{{question_text}} \n{{document_plaintext}}\n\
+      ||| \n{{annotations.yes_no_answer[0] | replace(\"NO\",\"\u0644\u0627\")| replace(\"\
+      YES\",\" \u0646\u0639\u0645\") }}\n{% endif %}\n\n{% endif %}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages:
+      - ar
+      metrics: []
+      original_task: true
+    name: ar_after_reading_the_text
+    reference: ''
   dd737fa3-3364-49b1-8a7e-9b7fb25f495d: !Template
     answer_choices: "\u306F\u3044 ||| \u3044\u3044\u3048 ||| \u3069\u3061\u3089\u3067\
       \u3082\u306A\u3044"
@@ -394,7 +512,8 @@ templates:
       \u306A\u3044\"}[annotations.yes_no_answer[0]]}}\n\n{% endif %}"
     metadata: !TemplateMetadata
       choices_in_prompt: false
-      languages: []
+      languages:
+      - ja
       metrics:
       - Accuracy
       original_task: true
@@ -403,10 +522,9 @@ templates:
   e593017f-9bcf-4442-944d-fcdf2edcb4f7: !Template
     answer_choices: Yes ||| No
     id: e593017f-9bcf-4442-944d-fcdf2edcb4f7
-    jinja: "{% if language == \"english\" %} \n    {% if annotations.yes_no_answer[0]\
-      \ == \"YES\" or annotations.yes_no_answer[0] == \"NO\" %} \nBased on the following\
-      \ text snippet, {{question_text}} \n{{document_plaintext}}\n||| \n{{annotations.yes_no_answer[0]\
-      \ | capitalize}}\n    {% endif %}\n{% endif %}"
+    jinja: "{% if annotations.yes_no_answer[0] == \"YES\" or annotations.yes_no_answer[0]\
+      \ == \"NO\" %} \nBased on the following text snippet, {{question_text}} \n{{document_plaintext}}\n\
+      ||| \n{{annotations.yes_no_answer[0] | capitalize}}\n{% endif %}"
     metadata: !TemplateMetadata
       choices_in_prompt: false
       languages:
@@ -427,7 +545,8 @@ templates:
       {% endif %}"
     metadata: !TemplateMetadata
       choices_in_prompt: false
-      languages: []
+      languages:
+      - ja
       metrics:
       - Accuracy
       original_task: false
@@ -457,7 +576,8 @@ templates:
       {% endif %}'
     metadata: !TemplateMetadata
       choices_in_prompt: false
-      languages: []
+      languages:
+      - id
       metrics:
       - Accuracy
       original_task: false
@@ -474,7 +594,8 @@ templates:
       \ %}"
     metadata: !TemplateMetadata
       choices_in_prompt: false
-      languages: []
+      languages:
+      - id
       metrics:
       - Accuracy
       original_task: true
@@ -490,7 +611,8 @@ templates:
       \    {% endif %}\n{% endif %}"
     metadata: !TemplateMetadata
       choices_in_prompt: false
-      languages: []
+      languages:
+      - id
       metrics:
       - Accuracy
       original_task: true

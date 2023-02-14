@@ -17,7 +17,8 @@ templates:
       \n      {{title}}\n{% endif %}"
     metadata: !TemplateMetadata
       choices_in_prompt: false
-      languages: []
+      languages:
+      - ja
       metrics:
       - BLEU
       - ROUGE
@@ -27,10 +28,9 @@ templates:
   047ed162-f58b-42d5-81aa-0a17a9750230: !Template
     answer_choices: null
     id: 047ed162-f58b-42d5-81aa-0a17a9750230
-    jinja: "{% set lang = id.split('-')[0] %}\n{% if lang == \"english\" %}\nSnippet:\
-      \ {{context}}\nI know that the answer to \"{{question}}\" appears somewhere\
-      \ in the text snippet about {{title}}. Can you answer the question?\n|||\n{{answers.text\
-      \ | choice}} \n{% endif %}"
+    jinja: "Snippet: {{context}}\nI know that the answer to \"{{question}}\" appears\
+      \ somewhere in the text snippet about {{title}}. Can you answer the question?\n\
+      |||\n{{answers.text | choice}} \n"
     metadata: !TemplateMetadata
       choices_in_prompt: false
       languages:
@@ -51,10 +51,6 @@ templates:
 
       {% set _position = ["above", "following"] |random %}
 
-      {% set lang = id.split(''-'')[0] %}
-
-      {% if lang == "english" %}
-
       {% if  _position == "above" %}
 
       {{context}}{{"\n"}}
@@ -66,8 +62,6 @@ templates:
       {% if  _position == "following" %}
 
       {{"\n"}}{{context}}
-
-      {% endif %}
 
       |||
 
@@ -97,7 +91,8 @@ templates:
       \n{% endif %}"
     metadata: !TemplateMetadata
       choices_in_prompt: false
-      languages: []
+      languages:
+      - ja
       metrics:
       - Squad
       original_task: true
@@ -112,7 +107,8 @@ templates:
       \ choice}}\n\n{% endif %}"
     metadata: !TemplateMetadata
       choices_in_prompt: false
-      languages: []
+      languages:
+      - ja
       metrics:
       - Squad
       original_task: false
@@ -121,18 +117,12 @@ templates:
   1f4728ba-b25e-450e-975f-6dc8c0cb4bb1: !Template
     answer_choices: null
     id: 1f4728ba-b25e-450e-975f-6dc8c0cb4bb1
-    jinja: '{% set lang = id.split(''-'')[0] %}
-
-      {% if lang == "english" %}
-
-      Could you generate a question whose answer is {{answers.text | choice}} based
-      on the following context: {{context}}
+    jinja: 'Could you generate a question whose answer is {{answers.text | choice}}
+      based on the following context: {{context}}
 
       |||
 
-      {{question}}
-
-      {% endif %}'
+      {{question}}'
     metadata: !TemplateMetadata
       choices_in_prompt: false
       languages:
@@ -160,7 +150,8 @@ templates:
       {% endif %}'
     metadata: !TemplateMetadata
       choices_in_prompt: false
-      languages: []
+      languages:
+      - id
       metrics:
       - BLEU
       - ROUGE
@@ -170,11 +161,7 @@ templates:
   3d7ee9fe-ac53-4cf3-9913-431425225a5c: !Template
     answer_choices: null
     id: 3d7ee9fe-ac53-4cf3-9913-431425225a5c
-    jinja: '{% set lang = id.split(''-'')[0] %}
-
-      {% if lang == "english" %}
-
-      I am trying to figure out the answer to the question "{{question}}"
+    jinja: 'I am trying to figure out the answer to the question "{{question}}"
 
       I found this text about {{title}} on Wikipedia and I think it contains the answer.
       Can you tell me the answer?
@@ -185,7 +172,7 @@ templates:
 
       {{answers.text | choice}}
 
-      {% endif %}'
+      '
     metadata: !TemplateMetadata
       choices_in_prompt: false
       languages:
@@ -195,12 +182,34 @@ templates:
       original_task: true
     name: en_can_you_tell_me_the_answer
     reference: Ask question with Context
+  4b957bb6-d250-4074-a310-3b27d469b51c: !Template
+    answer_choices: null
+    id: 4b957bb6-d250-4074-a310-3b27d469b51c
+    jinja: "{% set lang = id.split(\"-\")[0]%}     \n      {% if lang == \"arabic\"\
+      \ %}\n\u0623\u0646\u0627 \u0623\u062D\u0627\u0648\u0644 \u0627\u0644\u0625\u062C\
+      \u0627\u0628\u0629 \u0639\u0644\u0649 \u0627\u0644\u0633\u0624\u0627\u0644 \u0627\
+      \u0644\u062A\u0627\u0644\u064A \"{{question}}\"\n\u0648\u062C\u062F\u062A \u0646\
+      \u0635 \u0639\u0646\u0648\u0627\u0646\u0647  {{title}} \u0641\u064A \u0648\u064A\
+      \u0643\u064A\u0628\u064A\u062F\u064A\u0627 \u0648\u0623\u0639\u062A\u0642\u062F\
+      \ \u0623\u0646\u0647 \u064A\u062A\u0636\u0645\u0646 \u0627\u0644\u0625\u062C\
+      \u0627\u0628\u0629. \u0647\u0644 \u064A\u0645\u0643\u0646\u0643 \u0627\u0644\
+      \u0639\u062B\u0648\u0631 \u0639\u0644\u0649 \u0627\u0644\u0625\u062C\u0627\u0628\
+      \u0629\u061F  \n\u0627\u0644\u0646\u0635: {{context}}\n|||\n{{answers.text |\
+      \ choice}}\n\n{%endif%}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages:
+      - ar
+      metrics:
+      - Squad
+      original_task: true
+    name: ar_can_you_tell_me_the_answer
+    reference: ''
   696c888c-3419-4e4c-b559-1d9772fa60ab: !Template
     answer_choices: null
     id: 696c888c-3419-4e4c-b559-1d9772fa60ab
-    jinja: "{% set lang = id.split('-')[0] %}\n{% if lang == \"english\" %}\nExtract\
-      \ in the passage the answer to the question: {{question}}\nPassage about {{title}}:\
-      \ {{context}}\n|||\n{{answers.text | choice}} \n{% endif %}"
+    jinja: "Extract in the passage the answer to the question: {{question}}\nPassage\
+      \ about {{title}}: {{context}}\n|||\n{{answers.text | choice}} \n"
     metadata: !TemplateMetadata
       choices_in_prompt: false
       languages:
@@ -219,7 +228,8 @@ templates:
       {% endif %}"
     metadata: !TemplateMetadata
       choices_in_prompt: false
-      languages: []
+      languages:
+      - ja
       metrics:
       - BLEU
       - ROUGE
@@ -262,7 +272,8 @@ templates:
       {% endif %}'
     metadata: !TemplateMetadata
       choices_in_prompt: false
-      languages: []
+      languages:
+      - id
       metrics:
       - BLEU
       - ROUGE
@@ -279,7 +290,8 @@ templates:
       \    |||\n    {{answers.text | choice}}\n{% endif %}"
     metadata: !TemplateMetadata
       choices_in_prompt: false
-      languages: []
+      languages:
+      - ja
       metrics:
       - Squad
       original_task: true
@@ -294,7 +306,8 @@ templates:
       \ endif %}"
     metadata: !TemplateMetadata
       choices_in_prompt: false
-      languages: []
+      languages:
+      - id
       metrics:
       - Squad
       original_task: true
@@ -317,7 +330,8 @@ templates:
       {% endif %}'
     metadata: !TemplateMetadata
       choices_in_prompt: false
-      languages: []
+      languages:
+      - id
       metrics:
       - BLEU
       - ROUGE
@@ -335,7 +349,8 @@ templates:
       \ | choice}}\n{% endif %}"
     metadata: !TemplateMetadata
       choices_in_prompt: false
-      languages: []
+      languages:
+      - ja
       metrics:
       - Squad
       original_task: true
@@ -355,7 +370,8 @@ templates:
       \      {{answers.text | choice}}\n\n{% endif %}"
     metadata: !TemplateMetadata
       choices_in_prompt: false
-      languages: []
+      languages:
+      - ja
       metrics:
       - Squad
       original_task: true
@@ -373,7 +389,8 @@ templates:
       \      {{answers.text | choice}}\n\n{% endif %}"
     metadata: !TemplateMetadata
       choices_in_prompt: false
-      languages: []
+      languages:
+      - ja
       metrics:
       - Squad
       original_task: true
@@ -389,30 +406,45 @@ templates:
       \      |||\n\n      {{question}}\n\n{% endif %}"
     metadata: !TemplateMetadata
       choices_in_prompt: false
-      languages: []
+      languages:
+      - ja
       metrics:
       - BLEU
       - ROUGE
       original_task: false
     name: jp_end_to_end_question_generation
     reference: generate end-to-end question from a passage.
+  be8e455c-f3d2-434f-ab56-d1926252b691: !Template
+    answer_choices: null
+    id: be8e455c-f3d2-434f-ab56-d1926252b691
+    jinja: "{% set lang = id.split(\"-\")[0]%}     \n      {% if lang == \"arabic\"\
+      \ %}\n\u0644\u0637\u0627\u0644\u0645\u0627 \u062A\u0633\u0627\u0626\u0644\u062A\
+      \ \u062D\u0648\u0644: {{question}}\n\u0628\u062D\u062B\u062A \u0641\u064A \u0648\
+      \u064A\u0643\u064A\u0628\u064A\u062F\u064A\u0627 \u0648\u0648\u062C\u062F\u062A\
+      \ \u0646\u0635 \u0628\u0639\u0646\u0648\u0627\u0646 {{title}}.\n\u0627\u0644\
+      \u0646\u0635: {{context}}\n\u0645\u0627 \u0647\u064A \u0625\u062C\u0627\u0628\
+      \u0629 \u0627\u0644\u0633\u0624\u0627\u0644\u061F\n|||\n{{answers.text | choice}}\n\
+      {%endif%}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages:
+      - ar
+      metrics:
+      - Squad
+      original_task: true
+    name: ar_whats_the_answer
+    reference: ''
   c2356ac6-7761-43b8-9fb9-38ed25c0db9b: !Template
     answer_choices: null
     id: c2356ac6-7761-43b8-9fb9-38ed25c0db9b
-    jinja: '{% set lang = id.split("-")[0] %}
-
-      {% if lang == "english" %}
-
-      I am testing my students'' knowledge about {{title}}.
+    jinja: 'I am testing my students'' knowledge about {{title}}.
 
       Based on the context ({{context}}), here''s the question to answer: {{question}}.
       The answer is in the context.
 
       |||
 
-      {{answers.text | choice}}
-
-      {% endif %}'
+      {{answers.text | choice}}'
     metadata: !TemplateMetadata
       choices_in_prompt: false
       languages:
@@ -440,7 +472,8 @@ templates:
       {% endif %}'
     metadata: !TemplateMetadata
       choices_in_prompt: false
-      languages: []
+      languages:
+      - id
       metrics:
       - Squad
       original_task: true
@@ -449,18 +482,12 @@ templates:
   d0966d12-6d15-4138-b273-5fe2e1619ff9: !Template
     answer_choices: null
     id: d0966d12-6d15-4138-b273-5fe2e1619ff9
-    jinja: '{% set lang = id.split(''-'')[0] %}
-
-      {% if lang == "english" %}
-
-      Could you generate a question about {{title}} and whose answer is {{answers.text
+    jinja: 'Could you generate a question about {{title}} and whose answer is {{answers.text
       | choice}} based on the following context: {{context}}
 
       |||
 
-      {{question}}
-
-      {% endif %}'
+      {{question}}'
     metadata: !TemplateMetadata
       choices_in_prompt: false
       languages:
@@ -518,7 +545,8 @@ templates:
       {% endif %}'
     metadata: !TemplateMetadata
       choices_in_prompt: false
-      languages: []
+      languages:
+      - id
       metrics:
       - Squad
       original_task: true
@@ -545,28 +573,82 @@ templates:
       {% endif %}'
     metadata: !TemplateMetadata
       choices_in_prompt: false
-      languages: []
+      languages:
+      - id
       metrics:
       - Squad
       original_task: true
     name: id_can_you_tell_me_the_answer
     reference: Ask question with Context
+  e8157b4f-17bc-42fc-9655-05a555822337: !Template
+    answer_choices: null
+    id: e8157b4f-17bc-42fc-9655-05a555822337
+    jinja: "{% set lang = id.split(\"-\")[0]%}     \n      {% if lang == \"arabic\"\
+      \ %}\n\u0627\u0644\u0646\u0635: {{context}}\n\u0627\u062C\u0627\u0628\u0629\
+      \ \u0647\u0630\u0627 \u0627\u0644\u0633\u0624\u0627\u0644  \"{{question}}\"\
+      \ \u0645\u0648\u062C\u0648\u062F\u0629 \u0641\u064A \u0627\u0644\u0646\u0635\
+      \ \u0628\u0627\u0644\u0623\u0639\u0644\u0649 \u0628\u0639\u0646\u0648\u0627\u0646\
+      : {{title}}. \u0623\u062C\u0628 \u0639\u0646 \u0627\u0644\u0633\u0624\u0627\u0644\
+      \ \u0628\u0639\u062F \u0627\u0637\u0644\u0627\u0639\u0643 \u0639\u0644\u0649\
+      \ \u0627\u0644\u0646\u0635.\n|||\n{{answers.text | choice}}\n{%endif%}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages:
+      - ar
+      metrics:
+      - Squad
+      original_task: true
+    name: ar_can_you_answer_the_question
+    reference: ''
+  e95c4e6b-a642-4e16-89a6-5a614aacc2af: !Template
+    answer_choices: null
+    id: e95c4e6b-a642-4e16-89a6-5a614aacc2af
+    jinja: "{% set lang = id.split(\"-\")[0]%}     \n      {% if lang == \"arabic\"\
+      \ %}\n\u0627\u0633\u062A\u062E\u0631\u062C \u0627\u062C\u0627\u0628\u0629 \u0627\
+      \u0644\u0633\u0624\u0627\u0644 \u0627\u0644\u062A\u0627\u0644\u064A \u0645\u0646\
+      \ \u0627\u0644\u0646\u0635: {{question}}\n\u0627\u0644\u0646\u0635 \u064A\u062A\
+      \u062D\u062F\u062B \u0639\u0646 {{title}}: {{context}}\n|||\n{{answers.text\
+      \ | choice}} \n\n{%endif%}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages:
+      - ar
+      metrics:
+      - Squad
+      original_task: true
+    name: ar_extract_answer
+    reference: ''
+  efba651e-d475-4878-a89c-64a1fa65442a: !Template
+    answer_choices: null
+    id: efba651e-d475-4878-a89c-64a1fa65442a
+    jinja: "{% set lang = id.split(\"-\")[0]%}     \n      {% if lang == \"arabic\"\
+      \ %}\n\u0623\u062D\u0627\u0648\u0644 \u0627\u062E\u062A\u0628\u0627\u0631 \u0645\
+      \u0633\u062A\u0648\u0649 \u0627\u0644\u0637\u0644\u0627\u0628 \u0627\u0644\u0645\
+      \u0639\u0631\u0641\u064A \u0641\u064A \u0645\u0648\u0636\u0648\u0639: {{title}}.\n\
+      \u0628\u0646\u0627\u0621 \u0639\u0644\u0649 \u0647\u0630\u0627 \u0627\u0644\u0646\
+      \u0635 ({{context}})\u060C \u0648\u0627\u0644\u0633\u0624\u0627\u0644 \u0627\
+      \u0644\u062A\u0627\u0644\u064A: {{question}}. \u0627\u0644\u0625\u062C\u0627\
+      \u0628\u0629 \u0645\u0648\u062C\u0648\u062F\u0629 \u0641\u064A \u0633\u064A\u0627\
+      \u0642 \u0627\u0644\u0646\u0635.\n|||\n{{answers.text | choice}}\n{%endif%}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages:
+      - ar
+      metrics:
+      - Squad
+      original_task: true
+    name: ar_testing_students
+    reference: ''
   f276815f-f7c0-4dab-b12e-08e76da6d760: !Template
     answer_choices: null
     id: f276815f-f7c0-4dab-b12e-08e76da6d760
-    jinja: '{% set lang = id.split(''-'')[0] %}
-
-      {% if lang == "english" %}
-
-      {{question}}
+    jinja: '{{question}}
 
       Answer the question above.
 
       |||
 
-      {{answers.text | choice}}
-
-      {% endif %}'
+      {{answers.text | choice}}'
     metadata: !TemplateMetadata
       choices_in_prompt: false
       languages:
@@ -585,7 +667,8 @@ templates:
       \ pertanyaan tadi?\n|||\n{{answers.text | choice}} \n{% endif %}"
     metadata: !TemplateMetadata
       choices_in_prompt: false
-      languages: []
+      languages:
+      - id
       metrics:
       - Squad
       original_task: true
@@ -594,11 +677,7 @@ templates:
   fcf0920f-5599-44a6-bf2a-9ef6bbbe1e64: !Template
     answer_choices: null
     id: fcf0920f-5599-44a6-bf2a-9ef6bbbe1e64
-    jinja: '{% set lang = id.split(''-'')[0] %}
-
-      {% if lang == "english" %}
-
-      I''ve always wondered: {{question}}
+    jinja: 'I''ve always wondered: {{question}}
 
       I searched Wikipedia and I found the following text snippet about {{title}}.
 
@@ -610,7 +689,7 @@ templates:
 
       {{answers.text | choice}}
 
-      {% endif %}'
+      '
     metadata: !TemplateMetadata
       choices_in_prompt: false
       languages:
