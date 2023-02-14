@@ -254,3 +254,21 @@ templates:
       original_task: true
     name: MT analogy, infer lang (1 same context)
     reference: MT task, translation by analogy (same language), infer target language
+  83fa74fa-6e27-4f5b-b00c-61b37e1a3f33: !Template
+    answer_choices: null
+    id: 83fa74fa-6e27-4f5b-b00c-61b37e1a3f33
+    jinja: '{% set trg_lang ="French" %}{% set src_lang ="English" %}{% if utterance_meta.lang
+      == "french" %}{% set trg_lang = "English" %}{% set src_lang = "French" %}{%
+      endif %}
+
+      {{ src_lang }}: {{ orig }} = {{ trg_lang }}: ||| {{ ref }}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages:
+      - en
+      metrics:
+      - BLEU
+      original_task: true
+    name: xglm-source+target
+    reference: 'L1: [sent1] = L2: [sent2]'
+
