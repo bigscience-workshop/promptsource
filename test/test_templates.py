@@ -30,9 +30,11 @@ def test_uuids():
             uuid = template.get_id()
 
             if uuid in all_uuids:
-                raise ValueError(f"Template {template_name} for dataset {dataset_name}/{subset_name} "
-                                 f"has duplicate uuid {template.get_id()} as "
-                                 f"{all_uuids[uuid][0]}/{all_uuids[uuid][1]}.")
+                raise ValueError(
+                    f"Template {template_name} for dataset {dataset_name}/{subset_name} "
+                    f"has duplicate uuid {template.get_id()} as "
+                    f"{all_uuids[uuid][0]}/{all_uuids[uuid][1]}."
+                )
 
             all_uuids[uuid] = (dataset_name, subset_name)
 
@@ -86,28 +88,42 @@ def test_dataset(dataset):
         try:
             parse = env.parse(template.jinja)
         except TemplateError as e:
-            raise ValueError(f"Template for dataset {dataset_name}/{subset_name} "
-                             f"with uuid {template.get_id()} failed to parse.") from e
+            raise ValueError(
+                f"Template for dataset {dataset_name}/{subset_name} "
+                f"with uuid {template.get_id()} failed to parse."
+            ) from e
 
         variables = meta.find_undeclared_variables(parse)
         for variable in variables:
-            if has_features and variable not in features and variable != "answer_choices":
-                raise ValueError(f"Template for dataset {dataset_name}/{subset_name} "
-                                 f"with uuid {template.get_id()} has unrecognized variable {variable}.")
+            if (
+                has_features
+                and variable not in features
+                and variable != "answer_choices"
+            ):
+                raise ValueError(
+                    f"Template for dataset {dataset_name}/{subset_name} "
+                    f"with uuid {template.get_id()} has unrecognized variable {variable}."
+                )
 
         # Check 2: Prompt/output separator present?
         if "|||" not in template.jinja:
-            raise ValueError(f"Template for dataset {dataset_name}/{subset_name} "
-                             f"with uuid {template.get_id()} has no input/target separator.")
+            raise ValueError(
+                f"Template for dataset {dataset_name}/{subset_name} "
+                f"with uuid {template.get_id()} has no input/target separator."
+            )
 
         # Check 3: Unique names and templates?
         if template.get_name() in template_name_set:
-            raise ValueError(f"Template for dataset {dataset_name}/{subset_name} "
-                             f"with uuid {template.get_id()} has duplicate name.")
+            raise ValueError(
+                f"Template for dataset {dataset_name}/{subset_name} "
+                f"with uuid {template.get_id()} has duplicate name."
+            )
 
         if template.jinja in template_jinja_set:
-            raise ValueError(f"Template for dataset {dataset_name}/{subset_name} "
-                             f"with uuid {template.get_id()} has duplicate definition.")
+            raise ValueError(
+                f"Template for dataset {dataset_name}/{subset_name} "
+                f"with uuid {template.get_id()} has duplicate definition."
+            )
 
         template_name_set.add(template.get_name())
         template_jinja_set.add(template.jinja)
@@ -115,14 +131,18 @@ def test_dataset(dataset):
         # Check 4: Is the YAML dictionary properly formatted?
         try:
             if dataset_templates.templates[template.get_id()] != template:
-                raise ValueError(f"Template for dataset {dataset_name}/{subset_name} "
-                                 f"with uuid {template.get_id()} has wrong YAML key.")
+                raise ValueError(
+                    f"Template for dataset {dataset_name}/{subset_name} "
+                    f"with uuid {template.get_id()} has wrong YAML key."
+                )
         except KeyError as e:
-            raise ValueError(f"Template for dataset {dataset_name}/{subset_name} "
-                             f"with uuid {template.get_id()} has wrong YAML key.") from e
+            raise ValueError(
+                f"Template for dataset {dataset_name}/{subset_name} "
+                f"with uuid {template.get_id()} has wrong YAML key."
+            ) from e
 
         # Check 5: Is the UUID valid?
         UUID(template.get_id())
 
     # Turned off for now until we fix.
-    #assert any_original, "There must be at least one original task template for each dataset"
+    # assert any_original, "There must be at least one original task template for each dataset"
