@@ -17,7 +17,14 @@ from pygments.lexers import DjangoLexer
 
 from promptsource import DEFAULT_PROMPTSOURCE_CACHE_HOME
 from promptsource.session import _get_state
-from promptsource.templates import INCLUDED_USERS, LANGUAGES, METRICS, DatasetTemplates, Template, TemplateCollection
+from promptsource.templates import (
+    INCLUDED_USERS,
+    LANGUAGES,
+    METRICS,
+    DatasetTemplates,
+    Template,
+    TemplateCollection,
+)
 from promptsource.utils import (
     get_dataset,
     get_dataset_confs,
@@ -75,7 +82,9 @@ def format_language(tag):
 # streamlit run promptsource/app.py -- --read-only
 # Check https://github.com/streamlit/streamlit/issues/337 for more information.
 parser = argparse.ArgumentParser(description="run app.py with args")
-parser.add_argument("-r", "--read-only", action="store_true", help="whether to run it as read-only mode")
+parser.add_argument(
+    "-r", "--read-only", action="store_true", help="whether to run it as read-only mode"
+)
 
 args = parser.parse_args()
 if args.read_only:
@@ -124,7 +133,10 @@ def run_app():
     # Adds pygments styles to the page.
     #
     st.markdown(
-        "<style>" + HtmlFormatter(style="friendly").get_style_defs(".highlight") + "</style>", unsafe_allow_html=True
+        "<style>"
+        + HtmlFormatter(style="friendly").get_style_defs(".highlight")
+        + "</style>",
+        unsafe_allow_html=True,
     )
 
     WIDTH = 140
@@ -144,7 +156,10 @@ def run_app():
         st.write(out, unsafe_allow_html=True)
 
     def show_text(t, width=WIDTH, with_markdown=False):
-        wrap = [textwrap.fill(subt, width=width, replace_whitespace=False) for subt in t.split("\n")]
+        wrap = [
+            textwrap.fill(subt, width=width, replace_whitespace=False)
+            for subt in t.split("\n")
+        ]
         wrap = "\n".join(wrap)
         if with_markdown:
             st.write(wrap, unsafe_allow_html=True)
@@ -209,7 +224,9 @@ def run_app():
                     subset_infos = infos[subset_name]
 
                 try:
-                    split_sizes = {k: v.num_examples for k, v in subset_infos.splits.items()}
+                    split_sizes = {
+                        k: v.num_examples for k, v in subset_infos.splits.items()
+                    }
                 except Exception:
                     # Fixing bug in some community datasets.
                     # For simplicity, just filling `split_sizes` with nothing, so the displayed split sizes will be 0.
@@ -218,19 +235,28 @@ def run_app():
                 split_sizes = {}
 
             # Collect template counts, original task counts and names
-            dataset_templates = template_collection.get_dataset(dataset_name, subset_name)
+            dataset_templates = template_collection.get_dataset(
+                dataset_name, subset_name
+            )
             results.append(
                 {
                     "Dataset name": dataset_name,
                     "Subset name": "∅" if subset_name is None else subset_name,
                     "Train size": split_sizes["train"] if "train" in split_sizes else 0,
-                    "Validation size": split_sizes["validation"] if "validation" in split_sizes else 0,
+                    "Validation size": split_sizes["validation"]
+                    if "validation" in split_sizes
+                    else 0,
                     "Test size": split_sizes["test"] if "test" in split_sizes else 0,
                     "Number of prompts": len(dataset_templates),
                     "Number of original task prompts": sum(
-                        [bool(t.metadata.original_task) for t in dataset_templates.templates.values()]
+                        [
+                            bool(t.metadata.original_task)
+                            for t in dataset_templates.templates.values()
+                        ]
                     ),
-                    "Prompt names": [t.name for t in dataset_templates.templates.values()],
+                    "Prompt names": [
+                        t.name for t in dataset_templates.templates.values()
+                    ],
                 }
             )
         results_df = pd.DataFrame(results)
@@ -240,7 +266,9 @@ def run_app():
         nb_training_instances = results_df["Train size"].sum()
         st.write(f"## Number of *training instances*: `{nb_training_instances}`")
 
-        plot_df = results_df[["Dataset name", "Subset name", "Train size", "Number of prompts"]].copy()
+        plot_df = results_df[
+            ["Dataset name", "Subset name", "Train size", "Number of prompts"]
+        ].copy()
         plot_df["Name"] = plot_df["Dataset name"] + " - " + plot_df["Subset name"]
         plot_df.sort_values(["Train size"], inplace=True, ascending=False)
         fig = px.bar(
@@ -305,7 +333,9 @@ def run_app():
             configs = get_dataset_confs(dataset_key)
             conf_option = None
             if len(configs) > 0:
-                conf_option = st.sidebar.selectbox("Subset", configs, index=0, format_func=lambda a: a.name)
+                conf_option = st.sidebar.selectbox(
+                    "Subset", configs, index=0, format_func=lambda a: a.name
+                )
 
             subset_name = str(conf_option.name) if conf_option else None
             try:
@@ -325,7 +355,9 @@ def run_app():
             index = 0
             if "train" in splits:
                 index = splits.index("train")
-            split = st.sidebar.selectbox("Split", splits, key="split_select", index=index)
+            split = st.sidebar.selectbox(
+                "Split", splits, key="split_select", index=index
+            )
             dataset = dataset[split]
             dataset = renameDatasetColumn(dataset)
 
@@ -333,7 +365,9 @@ def run_app():
             # Loads template data
             #
             try:
-                dataset_templates = DatasetTemplates(dataset_key, conf_option.name if conf_option else None)
+                dataset_templates = DatasetTemplates(
+                    dataset_key, conf_option.name if conf_option else None
+                )
             except FileNotFoundError:
                 st.error(
                     "Unable to find the prompt folder!\n\n"
@@ -372,7 +406,9 @@ def run_app():
                 )
             else:  # mode = Sourcing
                 st.sidebar.subheader("Select Example")
-                example_index = st.sidebar.slider("Select the example index", 0, len(dataset) - 1)
+                example_index = st.sidebar.slider(
+                    "Select the example index", 0, len(dataset) - 1
+                )
 
                 example = dataset[example_index]
                 example = removeHyphen(example)
@@ -386,7 +422,12 @@ def run_app():
             #
             # Display dataset information
             #
-            st.header("Dataset: " + dataset_key + " " + (("/ " + conf_option.name) if conf_option else ""))
+            st.header(
+                "Dataset: "
+                + dataset_key
+                + " "
+                + (("/ " + conf_option.name) if conf_option else "")
+            )
 
             # If we have a custom dataset change the source link to the hub
             split_dataset_key = dataset_key.split("/")
@@ -402,7 +443,9 @@ def run_app():
                     dataset_key,
                 )
 
-            st.markdown("*Homepage*: " + dataset.info.homepage + "\n\n*Dataset*: " + source_link)
+            st.markdown(
+                "*Homepage*: " + dataset.info.homepage + "\n\n*Dataset*: " + source_link
+            )
 
             md = """
             %s
@@ -431,10 +474,21 @@ def run_app():
                     st.markdown("##### Choices in template? ")
                     st.text(template.metadata.choices_in_prompt)
                     st.markdown("##### Metrics")
-                    st.text(", ".join(template.metadata.metrics) if template.metadata.metrics else None)
+                    st.text(
+                        ", ".join(template.metadata.metrics)
+                        if template.metadata.metrics
+                        else None
+                    )
                     st.markdown("##### Prompt Languages")
                     if template.metadata.languages:
-                        st.text(", ".join([format_language(tag) for tag in template.metadata.languages]))
+                        st.text(
+                            ", ".join(
+                                [
+                                    format_language(tag)
+                                    for tag in template.metadata.languages
+                                ]
+                            )
+                        )
                     else:
                         st.text(None)
                     st.markdown("##### Answer Choices")
@@ -485,7 +539,10 @@ def run_app():
                 col1a, col1b, _, col2 = st.beta_columns([9, 9, 1, 6])
 
                 # current_templates_key and state.templates_key are keys for the templates object
-                current_templates_key = (dataset_key, conf_option.name if conf_option else None)
+                current_templates_key = (
+                    dataset_key,
+                    conf_option.name if conf_option else None,
+                )
 
                 # Resets state if there has been a change in templates_key
                 if state.templates_key != current_templates_key:
@@ -523,7 +580,11 @@ def run_app():
                     else:
                         index = 0
                     state.template_name = st.selectbox(
-                        "", template_list, key="template_select", index=index, help="Select the prompt to work on."
+                        "",
+                        template_list,
+                        key="template_select",
+                        index=index,
+                        help="Select the prompt to work on.",
                     )
 
                     if st.button("Delete Prompt", key="delete_prompt"):
@@ -555,7 +616,9 @@ def run_app():
                         # If template is selected, displays template editor
                         #
                         with st.form("edit_template_form"):
-                            updated_template_name = st.text_input("Name", value=template.name)
+                            updated_template_name = st.text_input(
+                                "Name", value=template.name
+                            )
                             state.reference = st.text_input(
                                 "Prompt Reference",
                                 help="Short description of the prompt and/or paper reference for the prompt.",
@@ -606,12 +669,15 @@ def run_app():
                             )
 
                             # Jinja
-                            state.jinja = st.text_area("Template", height=40, value=template.jinja)
+                            state.jinja = st.text_area(
+                                "Template", height=40, value=template.jinja
+                            )
 
                             # Submit form
                             if st.form_submit_button("Save"):
                                 if (
-                                    updated_template_name in dataset_templates.all_template_names
+                                    updated_template_name
+                                    in dataset_templates.all_template_names
                                     and updated_template_name != state.template_name
                                 ):
                                     st.error(

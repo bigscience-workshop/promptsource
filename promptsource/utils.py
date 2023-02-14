@@ -47,7 +47,10 @@ def get_dataset_builder(path, conf=None):
 def get_dataset(path, conf=None):
     "Get a dataset from name and conf."
     builder_instance = get_dataset_builder(path, conf)
-    if builder_instance.manual_download_instructions is None and builder_instance.info.size_in_bytes is not None:
+    if (
+        builder_instance.manual_download_instructions is None
+        and builder_instance.info.size_in_bytes is not None
+    ):
         builder_instance.download_and_prepare()
         return builder_instance.as_dataset()
     else:
