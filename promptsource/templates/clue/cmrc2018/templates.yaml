@@ -1,0 +1,76 @@
+dataset: clue
+subset: cmrc2018
+templates:
+  3bba02e6-9266-418b-9ba0-4f71755cf3b6: !Template
+    answer_choices: null
+    id: 3bba02e6-9266-418b-9ba0-4f71755cf3b6
+    jinja: 'Given this context "{{ context }}", generate a question that would return
+      the answer of "{{ answers[''text''][0] }}".
+
+      |||
+
+      {{ question }} '
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages:
+      - zh
+      metrics:
+      - ROUGE
+      original_task: false
+    name: generate_question
+    reference: ''
+  8fe02215-7881-4a61-a6e7-579680e40b9b: !Template
+    answer_choices: null
+    id: 8fe02215-7881-4a61-a6e7-579680e40b9b
+    jinja: "In an exam, you are asked {{ question }}, and you are tasked to find the\
+      \ answer from the following passage. \n{{ context }}\nWhat's the answer?\n|||\n\
+      {{ answers['text'][0] }}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages:
+      - zh
+      metrics:
+      - Squad
+      original_task: true
+    name: in_an_exam
+    reference: ''
+  9e82f5da-b206-4758-94e6-085cf2608378: !Template
+    answer_choices: null
+    id: 9e82f5da-b206-4758-94e6-085cf2608378
+    jinja: '{{ context }}
+
+      The answer to {{ question }} is in the passage above. What is it?
+
+      |||
+
+      {{ answers[''text''][0] }}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages:
+      - zh
+      metrics:
+      - Squad
+      original_task: true
+    name: answer_in_the_passage
+    reference: ''
+  9fb15385-814e-419a-b862-2d4e06a58ef6: !Template
+    answer_choices: null
+    id: 9fb15385-814e-419a-b862-2d4e06a58ef6
+    jinja: 'Answer the question using the given context.
+
+      Question: {{ question }}
+
+      Context: {{ context }}
+
+      Answer: |||
+
+      {{ answers[''text''][0] }}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages:
+      - zh
+      metrics:
+      - Squad
+      original_task: true
+    name: answer_following_question
+    reference: ''

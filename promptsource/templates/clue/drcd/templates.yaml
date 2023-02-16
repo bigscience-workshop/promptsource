@@ -1,0 +1,76 @@
+dataset: clue
+subset: drcd
+templates:
+  2b2454d1-4375-4fb3-93a5-8c1e4ee605ea: !Template
+    answer_choices: null
+    id: 2b2454d1-4375-4fb3-93a5-8c1e4ee605ea
+    jinja: 'Answer the question using the given context.
+
+      Question: {{ question }}
+
+      Context: {{ context }}
+
+      Answer: |||
+
+      {{ answers[''text''][0] }}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages:
+      - zh
+      metrics:
+      - Squad
+      original_task: true
+    name: answer_following_question
+    reference: ''
+  41aebf75-a867-455b-a5dc-519ab83cf24f: !Template
+    answer_choices: null
+    id: 41aebf75-a867-455b-a5dc-519ab83cf24f
+    jinja: '{{ context }}
+
+      The answer to {{ question }} is in the passage above. What is it?
+
+      |||
+
+      {{ answers[''text''][0] }}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages:
+      - zh
+      metrics:
+      - Squad
+      original_task: true
+    name: answer_in_the_passage
+    reference: ''
+  ac20087c-80a0-4965-8cab-d8cb6f90a555: !Template
+    answer_choices: null
+    id: ac20087c-80a0-4965-8cab-d8cb6f90a555
+    jinja: 'Given this context "{{ context }}", generate a question that would return
+      the answer of "{{ answers[''text''][0] }}".
+
+      |||
+
+      {{ question }} '
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages:
+      - zh
+      metrics:
+      - ROUGE
+      original_task: false
+    name: generate_question
+    reference: ''
+  b2684f23-b191-4e6d-9dc5-12b1d7d4cf49: !Template
+    answer_choices: null
+    id: b2684f23-b191-4e6d-9dc5-12b1d7d4cf49
+    jinja: "In an exam, you are asked {{ question }}, and you are tasked to find the\
+      \ answer from the following passage. \n{{ context }}\nWhat's the answer?\n|||\n\
+      {{ answers['text'][0] }}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages:
+      - zh
+      metrics:
+      - Squad
+      original_task: true
+    name: in_an_exam
+    reference: ''
