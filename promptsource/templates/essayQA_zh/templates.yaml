@@ -1,0 +1,27 @@
+dataset: essayQA_zh
+templates:
+  033498ca-3d9a-47e3-b631-d881ab53b5ad: !Template
+    answer_choices: '{{choices.label | join("|||")}}'
+    id: 033498ca-3d9a-47e3-b631-d881ab53b5ad
+    jinja: '给定以下问题，从下列选项中找出最好的哪个回答？
+
+      问题：{{question}}
+
+      选项：
+
+      {% for letter, t in zip(answer_choices, choices.text) %}
+
+      ({{letter}}) {{t}}
+
+      {% endfor %} |||
+
+      {{answerKey}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      languages:
+      - zh
+      metrics:
+      - Accuracy
+      original_task: true
+    name: pick_the_most_correct_option
+    reference: ''
