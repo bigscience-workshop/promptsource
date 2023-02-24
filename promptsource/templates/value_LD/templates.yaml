@@ -1,0 +1,41 @@
+dataset: value_LD
+templates:
+  033498ca-3d9a-47e3-b631-d881ab53b5ad: !Template
+    answer_choices: '{{choices.label | join("|||")}}'
+    id: 033498ca-3d9a-47e3-b631-d881ab53b5ad
+    jinja: '给定以下问题，从下列选项中找出最有价值、最得体的回答？
+
+      问题：{{question}}
+
+      选项：
+
+      {% for letter, t in zip(answer_choices, choices.text) %}
+
+      ({{letter}}) {{t}}
+
+      {% endfor %} |||
+
+      {{answerKey}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      languages:
+      - zh
+      metrics:
+      - Accuracy
+      original_task: true
+    name: pick_the_most_correct_option
+    reference: ''
+  540ebc31-2ea6-4feb-a6fd-67b6e71ff20a: !Template
+    answer_choices: '{{choices.text | join("|||")}}'
+    id: 540ebc31-2ea6-4feb-a6fd-67b6e71ff20a
+    jinja: '请看这个问题, {{question}}, 最有价值、最得体的回答是: ||| {{answer_choices[choices["label"].tolist().index(answerKey)]}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      languages:
+      - zh
+      metrics:
+      - Accuracy
+      - Other
+      original_task: false
+    name: pick_best_answer_zh
+    reference: ''
