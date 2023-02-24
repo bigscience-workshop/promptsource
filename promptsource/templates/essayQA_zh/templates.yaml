@@ -25,3 +25,17 @@ templates:
       original_task: true
     name: pick_the_most_correct_option
     reference: ''
+  540ebc31-2ea6-4feb-a6fd-67b6e71ff20a: !Template
+    answer_choices: '{{choices.text | join("|||")}}'
+    id: 540ebc31-2ea6-4feb-a6fd-67b6e71ff20a
+    jinja: '请看这个问题, {{question}}, 最好的回答是: ||| {{answer_choices[choices["label"].tolist().index(answerKey)]}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      languages:
+      - zh
+      metrics:
+      - Accuracy
+      - Other
+      original_task: false
+    name: pick_best_answer_zh
+    reference: ''
