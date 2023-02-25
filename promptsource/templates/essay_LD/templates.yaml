@@ -25,6 +25,29 @@ templates:
       original_task: true
     name: pick_the_most_correct_option
     reference: ''
+  033498ca-3d9a-47e3-b631-d881ab53bxxd: !Template
+    answer_choices: '{{choices.label | join("|||")}}'
+    id: 033498ca-3d9a-47e3-b631-d881ab53bxxd
+    jinja: '问题：{{question}}
+      选项：
+      {% for letter, t in zip(answer_choices, choices.text) %}
+
+      ({{letter}}) {{t}}
+
+      {% endfor %} 
+      
+      从以上的选项中，找出最有价值、最得体的回答，A还是B?|||
+
+      {{answerKey}}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      languages:
+      - zh
+      metrics:
+      - Accuracy
+      original_task: true
+    name: pick_the_most_correct_option_v2
+    reference: ''
   540ebc31-2ea6-4feb-a6fd-67b6e71ff20a: !Template
     answer_choices: '{{choices.text | join("|||")}}'
     id: 540ebc31-2ea6-4feb-a6fd-67b6e71ff20a
