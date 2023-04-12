@@ -159,7 +159,7 @@ use
 It should not contain any extra text such as “The answer is…” (unless that extra text is also in
 `answer_choices`). If `answer_choices` is populated, the output should only contain the values
 in `answer_choices`.
-* **Formatting multple-choice questions.** If the target should match the name of the choice
+* **Formatting multiple-choice questions.** If the target should match the name of the choice
 (e.g., “World News”), then it should list the choices either as part of a grammatical question
 or a list with the marker for each (e.g, dashes). If the target should indicate the choice from
 the list (e.g., “A,” “Explanation 1,” etc.), then it should list the choices with the indicator
