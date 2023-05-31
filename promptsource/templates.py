@@ -440,7 +440,7 @@ class Template(yaml.YAMLObject):
             :param choices_in_prompt: If True, the answer choices are included in the templates such that models
                 see those choices in the input. Only applicable to classification tasks.
             :param metrics: List of strings denoting metrics to use for evaluation
-            :param metrics: List of strings denoting languages used in the prompt (not the associated dataset!)
+            :param languages: List of strings denoting languages used in the prompt (not the associated dataset!)
             """
             self.original_task = original_task
             self.choices_in_prompt = choices_in_prompt
