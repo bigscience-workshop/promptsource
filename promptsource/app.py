@@ -80,9 +80,11 @@ parser.add_argument("-r", "--read-only", action="store_true", help="whether to r
 args = parser.parse_args()
 if args.read_only:
     select_options = ["Helicopter view", "Prompted dataset viewer"]
+    language_options = ["en", "fa"]
     side_bar_title_prefix = "Promptsource (Read only)"
 else:
     select_options = ["Helicopter view", "Prompted dataset viewer", "Sourcing"]
+    language_options = ["en", "fa"]
     side_bar_title_prefix = "Promptsource"
 
 #
@@ -112,12 +114,24 @@ def run_app():
         "<center><a href='https://github.com/bigscience-workshop/promptsource'>💻Github - Promptsource\n\n</a></center>",
         unsafe_allow_html=True,
     )
-    mode = st.sidebar.selectbox(
+
+    col1, col2 = st.beta_columns(2)
+
+    # Add a select box in the first column
+    with col1:
+        lang = st.sidebar.selectbox(label="Choose templating language",
+                                    options=language_options,
+                                    index=0,
+                                    key="mode_lang")
+    # Add a select box in the second column
+    with col2:
+        mode = st.sidebar.selectbox(
         label="Choose a mode",
         options=select_options,
         index=0,
-        key="mode_select",
-    )
+        key="mode_select",)
+
+
     st.sidebar.title(f"{side_bar_title_prefix} 🌸 - {mode}")
 
     #
@@ -163,7 +177,7 @@ def run_app():
         # Loads template data
         #
         try:
-            template_collection = TemplateCollection()
+            template_collection = TemplateCollection(language=lang)
         except FileNotFoundError:
             st.error(
                 "Unable to find the prompt folder!\n\n"
@@ -218,7 +232,7 @@ def run_app():
                 split_sizes = {}
 
             # Collect template counts, original task counts and names
-            dataset_templates = template_collection.get_dataset(dataset_name, subset_name)
+            dataset_templates = template_collection.get_dataset(dataset_name, subset_name, lang)
             results.append(
                 {
                     "Dataset name": dataset_name,
@@ -280,8 +294,8 @@ def run_app():
         # Loads dataset information
         #
 
-        dataset_list = list_datasets()
-        ag_news_index = dataset_list.index("ag_news")
+        dataset_list = list_datasets(lang)
+        ag_news_index = dataset_list.index("persiannlp/parsinlu_entailment")
 
         #
         # Select a dataset - starts with ag_news
@@ -338,7 +352,7 @@ def run_app():
             # Loads template data
             #
             try:
-                dataset_templates = DatasetTemplates(dataset_key, conf_option.name if conf_option else None)
+                dataset_templates = DatasetTemplates(dataset_key, conf_option.name if conf_option else None, lanuguage=lang)
             except FileNotFoundError:
                 st.error(
                     "Unable to find the prompt folder!\n\n"
@@ -396,7 +410,7 @@ def run_app():
             # If we have a custom dataset change the source link to the hub
             split_dataset_key = dataset_key.split("/")
             possible_user = split_dataset_key[0]
-            if len(split_dataset_key) > 1 and possible_user in INCLUDED_USERS:
+            if len(split_dataset_key) > 1 and possible_user in INCLUDED_USERS[lang]:
                 source_link = "https://huggingface.co/datasets/%s/blob/main/%s.py" % (
                     dataset_key,
                     split_dataset_key[-1],

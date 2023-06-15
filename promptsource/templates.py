@@ -17,7 +17,13 @@ from jinja2 import BaseLoader, Environment, meta
 TEXT_VAR_LENGTH = 2048
 
 # Local path to the folder containing the templates
-TEMPLATES_FOLDER_PATH = pkg_resources.resource_filename(__name__, "templates")
+PERSIAN_TEMPLATES_FOLDER_PATH = pkg_resources.resource_filename(__name__, os.path.join("templates", "persian_templates"))
+ENGLISH_TEMPLATES_FOLDER_PATH = pkg_resources.resource_filename(__name__, os.path.join("templates", "english_templates"))
+
+TEMPLATES_FOLDER_PATH = {
+    'fa': PERSIAN_TEMPLATES_FOLDER_PATH,
+    'en': ENGLISH_TEMPLATES_FOLDER_PATH
+}
 
 env = Environment(loader=BaseLoader)
 
@@ -26,7 +32,13 @@ env.globals.update(zip=zip)
 
 # These are users whose datasets should be included in the results returned by
 # filter_english_datasets (regardless of their metadata)
-INCLUDED_USERS = {"Zaid", "craffel"}
+INCLUDED_USERS = { 'fa': {
+                            "persiannlp", 
+                            "SLPL", 
+                            "SajjadAyoubi"},
+                   'en': {
+                            "Zaid", 
+                            "craffel"}}
 
 # These are the metrics with which templates can be tagged
 METRICS = {
@@ -456,9 +468,10 @@ class TemplateCollection:
     - Provides aggregated counts over all DatasetTemplates
     """
 
-    def __init__(self):
+    def __init__(self, language: str = "fa"):
 
         # Dict of all the DatasetTemplates, key is the tuple (dataset_name, subset_name)
+        self.language: str = language
         self.datasets_templates: Dict[(str, Optional[str]), DatasetTemplates] = self._collect_datasets()
 
     @property
@@ -477,13 +490,13 @@ class TemplateCollection:
 
         Returns: a dict with key=(dataset_name, subset_name)
         """
-        dataset_folders = os.listdir(TEMPLATES_FOLDER_PATH)
+        dataset_folders = os.listdir(TEMPLATES_FOLDER_PATH[self.language])
         dataset_folders = [folder for folder in dataset_folders if not folder.startswith(".")]
 
         output = {}  # format is {(dataset_name, subset_name): DatasetsTemplates}
         for dataset in dataset_folders:
-            if dataset in INCLUDED_USERS:
-                for filename in os.listdir(os.path.join(TEMPLATES_FOLDER_PATH, dataset)):
+            if dataset in INCLUDED_USERS[self.language]:
+                for filename in os.listdir(os.path.join(TEMPLATES_FOLDER_PATH[self.language], dataset)):
                     output = {**output, **self._collect_dataset(dataset + "/" + filename)}
             else:
                 output = {**output, **self._collect_dataset(dataset)}
@@ -491,7 +504,7 @@ class TemplateCollection:
 
     def _collect_dataset(self, dataset):
         output = {}  # format is {(dataset_name, subset_name): DatasetsTemplates}
-        for filename in os.listdir(os.path.join(TEMPLATES_FOLDER_PATH, dataset)):
+        for filename in os.listdir(os.path.join(TEMPLATES_FOLDER_PATH[self.language], dataset)):
             if filename.endswith(".yaml"):
                 # If there is no sub-folder, there is no subset for this dataset
                 output[(dataset, None)] = DatasetTemplates(dataset)
@@ -500,7 +513,7 @@ class TemplateCollection:
                 output[(dataset, filename)] = DatasetTemplates(dataset_name=dataset, subset_name=filename)
         return output
 
-    def get_dataset(self, dataset_name: str, subset_name: Optional[str] = None) -> "DatasetTemplates":
+    def get_dataset(self, dataset_name: str, subset_name: Optional[str] = None, language: str = "fa") -> "DatasetTemplates":
         """
         Return the DatasetTemplates object corresponding to the dataset name
 
@@ -509,7 +522,7 @@ class TemplateCollection:
         """
         # if the dataset does not exist, we add it
         if dataset_name not in self.keys:
-            self.datasets_templates[(dataset_name, subset_name)] = DatasetTemplates(dataset_name, subset_name)
+            self.datasets_templates[(dataset_name, subset_name)] = DatasetTemplates(dataset_name, subset_name, lanuguage=language)
 
         return self.datasets_templates[(dataset_name, subset_name)]
 
@@ -540,9 +553,10 @@ class DatasetTemplates:
     SUBSET_KEY = "subset"
     TEMPLATE_FILENAME = "templates.yaml"
 
-    def __init__(self, dataset_name: str, subset_name: str = None):
+    def __init__(self, dataset_name: str, subset_name: str = None,  lanuguage: str = "fa"):
         self.dataset_name: str = dataset_name
         self.subset_name: str = subset_name
+        self.language: str = lanuguage
         # dictionary is keyed by template name.
         self.templates: Dict = self.read_from_file()
 
@@ -566,9 +580,9 @@ class DatasetTemplates:
     @property
     def folder_path(self) -> str:
         if self.subset_name:
-            return os.path.join(TEMPLATES_FOLDER_PATH, self.dataset_name, self.subset_name)
+            return os.path.join(TEMPLATES_FOLDER_PATH[self.language], self.dataset_name, self.subset_name)
         else:
-            return os.path.join(TEMPLATES_FOLDER_PATH, self.dataset_name)
+            return os.path.join(TEMPLATES_FOLDER_PATH[self.language], self.dataset_name)
 
     @property
     def yaml_path(self) -> str:
@@ -679,7 +693,7 @@ class DatasetTemplates:
         # If it is a subset, we have to check whether to remove the dataset folder
         if self.subset_name:
             # have to check for other folders
-            base_dataset_folder = os.path.join(TEMPLATES_FOLDER_PATH, self.dataset_name)
+            base_dataset_folder = os.path.join(TEMPLATES_FOLDER_PATH[self.language], self.dataset_name)
             if len(os.listdir(base_dataset_folder)) == 0:
                 rmtree(base_dataset_folder)
 

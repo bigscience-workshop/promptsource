@@ -99,15 +99,13 @@ def render_features(features):
 #
 
 
-def filter_english_datasets():
+def filter_english_datasets(response):
     """
     Filter English datasets based on language tags in metadata.
 
     Also includes the datasets of any users listed in INCLUDED_USERS
     """
     english_datasets = []
-
-    response = requests.get("https://huggingface.co/api/datasets?full=true")
     tags = response.json()
     while "next" in response.links:
         # Handle pagination of `/api/datasets` endpoint
@@ -138,8 +136,51 @@ def filter_english_datasets():
     return sorted(english_datasets)
 
 
-def list_datasets():
+def filter_persian_datasets(response):
+    """
+    Filter Persian datasets based on language tags in metadata.
+    """
+    persian_datasets = []
+    tags = response.json()
+    while "next" in response.links:
+        # Handle pagination of `/api/datasets` endpoint
+        response = requests.get(response.links["next"]["url"])
+        tags += response.json()
+
+    for dataset in tags:
+        dataset_name = dataset["id"]
+
+        is_community_dataset = "/" in dataset_name
+        if is_community_dataset:
+            user = dataset_name.split("/")[0]
+            if user in INCLUDED_USERS:
+                persian_datasets.append(dataset_name)
+            continue
+
+        if "cardData" not in dataset:
+            continue
+        metadata = dataset["cardData"]
+
+        if "language" not in metadata:
+            continue
+        languages = metadata["language"]
+
+        if "fa" in languages or "fa-IR" in languages:
+            persian_datasets.append(dataset_name)
+
+    return sorted(persian_datasets)
+
+
+def list_datasets(lang):
     """Get all the datasets to work with."""
-    dataset_list = filter_english_datasets()
+    response = requests.get("https://huggingface.co/api/datasets?full=true")
+
+    if lang == 'fa':
+        dataset_list = filter_persian_datasets(response)
+    elif lang == 'en':
+        dataset_list = filter_english_datasets(response)
+    else: 
+        raise NotImplementedError
+    
     dataset_list.sort(key=lambda x: x.lower())
     return dataset_list
