@@ -118,7 +118,7 @@ def filter_english_datasets(response):
         is_community_dataset = "/" in dataset_name
         if is_community_dataset:
             user = dataset_name.split("/")[0]
-            if user in INCLUDED_USERS:
+            if user in INCLUDED_USERS['en']:
                 english_datasets.append(dataset_name)
             continue
 
@@ -153,7 +153,7 @@ def filter_persian_datasets(response):
         is_community_dataset = "/" in dataset_name
         if is_community_dataset:
             user = dataset_name.split("/")[0]
-            if user in INCLUDED_USERS:
+            if user in INCLUDED_USERS['fa']:
                 persian_datasets.append(dataset_name)
             continue
 
