@@ -295,7 +295,12 @@ def run_app():
         #
 
         dataset_list = list_datasets(lang)
-        ag_news_index = dataset_list.index("persiannlp/parsinlu_entailment")
+        if lang == 'fa':
+            ag_news_index = dataset_list.index("persiannlp/parsinlu_entailment")
+        elif lang == 'en':
+            ag_news_index = dataset_list.index("ag_news")
+        else: 
+            raise NotImplementedError
 
         #
         # Select a dataset - starts with ag_news

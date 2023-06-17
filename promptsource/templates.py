@@ -35,7 +35,8 @@ env.globals.update(zip=zip)
 INCLUDED_USERS = { 'fa': {
                             "persiannlp", 
                             "SLPL", 
-                            "SajjadAyoubi"},
+                            "SajjadAyoubi",
+                            "PNLPhub"},
                    'en': {
                             "Zaid", 
                             "craffel"}}

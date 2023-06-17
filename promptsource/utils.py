@@ -56,6 +56,7 @@ def get_dataset(path, conf=None):
         )
         data_dir = f"{cache_root_dir}/{path}" if conf is None else f"{cache_root_dir}/{path}/{conf}"
         try:
+            print(data_dir)
             return datasets.load_dataset(
                 path,
                 conf,
@@ -70,10 +71,13 @@ def get_dataset(path, conf=None):
 def get_dataset_confs(path):
     "Get the list of confs for a dataset."
     module_path = datasets.load.dataset_module_factory(path).module_path
+    print(module_path)
     # Get dataset builder class from the processing script
     builder_cls = datasets.load.import_main_class(module_path, dataset=True)
+    print(builder_cls)
     # Instantiate the dataset builder
     confs = builder_cls.BUILDER_CONFIGS
+    print(confs)
     if confs and len(confs) > 1:
         return confs
     return []

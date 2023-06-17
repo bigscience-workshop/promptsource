@@ -11,6 +11,7 @@ requirements = [
     "pytest",
     "pyyaml>=5",
     "streamlit==0.82",
+    "numpy==1.20.3"
     "jinja2",
     "plotly",
     "requests",
