@@ -5,30 +5,12 @@ templates:
     id: 4da79537-25dd-4ffe-9c9f-6f44ec4b3d35
     jinja: "{% set random =  range(0, 4) | random %}\n\n\u0627\u06CC\u0627 \u0645\u062A\
       \u0646 \u062F\u0627\u062F\u0647 \u0634\u062F\u0647 \u0628\u0647 \u0627\u062D\
-      \u0633\u0627\u0633 \n{{\n{0: \"\u0627\u0641\u062A\u0636\u0627\u062D\",\n1: \"\
-      \u0628\u062F\",\n2: \"\u0645\u062A\u0648\u0633\u0637\",\n3: \"\u062E\u0648\u0628\
-      \",\n4: \"\u0639\u0627\u0644\u06CC\",\n}[random]\n}}\n\u062A\u0639\u0644\u0642\
+      \u0633\u0627\u0633 {{\n{0: \"\u0627\u0641\u062A\u0636\u0627\u062D\",\n1: \"\u0628\
+      \u062F\",\n2: \"\u0645\u062A\u0648\u0633\u0637\",\n3: \"\u062E\u0648\u0628\"\
+      ,\n4: \"\u0639\u0627\u0644\u06CC\",\n}[random]\n}} \u062A\u0639\u0644\u0642\
       \ \u062F\u0627\u0631\u062F\u061F \n\n\u0645\u062A\u0646: {{Text}}\n|||\n{% if\
       \ random == Score %}\n \u0628\u0644\u0647\n{% else %}\n \u062E\u06CC\u0631\n\
       {% endif %}"
-    metadata: !TemplateMetadata
-      choices_in_prompt: false
-      languages:
-      - fa
-      metrics:
-      - Accuracy
-      original_task: true
-    name: is_it_pos_or_neg
-    reference: ''
-  65bd6079-4124-4784-91b9-5011cde67526: !Template
-    answer_choices: "\u0627\u0641\u062A\u0636\u0627\u062D ||| \u0628\u062F ||| \u0645\
-      \u062A\u0648\u0633\u0637 ||| \u062E\u0648\u0628 ||| \u0639\u0627\u0644\u06CC"
-    id: 65bd6079-4124-4784-91b9-5011cde67526
-    jinja: "\u0645\u062A\u0646 \u062F\u0627\u062F\u0647 \u0634\u062F\u0647 \u06A9\u062F\
-      \u0627\u0645 \u0627\u062D\u0633\u0627\u0633 \u0631\u0627 \u0645\u0646\u062A\u0642\
-      \u0644 \u0645\u06CC\u06A9\u0646\u062F\u061F \n\n\u0627\u0641\u062A\u0636\u0627\
-      \u062D, \u0628\u062F, \u0645\u062A\u0648\u0633\u0637, \u062E\u0648\u0628, \u0639\
-      \u0627\u0644\u06CC\n\n\u0645\u062A\u0646 : {{Text}}\n|||{{Score}}"
     metadata: !TemplateMetadata
       choices_in_prompt: true
       languages:
@@ -36,15 +18,48 @@ templates:
       metrics:
       - Accuracy
       original_task: true
-    name: what_is_sentiment
+    name: is_it_pos_or_neg_fs
+    reference: ''
+  65bd6079-4124-4784-91b9-5011cde67526: !Template
+    answer_choices: "\u0627\u0641\u062A\u0636\u0627\u062D ||| \u0628\u062F ||| \u0645\
+      \u062A\u0648\u0633\u0637 ||| \u062E\u0648\u0628 ||| \u0639\u0627\u0644\u06CC"
+    id: 65bd6079-4124-4784-91b9-5011cde67526
+    jinja: "\u0645\u062A\u0646 \u062F\u0627\u062F\u0647 \u0634\u062F\u0647 \u06A9\u062F\
+      \u0627\u0645 \u0627\u062D\u0633\u0627\u0633 \u0631\u0627 \u0645\u0646\u062A\u0642\
+      \u0644 \u0645\u06CC\u06A9\u0646\u062F\u061F \n\u0627\u0641\u062A\u0636\u0627\
+      \u062D, \u0628\u062F, \u0645\u062A\u0648\u0633\u0637, \u062E\u0648\u0628, \u0639\
+      \u0627\u0644\u06CC\n\n\u0645\u062A\u0646 : {{Text}}\n\u0627\u062D\u0633\u0627\
+      \u0633: \n|||\n{% macro round_score(score) %}\n  {% set quotient = score //\
+      \ 25 %}\n  {% set remainder = score % 25 %}\n\n  {% if remainder >= 13 %}\n\
+      \    {% set rounded_score = (quotient + 1) * 25 %}\n  {% else %}\n    {% set\
+      \ rounded_score = quotient * 25 %}\n  {% endif %}\n\n  {{\n  {\n    '0':  \"\
+      \u0627\u0641\u062A\u0636\u0627\u062D\",\n    '25': \"\u0628\u062F\",\n    '50':\
+      \ \"\u0645\u062A\u0648\u0633\u0637\",\n    '75': \"\u062E\u0648\u0628\",\n \
+      \   '100': \"\u0639\u0627\u0644\u06CC\"\n  }[rounded_score|string]\n}}\n{% endmacro\
+      \ %}\n\n{% set rounded_score = round_score(Score) %}\n\n{{rounded_score}}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      languages:
+      - fa
+      metrics:
+      - Accuracy
+      original_task: true
+    name: what_is_sentiment_fs
     reference: ''
   c7ecab15-1e66-4880-8e25-abb7c2cfe32c: !Template
     answer_choices: null
     id: c7ecab15-1e66-4880-8e25-abb7c2cfe32c
     jinja: "\u0628\u0627 \u062A\u0648\u062C\u0647 \u0628\u0647 \u0645\u062A\u0646\
       \ \u0627\u062D\u0633\u0627\u0633 \u062C\u0645\u0644\u0647 \u0631\u0627 \u0628\
-      \u0646\u0648\u06CC\u0633\n\n\u0645\u062A\u0646: {{text}}\n\n\u0627\u062D\u0633\
-      \u0627\u0633:\n|||\n{{score}}\n"
+      \u0646\u0648\u06CC\u0633\n\n\u0645\u062A\u0646: {{Text}}\n\u0627\u062D\u0633\
+      \u0627\u0633:\n|||\n{% macro round_score(score) %}\n  {% set quotient = score\
+      \ // 25 %}\n  {% set remainder = score % 25 %}\n\n  {% if remainder >= 13 %}\n\
+      \    {% set rounded_score = (quotient + 1) * 25 %}\n  {% else %}\n    {% set\
+      \ rounded_score = quotient * 25 %}\n  {% endif %}\n\n  {{\n  {\n    '0':  \"\
+      \u0627\u0641\u062A\u0636\u0627\u062D\",\n    '25': \"\u0628\u062F\",\n    '50':\
+      \ \"\u0645\u062A\u0648\u0633\u0637\",\n    '75': \"\u062E\u0648\u0628\",\n \
+      \   '100': \"\u0639\u0627\u0644\u06CC\"\n  }[rounded_score|string]\n}}\n{% endmacro\
+      \ %}\n\n{% set rounded_score = round_score(Score) %}\n\n{{rounded_score}}"
     metadata: !TemplateMetadata
       choices_in_prompt: false
       languages:
@@ -52,7 +67,7 @@ templates:
       metrics:
       - BLEU
       original_task: true
-    name: generate_sentiment
+    name: generate_sentiment_fs
     reference: ''
   d854905a-fdd3-4b8b-8bba-6af3c418b1be: !Template
     answer_choices: "\u0627\u0641\u062A\u0636\u0627\u062D ||| \u0628\u062F ||| \u0645\
@@ -62,7 +77,14 @@ templates:
       \u062E\u0635 \u06A9\u0646\n\n\u0627\u062D\u0633\u0627\u0633 \u0647\u0627: \u0627\
       \u0641\u062A\u0636\u0627\u062D, \u0628\u062F, \u0645\u062A\u0648\u0633\u0637\
       , \u062E\u0648\u0628, \u0639\u0627\u0644\u06CC\n\n{{Text}}\n\n\u0627\u062D\u0633\
-      \u0627\u0633:\n|||\n{{Score}}"
+      \u0627\u0633:\n|||\n{% macro round_score(score) %}\n  {% set quotient = score\
+      \ // 25 %}\n  {% set remainder = score % 25 %}\n\n  {% if remainder >= 13 %}\n\
+      \    {% set rounded_score = (quotient + 1) * 25 %}\n  {% else %}\n    {% set\
+      \ rounded_score = quotient * 25 %}\n  {% endif %}\n\n  {{\n  {\n    '0':  \"\
+      \u0627\u0641\u062A\u0636\u0627\u062D\",\n    '25': \"\u0628\u062F\",\n    '50':\
+      \ \"\u0645\u062A\u0648\u0633\u0637\",\n    '75': \"\u062E\u0648\u0628\",\n \
+      \   '100': \"\u0639\u0627\u0644\u06CC\"\n  }[rounded_score|string]\n}}\n{% endmacro\
+      \ %}\n\n{% set rounded_score = round_score(Score) %}\n\n{{rounded_score}}"
     metadata: !TemplateMetadata
       choices_in_prompt: true
       languages:
@@ -70,5 +92,5 @@ templates:
       metrics:
       - Accuracy
       original_task: true
-    name: specify_categ
+    name: specify_categ_zs
     reference: ''
