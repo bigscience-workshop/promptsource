@@ -1,9 +1,9 @@
 # PromptSource
 **PromptSource is a toolkit for creating, sharing and using natural language prompts.**
 
-Recent work has shown that large language models exhibit the ability to perform reasonable zero-shot generalization to new tasks. For instance, [GPT-3](https://arxiv.org/abs/2005.14165) demonstrated that large language models have strong zero- and few-shot abilities. [FLAN](https://arxiv.org/abs/2109.01652) and [T0](https://arxiv.org/abs/2110.08207) then demonstrated that pre-trained language models fine-tuned in a massively multitask fashion yield even stronger zero-shot performance. A common denominator in these works is the use of prompts which have gathered of interest among NLP researchers and engineers. This emphasizes the need for new tools to create, share and use natural language prompts.
+Recent work has shown that large language models exhibit the ability to perform reasonable zero-shot generalization to new tasks. For instance, [GPT-3](https://arxiv.org/abs/2005.14165) demonstrated that large language models have strong zero- and few-shot abilities. [FLAN](https://arxiv.org/abs/2109.01652) and [T0](https://arxiv.org/abs/2110.08207) then demonstrated that pre-trained language models fine-tuned in a massively multitask fashion yield even stronger zero-shot performance. A common denominator in these works is the use of prompts which has gained interest among NLP researchers and engineers. This emphasizes the need for new tools to create, share and use natural language prompts.
 
-Prompts are functions that map an example from a dataset to a natural language input and target output PromptSource contains a growing collection of prompts (which we call **P3**: **P**ublic **P**ool of **P**rompts). As of January 20, 2022, there are ~2'000 English prompts for 170+ English datasets in [P3](https://huggingface.co/datasets/bigscience/P3).
+Prompts are functions that map an example from a dataset to a natural language input and target output. PromptSource contains a growing collection of prompts (which we call **P3**: **P**ublic **P**ool of **P**rompts). As of January 20, 2022, there are ~2'000 English prompts for 170+ English datasets in [P3](https://huggingface.co/datasets/bigscience/P3).
 
 <p align="center">
   <img src="assets/PromptSource ACL Demo Figure.png" width="800"/>
@@ -19,7 +19,7 @@ Question: Does this imply that "{{hypothesis}}"? Yes, no, or maybe? ||| {{answer
 **You can browse through existing prompts on the [hosted version of PromptSource](https://huggingface.co/spaces/bigscience/promptsource).**
 
 ## Setup
-If you do not intend to modify prompts, you can simply run:
+If you do not intend to create new prompts, you can simply run:
 ```bash
 pip install promptsource
 ```
@@ -43,7 +43,7 @@ You can apply prompts to examples from datasets of the [Hugging Face Datasets li
 >>> from promptsource.templates import DatasetTemplates
 >>> ag_news_prompts = DatasetTemplates('ag_news')
 
-# Print all the prompts available for this dataset. The keys of the dict are the uuids the uniquely identify each of the prompt, and the values are instances of `Template` which wraps prompts
+# Print all the prompts available for this dataset. The keys of the dict are the UUIDs the uniquely identify each of the prompt, and the values are instances of `Template` which wraps prompts
 >>> print(ag_news_prompts.templates)
 {'24e44a81-a18a-42dd-a71c-5b31b2d2cb39': <promptsource.templates.Template object at 0x7fa7aeb20350>, '8fdc1056-1029-41a1-9c67-354fc2b8ceaf': <promptsource.templates.Template object at 0x7fa7aeb17c10>, '918267e0-af68-4117-892d-2dbe66a58ce9': <promptsource.templates.Template object at 0x7fa7ac7a2310>, '9345df33-4f23-4944-a33c-eef94e626862': <promptsource.templates.Template object at 0x7fa7ac7a2050>, '98534347-fff7-4c39-a795-4e69a44791f7': <promptsource.templates.Template object at 0x7fa7ac7a1310>, 'b401b0ee-6ffe-4a91-8e15-77ee073cd858': <promptsource.templates.Template object at 0x7fa7ac7a12d0>, 'cb355f33-7e8c-4455-a72b-48d315bd4f60': <promptsource.templates.Template object at 0x7fa7ac7a1110>}
 
