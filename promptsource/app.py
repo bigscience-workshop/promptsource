@@ -195,7 +195,7 @@ def run_app():
         pool.join()
 
         results = []
-        for (dataset_name, subset_name) in template_collection.keys:
+        for dataset_name, subset_name in template_collection.keys:
             # Collect split sizes (train, validation and test)
             if dataset_name not in all_infos:
                 infos = get_dataset_infos(dataset_name)
@@ -298,7 +298,6 @@ def run_app():
         # If a particular dataset is selected, loads dataset and template information
         #
         if dataset_key is not None:
-
             #
             # Check for subconfigurations (i.e. subsets)
             #
