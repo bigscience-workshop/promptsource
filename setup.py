@@ -30,7 +30,7 @@ setup(
     url='https://github.com/bigscience-workshop/promptsource.git',
     author='BigScience - Prompt Engineering Working Group',
     author_email='sbach@cs.brown.edu,victor@huggingface.co',
-    python_requires='>=3.7,<3.10',
+    python_requires='>=3.7,<4.0',
     install_requires=requirements,
     classifiers=[
         'Development Status :: 2 - Pre-Alpha',
@@ -41,6 +41,7 @@ setup(
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
         'Programming Language :: Python :: 3.9',
+        'Programming Language :: Python :: 3.10',
     ],
     description='An Integrated Development Environment and Repository for Natural Language Prompts.',
     packages=find_packages(),
