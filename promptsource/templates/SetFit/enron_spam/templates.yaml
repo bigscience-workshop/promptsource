@@ -1,0 +1,75 @@
+dataset: enron_spam
+templates:
+  9a9d877c-aeb1-4808-868d-47ac9627f333: !Template
+    answer_choices: not spam ||| spam
+    id:  9a9d877c-aeb1-4808-868d-47ac9627f333
+    jinja: "What is the spam label for the following email message? {{text}} \n|||\n\
+      {{ answer_choices [label] }}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      languages:
+      - en
+      metrics:
+      - Accuracy
+      original_task: true
+    name: spam_label
+    reference: ''
+  59f74c9b-909f-4fe7-b822-334184a51d3f: !Template
+    answer_choices: True ||| False
+    id: 59f74c9b-909f-4fe7-b822-334184a51d3f
+    jinja: "Is this email message considered {{\"ham\"}} (i.e. not spam)? \n{{text}}\n\
+      |||\n{{answer_choices[label]}}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages:
+      - en
+      metrics:
+      - Accuracy
+      original_task: true
+    name: ham_True_False
+    reference: ''
+  29cc5489-e0d7-4c41-8bc2-a1735f91ca95: !Template
+    answer_choices: ham ||| spam
+    id: 29cc5489-e0d7-4c41-8bc2-a1735f91ca95
+    jinja: 'Is the label for the following email message {{"ham"}} (not spam) or {{"spam"}}?
+      {{text}}
+
+      |||
+
+      {{ answer_choices [label] }}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      languages:
+      - en
+      metrics:
+      - Accuracy
+      original_task: true
+    name: is_the_label
+    reference: ''
+  58a62a45-4cf7-4d57-aa70-0f8fb0a3043c: !Template
+    answer_choices: not spam||| spam
+    id: 58a62a45-4cf7-4d57-aa70-0f8fb0a3043c
+    jinja: "The following email message should be marked as \"spam\" or \"not spam\"\
+      ? {{text}} \n|||\n{{ answer_choices [label] }}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      languages:
+      - en
+      metrics:
+      - Accuracy
+      original_task: true
+    name: marked as
+    reference: ''
+  5e7a18eb-8692-4312-b496-67d1e64f91fe: !Template
+    answer_choices: False ||| True
+    id: 5e7a18eb-8692-4312-b496-67d1e64f91fe
+    jinja: "Is this email message considered {{\"spam\"}}? \n{{text}}\n|||\n{{answer_choices[label]}}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages:
+      - en
+      metrics:
+      - Accuracy
+      original_task: true
+    name: spam_True_False
+    reference: ''
