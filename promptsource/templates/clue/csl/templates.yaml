@@ -1,0 +1,90 @@
+dataset: clue
+subset: csl
+templates:
+  219679f8-a02f-4ee3-91c7-9ed4726dd828: !Template
+    answer_choices: no ||| yes
+    id: 219679f8-a02f-4ee3-91c7-9ed4726dd828
+    jinja: 'After John wrote the abstract "{{abst}}", he wrote these keywords "{{
+      keyword | join('', '') }}". Do you think his choice of keywords was correct?
+      Answer {{ answer_choices[1]}} or {{ answer_choices[0]}}.
+
+      |||
+
+      {{ answer_choices[label] }}
+
+
+      '
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages:
+      - zh
+      metrics:
+      - Accuracy
+      original_task: true
+    name: write_keywords_after_abstract
+    reference: ''
+  2e851dd2-2677-415a-ad90-5d885aa91fdc: !Template
+    answer_choices: no ||| yes
+    id: 2e851dd2-2677-415a-ad90-5d885aa91fdc
+    jinja: 'Do these keywords "{{ keyword | join('', '') }}" represent key concepts
+      in the abstract "{{ abst }}"?
+
+      |||
+
+      {{ answer_choices[label] }}
+
+
+      '
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages:
+      - zh
+      metrics:
+      - Accuracy
+      original_task: true
+    name: do_represent
+    reference: ''
+  2fa6151b-a296-4cd5-83ca-dcd434b831be: !Template
+    answer_choices: null
+    id: 2fa6151b-a296-4cd5-83ca-dcd434b831be
+    jinja: 'Given the abstract {{abst}}, list out {{ keyword | length }} keywords
+      for it.
+
+      |||
+
+      {% if label == 1 %}
+
+      {{ keyword | join('', '') }}
+
+      {% endif %}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages:
+      - zh
+      metrics:
+      - ROUGE
+      original_task: false
+    name: generate_keywords
+    reference: ''
+  aaf47f6f-fd8f-4180-8d85-e4c7df088ac6: !Template
+    answer_choices: no ||| yes
+    id: aaf47f6f-fd8f-4180-8d85-e4c7df088ac6
+    jinja: 'A scholar used "{{ keyword | join('', '') }}" as search terms. Do you
+      think the search engine would return the abstract "{{abst}}"? Answer {{ answer_choices[1]
+      }} or {{ answer_choices[0] }}.
+
+      |||
+
+      {{ answer_choices[label] }}
+
+
+      '
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      languages:
+      - zh
+      metrics:
+      - Accuracy
+      original_task: true
+    name: search_terms
+    reference: ''

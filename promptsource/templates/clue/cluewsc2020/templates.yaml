@@ -1,0 +1,78 @@
+dataset: clue
+subset: cluewsc2020
+templates:
+  321f55bb-c725-4fbf-bb7e-d46ea2f510b8: !Template
+    answer_choices: correct ||| wrong
+    id: 321f55bb-c725-4fbf-bb7e-d46ea2f510b8
+    jinja: 'In the class, a teacher asks what  the word "{{ target[''span2_text'']
+      }}" refers to in the text of "{{ text }}". The student answers "{{ target[''span1_text'']
+      }}". The teacher would say what? {{ answer_choices[0] | capitalize }} or {{answer_choices[1]
+      }}?
+
+      |||
+
+      {{ answer_choices[label] }}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      languages:
+      - zh
+      metrics:
+      - Accuracy
+      original_task: true
+    name: teacher_asking_student
+    reference: ''
+  7282b4b5-f854-42af-8e75-d509608d97bb: !Template
+    answer_choices: null
+    id: 7282b4b5-f854-42af-8e75-d509608d97bb
+    jinja: 'What does the word "{{ target[''span2_text''] }}" refers to in the text
+      of "{{ text }}"?
+
+      |||
+
+      {% if label == 0 %}
+
+      {{ target[''span1_text''] }}
+
+      {% endif %}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages:
+      - zh
+      metrics:
+      - ROUGE
+      original_task: false
+    name: generate_correct_response
+    reference: ''
+  e649a609-f7b2-43da-800d-a32090e92221: !Template
+    answer_choices: yes ||| no
+    id: e649a609-f7b2-43da-800d-a32090e92221
+    jinja: "In the sentence \"{{ text }}\", does \"{{ target['span2_text'] }}\" refer\
+      \ to \"{{ target['span1_text'] }}\"? \n|||\n{{ answer_choices[label] }}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: false
+      languages:
+      - zh
+      metrics:
+      - Accuracy
+      original_task: true
+    name: are_they_same
+    reference: ''
+  fc436a38-d9f5-4d17-bcf8-1e506bba5681: !Template
+    answer_choices: yes ||| no
+    id: fc436a38-d9f5-4d17-bcf8-1e506bba5681
+    jinja: 'In the sentence "{{ text }}", the word "{{ target[''span2_text''] }}"
+      refers to "{{ target[''span1_text''] }}". Answer {{ answer_choices[0] }} if
+      you agree; otherwise, answer {{ answer_choices[1] }}.
+
+      |||
+
+      {{ answer_choices[label] }}'
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      languages:
+      - zh
+      metrics:
+      - Accuracy
+      original_task: true
+    name: affirmative_are_they_same
+    reference: ''
